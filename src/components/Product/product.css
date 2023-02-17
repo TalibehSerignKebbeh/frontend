@@ -1,0 +1,54 @@
+
+.drop-icon{
+    margin: 0 auto auto auto !important;
+    transform: scale(1.2) !important;
+    color: rgb(78, 76, 76) !important;
+}
+.sell-modal{
+   border-radius: 6px;
+    height: 20px;
+    width: 500px;
+    position: fixed;
+    right: 8px;
+    bottom: -365px !important;
+    padding: 0 10px 30px 10px;
+    transition: all .4s ease-in;
+    border: 2px solid black;
+    height: auto;
+}
+.sell-modal.active{
+    min-height: 300px;
+    bottom: 6px !important;
+}
+.ativeSellIcon{
+    position: absolute;
+    /* margin-top: 50px !important; */
+    bottom: 60px;
+    transform: scale(3);
+    transition:  all .4s;
+    right: 0px;
+    left: auto;
+
+}
+@media (max-width: 500px) {
+   .sell-modal{
+    bottom: -367px !important;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+   } 
+.ativeSellIcon{
+    /* margin-top: 50px !important; */
+    bottom: 50px;
+    transform: scale(2);
+}
+
+}
+@media ( width > 500px ) and (width < 1024px) {
+    .sell-modal{
+    bottom: -357px !important;
+   } 
+}
+/* @media (width < 1024px) {
+    
+} */

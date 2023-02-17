@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import {
-  // createBrowserRouter, createRoutesFromElements,
+  createBrowserRouter, createRoutesFromElements,
   BrowserRouter as Router, Route, Routes
 } from 'react-router-dom'
 import InventoryPage from './components/Product/InventoryPage';
@@ -55,6 +55,7 @@ function App() {
 
         {/* main content container */}
         <div className='flex flex-row  '>
+
           <SideBar />
           {/* other content */}
           <div className='relative w-full h-auto flex flex-col '>

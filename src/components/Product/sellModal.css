@@ -1,0 +1,65 @@
+
+.drop-icon{
+    margin: 0 auto auto auto !important;
+    transform: scale(1.2) !important;
+    color: rgb(78, 76, 76) !important;
+}
+.add-icon{
+    transform: scale(2);
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+.sell-modal{
+   border-radius: 6px;
+    height: 20px;
+    width: 98%;
+    position: fixed;
+    z-index: 50;
+    right: 8px;
+    left: 8px;
+    bottom: -100vh !important;
+    padding: 0 10px 30px 10px;
+    transition: all .4s ease-in;
+    border: 2px solid black;
+    height: auto;
+}
+.sell-modal.active{
+    /* min-height: 300px; */
+    bottom: 6px !important;
+    top: 10px !important;
+    height: 100%;
+}
+.ativeSellIcon{
+    position: absolute;
+    /* margin-top: 50px !important; */
+    bottom: 60px;
+    transform: scale(3);
+    transition:  all .4s;
+    right: 0px;
+    left: auto;
+
+}
+@media (max-width: 500px) {
+   .sell-modal{
+    width: 95%;
+    left: 2px;
+    right: 2px;
+   } 
+.ativeSellIcon{
+    /* margin-top: 50px !important; */
+    bottom: 50px;
+    transform: scale(2);
+}
+
+}
+@media ( width > 500px ) and (width < 1024px) {
+    .sell-modal{
+    width: 95%;
+        left: 4px;
+    right: 4px;
+
+   } 
+}
+/* @media (width < 1024px) {
+    
+} */

@@ -1,11 +1,51 @@
 .App {
   text-align: center;
+  width: 100vw !important;
+  height: 100vh !important;
+
+}
+.fifty-percent-radius{
+  border-radius: 50% !important;
+}
+.showSellBtn {
+  position: fixed !important;
+  bottom: 10px !important;
+  right: 25px;
+  padding: auto;
+  z-index: 49;
+  /* transform: scale(5) !important; */
+  bottom: 0;
+  background-color: rgb(4, 176, 119);
+  padding: 2px 16px;
+  border-radius: 4px;
+  /* color: rgba(1, 6, 1, 0.84); */
+  color: white;
 }
 
-.App-logo {
+.showSellBtn:only-child {
+}
+@media (max-width: 500px) {
+.showSellBtn {
+  position: fixed !important;
+  /* bottom: 15px; */
+  /* bottom: 20px; */
+}
+}
+@media ( width > 500px ) and (width < 1024px) {
+.showSellBtn {
+  /* bottom: 20px; */
+  position: fixed !important;
+  /* bottom: 15px; */
+
+}
+}
+
+
+
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -32,6 +72,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

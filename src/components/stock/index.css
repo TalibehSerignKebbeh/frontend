@@ -1,0 +1,28 @@
+
+/* body{
+    background-image:  url('../../imgs/unnamed.webp') !important;
+} */
+.paginate-container{
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+     gap: 5px !important;
+}
+.pag-link{
+    padding: 4px !important;
+    background-color: white !important;
+ 
+}
+.next, .previous{
+    padding: 4px 6px !important;
+    width: auto !important;
+    height: auto;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 3px !important;
+}
+.active-page{
+    background-color: 'green' !important;
+    
+}
