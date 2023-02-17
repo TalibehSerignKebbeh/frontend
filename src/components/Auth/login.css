@@ -24,7 +24,6 @@
   background-color: aquamarine;
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4);
   z-index: -1;
-  margin-top: calc();
 }
 .bg.first{
 background-color: rgb(61, 100, 87);
