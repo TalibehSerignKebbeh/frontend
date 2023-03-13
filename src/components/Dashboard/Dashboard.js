@@ -12,17 +12,6 @@ import SalesCard from './card/SalesCard';
 import Header from '../other/Header';
 
 const Dashboard = () => {
-    // const [loading, setloading] = useState(false);
-    // const [totalSales, settotalSales] = useState(0);
-    // const [loadingSalesToday, setloadingSalesToday] = useState(false);
-    // const [todaysTotal, settodaysTotal] = useState(0);
-    // const [thisWeeksTotal, setthisWeeksTotal] = useState(0);
-    // const [lastWeeksTotal, setlastWeeksTotal] = useState(0);
-    // const [totalYesterday, settotalYesterday] = useState(0);
-    // const [SalesMonthStats, setSalesMonthStats] = useState([]);
-    // const [productsCount, setproductsCount] = useState(0);
-    // const [salesToday, setsalesToday] = useState([]);
-    // const [productsOutOfStock, setproductsOutOfStock] = useState([]);
 
 
 
