@@ -1,8 +1,8 @@
 
 .drop-icon{
-    margin: 0 auto auto auto !important;
-    transform: scale(1.2) !important;
-    color: rgb(78, 76, 76) !important;
+    margin: 6px 6px auto auto ;
+    transform: scale(3);
+    color: rgb(78, 76, 76) ;
 }
 .add-icon{
     transform: scale(2);
@@ -11,27 +11,28 @@
 }
 .sell-modal{
    border-radius: 6px;
-    height: 20px;
+       height: 100%;
     width: 98%;
     position: fixed;
     z-index: 50;
     right: 8px;
     left: 8px;
-    bottom: -100vh !important;
+    bottom: -100vh ;
     padding: 0 10px 30px 10px;
-    transition: all .4s ease-in;
+    /* transition: all .4s ease-in-out; */
+    transition-property: bottom;
+    transition: .5s ease-in-out ;
     border: 2px solid black;
     height: auto;
 }
 .sell-modal.active{
     /* min-height: 300px; */
-    bottom: 6px !important;
-    top: 10px !important;
-    height: 100%;
+    bottom: 6px ;
+    top: 10px ;
 }
 .ativeSellIcon{
     position: absolute;
-    /* margin-top: 50px !important; */
+    /* margin-top: 50px ; */
     bottom: 60px;
     transform: scale(3);
     transition:  all .4s;
@@ -46,7 +47,6 @@
     right: 2px;
    } 
 .ativeSellIcon{
-    /* margin-top: 50px !important; */
     bottom: 50px;
     transform: scale(2);
 }

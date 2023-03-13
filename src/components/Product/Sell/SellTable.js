@@ -13,7 +13,9 @@ const SellTable = ({ products, setproducts, total }) => {
         <TableContainer component={Paper} 
         sx={{maxWidth: {lg:'500px', xl:'500px', md:'400px', sm:'500px', xs:'500px'},
                 overflowY: 'scroll', maxHeight: '300px', mt: '2px', p: 1, pb: 2,
-            scrollBehavior:'smooth', scrollbarWidth:'thin'}}>
+                scrollBehavior: 'smooth', scrollbarWidth: 'thin',
+                    bgcolor: '#fff', boxShadow: '2px 2px 3px rgba(0,0,0,0.4)',
+            }}>
                 <Table stickyHeader={true}>
                     <TableHead>
                         <TableRow>
@@ -43,9 +45,9 @@ const SellTable = ({ products, setproducts, total }) => {
                         )
                         : null}
                     <TableRow>
-                        <TableCell align='right' colSpan={3}
+                        <TableCell align='right' colSpan={2}
                             sx={{fontSize:'1.2rem'}}
-                        >Total</TableCell>
+                        >Total:</TableCell>
                         <TableCell sx={{ fontSize: '1.2rem' }}
                         >D{' '+total }</TableCell>
                     </TableRow>

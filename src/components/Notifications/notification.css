@@ -1,0 +1,36 @@
+.notification-wrapper{
+   width: "auto";
+        height: "auto";
+        padding: "30px 10px";
+        position: "absolute";
+        top: "20px";
+        right: "6px";
+        left: "auto";
+        overflow: "scroll";
+        background-color: "#fff";
+        box-shadow: "0px 3px 3px 0px rgba(0,0,0,0.4)";
+        max-height: "400px";
+          min-width: "350px";
+         z-index:30;
+
+}
+.table-container{
+  z-index: 30;
+}
+
+.table-container> th, td {
+  padding: 8px 2px;
+  text-align: left;
+  border: 1px solid #ddd;
+  text-align: center;
+    vertical-align: middle;
+}
+
+.td-small{
+  font-size: .5rem;
+  font-weight: 300;
+}
+
+.inner-table{
+  display: bl;
+}

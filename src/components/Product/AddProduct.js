@@ -12,7 +12,7 @@ import { serverUrl } from '../../api';
 // import ButtonComp from '../ButtonComp';
 
 
-const AddProduct = ({ openAddModal, setopenAddModal }) => {
+const AddProduct = ({ openAddModal, setopenAddModal, socket }) => {
     const initialState = {
         name: '', price: 0, category: '', quantity: 0,
         dimensions: '', description: '', picture: '', produced_date: '',

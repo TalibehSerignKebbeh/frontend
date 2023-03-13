@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './sellModal.css'
 import { queryInstance } from '../../api/index'
 
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai"
+import { AiFillCaretDown, } from "react-icons/ai"
 import useAuth from '../../hooks/useAuth';
 import { Add } from '@mui/icons-material';
-import {
-    IconButton,
-} from '@mui/material';
 import SellTable from './Sell/SellTable';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -15,7 +12,7 @@ import { QueryClient } from '@tanstack/react-query';
 const initialStatusMessages = { success: '', error: '' }
 const initialUploadStatus = { loading: false, success: false, error: false }
 
-const SellProductPopper = ({ showSellModal, setshowSellModal, products, setproducts }) => {
+const SellProductPopper = ({ showSellModal, setshowSellModal, products, setproducts, socket }) => {
     const queryClient = new QueryClient()
     const [product, setproduct] = useState({ productId: '', quantity: 0, price: 0, name: '' });
     const [uploadStatus, setuploadStatus] = useState(initialUploadStatus);
@@ -23,14 +20,13 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
     const [submittable, setsubmittable] = useState(false);
     const [total, settotal] = useState(0);
     const { token } = useAuth()
-    const [loading, setloading] = useState(false);
     // const [products, setproducts] = useState([]);
     const [productsTosell, setproductsTosell] = useState([]);
 
     const handleSellProduct = async (e) => {
         e.preventDefault()
         if (!showSellModal || !token) return;
-        productsTosell?.map(sale => sale.saleDate = new Date())
+        productsTosell?.map(sale => sale.saleDate = new Date().toUTCString())
         //    productsTosell?.
         console.log(productsTosell);
         // return
@@ -40,18 +36,16 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
                 console.log(res);
                 let status = res?.status;
                 if (status === 200) {
-
+                   socket.emit('notify_sale')
                     setuploadStatus({ ...uploadStatus, success: true, loading: false, error: false })
                     setstatusMessages({ ...statusMessages, success: res?.data?.message, error: '' })
                     setproductsTosell([])
-                    queryClient.invalidateQueries('products')
-                    queryClient.invalidateQueries('todaysSales')
+                    queryClient.invalidateQueries({queryKey:['products']})
+                    queryClient.invalidateQueries({ queryKey: ['todaysSales'] })
                     return
                 }
                  setuploadStatus({ ...uploadStatus, success: false, loading: false, error: true })
                     setstatusMessages({ ...statusMessages, success: '', error: res?.data?.message })
-
-
             }).catch(err => {
                 setuploadStatus({ ...uploadStatus, error: true, success: false, loading: false })
                 console.log(err);
@@ -62,9 +56,14 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
     const handleChangeProduct = (e) => {
         const value = e.target.value;
         const selectedProduct = products?.find(prod => prod?._id === value)
-        setproduct({ ...product, productId: value, name: selectedProduct?.name })
+        setproduct({
+            ...product, productId: value, name: selectedProduct?.name,
+            price: selectedProduct?.price,
+        })
     }
-    const handleAddProductToCart = (product) => {
+    const handleAddProductToCart = (e) => {
+        e.preventDefault();
+        if (!product?.quantity || !product?.productId) return;
         setproductsTosell([...productsTosell, product])
         
     }
@@ -74,7 +73,7 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
 
     }, [submittable, productsTosell]);
     useEffect(() => {
-        productsTosell?.map((prod)=>settotal(prev=>prev+ (prod?.price * prod?.quantity)))        
+        productsTosell?.map((prod)=>settotal(prev=>prev += (prod?.price * prod?.quantity)))        
         return () => {
             
         };
@@ -97,7 +96,7 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
                     Sell Product
                 </h3>
                 <button
-                    title='Sell Product'
+                    title='close sell modal'
                     className={`cursor-pointer text-lg 
                     ${showSellModal ? 'relative m-auto mt-0 ml-auto mr-0 scale-125' : ''}`}
                     onClick={() => setshowSellModal(prev => !prev)}>
@@ -106,14 +105,16 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
             </div>
 
             {statusMessages?.success?.length ?
-                <div className='w-full h-auto flex flex-row content-between'>
-                    <p className='text-green-700 text-base'>{statusMessages?.success}</p>
-                    <span className='float-right text-base p-2 hover:bg-red-400 
-                cursor-pointer m-auto rounded-2xl' onClick={() => setstatusMessages(initialStatusMessages)}>
+                <div className='w-fit h-auto flex flex-row gap-x-40 content-between 
+                items-center bg-slate-400 px-2 rounded'>
+                    <p className='text-green-700 text-lg'>{statusMessages?.success}</p>
+                    <span className='text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
+                cursor-pointer m-auto rounded-full' onClick={() => setstatusMessages(initialStatusMessages)}>
                         X
                     </span>
                 </div> : null}
-            {statusMessages?.error?.length ? <div className='w-full h-auto flex flex-row content-between'>
+            {statusMessages?.error?.length ?
+                <div className='w-full h-auto flex flex-row content-between'>
                 <p className='text-red-700 text-base'>{statusMessages?.error}</p>
                 <span className='float-right text-base  p-2 hover:bg-red-400 
                 cursor-pointer m-auto' onClick={() => setstatusMessages(initialStatusMessages)}>
@@ -123,16 +124,11 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
             {productsTosell?.length ?
                 <SellTable setproducts={setproductsTosell}
                 products={productsTosell} total={total} /> : null}
-            {loading ?
-                <div className='w-full mx-5 p-6 shadow shadow-white'>
-                    loading....
-                </div>
-                :
-                <form className={`${showSellModal ? "block opacity-100"
-                    : "inline opacity-0"} 
-                    text-start flex flex-row flex-wrap gap-2
+                <div>
+
+                <form className={`text-start flex flex-row flex-wrap gap-2
                     items-end mt-2`}
-                    onSubmit={handleSellProduct}>
+                    onSubmit={handleAddProductToCart}>
                     {/* <span>{productsTosell?.length}</span> */}
                     <div className=" w-auto  h-auto ">
                         <label className='block -mb-1 px-1 text-lg' htmlFor="id">Product</label>
@@ -143,7 +139,7 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
                             // onChange={(e) => setproduct({ ...product, productId: e.target.value })}
                             multiple={false} onChange={handleChangeProduct}
                         >
-                            {!product?._id ? <option>None</option> : null}
+                           <option value={''}>None</option>
                             {products?.map((aproduct, id) => (
                                 <option key={id} value={`${aproduct?._id}`}>
                                     {`${aproduct?.name} D${aproduct?.price} ${aproduct?.quantityInStock}`}
@@ -162,23 +158,26 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
                             onChange={e => setproduct({ ...product, quantity: Number(e.target.value) })}
                         />
                     </div>
-                    <div className=' py-2'>
-                        <IconButton className='relative my-auto ml-auto mr-6 bg-white
-                           shadow-white'
+                    <div className=' py-2 mb-1 pb-3'>
+                            <button type='submit'
+                                className='relative my-auto ml-auto mr-6 bg-white
+                           shadow-white p-1  rounded-2xl hover:bg-zinc-300'
                             disabled={!product?.productId || !product?.quantity}
-                            onClick={() => handleAddProductToCart(product)}
+                            onClick={() => handleAddProductToCart}
                         >
                             <Add className='scale-150' />
-                        </IconButton>
+                        </button>
                     </div>
-                    <div className='m-auto flex flex-row justify-start 
+                   
+                    </form>
+                     <div className='m-auto flex flex-row justify-start 
                     gap-x-6 mt-4 w-full h-auto mb-1'>
                         <button className="reset py-2 px-14 rounded-md
                                  text-white text-xl bg-red-300" type="reset"
                             onClick={() => setproductsTosell([])}
                         >Reset
                         </button>
-                        <button
+                        <button onClick={handleSellProduct}
                             disabled={!productsTosell?.length}
                             className="submit text-white py-3 
                                  px-14 rounded-md text-xl bg-teal-500"
@@ -187,8 +186,9 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
                         </button>
 
                     </div>
-                </form>
-            }
+                </div>
+                
+            
         </div>
     );
 }

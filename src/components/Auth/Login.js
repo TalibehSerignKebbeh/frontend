@@ -7,7 +7,7 @@ import { useLoginMutation } from '../../features/auth/authApiSlice'
 import './login.css'
 import LoginIcon from '../../imgs/newIncon.png'
 
-const Login = ({ setActiveNavLink }) => {
+const Login = ({ socket }) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -24,8 +24,6 @@ const Login = ({ setActiveNavLink }) => {
     
     useEffect(() => {
         usernameRef.current.focus();
-        // console.log(document.body.style.backgroundImage);
-        // setActiveNavLink("login")
         return () => { };
     }, []);
     useEffect(() => {
@@ -52,6 +50,7 @@ const Login = ({ setActiveNavLink }) => {
             setsuccessMsg(res?.data?.message)
             console.log(res);
             dispatch(setCredentials(res))
+            socket.emit('notify_login', {},)
             navigate("dashboard")
         }).catch(err => {
             console.log(err);
@@ -73,7 +72,7 @@ const Login = ({ setActiveNavLink }) => {
                  items-center justify-center rounded-md
                  
                 '>
-                <img src={LoginIcon} alt="Login Icon" srcset="" 
+                <img src={LoginIcon} alt="Login Icon" srcSet='' 
                     className='w-16 h-16 mt-2 bg-white text-green-400'
                 />
                 {/* <h1 className='text-lg text-center font-bold w-full md:py-2 '>

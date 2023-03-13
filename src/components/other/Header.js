@@ -11,13 +11,14 @@ const Header = ({ title, icon }) => {
             md: "300px",
             sm: "240px",
               },
-              mx: {
-                  xs: 1,
-            lg: 3,
-            xl: 3,
-            md: 3,
-            sm: 1,
-              }, py:3,my:2,textAlign:'center',
+        //       mx: {
+        //           xs: 1,
+        //     lg: 3,
+        //     xl: 3,
+        //     md: 3,
+        //     sm: 1,
+        // },
+        py: 3, my: 2, textAlign: 'center',
               bgcolor: "white",
               color: "black",
               boxShadow:

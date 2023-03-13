@@ -1,9 +1,10 @@
 // import { Button } from '@mui/material';
 import React, { useState, useEffect, useRef } from 'react';
-import { queryInstance } from '../../api';
+import { useFormik } from 'formik';
+import { queryInstance } from '../api';
 
 const initialStatus= { uploading: false, error: false, success: false}
-const AddStock = () => {
+const SampleFormValidation = () => {
     const nameRef = useRef()
     const [statusMessages, setstatusMessages] = useState({success:"", error:''});
     const [AddStatus, setAddStatus] = useState(initialStatus)
@@ -12,13 +13,37 @@ const AddStock = () => {
     const [successMessage, setsuccessMessage] = useState('');
     const [errorMessage, seterrorMessage] = useState('');
     const [stockData, setstockData] = useState({
-        name: '', description: ''
+        name: '', description: '', price:0
     });
 
     useEffect(() => {
         nameRef.current.focus()
     }, []);
 
+    const Validate = values => {
+        const errors ={}
+        if (!values.name) {
+            errors.name="Name is required"
+        }
+        if (!values.description) {
+            errors.description="description is required"
+        } else if (values.description.length > 25) {
+            errors.description="description cannot be greater than 25 characters"
+        }
+        if (!values.price) {
+            errors.price = "Price is required"
+        } else if (!typeof values.price === Number) {
+            errors.price = "price should be a number"
+        }
+        return errors
+    }
+    const formik = useFormik({
+        initialValues: stockData,
+        validate: Validate,
+        onSubmit: values => {
+           alert(JSON.stringify(values, null, 8))
+        }
+    })
     const handleSubmitForm = async (e) => {
         e.preventDefault()
         setloading(true)
@@ -35,7 +60,7 @@ const AddStock = () => {
     }
     return (
         <div className='w-full h-auto '>
-            <form onSubmit={()=>{alert("submitted")}}
+            <form onSubmit={formik.handleSubmit}
                 className='p-6  w-fit mx-auto flex-auto
              bg-white shadow shadow-white my-10'>
                 <h3 className='text-black text-lg font-semibold'
@@ -58,28 +83,37 @@ const AddStock = () => {
                     <label className='block py-1 text-gray-900' htmlFor='name' >Name</label>
                     <input type={'text'} id="name" 
                     className="w-full p-2 border-2 border-slate-900 rounded-md"
-                        value={stockData.name}
+                        value={formik.values.name}
                         name="name"
                         ref={nameRef}
-                        onChange={e => setstockData({ ...stockData, name: e.target.value })}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
                     />
+                    {formik.touched.name && formik.errors.name ? 
+                        <p>{ formik.errors.name}</p>: null}
                 </div>
                 <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
                     <label className='block py-1 text-gray-900' htmlFor='description' >Description</label>
                     <input type={'text'} id="description" name='description' 
                     className="w-full p-2 border-2 border-slate-900 rounded-md"
-                        value={stockData.description}
-                        onChange={e => setstockData({ ...stockData, description: e.target.value })}
+                        value={formik.values.description}
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
                     />
+                    {formik.touched.description && formik.errors.description ? 
+                        <p>{ formik.errors.description}</p>: null}
                 </div>
-                {/* <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
-                    <label className='block py-1 text-gray-900' htmlFor='price' >CostPrice</label>
-                    <input type={'text'} id="price" 
+                <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
+                    <label className='block py-1 text-gray-900' htmlFor='price' >Price</label>
+                    <input type={'text'} id="price" name="price" 
                     className="w-full p-2 border-2 border-slate-900 rounded-md"
-                        value={stockData.costPrice || ''}
-                        onChange={e => setstockData({ ...stockData, costPrice: e.target.value })}
+                        value={formik.values.price || ''}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
-                </div> */}
+                    {formik.touched.price && formik.errors.price ? 
+                        <p>{ formik.errors.price}</p>: null}
+                </div>
                 <div className='md:w-96 sm:w-52 text-start mt-6 p-1'>
                     <button className="w-full py-3 rounded 
                     bg-blue-500 shadow shadow-blue-600
@@ -94,4 +128,4 @@ const AddStock = () => {
     );
 }
 
-export default AddStock;
+export default SampleFormValidation;

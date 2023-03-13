@@ -1,5 +1,5 @@
-import React from 'react';
-import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid'
+import React, { useState } from 'react';
+import { DataGrid, GridActionsCellItem, GridToolbar, GridActionsCell } from '@mui/x-data-grid'
 import { Box, IconButton } from '@mui/material';
 import { format } from 'date-fns';
 import { Inventory2 } from '@mui/icons-material';
@@ -7,6 +7,11 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { Link } from 'react-router-dom'
 
 const ProductsDataGrid = ({ products, pageSize, setpageSize, page, setpage, loading }) => {
+    const [open, setopen] = useState(false);
+    const handleClick = () => {
+        console.log("click");
+        setopen(true)
+    }
     const columns = [
         { field: 'name', headerName: 'Name', width: 140 },
         { type: 'number', field: 'quantity', headerName: 'Quantity', width: 90, },
@@ -40,23 +45,29 @@ const ProductsDataGrid = ({ products, pageSize, setpageSize, page, setpage, load
             width: 100,
             getActions: (params) => [
                 <GridActionsCellItem
-                    icon={<IconButton>
-                        <Link to={`/products/${params.id}/sales`} >
-                            <Inventory2 color='skyblue' />
+                    onClick={handleClick}
+                    icon={
+                        <Link className='font-semibold text-black'
+                            to={`/products/${params.id}/sales`} >
+                            {/* <Inventory2 color='success' /> */}
+                            Sales
                         </Link>
-                    </IconButton>} label="Sales" />,
-                <GridActionsCellItem icon={<IconButton  >
-                    <Link to={`/products/${params.id}`} >
-                            <AiOutlineEdit color='blue' />
+                  } label="Sales" />,
+                <GridActionsCellItem icon={
+                    <Link className='font-semibold text-blue-600'
+                        to={`/products/${params.id}`} >
+                        {/* <AiOutlineEdit className='p-3 ' color='secondary' /> */}
+                        Edit
                         </Link>
-                    </IconButton>} label="Edit" />
+                } label="Edit" />
             ]
         }
 
     ]
+  
     return (
         <Box mb={3}>
-            <DataGrid rows={products} columns={columns}
+            <DataGrid rows={products?.length? products : []} columns={columns}
                 pageSize={pageSize} page={page}
                 onPageChange={newPage => setpage(newPage)}
                 loading={loading}
@@ -83,7 +94,7 @@ const ProductsDataGrid = ({ products, pageSize, setpageSize, page, setpage, load
                 onRowDoubleClick={params => {  }}
                 sx={{
                     bgcolor: '#fff', boxShadow: '2px 2px 3px rgba(0,0,0,0.4)',
-                    height: '450px', width: { xl: '70%', lg: '100%', md: '100%', sm: '100%', xs: '100%' },
+                    height: '600px', width: { xl: '70%', lg: '100%', md: '100%', sm: '100%', xs: '100%' },
                     pt: 1, px: 1, mb: 4
                 }}
             />

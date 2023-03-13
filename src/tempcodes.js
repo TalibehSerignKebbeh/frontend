@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 const ChatbotModal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,40 +29,49 @@ const ChatbotModal = () => {
 
   const modalStyles = {
     position: 'fixed',
-    top: '0',
-    left: '0',
-    right: '0',
-    bottom: '0',
+    top: '50px',
+    left: '50px',
+    right: '20px',
+    bottom: '50px',
+    width:'auto',
     background: 'rgba(0, 0, 0, 0.5)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: showModal ? 1 : 0,
-    visibility: showModal ? 'visible' : 'hidden',
-    transition: 'opacity 0.2s ease-in-out, visibility 0.2s ease-in-out',
+    overflow: 'hidden',
+    clipPath:'insets(0,0,0,0)'
+    // opacity: showModal ? 1 : 0,
+    // visibility: showModal ? 'visible' : 'hidden',
+    // transition: 'opacity 0.1s ease-in-out, visibility 0.1s ease-in-out',
   };
 
   const modalContentStyles = {
     background: 'white',
+    position:'absolute',
     padding: '1rem',
+    cursor:'pointer',
     borderRadius: '5px',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+    boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)',
+    height: '300px',
+    bottom: showModal ? '0px' : '-100vh',
+    opacity: showModal ? '1' : '0',
+    transition: `bottom 2s ease-in-out, opacity 2s ease-in-out`,
+    
   };
 
   return (
     <>
       <button onClick={toggleModal}>Open Chatbot</button>
-      {showModal && (
-        <div style={modalStyles} onClick={handleModalClick}>
-          <div ref={modalRef} style={modalContentStyles}>
+        <div style={{...modalStyles, overflowY:'hidden',}} onClick={handleModalClick}>
+          <div ref={modalRef} style={{...modalContentStyles}}>
             <h2>Chatbot</h2>
             <p>Start chatting with our bot!</p>
             <button onClick={toggleModal}>Close</button>
           </div>
         </div>
-      )}
     </>
   );
 };
 
-ReactDOM.render(<ChatbotModal />, document.getElementById('root'));
+// ReactDOM.render(<ChatbotModal />, document.getElementById('root'));
+export default ChatbotModal

@@ -1,67 +1,162 @@
-import React, { useState } from 'react';
-import { Button, Typography } from '@mui/material'
-import useAuth from '../../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
 import {
-    ProductionQuantityLimits, 
-     AddCircleOutlineRounded,  Inventory2Outlined, PointOfSaleSharp, ReportOutlined
-} from '@mui/icons-material'
-import { AiOutlineUserSwitch } from 'react-icons/ai';
-import { BiUserPlus } from 'react-icons/bi';
-const SideBar = () => {
-    // &#9776;
-    const [show, setshow] = useState(true);
-    const {token} = useAuth()
-    const handleNavToggle = e => {
-        setshow(prev=>!prev)
-    }
+  Button,
+  CircularProgress,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  ProductionQuantityLimits,
+  Inventory2Outlined,
+  PointOfSaleSharp,
+  LogoutTwoTone,
+  MenuOutlined,
+} from "@mui/icons-material";
+import { AiOutlineProfile, AiOutlineUserSwitch } from "react-icons/ai";
+import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
+import Box from "@mui/system/Box";
+const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
+  const navigate = useNavigate();
+  // &#9776;
+  const { token, username } = useAuth();
+  const [logoutRequest, { isLoading }] = useSendLogoutMutation();
 
-    if (!token)
-        return null
-    return (
-        <div className={`${show ? 'sidebar-main-active flex flex-col overflow-y-scrol'
-            : 'w-0 sidebar-main  '}  bg-white  clear-both mt-0 text-start
-             transition-all fixed z-10`}
-        >
-            <Button onClick={handleNavToggle} disableTouchRipple disableFocusRipple
-                sx={{ fontSize: '1.2rem', ml: 'auto', color:'black'}}
-                className={`menu-toggle-btn ${show ? 'ml-auto' : 'md:ml-0 -m-1'} 
+  const handleNavToggle = (e) => {
+    setshowSideMenu((prev) => !prev);
+  };
+  const handleLogout = async () => {
+    await logoutRequest()
+      .unwrap()
+      .then((res) => {
+        socket.emit("notify_logout", { username });
+        console.log(res);
+        navigate("/");
+        localStorage.removeItem("persist:root");
+      });
+  };
+  if (!token) return null;
+  return (
+    <Box
+      minHeight={"100vh"}
+      className={` ${
+        showSideMenu
+          ? "sidebar-main-active flex flex-col overflow-y-scrol"
+          : "w-0 sidebar-main  "
+      }  bg-white  clear-both mt-0 text-start
+             transition-all fixed z-10 `}
+    >
+      <Button
+        onClick={handleNavToggle}
+        disableTouchRipple
+        disableFocusRipple
+        sx={{ fontSize: "1.2rem", ml: "auto", color: "black", position:'fixed' }}
+        className={`menu-toggle-btn ${showSideMenu ? "ml-auto" : "md:ml-0 -m-1"} 
                    w-auto ml-auto zIndex-2 -mr-8 text-2xl pointer p-0 md:relative absolute `}
-                >
-                &#9776;
-            </Button>
+      >
+        {/* &#9776; */}
+        <MenuOutlined />
+      </Button>
+      <Box sx={{ position:'fixed', mt:4, textAlign:'center'}}>
 
-            <div className={`${show ? 'w-full' : 'w-0'} flex flex-col 
-                         content-center items-start gap-y-2`}>
-                <Link to='/dashboard' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
+      <Box sx={{ textAlign: "center", py: 3 }}>
+        <Tooltip title="Username">
+          <Typography
+            sx={{
+              display: showSideMenu ? "inline" : "none",
+              fontSize: ".8rem",
+              margin: "auto",
+              padding: 1,
+              marginY: 1, textTransform:'capitalize',
+                          boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.5)",
+              cursor:'pointer',
+            }}
+          >
+            {username}
+          </Typography>
+        </Tooltip>
+      </Box>
+      <div
+        className={`${showSideMenu ? "w-full" : "w-0"} flex flex-col 
+                         content-center items-start gap-y-3`}
+      >
+        <Link
+          to="/dashboard"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
                  m-auto text-start justify-start flex flex-row gap-x-7 items-center 
                  transition-all `}
-                >
-                    <button className='text-lg before:h-8 before:w-2 
-                       before:bg-green-300 before:float-left before:-ml-6 before:rounded-md'>
-                         &#9776;
-                    </button>
-               <Typography className='ml-3'>Dashboard</Typography>
-                </Link>
-                 <Link to='/sales' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
+        >
+          <button
+            className="text-lg before:h-8 before:w-2 
+                       before:bg-green-300 before:float-left before:-ml-6 before:rounded-md"
+          >
+            &#9776;
+          </button>
+          <Typography sx={{ fontSize: "1.2rem" }} className="ml-3">
+            Dashboard
+          </Typography>
+        </Link>
+        <Link
+          to="/sales"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
                  m-auto text-start justify-start flex flex-row gap-x-7 items-center 
                  transition-all `}
-                >
-                    <button className='text-lg'>
-                         <PointOfSaleSharp  />
-                    </button>
-               <Typography>Sales</Typography>
-                </Link>
-                 <Link to='/stocks' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
+        >
+          <button className="text-lg">
+            <PointOfSaleSharp />
+          </button>
+          <Typography sx={{ fontSize: "1.2rem" }}>Sales</Typography>
+        </Link>
+        <Link
+          to="/stocks"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
                  m-auto text-start justify-start flex flex-row gap-x-7 items-center 
                  transition-all `}
-                >
-                    <button className='text-lg'>
-                         <ProductionQuantityLimits />
-                    </button>
-               <Typography>Stock</Typography>
-                </Link>
-                <Link to='/products/add' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
+        >
+          <button className="text-lg">
+            <ProductionQuantityLimits />
+          </button>
+          <Typography sx={{ fontSize: "1.2rem" }}>Stock</Typography>
+        </Link>
+
+        <Link
+          to="/products"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
+                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
+                 transition-all `}
+        >
+          <button className="text-lg">
+            <Inventory2Outlined />
+          </button>
+          <Typography sx={{ fontSize: "1.2rem" }}>Products</Typography>
+        </Link>
+
+        <Link
+          to="/users"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
+                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
+                 transition-all `}
+        >
+          <button className="text-lg">
+            <AiOutlineUserSwitch />
+          </button>
+          <Typography sx={{ fontSize: "1.2rem" }}>Users</Typography>
+        </Link>
+        <Link
+          to="/profile"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
+                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
+                 transition-all `}
+        >
+          <button className="text-lg">
+            <AiOutlineProfile />
+          </button>
+          <Typography sx={{ fontSize: "1.2rem" }}>Profile</Typography>
+        </Link>
+        {/* <Link to='/products/add' className={`${showSideMenu ? 'w-full ml-5 ' : '-ml-96'} mr-auto
                  m-auto text-start justify-start flex flex-row gap-x-7 items-center 
                  transition-all `}
                 >
@@ -69,43 +164,21 @@ const SideBar = () => {
                          <AddCircleOutlineRounded />
                     </button>
                <Typography>AddStock</Typography>
-                </Link>
-                 <Link to='/products' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
-                >
-                    <button className='text-lg'>
-                         <Inventory2Outlined />
-                    </button>
-               <Typography>Products</Typography>
-                </Link>
-                
-            
-                 <Link to='/users' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
-                >
-                    <button className='text-lg'>
-                         <AiOutlineUserSwitch />
-                    </button>
-               <Typography>Users</Typography>
-                </Link>
-                 <Link to='/users/add' className={`${show ? 'w-full ml-5 ' : '-ml-96'} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
-                >
-                    <button className='text-lg'>
-                        
-                        <BiUserPlus />
-                    </button>
-               <Typography>Add User</Typography>
-                </Link>
-
-            </div>
-           
-
+                </Link> */}
+      </div>
+      <div className="w-auto mx-auto mt-10">
+        <IconButton onClick={handleLogout}>
+          {isLoading ? (
+            <CircularProgress sx={{ fontSize: "3rem" }} />
+          ) : (
+            <LogoutTwoTone sx={{ fontSize: "3rem" }} />
+          )}
+        </IconButton>
         </div>
-    );
-}
+      </Box>
+        
+    </Box>
+  );
+};
 
 export default SideBar;

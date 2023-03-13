@@ -12,7 +12,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         }),
         sendLogout: builder.mutation({
             query: () => ({
-                url: '/auth/logout',
+                url: `/auth/logout`,
                 method: 'POST',
             }),
             // the below is to avoid importing useDispatch and action creators everywhere

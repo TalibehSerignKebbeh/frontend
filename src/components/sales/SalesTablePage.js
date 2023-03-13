@@ -88,7 +88,12 @@ const SalesTablePage = ({ sales, page, setpage, pageSize, setpageSize, rowCount,
     // }
     return (
         <Box position={'relative'}
-            height={'700px'} sx={{ width: { xl: '80%', lg: '90%', md: '100%', sm: '100%', xs: '100%' } }}
+            height={'700px'} sx={{
+                width: {
+                    xl: '80%', lg: '90%',
+                    md: '100%', sm: '100%', xs: '100%', mb:6,
+                }
+            }}
         >
             {selectedIds?.length ? <IconButton sx={{
                 right: '40px', top: '5px', color: 'red', position: 'absolute'
@@ -135,7 +140,7 @@ const SalesTablePage = ({ sales, page, setpage, pageSize, setpageSize, rowCount,
                 sx={{
                     boxShadow: '2px 2px 2px rgba(0,0,0,0.4)',
                     height: '100%', width: '100%',
-                    mx: 'auto', mb: 4,
+                    mx: 'auto', mb: 8,
                     [`& .${gridClasses.row}`]: {
                         fontSize: '.9rem',
 

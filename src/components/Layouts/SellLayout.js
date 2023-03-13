@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SellProductPopper from '../Product/SellProduct';
 import { fetchProducts } from '../../api';
 import {useQuery} from '@tanstack/react-query'
-const SellLayout = () => {
+import { Button } from '@mui/material';
+import { AiFillCaretUp } from 'react-icons/ai';
+const SellLayout = ({socket}) => {
 
-    const { isLoading, data, isSuccess, isError, error } =
+    const { isLoading, data } =
         useQuery(['products'], ()=> fetchProducts())
     // useEffect(() => {        
     //     const fetchProducts = async () => {
@@ -30,18 +32,22 @@ const SellLayout = () => {
 
     return (
         <>
+            <Outlet />
             <>
-                <button className='showSellBtn'
-                    onClick={() => setshowSellModal(prev => !prev)}>
-                    {/* <AiFillCaretUp className=''/> */}
+                <Button sx={{
+                    color: '#fff', bgcolor: '#00802b',opacity:.8,px:3,py:'6px',
+                    ':hover': { bgcolor: '#00802b',opacity:1, }
+                }} color='success' className='showSellBtn py-2'
+                    onClick={() => setshowSellModal(prev => !prev)}
+                endIcon={<AiFillCaretUp />}>
                     Sell
-                </button>
+                </Button>
                 <SellProductPopper showSellModal={showSellModal}
                     setshowSellModal={setshowSellModal}
                     products={data?.products || []} loading={isLoading}
+                    socket={socket}
                 />
             </>
-            <Outlet />
 
         </>
     );

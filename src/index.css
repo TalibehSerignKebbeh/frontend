@@ -39,7 +39,7 @@ a{
   background-color: white !important;
 }
 .sidebar-main-active{
-  width: 260px !important;
+  width: 270px !important;
 }
 
 .sidebar-main>*{
@@ -53,7 +53,7 @@ a{
   position: absolute !important;
 }
 .sidebar-main-active{
-  width: 150px !important;
+  width: 170px !important;
 }
 }
 

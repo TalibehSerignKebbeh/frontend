@@ -2,7 +2,9 @@ import React, {useEffect, useState, useMemo} from 'react';
 import { useParams } from 'react-router-dom';
 import { queryInstance } from '../../api';
 import SalesTablePage from './SalesTablePage';
-import { EditOffSharp} from '@mui/icons-material'
+import { EditOffSharp } from '@mui/icons-material'
+import { useQuery } from '@tanstack/react-query';
+
 
 const ProductSales = () => {
     const { id } = useParams()
@@ -54,7 +56,14 @@ const ProductSales = () => {
         // { field: 'Edit', headerName: 'Edit', width: 60, renderCells: (params) => <Edit {...{ params, rowId, setrowId }} /> },
         // { field: 'Delete', headerName: 'Delete', width: 60, renderCells: (params) => <Delete className='delete-icon' onClick={() => DeleteEmp(params.rowId)} /> },
     ], [])
-    
+    const { isLoading, isError, data, isSuccess } = useQuery({
+        queryKey: [`productsSales ${id}`],
+        queryFn:()=> queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`).then(res => { return res?.data }),
+        
+    }, { networkMode: 'offlineFirst', keepPreviousData: false })
+    if (isSuccess) {
+        console.log(data);
+    }
     useEffect(() => {
         const fetchSales = async () => {
         setloading(true)
@@ -90,6 +99,7 @@ const ProductSales = () => {
                     </div>
                     :
                     <SalesTablePage sales={sales} 
+                        rowCount={rowCount}
                         setpage={setpage} page={page}
                         columns={columns} totalRowsSize={rowCount}
                         pageSize={pageSize} setpageSize={setpageSize}

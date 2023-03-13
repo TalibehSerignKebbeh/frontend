@@ -54,23 +54,36 @@ export const fetchSales = ({page, pageSize,selectedDate}) => {
     })
 }
 export const fetchSalesStats = () => {
-    return queryInstance.get(`/sales/stats`).then(res=>res?.data)
+    return queryInstance.get(`/sales/stats`).then(res => {
+        if (res?.data) return res?.data;
+        return res;
+    })
 }
 export const fetchProductsStats = () => {
-    return queryInstance.get(`/products/stats`).then(res=>res?.data)
+    return queryInstance.get(`/products/stats`).then(res => {
+        if (res?.data) return res?.data;
+        return res;
+    })
 }
 export const fetchSalesToday = () => {
     return queryInstance.get(`/sales?saleDate=${new Date().toUTCString()}`).then(res => {
-        console.log(res);
-        return res?.data
+        if (res?.data) return res?.data;
+        return res;
+        
     })
 }
 
 export const fetchStocks = () => {
-    return queryInstance.get(`/stocks`).then(res=>res?.data)
+    return queryInstance.get(`/stocks`).then(res => {
+        if (res?.data) return res?.data;
+        return res;
+    })
 }
 export const fetchUsers = () => {
-    return queryInstance.get(`/users`).then(res=>res?.data)
+    return queryInstance.get(`/users`).then(res => {
+        if (res?.data) return res?.data;
+        return res;
+    })
 }
 export const UpdateUser = (user) => {
     let id = user?._id;

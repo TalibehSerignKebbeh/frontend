@@ -9,7 +9,7 @@ const initialValues = {
     dimensions: '', description: '', picture: '', producedDate: '',
     expiryDate: '',
 }
-const SideModal = ({ showSideModal, setShowSideModal }) => {
+const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
     const [product, setproduct] = useState(initialValues);
     const [stocks, setstocks] = useState([]);
     const nameRef = useRef(showSideModal)
@@ -43,6 +43,7 @@ const SideModal = ({ showSideModal, setShowSideModal }) => {
             .then(res => {
                 console.log(res);
                 setsuccessMessage(res?.data?.message)
+                socket.emit("notify_add_product")
             }).catch(err => {
                 setsuccessMessage('')   
                 console.log(err);
