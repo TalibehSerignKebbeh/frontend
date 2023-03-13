@@ -6,7 +6,8 @@ import { Navigate } from 'react-router-dom'
 // console.log(token);
 
 
-export const serverUrl = `http://localhost:4500`
+// export const serverUrl = `http://localhost:4500`
+export const serverUrl = `https://imsbackend.onrender.com`
 
 export const queryInstance = axios.create({baseURL: serverUrl})
 
