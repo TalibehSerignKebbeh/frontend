@@ -27,9 +27,6 @@ import { serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 import { ToastContainer } from "react-toastify";
-import MonetizationOnOutlined from "@mui/icons-material/MonetizationOnOutlined";
-import  MoneySharp  from "@mui/icons-material/MoneySharp";
-import SampleLineChat from "./components/sales/SampleLineChat";
 import { queryInstance } from "./api";
 
 let socket = io.connect(serverUrl);
@@ -170,52 +167,5 @@ function App() {
 }
 
 export default App;
-function MyFunction() {
-  return <>
-    <div className="flex flex-row flex-wrap gap-3 content-center justify-start items-baseline w-full mx-2">
-      <div className="md:w-72 w-64 flex flex-col items-start bg-zinc-100 shadow-zinc-50  p-2 rounded-lg ">
-        <div className="p-2 rounded-full bg-sky-300">
-          <MoneySharp
-            sx={{ width: "45px", height: "36px", color: '#fff' }} />
-        </div>
-        <div className="flex flex-row w-full items-center justify-between text-start">
-          <div className="p-2 rounded-md">
-            <h2>Amount</h2>
-            <h3>D234000</h3>
-          </div>
-          <div className="p-2">
-            <h2>Profit</h2>
-            <h3>D120000</h3>
-          </div>
-        </div>
-      </div>
-      <div className="md:w-72 w-64 flex flex-col items-start bg-zinc-100 shadow-zinc-50 bg-gradient-to-b p-2 rounded-lg ">
-        <div className="p-2 rounded-full bg-orange-400">
-          <MonetizationOnOutlined
-            sx={{ width: "45px", height: "36px", color: '#fff' }} />
-        </div>
-        <div className="flex flex-row w-full items-center justify-between text-start">
-          <div className="p-2 rounded-md">
-            <h2>Amount</h2>
-            <h3>D234000</h3>
-          </div>
-          <div className="p-2">
-            <h2>Profit</h2>
-            <h3>D120000</h3>
-          </div>
-        </div>
-      </div>
-      <div className="w-72 p-4 rounded-md bg-white shadow-white shadow-sm flex flex-row justify-between items-center">
-        <div className="text-start">
-          <h2 className="text-lg opacity-80 font-sans font-medium">Today's Money</h2>
-          <h1 className="text-lg opacity-90 font-sans font-bold ">$53,000</h1>
-        </div>
-        <div className="p-1  bg-sky-600 rounded-full">
-          <MonetizationOnOutlined
-            sx={{ width: "35px", height: "35px", color: '#fff' }} />
-        </div>
-      </div>
-    </div>
-  </>;
-}
+
 
