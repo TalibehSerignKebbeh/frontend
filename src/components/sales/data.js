@@ -1,4 +1,5 @@
-import format  from 'date-fns/format';
+import React from 'react'
+import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
 export const customTime = '00:00:00.000'
@@ -46,15 +47,6 @@ export const customTime = '00:00:00.000'
            type:'boolean', field: 'active', headerName: 'status', minWidth: 110,
             valueGetter:({value})=> value? value : ''
      },
-    //  {
-    //      type: 'actions', headerName: 'Actions', 
-    //      getActions: (params) => [
-    //          <GridActionsCellItem >
-    //              Edit
-    //          </GridActionsCellItem>
-             
-    //      ]
-    //      }
-
+    
        
           ]

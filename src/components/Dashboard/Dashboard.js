@@ -10,10 +10,7 @@ import DashboardProductStats from '../Product/DashboardProductStats';
 import DashBoardSalesStats from '../sales/DashBoardSalesStats';
 import { toast } from 'react-toastify';
 import ExpiredComponent from '../Auth/ExpiredComponent';
-import {  Chart, Colors,BarController,CategoryScale,LinearScale,BarElement,Legend,} from 'chart.js'
 import DateReportComponent from '../sales/DateReportComponent';
-
-Chart.register(Colors,BarController,BarElement,CategoryScale,LinearScale,Legend);
 
 const Dashboard = () => {
     const [totalAmountToday, settotalAmountToday] = useState(0);
@@ -40,7 +37,7 @@ const Dashboard = () => {
     })
     useEffect(() => {
         // console.log(dayStatsQuery?.data);
-        console.log(salesTodayQuery?.data);
+        // console.log(salesTodayQuery?.data);
         if (salesStatsQuery?.data?.response?.status === 403) {
             toast.error(<ExpiredComponent />, {
                 position: 'top-center',

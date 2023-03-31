@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   // createBrowserRouter, createRoutesFromElements,
@@ -27,28 +27,19 @@ import { serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 import { ToastContainer } from "react-toastify";
-import { queryInstance } from "./api";
+// import { queryInstance } from "./api";
 
 let socket = io.connect(serverUrl);
 function App() {
-   const handleTokenExpiration = () => {
-    const tokenExpiredEvent = new CustomEvent('tokenExpired', { detail: { status: 403 } });
-    document.dispatchEvent(tokenExpiredEvent);
-   };
+  //  const handleTokenExpiration = () => {
+    // const tokenExpiredEvent = new CustomEvent('tokenExpired', { detail: { status: 403 } });
+    // document.dispatchEvent(tokenExpiredEvent);
+  //  };
   
   const { token } = useAuth();
   const [showSideMenu, setshowSideMenu] = useState(true);
   useState(() => {
-    queryInstance.interceptors.response.use(
-      (res) => res,
-      (error) => {
-        if (error.response.status === 403) {
-          console.log("Token expired here in app component");
-        handleTokenExpiration();
-      }
-      return Promise.reject(error);
-      }
-    )
+    
     // socket.emit('notify')
     // window.addEventListener("offline", (e) => {
     //   console.log("You are offlline, connect back");

@@ -1,6 +1,9 @@
 import React from 'react';
-import { TableRow, TableCell, Button, Stack} from '@mui/material'
-import { format } from 'date-fns'
+import  TableRow from '@mui/material/TableRow'
+import  TableCell from '@mui/material/TableCell'
+import  Stack from '@mui/material/Stack'
+import  Button from '@mui/material/Button'
+import  format  from 'date-fns/format'
 import './table.css'
 
 const ProductTableRow = ({ product }) => {
