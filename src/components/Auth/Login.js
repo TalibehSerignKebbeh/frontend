@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-// import { useLoginMutation } from '../features/Auth/AuthApiSlice';
 import { setCredentials } from '../../features/auth/authSlice';
 import { useDispatch } from 'react-redux'
 import {  useNavigate } from 'react-router-dom';
@@ -38,6 +37,7 @@ const Login = ({ socket }) => {
                 : user?.username?.split(' ') > 1 ? "username cannot contain spaces" : '')
     }, [user?.username])
 
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (usernameError?.length || passwordError?.length) {
@@ -50,9 +50,10 @@ const Login = ({ socket }) => {
             setsuccessMsg(res?.data?.message)
             console.log(res);
             dispatch(setCredentials(res))
-            socket.emit('notify_login', {},)
+            socket.emit('notify_login', {username: user?.username, date:new Date()},)
             navigate("dashboard")
         }).catch(err => {
+            // console.log(err?.toString())
             console.log(err);
             seterrorMsg(err?.data?.message)
             // console.log(err?.data?.message);
@@ -62,8 +63,9 @@ const Login = ({ socket }) => {
     }
     
     return (
-        <div className='form-container'>
-
+        <div className='form-container '>
+            {/* <canvas style={{backgroundColor:'red'}}
+            width={200} height={100}>Your browser does not support canvas</canvas> */}
             <form onSubmit={handleSubmit}
                 className='login-form  border-2 shadow
                  shadow-white md:px-10 px-6 m-auto overflow-x-hidden 
@@ -72,8 +74,8 @@ const Login = ({ socket }) => {
                  items-center justify-center rounded-md
                  
                 '>
-                <img src={LoginIcon} alt="Login Icon" srcSet='' 
-                    className='w-16 h-16 mt-2 bg-white text-green-400'
+                <img src={LoginIcon} alt="Login Icon" 
+                    className='w-16 h-16 mt-2 bg-white text-green-500'
                 />
                 {/* <h1 className='text-lg text-center font-bold w-full md:py-2 '>
                     Login
@@ -81,13 +83,13 @@ const Login = ({ socket }) => {
                 {successMsg ? <p className='text-green-500 text-lg font-medium p-1'>
                     {successMsg}
                 </p> : null}
-                {errorMsg ?
+                {error ?
                     <p className='text-red-500 text-lg font-medium px-1'>
-                        {error?.data?.message}
+                        {error?.data?.message?.length? error?.data?.message : "No server response"}
                     </p> : null}
                 <div className='md:w-60  sm:w-56 w-44 m-auto text-start mb-2'>
-                    <label className='-ml-1 text-lg text-start  font-semibold 
-                    px-1 float-left -mb-1 py-2 opacity-90' htmlFor='username'>Username
+                    <label className='-ml-1 text-lg text-start  font-normal font-serif 
+                    px-1 float-left -mb-1 py-2 opacity-75' htmlFor='username'>Username
                     </label>
                     <input ref={usernameRef}
                         className={`${(usernameError && usernameTouch) ? 'border-red-600' : 'border-slate-500 focus:shadow-md'} 
@@ -109,8 +111,8 @@ const Login = ({ socket }) => {
                         null}
                 </div>
                 <div className='md:w-60 sm:w-56 w-44 m-auto  text-start'>
-                    <label className='-ml-1 text-lg text-start font-semibold 
-                    px-1 float-left -mb-1 py-2 opacity-90' htmlFor='password'>Password</label>
+                    <label className='-ml-1 text-lg text-start font-normal 
+                    px-1 float-left -mb-1 py-2 opacity-75' htmlFor='password'>Password</label>
                     <input className={`${(passwordError && passwordTouch) ? 'border-red-600' : 'border-slate-500 focus:shadow-md'}
                         mx-auto border-2  h-11
                         px-4 py-2 text-gray-800 rounded-xl w-full

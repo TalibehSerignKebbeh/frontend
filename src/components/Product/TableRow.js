@@ -1,6 +1,7 @@
 import React from 'react';
-import { TableRow, TableCell, Button, Stack,Modal, Dialog, DialogTitle } from '@mui/material'
+import { TableRow, TableCell, Button, Stack} from '@mui/material'
 import { format } from 'date-fns'
+import './table.css'
 
 const ProductTableRow = ({ product }) => {
     const customTime = '00:00:00.000';

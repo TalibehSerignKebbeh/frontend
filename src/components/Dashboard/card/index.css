@@ -1,3 +1,48 @@
 .sale-icon{
     transform: scale(3);
 }
+
+.card {
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+.card-body {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: start;
+}
+
+.card-title {
+  font-size: .9rem;
+  color: #464646;
+  font-weight: bolder;
+  opacity: .8;
+  padding: 5px 7px;
+  box-shadow: 2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09);
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sales-num {
+  font-weight: bold;
+  color: #ff8800;
+  color: #04fb4a;
+  /* background: linear-gradient(to right, #ff8800, #ffcc33); */
+  background: linear-gradient(to right, #064911, #299705);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

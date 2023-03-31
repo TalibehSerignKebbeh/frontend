@@ -17,18 +17,24 @@
     z-index: 50;
     right: 8px;
     left: 8px;
-    bottom: -100vh ;
+    top: 100vh ;
+    visibility: hidden;
     padding: 0 10px 30px 10px;
     /* transition: all .4s ease-in-out; */
-    transition-property: bottom;
-    transition: .5s ease-in-out ;
+    /* transition-property: ; */
+    transition:top .5s ease-in-out ;
+    transition:visibility .8s ease-in-out ;
+    box-shadow: 2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09);
     border: 2px solid black;
     height: auto;
+    overflow-y: scroll;
+    /* background-image: url('../../imgs/images\ \(1\).png'); */
 }
 .sell-modal.active{
     /* min-height: 300px; */
-    bottom: 6px ;
-    top: 10px ;
+    top: 2px ;
+    bottom: 0;
+    visibility: visible;
 }
 .ativeSellIcon{
     position: absolute;

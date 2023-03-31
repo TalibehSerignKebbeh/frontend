@@ -16,28 +16,35 @@ const InventoryPage = ({ socket }) => {
   const [openAddModal, setopenAddModal] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setpageSize] = useState(20);
-  const [productsInfor, setproductsInfor] = useState([]);
-  const [loading, setloading] = useState(false);
   const productsRequest = useQuery({
     queryKey: ['products'],
   queryFn: ()=>fetchProducts()})
-  useEffect(() => {
+  // useEffect(() => {
    
-    const fetchProductsNotify = async () => {
-      setloading(true)
-      await queryInstance.get(`/notifications/products`)
-        .then(res => {
-          console.log(res?.data);
-          setproductsInfor(res?.data?.notifications)
-        }).then(() => {
+  //   const fetchProductsNotify = async () => {
+  //     setloading(true)
+  //     await queryInstance.get(`/notifications/products/all?page=${pageNum}&pagesize=${pagesize}`)
+  //       .then(res => {
+  //         console.log(res?.data);
+  //         setproductsInfor(res?.data?.notifications)
+  //       }).then(() => {
          
-        })
-        .catch(err => {
-          console.log(err);
-        }).finally(() => { setloading(false) })
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //       }).finally(() => { setloading(false) })
+  //   }
+  //  if(isAdmin || isManager) {fetchProductsNotify()}
+  // }, [isAdmin, isManager])
+
+  useEffect(() => {
+    if (productsRequest?.data) {
+      if (productsRequest?.data?.response?.status === 403) {
+        console.log("Expired token and session");
+      }
+   
     }
-   if(isAdmin || isManager) {fetchProductsNotify()}
-  }, [isAdmin, isManager])
+  }, [productsRequest?.data])
   return (
     <div className=' w-full h-auto md:mb-0 sm:mb-10 xl:my-0 mb-12'>
       {productsRequest?.isLoading ?

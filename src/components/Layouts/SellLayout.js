@@ -42,11 +42,11 @@ const SellLayout = ({socket}) => {
                 endIcon={<AiFillCaretUp />}>
                     Sell
                 </Button>
-                <SellProductPopper showSellModal={showSellModal}
+                {showSellModal && <SellProductPopper showSellModal={showSellModal}
                     setshowSellModal={setshowSellModal}
                     products={data?.products || []} loading={isLoading}
                     socket={socket}
-                />
+                />}
             </>
 
         </>

@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './SideModal.css'
 import { queryInstance } from '../../api';
-import { CircularProgress, IconButton } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import  CircularProgress from '@mui/material/CircularProgress';
+import   IconButton  from '@mui/material/IconButton';
+import Close from '@mui/icons-material/Close';
+import { QueryClient } from '@tanstack/react-query';
 
 const initialValues = {
     name: '',stockId: '', price: 0, quantity: 0,
@@ -16,6 +18,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
     const [uploading, setuploading] = useState(false);
     const [isError, setisError] = useState(false);
     const [successMessage, setsuccessMessage] = useState('');
+    const queryClient = new QueryClient()
 
     const fetchCategories = async()=> {
         await queryInstance.get(`/stocks`)
@@ -42,6 +45,9 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
         queryInstance.post(`/products`, product)
             .then(res => {
                 console.log(res);
+                if (res?.status === 200) {
+                    queryClient.invalidateQueries({queryKey: ["products"]})
+                }
                 setsuccessMessage(res?.data?.message)
                 socket.emit("notify_add_product")
             }).catch(err => {
@@ -148,7 +154,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                 </div> */}
             </form>
             <div className="mt-1 md:w-72 sm:w-60 w-50 p-3  
-                  mx-auto md:ml-10 ml-4 flex flex-row gap-16 mb-2 ">
+                  mx-auto md:ml-5 ml-1 flex flex-row gap-14 mb-2 ">
                 <button className="reset py-2 px-5 rounded-md
                  text-lg bg-red-300" type="reset"
                     onClick={() => setproduct(initialValues)}

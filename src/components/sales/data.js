@@ -1,20 +1,13 @@
 import React,{useState, useMemo} from 'react';
-import { Edit } from '@mui/icons-material'
-import { format ,parseISO} from 'date-fns';
+import  Edit  from '@mui/icons-material/Edit'
+import format  from 'date-fns/format';
+import parseISO from 'date-fns/parseISO';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-const Data = () => {
-  
-    return (
-        <div>
-            
-        </div>
-    );
-}
 
-export default Data;
+export const customTime = '00:00:00.000'
  export const salesColumns =  [
         {
-            field: 'product', headerName: 'Product', minWidth: 110,
+            field: 'productId', headerName: 'Product', minWidth: 110,
             valueGetter:({value})=> value? value?.name : ''
         },
         {
@@ -27,11 +20,11 @@ export default Data;
 
         {
             type: 'number', field: 'total', headerName: 'Total', width: 120,
-            valueGetter: ({ value }) => value? `D ${Number(value)}` :''
+            valueGetter: (params) => params? `D ${Number(params?.row?.quantity) * Number(params?.row?.price)}` :''
         },
 
         {
-            field: 'seller', headerName: 'Seller', minWidth: 150,
+            field: 'sellerId', headerName: 'Seller', minWidth: 150,
             valueGetter: ({ value }) => value? value?.firstName + " " + value?.lastName :''
         },
         {

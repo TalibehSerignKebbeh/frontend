@@ -6,6 +6,7 @@ const StockProducts = () => {
     const { id } = useParams()
     
     const [products, setproducts] = useState([]);
+    const [isLoading, setisLoading] = useState(false);
     
     useEffect(() => {
         fetchStockProducts()

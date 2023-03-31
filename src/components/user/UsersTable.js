@@ -21,24 +21,25 @@ import {
 import useAuth from "../../hooks/useAuth";
 // import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
 import { Box } from "@mui/system";
-import { EditSharp } from "@mui/icons-material";
+// import { EditSharp } from "@mui/icons-material";
 // import { AiFillDelete } from 'react-icons/ai';
 
 import { queryInstance, fetchUsers } from "../../api";
 import RolesSelect from "./Inputs/RolesSelect";
-import { useQuery, QueryClient } from "@tanstack/react-query";
-import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
-// import { userColumns } from "../sales/data";
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-const UsersTable = ({ users, setusers }) => {
+import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
+import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
+import ConfirmDelete from "../Modal/ConfirmDelete";
+// const Transition = React.forwardRef(function Transition(props, ref) {
+//   return <Slide direction="up" ref={ref} {...props} />;
+// });
+
+const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collapseRef }) => {
   const queryClient = new QueryClient();
 
-  const { isManager, isAdmin } = useAuth();
   const [UserToEdit, setUserToEdit] = useState(null);
-    const [openEdit, setopenEdit] = useState(false);
-    const [userErrors, setuserErrors] = useState(null);
+  const [userToDelete, setuserToDelete] = useState(null);
+  const [openDelete, setopenDelete] = useState(false);
+  const [userErrors, setuserErrors] = useState(null);
   const [EditStatus, setEditStatus] = useState({
     deleting: false,
     updating: false,
@@ -51,26 +52,27 @@ const UsersTable = ({ users, setusers }) => {
     deleteError: "",
     updateError: "",
   });
+
   const userColumns = [
     {
       field: "firstName",
       headerName: "FirstName",
       minWidth: 110,
-      editable: true,
+      // editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       field: "lastName",
       headerName: "LastName",
       minWidth: 110,
-      editable: true,
+      // editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       field: "username",
       headerName: "Username",
       minWidth: 110,
-      editable: true,
+      // editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
@@ -78,27 +80,32 @@ const UsersTable = ({ users, setusers }) => {
       field: "roles",
       headerName: "Roles",
       width: 120,
-      editable: true,
+      // editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
-      editable: true,
       type: "boolean",
       field: "active",
       headerName: "status",
       minWidth: 110,
-      editable: true,
+      // editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       type: "actions",
       headerName: "Actions",
       field: "actions",
+      width:130,
       getActions: (params) => [
-        <GridActionsCellItem
-          onClick={(e) => handleInitialiseEdit(params?.row)}
+        <GridActionsCellItem sx={{p:1, py:'4px', borderRadius:0, color:'#1a75ff', boxShadow:'0px 0px 2px 0px rgba(0,0,0,0.6)'}}
+          onClick={(e) => { handleInitialiseEdit(params?.row)}}
           icon={<span>Edit</span>}
           label="Edit"
+        ></GridActionsCellItem>,
+        <GridActionsCellItem sx={{p:1,py:'4px', borderRadius:0, color:'#ff1a1a', boxShadow:'0px 0px 2px 0px rgba(0,0,0,0.6)'}}
+          onClick={(e) => handleStartDelete(params?.row)}
+          icon={<span>Delete</span>}
+          label="Delete"
         ></GridActionsCellItem>,
       ],
     },
@@ -107,26 +114,34 @@ const UsersTable = ({ users, setusers }) => {
     queryKey: ["users"],
     queryFn: () => fetchUsers(),
   });
-
+  const handleStartDelete = (user) => {
+    setopenDelete(true)
+   
+    setuserToDelete(user)
+  }
   const handleInitialiseEdit = (user) => {
-    setopenEdit(true);
-    setUserToEdit({...user, password:'', confirmNewPassword:''});
+    window.scrollTo({top:collapseRef?.current?.offSetTop, behavior:'smooth'})
+
+    setUserData({...user, password: "", confirmNewPassword: ""})
+    // setopenEdit(true);
+    setopenAdd(true)
+    // setUserToEdit({ ...user, password: "", confirmNewPassword: "" });
   };
-  const handleCloseEdit = () => {
-    setopenEdit(false);
-    setUserToEdit(null);
-    setstatusMessage({
-      ...statusMessage,
-      deleteSuccess: "",
-      updateSuccess: "",
-    });
-    seterrorMessages({ ...errorMessages, deleteError: "", updateError: "" });
-  };
+  // const handleCloseEdit = () => {
+  //   setopenEdit(false);
+  //   setUserToEdit(null);
+  //   setstatusMessage({
+  //     ...statusMessage,
+  //     deleteSuccess: "",
+  //     updateSuccess: "",
+  //   });
+  //   seterrorMessages({ ...errorMessages, deleteError: "", updateError: "" });
+  // };
 
   const handleDeleteUser = async () => {
     setEditStatus({ ...EditStatus, deleting: true });
 
-    const id = UserToEdit?._id;
+    const id = userToDelete?._id;
     await queryInstance
       .delete(`/users/${id}`)
       .then((res) => {
@@ -163,8 +178,14 @@ const UsersTable = ({ users, setusers }) => {
         setEditStatus({ ...EditStatus, deleting: false });
       });
   };
-    const validate = (values) => {
-    const errors = {username:'',firstName:'',lastName:'', password:'', confirmNewPassword:'' };
+  const validate = (values) => {
+    const errors = {
+      username: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      confirmNewPassword: "",
+    };
     if (!values?.username) {
       errors.username = "Username is required";
     }
@@ -183,33 +204,41 @@ const UsersTable = ({ users, setusers }) => {
           errors.confirmNewPassword = "Password must match";
         }
       }
-      }
-      return errors;
+    }
+    return errors;
   };
   const handleUpdateuser = async () => {
-    const id = UserToEdit?._id;
-    // console.log(UserToEdit);
-      const errors = validate(UserToEdit);
-      setuserErrors(errors)
-      console.log(errors);
-      
-      if (Object.values(errors).every(val => val !== "")) return;
-      
+    const id = UserData?._id;
+    // console.log(UserData);
+    const errors = validate(UserData);
+    setuserErrors(errors);
+    console.log(errors);
+
+    if (Object.values(errors).every((val) => val !== "")) return;
+
     setEditStatus({ ...EditStatus, updating: true });
     await queryInstance
-      .put(`/users/${id}`, UserToEdit)
+      .put(`/users/${id}`, UserData)
       .then((res) => {
         if (res.status === 200) {
           setstatusMessage({
             ...statusMessage,
             updateSuccess: res?.data?.message,
           });
-        } else if (res.status === 500) {
+          queryClient.invalidateQueries({ queryKey: ["users"] });
+
+        } if(res?.response.status === 500) {
           seterrorMessages({
             ...errorMessages,
             updateError: "internal server error",
-          });
-        } else {
+          }); return;
+        }
+        if(res?.response.status === 400) {
+          seterrorMessages({
+            ...errorMessages,
+            updateError: res?.response?.data?.message,
+          }); return;
+        }else {
           seterrorMessages({
             ...errorMessages,
             updateError: res?.response?.data?.message,
@@ -232,11 +261,6 @@ const UsersTable = ({ users, setusers }) => {
       });
   };
 
-  const handleInputChange = (e) => {
-    setUserToEdit({ ...UserToEdit, [e.target.name]: e.target.value });
-  };
-
- 
 
   return (
     <div className="w-auto h-auto md:mt-6 mt-3">
@@ -246,73 +270,6 @@ const UsersTable = ({ users, setusers }) => {
         </Box>
       ) : (
         <Box height={"800px"}>
-          {/* <TableContainer
-                    component={Paper}
-                    sx={{
-                        width: {
-                            xs: "100%",
-                            md: "90%",
-                            xl: "80%",
-                            lg: "80%",
-                        },
-                        my: 2,
-                        mx: { md: "10px", sm: "3px" },
-                        px: 1,
-                        py: 1,
-                        overflowX: "scroll",
-                        mb: 4,
-                        textAlign: "center",
-                    }}
-                >
-                    <Table sx={{ m: "auto", p: 1, py: 2 }} stickyHeader>
-                        <TableHead>
-                            <TableRow className="font-semibold text-gray-900">
-                                <TableCell>Name</TableCell>
-                                <TableCell>Username</TableCell>
-                                <TableCell>Roles</TableCell>
-                                <TableCell>Status</TableCell>
-                                {isAdmin || isManager ? (
-                                    <TableCell align="justify" colSpan={2}>
-                                        Actions
-                                    </TableCell>
-                                ) : null}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {UserFetch?.data?.users?.map((user, id) => (
-                                <TableRow key={id}>
-                                    <TableCell>
-                                        {user?.firstName} {user?.lastName}
-                                    </TableCell>
-                                    <TableCell>{user?.username}</TableCell>
-                                    <TableCell>{user?.roles?.toString()}</TableCell>
-                                    <TableCell>
-                                        <span
-                                            className={`p-1 rounded-md ${user?.active ? "bg-green-400" : "bg-red-400"
-                                                }`}
-                                        >
-                                            {user?.active ? "active" : "inactive"}
-                                        </span>
-                                    </TableCell>
-
-                                    {isAdmin || isManager ? (
-                                        <TableCell>
-                                            <Button
-                                                size="small"
-                                                variant="contained"
-                                                color={`success`}
-                                                sx={{ fontSize: { md: "11px", sm: "7px", xs: "7px" } }}
-                                                onClick={() => handleInitialiseEdit(user)}
-                                            >
-                                                <EditSharp />
-                                            </Button>
-                                        </TableCell>
-                                    ) : null}
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                        </TableContainer> */}
           <DataGrid
             loading={UserFetch?.isLoading}
             columns={userColumns}
@@ -335,14 +292,33 @@ const UsersTable = ({ users, setusers }) => {
             sx={{
               maxWidth: "750px",
               p: 2,
-              mx: "auto",
+              ml: {xl:2,lg:2,md:1, sm:'0', xs:'0' },mr:'auto',
               boxShadow:
                 "0px 0px 7px 0px rgba(0,0,0,0.1), 0px 0px 7px 0px rgba(0,0,0,0.09)",
+              [`& .${gridClasses.columnHeader}`]: {
+                fontSize: "1rem",
+                fontWeight: "700",
+                color: "#3339",
+              },
             }}
+          />
+          <ConfirmDelete
+            open={openDelete}
+            setopen={setopenDelete}
+              resetFunc={() => {
+                setuserToDelete(null)
+                setstatusMessage({...statusMessage, deleteSuccess: '' })
+                seterrorMessages({...errorMessages, deleteError:''})
+              }}
+            message={userToDelete?.username}
+              deleteFunction={handleDeleteUser}
+              deleteLoading={EditStatus?.deleting}
+              errorMessage={errorMessages?.deleteError}
+              succcessMsg={statusMessage?.deleteSuccess}
           />
         </Box>
       )}
-      {isAdmin || isManager ? (
+      {/* {isAdmin || isManager ? (
         <Dialog
           open={openEdit}
           fullWidth
@@ -358,7 +334,7 @@ const UsersTable = ({ users, setusers }) => {
           >
             Edit User{" "}
             <span className="text-red-600">
-              {" " + UserToEdit?.firstName + " " + UserToEdit?.lastName}
+              {" " + UserData?.firstName + " " + UserToEdit?.lastName}
             </span>
           </DialogTitle>
           <Box
@@ -406,9 +382,9 @@ const UsersTable = ({ users, setusers }) => {
                 lg: "1fr 1fr",
                 md: "1fr 1fr",
                 sm: "1fr 1fr",
-                  xs: "1fr",
-                rowGap: '6px',
-                my:1,
+                xs: "1fr",
+                rowGap: "6px",
+                my: 1,
               },
             }}
           >
@@ -424,8 +400,10 @@ const UsersTable = ({ users, setusers }) => {
                 name="firstName"
                 placeholder="firstName"
                 onChange={handleInputChange}
-                          />
-            {userErrors?.firstName && <span className="text-red-600">{ userErrors?.firstName}</span>}
+              />
+              {userErrors?.firstName && (
+                <span className="text-red-600">{userErrors?.firstName}</span>
+              )}
             </Box>
             <Box width="auto" px={2}>
               <label className="font-semibold text-lg" htmlFor="LastName">
@@ -439,9 +417,10 @@ const UsersTable = ({ users, setusers }) => {
                 name="lastName"
                 placeholder="lastName"
                 onChange={handleInputChange}
-                          />
-            {userErrors?.lastName && <span className="text-red-600">{ userErrors?.lastName}</span>}
-              
+              />
+              {userErrors?.lastName && (
+                <span className="text-red-600">{userErrors?.lastName}</span>
+              )}
             </Box>
             <Box width="auto" px={2}>
               <label className="font-semibold text-lg" htmlFor="Username">
@@ -455,14 +434,16 @@ const UsersTable = ({ users, setusers }) => {
                 name="username"
                 placeholder="username"
                 onChange={handleInputChange}
-                          />
-            {userErrors?.username && <span className="text-red-600">{ userErrors?.username}</span>}
-                
+              />
+              {userErrors?.username && (
+                <span className="text-red-600">{userErrors?.username}</span>
+              )}
             </Box>
             <Box width="auto" px={2}>
-                          <RolesSelect user={UserToEdit} setuser={setUserToEdit} />
-            {userErrors?.roles && <span className="text-red-600">{ userErrors?.roles}</span>}
-                          
+              <RolesSelect user={UserToEdit} setuser={setUserToEdit} />
+              {userErrors?.roles && (
+                <span className="text-red-600">{userErrors?.roles}</span>
+              )}
             </Box>
 
             <Box width="auto" px={2}>
@@ -477,9 +458,10 @@ const UsersTable = ({ users, setusers }) => {
                 name="password"
                 placeholder="New password"
                 onChange={handleInputChange}
-                          />
-            {userErrors?.password && <span className="text-red-600">{ userErrors?.password}</span>}
-                          
+              />
+              {userErrors?.password && (
+                <span className="text-red-600">{userErrors?.password}</span>
+              )}
             </Box>
             <Box width="auto" px={2}>
               <label className="font-semibold text-lg" htmlFor="confirmPass">
@@ -493,9 +475,12 @@ const UsersTable = ({ users, setusers }) => {
                 id="confirmPass"
                 placeholder="confirm new password"
                 onChange={handleInputChange}
-                          />
-            {userErrors?.confirmNewPassword && <span className="text-red-600">{ userErrors?.confirmNewPassword}</span>}
-                
+              />
+              {userErrors?.confirmNewPassword && (
+                <span className="text-red-600">
+                  {userErrors?.confirmNewPassword}
+                </span>
+              )}
             </Box>
             <Box width="auto" px={3}>
               <label
@@ -546,20 +531,10 @@ const UsersTable = ({ users, setusers }) => {
               >
                 {EditStatus?.updating ? "Updating..." : "Edit"}
               </Button>
-              <Button
-                size="medium"
-                variant="contained"
-                color={`error`}
-                disabled={EditStatus?.deleting || EditStatus?.updating}
-                sx={{ mr: 1, fontSize: { md: "11px", sm: "7px", xs: "7px" } }}
-                onClick={handleDeleteUser}
-              >
-                {EditStatus?.updating ? "Deleting..." : "Delete"}
-              </Button>
-            </Stack>
+              </Stack>
           </DialogActions>
         </Dialog>
-      ) : null}
+      ) : null} */}
     </div>
   );
 };

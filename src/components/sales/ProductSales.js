@@ -71,7 +71,7 @@ const ProductSales = () => {
             .then(res => {
                 console.log(res);
                 setsales(res?.data?.sales)
-                setrowCount(res?.data?.totalPages)
+                setrowCount(res?.data?.total)
             }).catch(err => {
                 console.log(err);
             }).finally(() => { setloading(false) })

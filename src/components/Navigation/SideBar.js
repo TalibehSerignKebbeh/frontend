@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import './sidebar.css'
 import {
   Button,
   CircularProgress,
@@ -15,8 +16,9 @@ import {
   PointOfSaleSharp,
   LogoutTwoTone,
   MenuOutlined,
+  ReportOutlined,
 } from "@mui/icons-material";
-import { AiOutlineProfile, AiOutlineUserSwitch } from "react-icons/ai";
+import {  AiOutlineUserSwitch } from "react-icons/ai";
 import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 import Box from "@mui/system/Box";
 const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
@@ -32,21 +34,20 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
     await logoutRequest()
       .unwrap()
       .then((res) => {
-        socket.emit("notify_logout", { username });
+        socket.emit("notify_logout", { username, date:new Date() });
         console.log(res);
         navigate("/");
-        localStorage.removeItem("persist:root");
       });
   };
   if (!token) return null;
   return (
     <Box
-      minHeight={"100vh"}
-      className={` ${
+      height={'100vh'}
+      className={`${
         showSideMenu
-          ? "sidebar-main-active flex flex-col overflow-y-scrol"
-          : "w-0 sidebar-main  "
-      }  bg-white  clear-both mt-0 text-start
+          ? "sidebar-main-active "
+          : " sidebar-main "
+      }  bg-white  flex flex-col overflow-y-scrol clear-both mt-0 text-start
              transition-all fixed z-10 `}
     >
       <Button
@@ -58,21 +59,23 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
                    w-auto ml-auto zIndex-2 -mr-8 text-2xl pointer p-0 md:relative absolute `}
       >
         {/* &#9776; */}
-        <MenuOutlined />
+        <MenuOutlined sx={{scale:1.1}}/>
       </Button>
-      <Box sx={{ position:'fixed', mt:4, textAlign:'center'}}>
+      <Box sx={{
+        position: 'absolute', mt: 4, textAlign: 'center',
+             }}>
 
-      <Box sx={{ textAlign: "center", py: 3 }}>
+      <Box className="md:py-3 my-2" sx={{ textAlign: "center" }}>
         <Tooltip title="Username">
           <Typography
             sx={{
               display: showSideMenu ? "inline" : "none",
-              fontSize: ".8rem",
-              margin: "auto",
+              fontSize: {xl:".8rem", lg:".8rem", md:".8rem", sm:".65rem", xs:".6rem"},
+              margin: "auto",ml:1,fontWeight:'500',
               padding: 1,
               marginY: 1, textTransform:'capitalize',
-                          boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.5)",
-              cursor:'pointer',
+              boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.5)",
+                cursor: 'pointer', borderRadius:'3px'
             }}
           >
             {username}
@@ -80,84 +83,94 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
         </Tooltip>
       </Box>
       <div
-        className={`${showSideMenu ? "w-full" : "w-0"} flex flex-col 
-                         content-center items-start gap-y-3`}
+        className={`"w-full flex flex-col 
+                         content-center items-start md:gap-y-3 gap-y-2 `}
       >
         <Link
           to="/dashboard"
           className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
         >
           <button
-            className="text-lg before:h-8 before:w-2 
-                       before:bg-green-300 before:float-left before:-ml-6 before:rounded-md"
+            className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg  "
           >
             &#9776;
           </button>
-          <Typography sx={{ fontSize: "1.2rem" }} className="ml-3">
+          <Typography  className="ml-3">
             Dashboard
           </Typography>
         </Link>
         <Link
           to="/sales"
           className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
         >
-          <button className="text-lg">
+          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
             <PointOfSaleSharp />
           </button>
-          <Typography sx={{ fontSize: "1.2rem" }}>Sales</Typography>
+          <Typography  className="md:text-2xl text-lg">Sales</Typography>
         </Link>
         <Link
           to="/stocks"
           className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
         >
-          <button className="text-lg">
+          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
             <ProductionQuantityLimits />
           </button>
-          <Typography sx={{ fontSize: "1.2rem" }}>Stock</Typography>
+          <Typography  className="md:text-2xl text-lg">Stock</Typography>
         </Link>
 
         <Link
           to="/products"
           className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
         >
-          <button className="text-lg">
+          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
             <Inventory2Outlined />
           </button>
-          <Typography sx={{ fontSize: "1.2rem" }}>Products</Typography>
+          <Typography  className="md:text-2xl text-lg">Products</Typography>
         </Link>
 
         <Link
           to="/users"
           className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
         >
-          <button className="text-lg">
+          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
             <AiOutlineUserSwitch />
           </button>
-          <Typography sx={{ fontSize: "1.2rem" }}>Users</Typography>
+          <Typography  className="md:text-2xl text-lg">Users</Typography>
+          </Link>
+          <Link
+          to="/report"
+          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
+        >
+          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
+            <ReportOutlined />
+          </button>
+          <Typography  className="md:text-2xl text-lg">Report</Typography>
         </Link>
-        <Link
+        {/* <Link
           to="/profile"
           className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
-                 transition-all `}
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
+                 hover:text-blue-400 transition-all `}
         >
-          <button className="text-lg">
+          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
             <AiOutlineProfile />
           </button>
-          <Typography sx={{ fontSize: "1.2rem" }}>Profile</Typography>
-        </Link>
+          <Typography >Profile</Typography>
+        </Link> */}
         {/* <Link to='/products/add' className={`${showSideMenu ? 'w-full ml-5 ' : '-ml-96'} mr-auto
-                 m-auto text-start justify-start flex flex-row gap-x-7 items-center 
+                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
                  transition-all `}
                 >
                     <button className='text-lg'>
@@ -166,12 +179,12 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
                <Typography>AddStock</Typography>
                 </Link> */}
       </div>
-      <div className="w-auto mx-auto mt-10">
+      <div className="w-auto mx-auto lg:mt-10 md:5 mt-2">
         <IconButton onClick={handleLogout}>
           {isLoading ? (
             <CircularProgress sx={{ fontSize: "3rem" }} />
           ) : (
-            <LogoutTwoTone sx={{ fontSize: "3rem" }} />
+            <LogoutTwoTone sx={{ fontSize: "2.4rem" }} />
           )}
         </IconButton>
         </div>

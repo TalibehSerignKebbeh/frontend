@@ -1,0 +1,22 @@
+table{
+
+}
+table{
+  width: 100%;
+  table-layout: fixed;
+}
+th{
+    font-weight: 700;
+    opacity: .8;
+}
+th, td {
+  padding: auto;
+  text-align: left;
+  text-align: start;
+    vertical-align: middle;
+    word-break: keep-all;
+}
+td{
+    font-size: 5rem;
+}
+   

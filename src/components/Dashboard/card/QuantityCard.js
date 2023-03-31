@@ -6,7 +6,7 @@ const QuantityCard = ({ header, quantityText,linkTo }) => {
     return (
         <Box sx={{
             p: '8px',px:'13px', width: { xl: 'auto', lg: 'auto', md: 'auto', sm: 'auto', xs:'auto' },
-            color: 'black',
+            color: 'black',borderRadius: '3px',
             boxShadow:
                 "2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09)",
         }}>

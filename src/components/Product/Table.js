@@ -1,26 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TableContainer, Table, TableBody, TableHead, TableCell, TableFooter, Paper, TableRow } from '@mui/material'
 import ProductTableRow from './TableRow';
-// const useStyles = makeStyles((theme) => ({
-//     main: {
-//         padding: theme.spacing(8, 0, 6)
-//     },
-//     tableContainer: {
-//         padding: theme.spacing(8, 6, 6),
-//         backgroundColor: 'red',
-//     }
-// }))
+import './table.css'
 
 const ProductTable = ({ products }) => {
     
-    // const [sizeOfPage, setsizeOfPage] = useState(6);
-    // const [totalProducts, settotalProducts] = useState(90);
-    // const [pagesOnView, setpagesOnView] = useState(9);
-    // const totalPages = Math.ceil(totalProducts / sizeOfPage)
-    // const [currentPage, setcurrentPage] = useState(12);
-    // const [rightOffsetPosition, setrightOffsetPosition] = useState(totalPages - 2);
-    // const [leftOffsetPosition, setleftOffsetPosition] = useState(currentPage - 2);
-
+    
     return (
         <TableContainer component={Paper}
             sx={{
@@ -38,7 +23,7 @@ const ProductTable = ({ products }) => {
                         <TableCell>Category</TableCell>
                         <TableCell>Price</TableCell>
                         <TableCell>Qty</TableCell>
-                        <TableCell className='text-sm'>In Stock</TableCell>
+                        <TableCell className='text-xs'>In Stock</TableCell>
                         <TableCell>ProducedAt</TableCell>
                         <TableCell>ExpiredAt</TableCell>
                         <TableCell colSpan={2} >Actions</TableCell>
@@ -55,49 +40,7 @@ const ProductTable = ({ products }) => {
                     {/* <span>My Footer</span> */}
                 </TableFooter>
             </Table>
-            {/* <div className='py-4 flex flex-row mx-auto justify-center'>
-                {totalPages <= pagesOnView ?
-                    [...Array(totalPages)]?.map((n, i) => (
-                        <button
-                            onClick={() => setcurrentPage(i + 1)}
-                            className={`${currentPage === (i + 1) ?
-                                'text-red-400' : ''} mx-1`} key={i}>
-                            {i + 1}
-                        </button>
-                    )) :
-                    <>
-                        {currentPage > 3 ?
-                            <>
-                                <button
-                                    onClick={() => setcurrentPage(1)}
-                                    className={`${currentPage === (1) ?
-                                        'text-red-400' : ''} mx-1`}>
-                                    {1}
-                                </button>
-                                <p>....</p>
-                                {leftArray?.map((n, i) => (
-                                    <button
-                                        onClick={() => setcurrentPage(leftOffsetPosition - i )}
-                                        className={`${currentPage === (leftOffsetPosition + i) ?
-                                            'text-red-400' : ''} mx-1`} key={i}>
-                                        {leftOffsetPosition + i}
-                                    </button>
-                                ))}
-                                <p>....</p>
-                               
-                            </>
-                            :
-                            <>
-                                {
-
-                                }
-                            </>
-                        }
-                    </>
-
-                }
-
-            </div> */}
+          
             </TableContainer>
     );
 }

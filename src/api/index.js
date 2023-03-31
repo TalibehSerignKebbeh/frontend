@@ -1,16 +1,14 @@
 import axios from 'axios'
 // import useAuth from '../hooks/useAuth'
 import { yourToken } from '../hooks/useAuth'
-import { Navigate } from 'react-router-dom'
     // store?.getState?.auth?.token
 // console.log(token);
 
 
-// export const serverUrl = `http://localhost:4500`
-export const serverUrl = `https://ims-app-backend.onrender.com`
+// export const serverUrl = `https://ims-app-backend-api.onrender.com`
+export const serverUrl = process.env.REACT_APP_API
 
 export const queryInstance = axios.create({baseURL: serverUrl})
-
 queryInstance.interceptors.request.use(
     function (req) {
         // const {token} = useAuth()
@@ -23,16 +21,21 @@ queryInstance.interceptors.request.use(
     }
 )
 queryInstance.interceptors.response.use(
-    function (req) {
-        return req;
+    function async(res) {
+        
+        if (res.status === 403) { 
+         console.log("forbidden request");
+        }
+        return res;
     },
     function (err) {
-        if (err?.response?.status === (401 || 403)) {
-            console.log(err?.response?.status);
-            <Navigate to={'/login'} replace />
-            return err;
+        if (err?.response?.status === (403)) {
+            // console.log(err?.response?.data?.message);
+            // console.log("What has happen");
+            // const customEvent = new CustomEvent()
+            // document.dispatchEvent()
         }
-        return err;
+        return Promise.reject(err);
     }
 )
 
@@ -42,7 +45,7 @@ export const LoginFunc = (user) => {
     return queryInstance.post('/auth', {...user})
 }
 export const fetchProducts = () => {
-    return queryInstance.get(`/products`).then(res=>res?.data)
+    return queryInstance.get(`/products`).then(res=>res?.data).catch(err=> err)
 }
 export const fetchSales = ({page, pageSize,selectedDate}) => {
     return queryInstance.get(`/sales?page=${page}&&pageSize=${pageSize}&&saleDate=${selectedDate}`, { params: { page: page, pageSize: pageSize, saleDate: selectedDate } }).then(res => {
@@ -55,35 +58,45 @@ export const fetchSales = ({page, pageSize,selectedDate}) => {
     })
 }
 export const fetchSalesStats = () => {
-    return queryInstance.get(`/sales/stats`).then(res => {
+    const year = new Date().getFullYear()
+    const month = new Date().getMonth()
+    const date = new Date().getDate()
+    return queryInstance.get(`/sales/stats?year=${year}&month=${month}&date=${date}`).then(res => {
         if (res?.data) return res?.data;
-        return res;
-    })
+    }).catch(err=>{return err})
 }
 export const fetchProductsStats = () => {
+    
     return queryInstance.get(`/products/stats`).then(res => {
         if (res?.data) return res?.data;
-        return res;
-    })
+    }).catch(err=>{return err})
 }
 export const fetchSalesToday = () => {
-    return queryInstance.get(`/sales?saleDate=${new Date().toUTCString()}`).then(res => {
+    return queryInstance.get(`/sales/stats/date?saleDate=${new Date().toUTCString()}`).then(res => {
         if (res?.data) return res?.data;
-        return res;
         
-    })
+    }).catch(err=>{return err})
+}
+
+export const fetchSalesStatistic = () => {
+    return queryInstance.get(`/sales/stats/date?saleDate=${new Date().toUTCString()}`).then(res => {
+        if (res?.data) return res?.data;
+        
+    }).catch(err=>{return err})
 }
 
 export const fetchStocks = () => {
     return queryInstance.get(`/stocks`).then(res => {
         if (res?.data) return res?.data;
-        return res;
-    })
+    }).catch(err=>{return err})
 }
 export const fetchUsers = () => {
     return queryInstance.get(`/users`).then(res => {
         if (res?.data) return res?.data;
-        return res;
+    }).catch(err => {
+        console.log("logging error ");
+        console.log(err);
+        return err
     })
 }
 export const UpdateUser = (user) => {
@@ -91,5 +104,5 @@ export const UpdateUser = (user) => {
     return queryInstance.put(`/users/${id}`).then(res => {
         console.log(res);
         return res?.data
-    })
+    }).catch(err=>{return err})
 }

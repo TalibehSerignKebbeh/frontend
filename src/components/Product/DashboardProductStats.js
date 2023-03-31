@@ -8,11 +8,12 @@ const DashboardProductStats = (props) => {
     return (
         <Box
                     sx={{
-                    bgcolor: "#fff", p: 2, display: 'flex', flexDirection: 'row',
-                    flexWrap: 'wrap', gap: '10px',
+                    bgcolor: "#fff", p: 1, display: 'flex', flexDirection: 'row',
+                    flexWrap: 'wrap', gap: '.8rem',columnGap:'.6rem', borderRadius:'4px',
                 width: "auto", textAlign: 'start',
-               boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.09), 0px 1px 3px 2px rgba(0,0,0,0.09)",
-                    
+            //   boxShadow:
+            //     "0px 1px 1px 0px rgba(0,0,0,0.09), 0px 1px 1px 0px rgba(0,0,0,0.09)",
+       
                 }}
                 >
                     <div className='w-full h-auto text-start'>
@@ -24,7 +25,7 @@ const DashboardProductStats = (props) => {
                         quantityText={productsStatesQuery.data?.productsCount}
                         linkTo={'/products'}
                     />
-                    <QuantityCard header={"Products out of stock"}
+                    <QuantityCard header={"#out of stock"}
                         quantityText={productsStatesQuery.data?.outOfStockCount}
                         linkTo={'/products'}
                     />

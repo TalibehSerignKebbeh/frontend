@@ -1,12 +1,37 @@
 .App {
-  text-align: center;
-  width: 100vw !important;
+  /* text-align: center;
+  width: 100% !important;
+  min-height: 100vh !important;
   height: 100vh !important;
 
+  height: 100dvh !important; */
+
 }
+
+.maincontainer{
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.content{
+  height: 100vh;
+  overflow-y: scroll;
+}
+
 .fifty-percent-radius{
   border-radius: 50% !important;
 }
+
+.beatiful-shadow{
+  box-shadow: 2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09);
+}
+
+.card-shadow{
+  box-shadow: 2px 1px 5px 0px rgba(0,0,0,0.09), 0px 1px 5px 2px rgba(0,0,0,0.09);
+
+}
+
 .showSellBtn {
   position: fixed !important;
   bottom: 10px !important;
@@ -52,21 +77,6 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 @keyframes App-logo-spin {

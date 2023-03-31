@@ -1,36 +1,52 @@
 .notification-wrapper{
-   width: "auto";
-        height: "auto";
+   width: auto;
+        height: auto;
         padding: "30px 10px";
-        position: "absolute";
-        top: "20px";
-        right: "6px";
-        left: "auto";
-        overflow: "scroll";
-        background-color: "#fff";
-        box-shadow: "0px 3px 3px 0px rgba(0,0,0,0.4)";
-        max-height: "400px";
-          min-width: "350px";
-         z-index:30;
+        position: absolute;
+      
+        background-color: #fff;
+        box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.4);
+        max-height: 400px;
+          min-width: 350px;
+         z-index:50;
+         resize: both;
+         overflow: scroll;
 
 }
 .table-container{
   z-index: 30;
 }
+.table-container>table{
+  width: 100%;
+  table-layout: fixed;
+
+  border-collapse: collapse;
+  resize: both;
+  overflow: auto;
+}
 
 .table-container> th, td {
-  padding: 8px 2px;
+  padding: 4px 2px;
   text-align: left;
   border: 1px solid #ddd;
-  text-align: center;
+  text-align: start;
     vertical-align: middle;
+    font-size: xx-small !important;
+    /* word-wrap: break-word; */
+    word-break: keep-all;
+    
 }
 
 .td-small{
   font-size: .5rem;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .inner-table{
-  display: bl;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  resize: both;
+  overflow: auto;
 }
+

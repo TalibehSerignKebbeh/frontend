@@ -1,64 +1,95 @@
 import { Button } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './notification.css'
 
 const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
-    const handleClickAuthNotification = () => {
-    socket.emit("read_all_auth_notification");
+  const ref = useRef(null)
+
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+ 
+
+  const handleClickAuthNotification = () => {
+      const ids = dataArray?.map(notify=>{return notify?._id})
+    socket.emit("read_all_auth_notification", {ids});
     };
 
-    useEffect(() => {
-        window.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
-                setopen(false)
+  useEffect(() => {
+        window.addEventListener('mousedown', (e) => {
+          if (ref?.current && !ref.current?.contains(e.target)) {
+              setopen(false)
             }
         })
       
-    }, [setopen]);
+  }, [ref, setopen]);
+  
+  // useEffect(() => {
+  //   const container = containerRef.current;
+  //    const handleMouseDown = (e) => {
+  //   setDragging(true);
+  //   setOffset({ x: e.clientX - position.x, y: e.clientY - position.y });
+  // };
+
+  // const handleMouseMove = (e) => {
+  //   if (dragging) {
+  //     setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+  //   }
+  // };
+
+  // const handleMouseUp = () => {
+  //   setDragging(false);
+  // };
+  //   if (container) {
+  //     container.addEventListener('mousedown', handleMouseDown);
+  //     container.addEventListener('mousemove', handleMouseMove);
+  //     container.addEventListener('mouseup', handleMouseUp);
+  //   }
+  //   return () => {
+  //     if (container) {
+  //       container.removeEventListener('mousedown', handleMouseDown);
+  //       container.removeEventListener('mousemove', handleMouseMove);
+  //       container.removeEventListener('mouseup', handleMouseUp);
+  //     }
+  //   };
+  // }, [containerRef, dragging, offset.x, offset.y, position.x, position.y]);
   
     return (
-        <div className='notification-wrapper'
+      <div ref={ref}
+        className='notification-wrapper'
             style={{
         visibility: open ? "visible" : "hidden",
-        width: "auto",
-        height: "auto",
-        padding: "30px 10px",
-        position: "absolute",
-        top: "20px",
-        right: "6px",
-        left: "auto",
-        overflow: "scroll",
-        backgroundColor: "#fff",
-        boxShadow: "0px 3px 3px 0px rgba(0,0,0,0.4)",
-        maxHeight: "400px",
-          minWidth: "350px",
-         zIndex:20,
-      }}
+      position: 'absolute',left:'auto',
+             top: position.y, right: position.x 
+        }}
+        
+      
         >
             <div className="table-container w-full">
-          <table className="py-2 relative w-full">
+          <table className="py-2 relative w-full table-fixed">
             <thead className=" bg-white shadow-md py-4">
               <tr>
                 {/* <th className="text-sm font-normal">Action</th> */}
                 <th className="text-sm font-normal">Message</th>
                 <th className="text-sm font-normal">DateTime</th>
-                <th className="text-sm font-normal">User</th>
+                <th className="text-sm font-normal">Name</th>
               </tr>
             </thead>
             <tbody>
               {dataArray?.map((val, index) => (
                 <tr className="text-xs" key={index}>
                   {/* <td className="capitalize">{val?.action}</td> */}
-                  <td className="capitalize">{val?.message}</td>
+                  <td className="capitalize text-xs">{val?.message}</td>
                   <td className="text-xs">
                     {format(parseISO(val?.created_at), " EEE MM yyyy, HH:mm b")}
                   </td>
                   <td className="capitalize">
-                    {val?.data?.user
-                      ? val?.data?.user?.firstName +
+                    {val?.userId
+                      ? val?.userId?.firstName +
                         " " +
-                        val?.data?.user?.lastName
+                        val?.userId?.lastName
                       : ""}
                   </td>
                 </tr>

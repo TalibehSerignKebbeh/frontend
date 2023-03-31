@@ -1,4 +1,3 @@
-import { Minimize } from "@mui/icons-material";
 import { CircularProgress, IconButton } from "@mui/material";
 import React, { useState } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
@@ -11,14 +10,14 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
   //   const [isLoading, setisLoading] = useState(false);
   //   const [isSuccess, setisSuccess] = useState(false);
   const [updateError, setupdateError] = useState(false);
-    const [deleting, setdeleting] = useState(false);
-    const [openDelete, setopenDelete] = useState(false);
+  const [deleting, setdeleting] = useState(false);
+  const [openDelete, setopenDelete] = useState(false);
   const [deleteError, setdeleteError] = useState("");
-  const [deleteSuccess, setdeleteSuccess] = useState('');
+  const [deleteSuccess, setdeleteSuccess] = useState("");
   const [updateLoading, setupdateLoading] = useState(false);
-    const handleStartDelete = () => {
-    setopenDelete(true)
-}
+  const handleStartDelete = () => {
+    setopenDelete(true);
+  };
   const handleDeleteProduct = async () => {
     if (deleting || updateLoading) return;
     setdeleting(true);
@@ -28,7 +27,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       .then((res) => {
         console.log(res);
         socket.emit("notify_update_product");
-        setdeleteSuccess(res?.data?.message)
+        setdeleteSuccess(res?.data?.message);
         navigate(-1);
       })
       .catch((err) => {
@@ -89,7 +88,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           </IconButton>
         </div>
       </div>
-      {deleteError?.length ? (
+      {/* {deleteError?.length ? (
         <div className="w-full h-auto">
           <p
             className="text-red-600
@@ -97,6 +96,21 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           >
             {deleteError}
           </p>
+        </div>
+      ) : null} */}
+      {deleteError?.length ? (
+        <div
+          className=" w-fit h-auto flex flex-row gap-x-40 content-between 
+                items-center bg-slate-100 px-2 rounded"
+        >
+          <p className="text-red-700 text-lg">{deleteError}</p>
+          <span
+            className="text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
+                cursor-pointer m-auto rounded-full"
+            onClick={() => setdeleteError("")}
+          >
+            X
+          </span>
         </div>
       ) : null}
 
@@ -140,12 +154,6 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           id="quantity-instock"
           placeholder={` quantity in stock `}
         />
-        <IconButton
-          sx={{ right: 0, top: "35px", position: "absolute" }}
-          onClick={() => {}}
-        >
-          <Minimize sx={{ color: "black" }} />
-        </IconButton>
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
@@ -192,7 +200,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           Category
         </label>
         <select
-          className="border-2 border-gray-700 w-full 
+          className="border-2 border-gray-700 w-full font-medium
                             h-14 rounded-md px-2 mx-auto my-3 p-1"
           value={product?.stockId}
           id="stockId"
@@ -204,7 +212,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
             <option
               key={id}
               value={stock?._id}
-              className={`first-letter:uppercase`}
+              className={`first-letter:uppercase `}
             >
               {`${stock?.name},  ${stock?.description || ""}`}
             </option>
@@ -250,12 +258,19 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           id="expiryDate"
         />
       </div>
-          <ConfirmDelete deleteFunction={handleDeleteProduct}
-              deleteLoading={deleting} open={openDelete} setopen={setopenDelete}
-        resetFunc={() => { setdeleteError(''); setdeleteSuccess('')   }} succcessMsg={deleteSuccess}
+      <ConfirmDelete
+        deleteFunction={handleDeleteProduct}
+        deleteLoading={deleting}
+        open={openDelete}
+        setopen={setopenDelete}
+        resetFunc={() => {
+          setdeleteError("");
+          setdeleteSuccess("");
+        }}
+        succcessMsg={deleteSuccess}
         message={"product: " + product?.name}
         errorMessage={deleteError}
-          />
+      />
     </form>
   );
 };

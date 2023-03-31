@@ -1,0 +1,39 @@
+.sidebar-main-active, .sidebar-main{
+  /* min-height: 100% !important; */
+  height: 100vh;
+  top: 0 !important;
+  bottom: 0 !important;
+  position: relative !important;
+  display: block !important;
+  box-shadow: 3px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  background-color: white !important;
+  align-self: stretch;
+  overflow-y: scroll;
+}
+.sidebar-main-active::-webkit-scrollbar-track{
+  display: none;
+}
+.sidebar-main-active{
+  width: 270px !important;
+}
+.sidebar-main>*{
+  display: none !important;
+}
+
+.sidebar-main>.menu-toggle-btn{
+  display: block !important;
+}
+@media (max-width: 768px) {
+.sidebar-main-active, .sidebar-main{
+  position: fixed !important;
+}
+.sidebar-main-active{
+  width: 170px !important;
+}
+}
+
+
+
+.menu-toggle-btn{
+  cursor: pointer !important;
+}

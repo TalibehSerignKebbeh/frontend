@@ -1,44 +1,57 @@
 import { Button, Table } from '@mui/material';
 import {DataGrid} from '@mui/x-data-grid'
 import { format, parseISO } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './notification.css'
 
 
 const ProductNotification = ({ dataArray, socket, open, setopen }) => {
-     const handleClickAuthNotification = () => {
-    socket.emit("read_all_product_notification");
+  const ref = useRef(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseDown = (e) => {
+    setDragging(true);
+    setOffset({ x: e.clientX - position.x, y: e.clientY - position.y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (dragging) {
+      setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+  const handleClickAuthNotification = () => {
+       const ids = dataArray?.map(notify=>{return notify?._id})
+    socket.emit("read_all_product_notification", {ids});
     };
 
-    useEffect(() => {
-        window.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
-                setopen(false)
+   useEffect(() => {
+        window.addEventListener('mousedown', (e) => {
+          if (ref?.current && !ref.current?.contains(e.target)) {
+              setopen(false)
             }
         })
       
-    }, [setopen]);
+  }, [ref, setopen]);
     return (
-        <div className='notification-wrapper'
+      <div ref={ref}
+        className='notification-wrapper'
           style={{
-        visibility: open ? "visible" : "hidden",
-        width: "auto",
-        height: "auto",
-        padding: "30px 10px",
-        position: "absolute",
-        top: "20px",
-        right: "6px",
-        left: "auto",
-        overflow: "scroll",
-        backgroundColor: "#fff",
-        boxShadow: "0px 3px 3px 0px rgba(0,0,0,0.4)",
-        maxHeight: "400px",
-              minWidth: "350px",
-        resize:'both'
-        
-      }}>
+            visibility: open ? "visible" : "hidden",
+            position: 'absolute',
+             right:0, left:'auto',
+        }}
+        onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      >
            <div className="table-container w-full">
-          <table className="py-2 relative w-full">
+          <table className="py-2 relative w-full table-fixed">
             <thead className=" bg-white shadow-md py-4">
               <tr>
                 {/* <th className="text-sm font-normal">Action</th> */}

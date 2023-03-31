@@ -10,21 +10,9 @@ const NotificationPanel = ({ dataArray, model, open, socket }) => {
     socket.emit("read_all_sale_notification");
     }
   return (
-    <div
+    <div className='notification-wrapper'
       style={{
         visibility: open ? "visible" : "hidden",
-        width: "auto",
-        height: "auto",
-        padding: "30px 10px",
-        position: "absolute",
-        top: "20px",
-        right: "6px",
-        left: "auto",
-        overflow: "scroll",
-        backgroundColor: "#fff",
-        boxShadow: "0px 3px 3px 0px rgba(0,0,0,0.4)",
-        maxHeight: "400px",
-        minWidth: "350px",
       }}
     >
       {model === "auth" &&  (
