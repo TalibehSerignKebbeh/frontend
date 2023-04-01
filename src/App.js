@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import {
   // createBrowserRouter, createRoutesFromElements,
@@ -23,22 +23,29 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import SellLayout from "./components/Layouts/SellLayout";
 import io from "socket.io-client";
 import useAuth from "./hooks/useAuth";
-import { serverUrl } from "./api";
+import { queryInstance, serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 import { ToastContainer } from "react-toastify";
+import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
 // import { queryInstance } from "./api";
 
 let socket = io.connect(serverUrl);
 function App() {
-  //  const handleTokenExpiration = () => {
-    // const tokenExpiredEvent = new CustomEvent('tokenExpired', { detail: { status: 403 } });
-    // document.dispatchEvent(tokenExpiredEvent);
-  //  };
-  
+  const [openDialog, setOpenDialog] = useState(false);
+  queryInstance.interceptors.response.use(
+    (res) => res,
+    (err) => {
+      if (err?.response?.status === 403) {
+          setOpenDialog(true)
+         }
+    }
+    )
   const { token } = useAuth();
   const [showSideMenu, setshowSideMenu] = useState(true);
-  useState(() => {
+  useEffect(() => {
+    
+    
     
     // socket.emit('notify')
     // window.addEventListener("offline", (e) => {
@@ -49,8 +56,11 @@ function App() {
     // });
   }, []);
   return (
+    <>
+
       <Router>
-        <div className="maincontainer flex flex-row   ">
+      <div className="maincontainer flex flex-row   ">
+        <ExpiredRefreshToken openDialog={openDialog} setopenDialog={setOpenDialog}/>
           <SideBar
             socket={socket}
             showSideMenu={showSideMenu}
@@ -142,18 +152,21 @@ function App() {
               </Routes>
             </div>
             {token && (
-            <div className="p-4 bg-white  shadow-sm shadow-orange-50 self-end 
-              justify-end w-full py-4">
+            <div className="card-shadow p-4 bg-white  shadow-sm shadow-orange-50 self-end 
+              justify-end text-center w-full py-4">
                 <h3>
                   &#169; My Mini Market Inventory Management System{" "}
                   {new Date().getFullYear()}
                 </h3>
               </div>
             )}
-          </div>
         </div>
+        
         <ToastContainer limit={1} />
+        </div>
       </Router>
+    </>
+
   );
 }
 

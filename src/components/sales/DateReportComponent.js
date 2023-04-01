@@ -7,6 +7,7 @@ import { queryInstance } from "../../api";
 import { formatNumber } from "../../other/format";
 import { customTime } from "./data";
 import MyDataGrid from "./MyDataGrid";
+import HourChat from "../Dashboard/chats/HourChat";
 
 const DateReportComponent = () => {
   const [date, setdate] = useState("");
@@ -43,7 +44,8 @@ const DateReportComponent = () => {
     }
   }, [date]);
   return (
-    <div className=" w-auto bg-gray-50 p-2">
+    <div className=" w-auto bg-gray-100 p-2">
+      <h2>Date Report Section</h2>
       <div className="p-1 w-auto max-w-xs grid grid-cols-1 relative">
         <label className="text-lg" htmlFor="date">
           Choose date
@@ -108,7 +110,8 @@ const DateReportComponent = () => {
                 />
               </div>
             </div>
-            <MyDataGrid data={sales} loading={isLoading} />
+              <MyDataGrid data={sales} loading={isLoading} />
+              <HourChat hourlyData={hourlyData} />
           </>
         )
       ) : null}
