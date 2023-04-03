@@ -6,4 +6,7 @@
     color: black;
     font-size: 40px;
     background-color: #fff;
+    padding: 1.4rem;
+    text-align: start;
+    justify-self: self-start;
 }

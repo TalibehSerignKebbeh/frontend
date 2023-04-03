@@ -28,6 +28,8 @@ import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 import { ToastContainer } from "react-toastify";
 import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
+import SaleReport from "./components/Report/SaleReport";
+import TestComponent from "./TestComponent";
 // import { queryInstance } from "./api";
 
 let socket = io.connect(serverUrl);
@@ -44,9 +46,6 @@ function App() {
   const { token } = useAuth();
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {
-    
-    
-    
     // socket.emit('notify')
     // window.addEventListener("offline", (e) => {
     //   console.log("You are offlline, connect back");
@@ -57,7 +56,6 @@ function App() {
   }, []);
   return (
     <>
-
       <Router>
       <div className="maincontainer flex flex-row   ">
         <ExpiredRefreshToken openDialog={openDialog} setopenDialog={setOpenDialog}/>
@@ -136,11 +134,7 @@ function App() {
                     />
                     <Route
                       path="/report"
-                      element={
-                        <>
-                          <h1>Hello from report page</h1>
-                        </>
-                      }
+                      element={<SaleReport />}
                     />
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
                   </Route>

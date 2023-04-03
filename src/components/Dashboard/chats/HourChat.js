@@ -1,95 +1,57 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
+import React from "react";
 import {
-    Chart as Chartjs,
-    LineElement, LinearScale,
-    CategoryScale, PointElement, Title, Tooltip, Legend
-} from 'chart.js'
-import './chat.css'
+    VictoryAxis,
+    VictoryChart,
+    VictoryLabel,
+    VictoryLine,
+    VictoryTheme,
+    VictoryTooltip,
+} from "victory";
 
-Chartjs.register(
-    LineElement, LinearScale, 
-    CategoryScale, PointElement,
-    Title, Tooltip, Legend
-)
-
-const HourChat = ({hourlyData}) => {
- const labels = hourlyData?.map(d=>d?.hour)
-    const salesData =hourlyData?.map(d=>d?.totalSalesInstances)
-    const quantityData =hourlyData?.map(d=>d?.quantityProduct)
-    const revenueData =hourlyData?.map(d=>d?.revenue)
-    const data = {
-        labels,
-      datasets: [
-        {
-            label:"Sales Instances",
-            data:salesData,
-            backgroundColor:'transparent',
-            borderColor: '#f26c6d',
-            pointBorderColor: 'transparent',
-            pointBorderWidth: 4,
-            tension:0.6,
-        },
-        {
-            label:"Revenue ",
-            data:revenueData,
-            backgroundColor:'transparent',
-            borderColor: '#216e9c',
-            pointBorderColor: 'transparent',
-            pointBorderWidth: 4,
-            tension:0.6,
-          },
-         {
-            label:"Products Quantity",
-            data:quantityData,
-            backgroundColor:'transparent',
-            borderColor: '#4d4dff',
-            pointBorderColor: 'transparent',
-            pointBorderWidth: 4,
-            tension:0.6,
-        }
-      ]
-    }
-    const options = {
-        responsive: true,
-        interaction: {
-            mode: 'index',
-            intersect:true,
-        },
-        stacked: false,
-        title: {
-            display: true,
-            text:"Sample chart",
-        },
-        plugins:{
-            legend: true,
-        },
-        scales: {
-          x: {
-              min: Math.min(hourlyData?.map(h=>h?.hour)),
-                max: Math.max(hourlyData?.map(h=>h?.hour)),
-                grid: {
-                    display:false,
-                }
-            },
-            y: {
-                min: Math.min(hourlyData?.map(h=>h?.revenue)),
-                max: Math.max(hourlyData?.map(h=>h?.revenue)),
-                ticks: {
-                    stepSize: 1,
-                    callback: value=>value
-                },
-                grid: {
-                    borderDash: [10]
-                }
-            }
-        }
-    }
+const HourChat = ({ hourlyData }) => {
+    console.log(hourlyData);
     return (
-        <div className=' chat-container card-shadow w-9/12 h-auto  bg-slate-100 mx-auto '>
-            <Line data={{...data}} options={{...options, backgroundColor:'#a6a9ab', font:{size:'50px',style:"inherit", weight:'600'}, indexAxis:'x'}}></Line>
+        <div className=" chat-container card-shadow w-9/12 h-auto  bg-slate-100 mx-auto ">
+            <VictoryChart
+                name="Hourly Sales"
+                theme={VictoryTheme.material}
+                // scale={{ x: 3, y: 1 }}
+                domainPadding={40}
+
+            >
+                <VictoryAxis
+                    tickValues={[
+                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+                        19, 20, 21, 22, 23,
+                    ]}
+                    tickFormat={[
+                        "00", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+                    ]}
+                    padding={20}
+                // label={({datum})=>`${datum?.hour} ${datum?.revenue}`}
+                // tickLabelComponent={<VictoryTooltip />}
+                />
+                <VictoryAxis dependentAxis tickFormat={(x) => `D${x}`} />
+                <VictoryLine
+                    data={hourlyData} sortKey={({ datum }) => datum?.hour} sortOrder="ascending"
+                    label={"Hourly Sales Money"}
+                    name="Hourly Sales Money"
+                    scale={{x:2, y:1}}
+                    style={{
+                        data: { stroke: "#c43a31" },
+                        parent: { border: "1px solid #ccc" },
+                        labels:{ fontSize: 8 }
+                    }}
+                    x={"hour"}
+                    y={"revenue"}
+                    // style={{ labels: { fontSize: 8 }, data: {} }}
+                    labels={({ datum }) => `${datum?.hour}: D${datum?.revenue}`}
+                    labelComponent={<VictoryLabel />}
+
+                />
+            </VictoryChart>
         </div>
     );
-}
+};
 
 export default HourChat;

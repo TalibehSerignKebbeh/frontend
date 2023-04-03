@@ -40,7 +40,9 @@ const DateReportComponent = () => {
         });
     };
     if (date?.length) {
-      fetchSalesForDay();
+      fetchSalesForDay().then(() => {
+        hourlyData?.sort((a, b)=>a?.hour - b?.hour)
+      });
     }
   }, [date]);
   return (

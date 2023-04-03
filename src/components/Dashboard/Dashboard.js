@@ -36,7 +36,7 @@ const Dashboard = () => {
         ],
     })
     useEffect(() => {
-        // console.log(dayStatsQuery?.data);
+        console.log(salesStatsQuery?.data);
         // console.log(salesTodayQuery?.data);
         if (salesStatsQuery?.data?.response?.status === 403) {
             toast.error(<ExpiredComponent />, {

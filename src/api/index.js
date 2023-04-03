@@ -21,10 +21,8 @@ queryInstance.interceptors.request.use(
 );
 queryInstance.interceptors.response.use(
   function async(res) {
-    if (res.status === 403) {
-      console.log("forbidden request");
-    }
-    return res;
+   
+    return Promise.resolve(res);
   },
   function (err) {
     if (err?.response?.status === 403) {
