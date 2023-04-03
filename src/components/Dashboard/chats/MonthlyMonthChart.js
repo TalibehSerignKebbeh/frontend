@@ -43,8 +43,6 @@ const MonthlyMonthChart = ({ monthlyData }) => {
         />
         <VictoryAxis
           dependentAxis
-          // label={"Revenue"}
-          // labelComponent={<VictoryLabel style={{marginRight:'200px',}}/>}
           tickFormat={(x) => `D${x / 1000}k`}
         />
         <VictoryBar
