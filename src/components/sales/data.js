@@ -44,7 +44,7 @@ export const customTime = '00:00:00.000'
             valueGetter: ({ value }) => value ? value :''
      },
          {
-           type:'boolean', field: 'active', headerName: 'status', minWidth: 110,
+           type:'boolean', field: 'active', sortable:false, headerName: 'status', minWidth: 110,
             valueGetter:({value})=> value? value : ''
      },
     

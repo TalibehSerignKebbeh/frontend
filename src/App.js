@@ -30,9 +30,9 @@ import { ToastContainer } from "react-toastify";
 import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
 import SaleReport from "./components/Report/SaleReport";
 import TestComponent from "./TestComponent";
-// import { queryInstance } from "./api";
+import PercentChart from "./PercentChart";
 
-let socket = io.connect(serverUrl);
+let socket = io.connect(process.env.REACT_APP_API);
 function App() {
   const [openDialog, setOpenDialog] = useState(false);
   queryInstance.interceptors.response.use(

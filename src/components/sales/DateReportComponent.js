@@ -8,6 +8,8 @@ import { formatNumber } from "../../other/format";
 import { customTime } from "./data";
 import MyDataGrid from "./MyDataGrid";
 import HourChat from "../Dashboard/chats/HourChat";
+import ReportCard from "../Dashboard/card/ReportCard";
+import { Inventory2Outlined } from "@mui/icons-material";
 
 const DateReportComponent = () => {
   const [date, setdate] = useState("");
@@ -76,44 +78,42 @@ const DateReportComponent = () => {
               <h2 className="p-2 text-sm font-bold italic ">
                 {format(new Date(`${date} ${customTime}`), 'EEEE do MMM yyyy')}
               </h2>
-            <div className="flex flex-row flex-wrap py-3 gap-2">
-              <div
-                className="card-shadow gap-x-16 rounded-sm max-w-xs p-2 px-4 bg-white flex flex-row 
-                items-center justify-between place-content-center gap-1 "
-              >
-                <div className="">
-                  <h3>Money</h3>
-                  <h1 className="px-1">{`D${formatNumber(money)}`}</h1>
-                </div>
-                <MoneyOffCsredOutlined
+              <div className="flex flex-row flex-wrap py-3 gap-2">
+                <ReportCard title={"Money"} value={`D${formatNumber(money)}`} 
+                  icon={<MoneyOffCsredOutlined
                   sx={{
                     transform: "scale(1.6)",
                     color: "white",
                     bgcolor: "blueviolet",
                     borderRadius: "3px",
                   }}
+                />}
                 />
-              </div>
-              <div
-                className="card-shadow gap-x-16 rounded-sm max-w-xs p-2 px-4 bg-white flex flex-row 
-                items-center justify-between place-content-center gap-1 "
-              >
-                <div className="">
-                  <h3>#Products</h3>
-                  <h1 className="px-1">{productQuantity}</h1>
-                </div>
-                <ProductionQuantityLimitsOutlined
+                <ReportCard title={"#Products"} value={productQuantity} 
+                  icon={<ProductionQuantityLimitsOutlined
                   sx={{
                     transform: "scale(1.6)",
                     color: "white",
-                    bgcolor: "blueviolet",
+                    bgcolor: "brown",
                     borderRadius: "3px",
                   }}
+                />}
                 />
-              </div>
+                <ReportCard title={"#Sales"} value={sales?.length} 
+                  icon={<Inventory2Outlined
+                  sx={{
+                    transform: "scale(1.6)",
+                    color: "white",
+                    bgcolor: "darkmagenta",
+                    borderRadius: "3px",
+                  }}
+                />}
+                />
+              
+              
             </div>
               <MyDataGrid data={sales} loading={isLoading} />
-              <HourChat hourlyData={hourlyData} />
+              {/* <HourChat hourlyData={hourlyData} /> */}
           </>
         )
       ) : null}

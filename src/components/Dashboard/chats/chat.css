@@ -1,12 +1,23 @@
 .chat-container{
     min-width: 600px;
     min-height: 400px;
-    padding: 20px auto;
-    margin: 20px auto;
+    /* padding: 10px auto 30px auto; */
+    /* margin: 20px auto; */
     color: black;
     font-size: 40px;
     background-color: #fff;
     padding: 1.4rem;
     text-align: start;
     justify-self: self-start;
+}
+
+.small-chart-wrapper{
+     min-width: 220px;
+    /* min-height: 220px; */
+    height: auto;
+    background-color: #fff;
+    padding: 1.4rem;
+    text-align: start;
+    justify-self: self-start;
+
 }

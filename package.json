@@ -28,6 +28,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
     "socket.io-client": "^4.6.1",
+    "string-to-color": "^2.2.2",
     "use-immer": "^0.8.1",
     "victory": "^36.6.8",
     "web-vitals": "^2.1.4",

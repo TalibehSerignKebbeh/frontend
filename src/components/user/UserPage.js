@@ -93,6 +93,7 @@ const UserPage = ({ socket }) => {
                     UserData={UserData} setUserData={setUserData}
                     resetFunction={() => {
                       setopenAdd(false)
+                      setUserData(initialUser)
                     }}
                   />
               </Collapse>

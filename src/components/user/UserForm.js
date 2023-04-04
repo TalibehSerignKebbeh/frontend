@@ -1,15 +1,13 @@
 import Box from "@mui/material/Box";
 import React, { useState } from "react";
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { Formik, useFormik } from "formik";
 import { queryInstance } from "../../api";
 import {
-  Button,
   CircularProgress,
   FormControl,
   MenuItem,
   Select,
-  Stack,
   useTheme,
 } from "@mui/material";
 import { registerRoles } from "../../config/allowedRoles";
@@ -381,7 +379,7 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
             disabled={adding || updating}
             className="px-10 py-2 text-lg text-white bg-green-700 rounded-sm"
             type="submit"
-            onClick={formik.handleSubmit}
+            // onClick={formik.handleSubmit}
           >
             {adding || updating ? (
               <CircularProgress />

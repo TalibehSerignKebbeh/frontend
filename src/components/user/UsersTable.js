@@ -1,38 +1,12 @@
-import React, { useState, useMemo, useEffect } from "react";
-import {
-  // TableContainer,
-  // Table,
-  // TableRow,
-  // TableBody,
-  // TableCell,
-  // Paper,
-  // TableHead,
-  // IconButton,
-  // TextField,
-  // CircularProgress,
-  Button,
-  Stack,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Slide,
-  Typography,
-} from "@mui/material";
-import useAuth from "../../hooks/useAuth";
-// import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid';
+import React, { useState} from "react";
+
 import { Box } from "@mui/system";
-// import { EditSharp } from "@mui/icons-material";
-// import { AiFillDelete } from 'react-icons/ai';
 
 import { queryInstance, fetchUsers } from "../../api";
-import RolesSelect from "./Inputs/RolesSelect";
 import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import ConfirmDelete from "../Modal/ConfirmDelete";
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction="up" ref={ref} {...props} />;
-// });
-
+import { userColumns } from "../sales/data";
 const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collapseRef }) => {
   const queryClient = new QueryClient();
 
@@ -127,16 +101,7 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
     setopenAdd(true)
     // setUserToEdit({ ...user, password: "", confirmNewPassword: "" });
   };
-  // const handleCloseEdit = () => {
-  //   setopenEdit(false);
-  //   setUserToEdit(null);
-  //   setstatusMessage({
-  //     ...statusMessage,
-  //     deleteSuccess: "",
-  //     updateSuccess: "",
-  //   });
-  //   seterrorMessages({ ...errorMessages, deleteError: "", updateError: "" });
-  // };
+
 
   const handleDeleteUser = async () => {
     setEditStatus({ ...EditStatus, deleting: true });
@@ -178,89 +143,6 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
         setEditStatus({ ...EditStatus, deleting: false });
       });
   };
-  const validate = (values) => {
-    const errors = {
-      username: "",
-      firstName: "",
-      lastName: "",
-      password: "",
-      confirmNewPassword: "",
-    };
-    if (!values?.username) {
-      errors.username = "Username is required";
-    }
-    if (!values?.firstName) {
-      errors.firstName = "FirstName is required";
-    }
-    if (!values?.lastName) {
-      errors.lastName = "LastName is required";
-    }
-    if (!values?.roles?.length) {
-      errors.roles = "Roles is required";
-    }
-    if (values?.password?.trim()?.length > 0) {
-      if (values?.password !== values?.confirmNewPassword) {
-        if (values?.password !== values?.confirmNewPassword) {
-          errors.confirmNewPassword = "Password must match";
-        }
-      }
-    }
-    return errors;
-  };
-  const handleUpdateuser = async () => {
-    const id = UserData?._id;
-    // console.log(UserData);
-    const errors = validate(UserData);
-    setuserErrors(errors);
-    console.log(errors);
-
-    if (Object.values(errors).every((val) => val !== "")) return;
-
-    setEditStatus({ ...EditStatus, updating: true });
-    await queryInstance
-      .put(`/users/${id}`, UserData)
-      .then((res) => {
-        if (res.status === 200) {
-          setstatusMessage({
-            ...statusMessage,
-            updateSuccess: res?.data?.message,
-          });
-          queryClient.invalidateQueries({ queryKey: ["users"] });
-
-        } if(res?.response.status === 500) {
-          seterrorMessages({
-            ...errorMessages,
-            updateError: "internal server error",
-          }); return;
-        }
-        if(res?.response.status === 400) {
-          seterrorMessages({
-            ...errorMessages,
-            updateError: res?.response?.data?.message,
-          }); return;
-        }else {
-          seterrorMessages({
-            ...errorMessages,
-            updateError: res?.response?.data?.message,
-          });
-        }
-        // console.log(res);
-      })
-      .catch((err) => {
-        // alert(err?.response?.data?.message)
-        seterrorMessages({
-          ...errorMessages,
-          updateError: err?.response?.data?.message,
-        });
-        console.log(err?.response?.data?.message);
-        console.log(err);
-      })
-      .finally(async () => {
-        setEditStatus({ ...EditStatus, updating: false });
-        queryClient.invalidateQueries({ queryKey: ["users"] });
-      });
-  };
-
 
   return (
     <div className="w-auto h-auto md:mt-6 mt-3">
@@ -269,7 +151,7 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
           <h3 className="p-2 text-lg">Loading....</h3>
         </Box>
       ) : (
-        <Box height={"800px"}>
+        <Box height={"460px"}>
           <DataGrid
             loading={UserFetch?.isLoading}
             columns={userColumns}

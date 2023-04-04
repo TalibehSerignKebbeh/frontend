@@ -4,7 +4,7 @@ import MonthlyReport from './MonthlyReport';
 
 const SaleReport = () => {
     return (
-        <div className='flex flex-col gap-2 '>
+        <div className='w-full flex flex-col gap-3 '>
             {/* <h2>Hello from report page</h2> */}
             <AnnuanReport />
 
