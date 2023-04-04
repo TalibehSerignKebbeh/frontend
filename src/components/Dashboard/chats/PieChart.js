@@ -38,10 +38,10 @@ const legendStyle = {
 const PieChart = ({ monthData }) => {
   console.log(monthData);
   return (
-    <div style={{ width: '500px', height: '500px',  }}>
+    <div style={{ width: '800px', height: '500px',  }}>
       <VictoryChart theme={VictoryTheme?.material}
         style={chartStyle} domainPadding={{ x: 200 }}>
-        <VictoryAxis  style={{axis:{display:'none'},axisLabel:{display:'none'}, tickLabels:{display:'none'}, datplay:'none'}}/>
+        <VictoryAxis  style={{axis:{display:'none'},axisLabel:{display:'none'},ticks:{display:'none'}, tickLabels:{display:'none'}, datplay:'none'}}/>
         {/* <VictoryAxis   style={{datplay:'none'}}/> */}
       <VictoryPie
         data={monthData}

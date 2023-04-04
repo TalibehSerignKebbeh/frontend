@@ -1,4 +1,5 @@
 import React from "react";
+import GenColor from 'string-to-color'
 
 import "./chat.css";
 import {  formatChartNumber, months } from "../../../other/format";
@@ -46,7 +47,7 @@ const MonthlyMonthChart = ({ monthlyData }) => {
         height={500} width={600}
       style={chartStyle}        
       >
-        <VictoryAxis  colorScale={"qualitative"}
+        <VictoryAxis  colorScale={monthlyData?.map((datum)=>GenColor(datum))}
              tickValues={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
           tickFormat={[...months]}
           padding={20}
@@ -91,7 +92,7 @@ const MonthlyMonthChart = ({ monthlyData }) => {
           gutter={20}
           orientation="horizontal" 
          data={monthlyData?.map((datum) => {
-            return { name: `${months[datum?.month]}: D${datum?.revenue}` };
+            return { name: `${months[datum?.month]}: D${datum?.revenue}`, symbol:{fill: GenColor(datum)} };
           })}
         />
       </VictoryChart>
