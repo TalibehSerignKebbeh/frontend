@@ -9,6 +9,7 @@ import { queryInstance } from "../../api";
 import useAuth from "../../hooks/useAuth";
 import EditForm from "./EditForm";
 import "./editProduct.css";
+import { GetError } from "../other/OtherFuctions";
 const EditProductPage = ({ socket }) => {
   const { id } = useParams();
   const { isAdmin, isManager } = useAuth();
@@ -16,6 +17,7 @@ const EditProductPage = ({ socket }) => {
   const [stocks, setstocks] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [isSuccess, setisSuccess] = useState(false);
+  const [errorMessage, seterrorMessage] = useState('');
   const [productUpdates, setproductUpdates] = useState([]);
   
   const GetStockName = (id) => {
@@ -50,7 +52,8 @@ const EditProductPage = ({ socket }) => {
           setisSuccess(true);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+          seterrorMessage(GetError(err))
         })
         .finally(() => setisLoading(false));
     };
@@ -69,7 +72,7 @@ const EditProductPage = ({ socket }) => {
           <CircularProgress sx={{ color: "red" }} />
         </div>
       ) : product ? (
-        <div>
+        <div className="h-auto self-stretch">
           <EditForm
             product={product}
             setproduct={setproduct}
@@ -136,7 +139,8 @@ const EditProductPage = ({ socket }) => {
           )}
         </div>
       ) : (
-        <div className="p-6 text-center my-5">
+            <div className="p-6 text-center my-5">
+              <h3>{errorMessage }</h3>
           <p>Product no found</p>
         </div>
       )}

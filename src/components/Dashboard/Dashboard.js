@@ -8,9 +8,7 @@ import Header from '../other/Header';
 import DashboardRounded  from '@mui/icons-material/DashboardRounded';
 import DashboardProductStats from '../Product/DashboardProductStats';
 import DashBoardSalesStats from '../sales/DashBoardSalesStats';
-import { toast } from 'react-toastify';
-import ExpiredComponent from '../Auth/ExpiredComponent';
-import DateReportComponent from '../sales/DateReportComponent';
+import DateReportComponent from '../Report/DateReportComponent';
 
 const Dashboard = () => {
     const [totalAmountToday, settotalAmountToday] = useState(0);
@@ -39,13 +37,7 @@ const Dashboard = () => {
         console.log(salesStatsQuery?.data);
         // console.log(salesTodayQuery?.data);
         if (salesStatsQuery?.data?.response?.status === 403) {
-            toast.error(<ExpiredComponent />, {
-                position: 'top-center',
-                hideProgressBar: true,
-                closeButton: true,
-                limit: 1,
-                style:{marginBlock:'120px'}
-            })
+          
         }
            if (salesTodayQuery.data?.sales?.length) {
                settotalAmountToday(0)

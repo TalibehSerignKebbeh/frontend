@@ -31,18 +31,19 @@ const legendStyle = {
   labels: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#333'
+    color: '#333',
+    display: 'flex', flexDirection: 'column', flexWrap: 'wrap' 
+
   }
 };
 
 const PieChart = ({ monthData }) => {
-  console.log(monthData);
   return (
-    <div style={{ width: '800px', height: '500px',  }}>
+    <div className='w-auto text-start h-auto  bg-slate-100 mx-auto'
+    >
       <VictoryChart theme={VictoryTheme?.material}
         style={chartStyle} domainPadding={{ x: 200 }}>
         <VictoryAxis  style={{axis:{display:'none'},axisLabel:{display:'none'},ticks:{display:'none'}, tickLabels:{display:'none'}, datplay:'none'}}/>
-        {/* <VictoryAxis   style={{datplay:'none'}}/> */}
       <VictoryPie
         data={monthData}
         x="name"

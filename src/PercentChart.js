@@ -69,38 +69,148 @@
 //   export default PercentChart
 
 
+// import React from 'react';
+// import { VictoryPie, VictoryBar, VictoryLegend } from 'victory';
+
+// const data1 = [
+//   { x: 'A', y: 25 },
+//   { x: 'B', y: 15 },
+//   { x: 'C', y: 45 },
+//   { x: 'D', y: 10 },
+//   { x: 'E', y: 5 },
+// ];
+
+// const data2 = [
+//   { x: 'A', y: 100 },
+//   { x: 'B', y: 75 },
+//   { x: 'C', y: 150 },
+//   { x: 'D', y: 25 },
+//   { x: 'E', y: 50 },
+// ];
+
+// const colors = ['#FF00A9', '#00FFE1', '#F44336', '#E91E63', '#9C27B0'];
+
+// const legendData = [
+//   { name: 'Data 1', symbol: { fill: colors[0] } },
+//   { name: 'Data 2', symbol: { fill: colors[1] } },
+// ];
+
+// const VictoryCharts = () => (
+//   <>
+//     <VictoryPie data={data1} colorScale={colors} />
+//     <VictoryBar data={data2} style={{ data: { fill: colors[1] } }} />
+//     <VictoryLegend data={legendData} />
+//   </>
+// );
+
+// export default VictoryCharts;
+
+
+// import React from 'react';
+// import { VictoryChart, VictoryBar, VictoryPie, VictoryLegend } from 'victory';
+
+// const data = [
+//   { x: 'Apples', y: 10 },
+//   { x: 'Bananas', y: 15 },
+//   { x: 'Oranges', y: 5 },
+//   { x: 'Peaches', y: 20 },
+//   { x: 'Grapes', y: 12 },
+// ];
+
+// const chartColors = ['#FF6347', '#FFD700', '#FF8C00', '#00FF7F', '#ADD8E6'];
+
+// const chartStyles = {
+//   data: {
+//     fill: ({ index }) => chartColors[index % chartColors.length],
+//   },
+// };
+
+// const legendData = data.map(({ x }) => ({ name: x }));
+
+// const CommonLegend = ({ colorScale }) => (
+//   <VictoryLegend
+//     x={50}
+//     y={0}
+//     orientation="horizontal"
+//     gutter={20}
+//     style={{ border: { stroke: 'black' } }}
+//     data={legendData}
+//     colorScale={colorScale}
+//   />
+// );
+
+// const VictoryBarAndPie = () => (
+//   <>
+//     <VictoryChart>
+//       <VictoryBar
+//         data={data}
+//         style={chartStyles}
+//       />
+//       <CommonLegend colorScale={chartColors} />
+//     </VictoryChart>
+//     <VictoryChart>
+//       <VictoryPie
+//         data={data}
+//         colorScale={chartColors}
+//         style={chartStyles}
+//       />
+//       <CommonLegend colorScale={chartColors} />
+//     </VictoryChart>
+//   </>
+// );
+
+// export default VictoryBarAndPie;
+
+
+
 import React from 'react';
-import { VictoryPie, VictoryBar, VictoryLegend } from 'victory';
+import { VictoryBar, VictoryPie, VictoryChart, VictoryLegend, VictoryAxis } from 'victory';
 
-const data1 = [
-  { x: 'A', y: 25 },
-  { x: 'B', y: 15 },
-  { x: 'C', y: 45 },
-  { x: 'D', y: 10 },
-  { x: 'E', y: 5 },
+const data = [
+  { x: "Apples", y: 10 },
+  { x: "Bananas", y: 5 },
+  { x: "Cherries", y: 20 },
+  { x: "Dates", y: 15 },
+  { x: "Elderberries", y: 3 },
 ];
 
-const data2 = [
-  { x: 'A', y: 100 },
-  { x: 'B', y: 75 },
-  { x: 'C', y: 150 },
-  { x: 'D', y: 25 },
-  { x: 'E', y: 50 },
-];
+const colorScale = ["#FFC857", "#E9724C", "#C5283D", "#14213D", "#2E2E2E"];
 
-const colors = ['#FF00A9', '#00FFE1', '#F44336', '#E91E63', '#9C27B0'];
+const legendData = data.map(({ x }) => ({ name: x }));
 
-const legendData = [
-  { name: 'Data 1', symbol: { fill: colors[0] } },
-  { name: 'Data 2', symbol: { fill: colors[1] } },
-];
-
-const VictoryCharts = () => (
-  <>
-    <VictoryPie data={data1} colorScale={colors} />
-    <VictoryBar data={data2} style={{ data: { fill: colors[1] } }} />
-    <VictoryLegend data={legendData} />
-  </>
+const BarChart = ({barData,x,y }) => (
+  <VictoryChart>
+    <VictoryBar data={barData} x={x} y={y} style={{ data: { fill: "#FFC857" } }} />
+  </VictoryChart>
 );
 
-export default VictoryCharts;
+const PieChart = ({pieData,x,y}) => (
+  <VictoryChart>
+    <VictoryPie data={pieData} x={x} y={y} colorScale={colorScale} />
+    <VictoryAxis style={{axis:{display:'none'},tickLabels:{display:'none'}, axisLabel: {display:'none'}}} />
+  </VictoryChart>
+);
+
+const ChartWithLegend = ({barData, pieData, x,y}) => (
+  <div style={{ display: "flex" }}>
+    <div style={{ width: "50%" }}>
+      <BarChart barData={barData} x={x} y={y}/>
+    </div>
+    <div style={{ width: "50%" }}>
+      <PieChart pieData={pieData } x={x} y={y} />
+    </div>
+    <div style={{ width: "100%" }}>
+      <VictoryLegend
+        data={legendData}
+        orientation="horizontal"
+        gutter={20}
+        style={{ border: { stroke: "#f6f6f6" } }}
+        colorScale={colorScale}
+      />
+    </div>
+  </div>
+);
+
+export default ChartWithLegend;
+
+

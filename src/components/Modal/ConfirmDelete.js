@@ -15,7 +15,9 @@ const ConfirmDelete = ({ open, setopen, resetFunc, deleteFunction,
         <div>
           <Dialog
           open={open} onClose={handleClose}
-          fullWidth keepMounted={deleteLoading}
+          keepMounted={deleteLoading}
+          fullWidth={true}
+          fullScreen={false}
           TransitionComponent={Transition}
           sx={{ p: 3, width: "auto", height: "auto", '& .':{opacity:0} }}
             >
@@ -32,25 +34,26 @@ const ConfirmDelete = ({ open, setopen, resetFunc, deleteFunction,
             </span>
           </h2>
           
-               {(succcessMsg?.length || errorMessage?.length) && (
+               {(succcessMsg?.length || errorMessage?.length)? (
           <DialogContent >
             <Box
               px={2}
               my={2}
               sx={{ boxShadow: "0px 0px 2px 0px rgba(20,0,0,0.4)" }}
             >
-              {succcessMsg?.length? (
-                <Typography className="text-green-600 rounded-3xl px-3 py-3 text-sm">
-                  {succcessMsg}
-                </Typography>
-              ) : errorMessage?.length ? (
+                {succcessMsg?.length ? (
+                  <Typography className="text-green-600 rounded-3xl px-3 py-3 text-sm">
+                    {succcessMsg}
+                  </Typography>
+                ) : null}
+                {errorMessage?.length ? (
                 <Typography className="text-red-400 rounded-3xl px-3 py-3 text-sm">
                   {errorMessage}
                 </Typography>
               ) : null}
             </Box>
           </DialogContent>
-          )}
+          ) : null}
                 <DialogActions>
                      <Stack direction={"row"} spacing={3}>
               <Button

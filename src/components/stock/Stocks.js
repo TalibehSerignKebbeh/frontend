@@ -38,7 +38,7 @@ const StocksPage = () => {
          if (data?.response?.status===403) {
           
      }
-    },[data?.response?.status])
+    },[data, data?.response?.status])
     
 
     return (

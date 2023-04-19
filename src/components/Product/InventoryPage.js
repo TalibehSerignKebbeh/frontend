@@ -5,10 +5,10 @@ import SideModal from './SideModal';
 import { Box } from '@mui/material';
 import ProductsDataGrid from './ProductsDataGrid';
 import { useQuery } from '@tanstack/react-query';
-import useAuth from '../../hooks/useAuth';
+// import useAuth from '../../hooks/useAuth';
 
 const InventoryPage = ({ socket }) => {
-  const {isAdmin, isManager} = useAuth()
+  // const {isAdmin, isManager} = useAuth()
   // const tableHeadClass = `text-left font-medium p-2 pl-3 text-sm font-medium`
   // const [products, setproducts] = useState([]);
   // const [topSelling, settopSelling] = useState(0);
@@ -16,9 +16,14 @@ const InventoryPage = ({ socket }) => {
   const [openAddModal, setopenAddModal] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setpageSize] = useState(20);
+  const startDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7);
+  const endDate=new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   const productsRequest = useQuery({
     queryKey: ['products'],
-  queryFn: ()=>fetchProducts()})
+    queryFn: () => fetchProducts({startDate, endDate,quantityThreshold:12,
+revenueThreshold:100   })
+
+  })
   // useEffect(() => {
    
   //   const fetchProductsNotify = async () => {
@@ -38,6 +43,7 @@ const InventoryPage = ({ socket }) => {
   // }, [isAdmin, isManager])
 
   useEffect(() => {
+    console.log(productsRequest?.data);
     if (productsRequest?.data) {
       if (productsRequest?.data?.response?.status === 403) {
         console.log("Expired token and session");

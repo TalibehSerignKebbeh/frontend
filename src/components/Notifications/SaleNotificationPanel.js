@@ -49,7 +49,7 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
       onMouseUp={handleMouseUp}
       >
             <div className='table-container'>
-          <table className="py-2 relative w-full">
+          <table className="py-2 relative w-full table-auto">
             <thead className=" bg-white shadow-md py-2">
               <tr>
                 <th className="text-sm font-normal">Msg</th>
@@ -67,7 +67,7 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
                   <td className="capitalize text-xs">{sale?.data?.quantity}</td>
                   <td className="capitalize text-xs">{sale?.data?.quantity*sale?.data?.price}</td>
                   <td className="capitalize text-xs">{sale?.type}</td>
-                  <td className="capitalize text-xs">{sale?.userId?.username}</td>
+                  <td className="capitalize text-xs break-words">{sale?.userId?.username}</td>
                   <td className="capitalize text-xs" >
                     {format(
                       parseISO(sale?.created_at),

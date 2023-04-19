@@ -14,6 +14,7 @@ import { registerRoles } from "../../config/allowedRoles";
 import { getStyles } from "../../other/format";
 
 const UserForm = ({ socket, UserData, resetFunction }) => {
+  // console.log(UserData);
   const queryClient = new QueryClient();
   const [adding, setadding] = useState(false);
   const [updating, setupdating] = useState(false);
@@ -71,12 +72,12 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
   const formik = useFormik({
     initialValues: { ...UserData },
     validate,
-    onSubmit: async (values) => {
+    onSubmit: async (values, {setSubmitting}) => {
       console.log("submitting");
       setupdating({ error: "", success: "" });
       setaddMessages({ success: "", error: "" });
 
-      if (values?._id?.length) {
+      if (values?._id?.trim()?.length) {
         setupdating(true);
         const id = values?._id;
         await queryInstance
@@ -122,8 +123,7 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
             queryClient.invalidateQueries({ queryKey: ["users"] });
           });
 
-        return;
-      }
+      }else{
       setadding(true);
       await queryInstance
         .post(`/users`, values)
@@ -141,7 +141,8 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
         .finally(() => {
           setadding(false);
         });
-    },
+    }
+    }
   });
   return (
     <Box
@@ -150,6 +151,7 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
           "
     >
       <form onSubmit={formik.handleSubmit} className=" md:py-3 py:2  px-1 ">
+        {/* status messages starts */}
         <div>
           {addMessages?.error?.length ? (
             <div
@@ -213,6 +215,8 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
             </div>
                   ) : null}
         </div>
+        {/* status messages ends */}
+
         <div className="flex flex-row flex-wrap gap-x-2 gap-y-3 md:px-3 mb-14 ">
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
@@ -369,17 +373,18 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
         <div className="grid grid-cols-2 gap-x-3 md:w-80 w-full mr-1 ml-auto">
           <button
             disabled={adding || updating}
-            className="px-10 py-2 text-lg text-white bg-orange-700 rounded-sm"
+            className="px-10 py-2 text-lg text-white bg-orange-700 rounded-md"
             type="reset"
             onClick={handleCloseAdd}
           >
             Reset
           </button>
           <button
-            disabled={adding || updating}
-            className="px-10 py-2 text-lg text-white bg-green-700 rounded-sm"
+            // disabled={adding || updating}
+            className="px-10 py-2 text-lg text-white bg-green-700 rounded-md"
             type="submit"
             // onClick={formik.handleSubmit}
+            disabled={false}
           >
             {adding || updating ? (
               <CircularProgress />

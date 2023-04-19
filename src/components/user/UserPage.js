@@ -13,6 +13,7 @@ import {  useQuery } from "@tanstack/react-query";
 import UserForm from "./UserForm";
 
 const initialUser = {
+  _id:'',
   firstName: "",
   lastName: "",
   username: "",
@@ -59,9 +60,9 @@ const UserPage = ({ socket }) => {
         </div>
       
       ) :
-           UserFetch?.isError ?
+           UserFetch?.data?.response ?
           (<div>
-            <p className="py-3 px-2 text-red-600 bg-slate-50">{UserFetch?.error?.toString() }</p>
+            <p className="py-3 px-2 text-red-600 bg-slate-50">{UserFetch?.data?.response?.message}</p>
         </div>):
         (
         <>

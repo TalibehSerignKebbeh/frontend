@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { queryInstance } from "../../api";
 import SalesTablePage from "./SalesTablePage";
 import Header from "../other/Header";
-import { toast } from "react-toastify";
-import ExpiredComponent from "../Auth/ExpiredComponent";
 
 const SalesPage = () => {
   const [rowCount, setrowCount] = useState(0);
@@ -46,14 +44,7 @@ const SalesPage = () => {
         })
         .catch((err) => {
             if (err?.response?.status === 403) {
-                toast.error(<ExpiredComponent />, {
-                    position: toast.POSITION.TOP_CENTER,
-                    autoClose: false,
-                    pauseOnHover: true,
-                    hideProgressBar: true,
-                    limit: 1,
-                    style: { minWidth:'200px', maxWidth:'98%'}
-              })
+                
             setexpiredToken(true);
             seterrorMessage("Your token has expired Please login again");
             return;

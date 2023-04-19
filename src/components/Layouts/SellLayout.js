@@ -8,7 +8,7 @@ import { AiFillCaretUp } from 'react-icons/ai';
 const SellLayout = ({socket}) => {
 
     const { isLoading, data } =
-        useQuery(['products'], ()=> fetchProducts())
+        useQuery(['products'], ()=> fetchProducts({startDate: null, endDate:null, quantityThreshold:0,revenueThreshold:0}))
     // useEffect(() => {        
     //     const fetchProducts = async () => {
     //         setloading(true)

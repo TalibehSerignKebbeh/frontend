@@ -1,4 +1,3 @@
-import React from 'react'
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
@@ -27,7 +26,7 @@ export const customTime = '00:00:00.000'
         },
         {
             field: 'saleDate', headerName: 'Date', width: 210,
-            valueGetter: ({ value }) => value? format(parseISO(value), 'EEE HH:mm b' ): ''
+            valueGetter: ({ value }) => value? format(parseISO(value), ' do MMM yyyy HH:mm b' ): ''
         },
 ]
  export const userColumns =  [

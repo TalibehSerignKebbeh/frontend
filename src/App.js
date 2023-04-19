@@ -23,42 +23,33 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import SellLayout from "./components/Layouts/SellLayout";
 import io from "socket.io-client";
 import useAuth from "./hooks/useAuth";
-import { queryInstance, serverUrl } from "./api";
+// import { queryInstance, serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
-import { ToastContainer } from "react-toastify";
-import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
+// import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
 import SaleReport from "./components/Report/SaleReport";
-import TestComponent from "./TestComponent";
-import PercentChart from "./PercentChart";
+// import TestComponent from "./TestComponent";
+// import PercentChart from "./PercentChart";
+import 'antd/dist/reset.css';
 
-let socket = io.connect(process.env.REACT_APP_API);
+
 function App() {
-  const [openDialog, setOpenDialog] = useState(false);
-  queryInstance.interceptors.response.use(
-    (res) => res,
-    (err) => {
-      if (err?.response?.status === 403) {
-          setOpenDialog(true)
-         }
-    }
-    )
-  const { token } = useAuth();
+  const {token} = useAuth()
+let socket = io(process.env.REACT_APP_API,
+ {
+  auth: {
+    token: token,
+  },
+});
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {
-    // socket.emit('notify')
-    // window.addEventListener("offline", (e) => {
-    //   console.log("You are offlline, connect back");
-    // });
-    // window.addEventListener("online", () => {
-    //   console.log("You are online now");
-    // });
-  }, []);
+    socket.emit('/public')
+    
+  }, [socket]);
   return (
     <>
       <Router>
       <div className="maincontainer flex flex-row   ">
-        <ExpiredRefreshToken openDialog={openDialog} setopenDialog={setOpenDialog}/>
           <SideBar
             socket={socket}
             showSideMenu={showSideMenu}
@@ -156,7 +147,7 @@ function App() {
             )}
         </div>
         
-        <ToastContainer limit={1} />
+        {/* <ToastContainer limit={1}  /> */}
         </div>
       </Router>
     </>

@@ -1,5 +1,6 @@
 import React from "react";
 import GenColor from 'string-to-color'
+import { colorScale } from ".";
 
 import "./chat.css";
 import {  formatChartNumber, months } from "../../../other/format";
@@ -33,19 +34,20 @@ const legendStyle = {
   labels: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#333'
+    color: '#333',
+    display: 'flex', flexDirection: 'row', flexWrap: 'wrap' 
+
   }
 };
 
 const MonthlyMonthChart = ({ monthlyData }) => {
   return (
-    <div className="w-max text-start h-auto  bg-slate-100 mx-auto ">
+    <div className="w-auto text-start h-auto  bg-slate-100 mx-auto ">
       {/* <Line data={{...data}} options={{...options, backgroundColor:'#a6a9ab', font:{size:'50px',style:"inherit", weight:'600'}, indexAxis:'x'}}></Line> */}
       <VictoryChart  theme={VictoryTheme.material}
-        colorScale={"qualitative"}
-        domainPadding={{x:250}}
-        height={500} width={600}
-      style={chartStyle}        
+        domainPadding={{x:250, y:30}}
+        height={500} width={650}
+      style={{...chartStyle}}        
       >
         <VictoryAxis  colorScale={monthlyData?.map((datum)=>GenColor(datum))}
              tickValues={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
@@ -63,16 +65,17 @@ const MonthlyMonthChart = ({ monthlyData }) => {
             />
           }
         />
-        <VictoryAxis colorScale={"qualitative"}
+        <VictoryAxis 
           dependentAxis height={450}
           tickFormat={(x) => `D${x / 1000}k`}
         />
-        <VictoryBar 
-          barWidth={20}
+        <VictoryBar  colorScale={colorScale}
+          barWidth={20} 
           barRatio={0.4}
           data={monthlyData}
           x="month"
           y="revenue"
+          animate={{ duration: 1000 }}
           labels={({ datum }) =>
             // `D${datum?.revenue} `
             formatChartNumber(datum?.revenue)
@@ -85,10 +88,10 @@ const MonthlyMonthChart = ({ monthlyData }) => {
           //   }} 
           //   />}
         />
-        <VictoryLegend  colorScale={"qualitative"}
+        <VictoryLegend  colorScale={colorScale}
            x={0}
           y={0}
-          style={legendStyle}
+          style={{...legendStyle}}
           gutter={20}
           orientation="horizontal" 
          data={monthlyData?.map((datum) => {

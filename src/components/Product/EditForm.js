@@ -62,7 +62,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
   };
   return (
     <form
-      className="flex flex-row flex-wrap 
+      className="h-auto flex flex-row flex-wrap 
                         items-center md:w-11/12 w-full gap-y-4 
                         gap-x-3 m-auto md:justify-start justify-center
                         md:mb-3 mb-14"
@@ -88,16 +88,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           </IconButton>
         </div>
       </div>
-      {/* {deleteError?.length ? (
-        <div className="w-full h-auto">
-          <p
-            className="text-red-600
-                                text-base"
-          >
-            {deleteError}
-          </p>
-        </div>
-      ) : null} */}
+      
       {deleteError?.length ? (
         <div
           className=" w-fit h-auto flex flex-row gap-x-40 content-between 
@@ -202,7 +193,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
         <select
           className="border-2 border-gray-700 w-full font-medium
                             h-14 rounded-md px-2 mx-auto my-3 p-1"
-          value={product?.stockId}
+          value={product?.stockId?._id}
           id="stockId"
           onChange={(e) => setproduct({ ...product, stockId: e.target.value })}
           multiple={false}

@@ -42,11 +42,12 @@ queryInstance.interceptors.response.use(
 export const LoginFunc = (user) => {
   return queryInstance.post("/auth", { ...user });
 };
-export const fetchProducts = () => {
+export const fetchProducts = ({ startDate, endDate,quantityThreshold,
+revenueThreshold }) => {
   return queryInstance
-    .get(`/products`)
-    .then((res) => res?.data)
-    .catch((err) => err);
+    .get(`/products`, {params:{startDate, endDate,quantityThreshold,revenueThreshold}})
+    .then((res) => Promise.resolve(res?.data))
+    .catch((err) =>  Promise.reject(err));
 };
 export const fetchSales = ({ page, pageSize, selectedDate }) => {
   return queryInstance
