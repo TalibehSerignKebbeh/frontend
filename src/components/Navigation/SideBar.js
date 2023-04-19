@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import './sidebar.css'
 import {
   Button,
@@ -19,24 +19,31 @@ import {
   ReportOutlined,
 } from "@mui/icons-material";
 import {  AiOutlineUserSwitch } from "react-icons/ai";
-import { useSendLogoutMutation } from "../../features/auth/authApiSlice";
 import Box from "@mui/system/Box";
+import { queryInstance } from "../../api";
+import {useContextHook} from '../../context/AuthContext'
+
 const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
   const navigate = useNavigate();
+  const {clearAuthToken} = useContextHook()
+  const [isLogingOut, setisLogingOut] = useState(false);
   // &#9776;
   const { token, username } = useAuth();
-  const [logoutRequest, { isLoading }] = useSendLogoutMutation();
 
   const handleNavToggle = (e) => {
     setshowSideMenu((prev) => !prev);
   };
   const handleLogout = async () => {
-    await logoutRequest()
-      .unwrap()
+    setisLogingOut(true)
+    await queryInstance.post(`/auth/logout`)
       .then((res) => {
         socket.emit("notify_logout", { username, date:new Date() });
         console.log(res);
+        clearAuthToken()
         navigate("/");
+      })
+      .finall(() => {
+    setisLogingOut(false)
       });
   };
   if (!token) return null;
@@ -158,30 +165,10 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
           </button>
           <Typography  className="md:text-2xl text-lg">Report</Typography>
         </Link>
-        {/* <Link
-          to="/profile"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
-        >
-          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
-            <AiOutlineProfile />
-          </button>
-          <Typography >Profile</Typography>
-        </Link> */}
-        {/* <Link to='/products/add' className={`${showSideMenu ? 'w-full ml-5 ' : '-ml-96'} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 transition-all `}
-                >
-                    <button className='text-lg'>
-                         <AddCircleOutlineRounded />
-                    </button>
-               <Typography>AddStock</Typography>
-                </Link> */}
-      </div>
+          </div>
       <div className="w-auto mx-auto lg:mt-10 md:5 mt-2">
         <IconButton onClick={handleLogout}>
-          {isLoading ? (
+          {isLogingOut ? (
             <CircularProgress sx={{ fontSize: "3rem" }} />
           ) : (
             <LogoutTwoTone sx={{ fontSize: "2.4rem" }} />

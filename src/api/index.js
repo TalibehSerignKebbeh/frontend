@@ -1,18 +1,13 @@
 import axios from "axios";
-// import useAuth from '../hooks/useAuth'
-import { yourToken } from "../hooks/useAuth";
-// store?.getState?.auth?.token
-// console.log(token);
 
-// export const serverUrl = `https://ims-app-backend-api.onrender.com`
 export const serverUrl = process.env.REACT_APP_API;
-
+const token = localStorage.getItem('token')
 export const queryInstance = axios.create({ baseURL: serverUrl });
 queryInstance.interceptors.request.use(
   function (req) {
     // const {token} = useAuth()
 
-    req.headers["authorization"] = `Bearer ${yourToken}`;
+    req.headers["authorization"] = `Bearer ${token}`;
     return req;
   },
   function (err) {

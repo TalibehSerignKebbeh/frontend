@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { setCredentials } from '../../features/auth/authSlice';
-import { useDispatch } from 'react-redux'
-import {  useNavigate } from 'react-router-dom';
-import { useLoginMutation } from '../../features/auth/authApiSlice'
+// import { setCredentials } from '../../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import {queryInstance} from '../../api'
+// import { useLoginMutation } from '../../features/auth/authApiSlice'
 import './login.css'
 import LoginIcon from '../../imgs/newIncon.png'
+import { GetError } from '../other/OtherFuctions';
+import { useContextHook } from '../../context/AuthContext';
 
 const Login = ({ socket }) => {
-
-    const dispatch = useDispatch()
+    const {storeAuthToken }  = useContextHook()
     const navigate = useNavigate();
     const usernameRef = useRef()
     const [user, setuser] = useState({ username: '', password: '' });
-    const [LoginRequest, { isLoading, error }] = useLoginMutation()
+    // const [LoginRequest, { isLoading, error }] = useLoginMutation()
 
     const [errorMsg, seterrorMsg] = useState('');
     const [successMsg, setsuccessMsg] = useState('');
@@ -20,6 +21,7 @@ const Login = ({ socket }) => {
     const [passwordError, setpasswordError] = useState('');
     const [usernameTouch, setusernameTouch] = useState(false);
     const [passwordTouch, setpasswordTouch] = useState(false);
+    const [isLoading, setisLoading] = useState(false);
     
     useEffect(() => {
         usernameRef.current.focus();
@@ -46,17 +48,21 @@ const Login = ({ socket }) => {
             return;
         }
         seterrorMsg('')
-        await LoginRequest(user).unwrap().then(res => {
+        setisLoading(true)
+        await queryInstance.post(`/auth`, user)
+            .then(res => {
+            storeAuthToken(res?.data?.token)
             setsuccessMsg(res?.data?.message)
             console.log(res);
-            dispatch(setCredentials(res))
             socket.emit('notify_login', {username: user?.username, date:new Date()},)
             navigate("dashboard")
         }).catch(err => {
             // console.log(err?.toString())
             console.log(err);
-            seterrorMsg(err?.data?.message)
+            seterrorMsg(GetError(err))
             // console.log(err?.data?.message);
+        }).finally(() => {
+        setisLoading(false)
         })
 
 
@@ -83,9 +89,9 @@ const Login = ({ socket }) => {
                 {successMsg ? <p className='text-green-500 text-lg font-medium p-1'>
                     {successMsg}
                 </p> : null}
-                {error ?
+                {errorMsg?.length ?
                     <p className='text-red-500 text-lg font-medium px-1'>
-                        {error?.data?.message?.length? error?.data?.message : "No server response"}
+                        {errorMsg}
                     </p> : null}
                 <div className='md:w-60  sm:w-56 w-44 m-auto text-start mb-2'>
                     <label className='-ml-1 text-lg text-start  font-normal font-serif 

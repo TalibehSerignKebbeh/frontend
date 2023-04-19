@@ -9,13 +9,13 @@ export const AuthProvider = ({ children }) => {
 
   // Store the authentication token in local storage and update the context state
   const storeAuthToken = (token) => {
-    localStorage.setItem('authToken', token);
+    localStorage.setItem('token', token);
     setAuthToken(token);
   };
 
   // Remove the authentication token from local storage and update the context state
   const clearAuthToken = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     setAuthToken(null);
   };
 

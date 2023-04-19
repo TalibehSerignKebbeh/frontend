@@ -1,31 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import { store, persistor } from './app/store'
-import { Provider } from 'react-redux';
-import './index.css';
-import App from './App';
-import { PersistGate } from 'redux-persist/integration/react';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { AuthProvider } from "./context/AuthContext";
 
+const client = new QueryClient({
+  defaultOptions: { queries: { networkMode: "offlineFirst" } },
+});
 
-const client = new QueryClient({defaultOptions: {queries:{networkMode: 'offlineFirst'}}})
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor} loading={null}
-      >
-        <QueryClientProvider client={client}>
-          <App />
-          {/* <ReactQueryDevtools /> */}
-        </QueryClientProvider>
-      </PersistGate>
-    </Provider>
+    <AuthProvider>
+      <QueryClientProvider client={client}>
+        <App />
+      </QueryClientProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

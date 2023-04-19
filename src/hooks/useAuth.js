@@ -1,18 +1,17 @@
-import { useSelector } from 'react-redux'
-import { selectCurrentToken } from "../features/auth/authSlice"
 import jwtDecode from 'jwt-decode'
+import { useContextHook } from '../context/AuthContext';
 
 let yourToken;
 const useAuth = () => {
-    const token = useSelector(selectCurrentToken)
-    yourToken = token;
+    const {authToken} = useContextHook()
+    yourToken = authToken;
     let isManager = false
     let isAdmin = false
     let isSeller = false
     let status = "seller"
 
-    if (token) {
-        const decoded = jwtDecode(token)
+    if (authToken) {
+        const decoded = jwtDecode(authToken)
         const { user, roles } = decoded.UserData
 
         isManager = roles?.includes('manager')
@@ -22,10 +21,10 @@ const useAuth = () => {
         if (isManager) status = "Manager"
         if (isAdmin) status = "Admin"
 
-        return { token,username: user, roles, status, isManager, isAdmin, isSeller }
+        return { token:authToken,username: user, roles, status, isManager, isAdmin, isSeller }
     }
 
-    return { token,username: '', roles: [],status, isManager, isAdmin,isSeller }
+    return { token:authToken,username: '', roles: [],status, isManager, isAdmin,isSeller }
 }
 export {yourToken};
 export default useAuth
