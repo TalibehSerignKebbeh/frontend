@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { IconButton } from "@mui/material";
-import { DataGrid, gridClasses, GridToolbar } from "@mui/x-data-grid";
+import  IconButton  from "@mui/material/IconButton";
+import  {DataGrid,gridClasses,GridToolbar}  from "@mui/x-data-grid";
 import { AiFillDelete } from "react-icons/ai";
-import  Box  from "@mui/system/Box";
+import Box from "@mui/system/Box";
+import  Delete  from "@mui/icons-material/Delete";
 import { salesColumns } from "./data";
 const SalesTablePage = ({
   sales,
@@ -39,9 +40,11 @@ const SalesTablePage = ({
               mb:'-40px',
                       color: "red",
               zIndex:10,
-            }}
+          }}
+          onClick={()=>alert('click')}
           >
-            <AiFillDelete />
+            <Delete sx={{transform:'scale(1.2)', color:'red'}} />
+            {/* <AiFillDelete /> */}
           </IconButton>
       ) : null}
       <DataGrid

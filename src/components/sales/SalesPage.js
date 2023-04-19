@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { queryInstance } from "../../api";
 import SalesTablePage from "./SalesTablePage";
 import Header from "../other/Header";
+import { GetError } from "../other/OtherFuctions";
 
 const SalesPage = () => {
   const [rowCount, setrowCount] = useState(0);
@@ -36,24 +37,10 @@ const SalesPage = () => {
             seterrorMessage("Your token has expired Please login again");
             return;
           }
-          if (res?.response?.status === 400) {
-            seterrorMessage(res?.response?.data?.message);
-            return;
-          }
-          // settotalPages(res?.data?.totalPages)
+         seterrorMessage(GetError(res))
         })
         .catch((err) => {
-            if (err?.response?.status === 403) {
-                
-            setexpiredToken(true);
-            seterrorMessage("Your token has expired Please login again");
-            return;
-          }
-          if (err?.response?.status === 400) {
-            seterrorMessage(err?.response?.data?.message);
-            return;
-          }
-          console.log(err);
+         seterrorMessage(GetError(err))
         })
         .finally(() => {
           setloading(false);
