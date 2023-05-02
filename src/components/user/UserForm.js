@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import { registerRoles } from "../../config/allowedRoles";
 import { getStyles } from "../../other/format";
+import { GetError } from "../other/OtherFuctions";
 
-const UserForm = ({ socket, UserData, resetFunction }) => {
+const UserForm = ({ socket, UserData,setUserData, resetFunction }) => {
   // console.log(UserData);
   const queryClient = new QueryClient();
   const [adding, setadding] = useState(false);
@@ -89,34 +90,19 @@ const UserForm = ({ socket, UserData, resetFunction }) => {
                 updateSuccess: res?.data?.message,
               });
               queryClient.invalidateQueries({ queryKey: ["users"] });
-            }
-            if (res?.response.status === 500) {
-              statusMessage({
-                ...statusMessage,
-                updateError: "internal server error",
-              });
               return;
             }
-            if (res?.response.status === 400) {
-              statusMessage({
-                ...statusMessage,
-                updateError: res?.response?.data?.message,
-              });
-              return;
-            } else {
-              statusMessage({
-                ...statusMessage,
-                updateError: res?.response?.data?.message,
-              });
-            }
+             statusMessage({
+              ...statusMessage,
+              updateError: GetError(res),
+            });
           })
           .catch((err) => {
             statusMessage({
               ...statusMessage,
-              updateError: err?.response?.data?.message,
+              updateError: GetError(err),
             });
-            console.log(err?.response?.data?.message);
-            console.log(err);
+          
           })
           .finally(async () => {
             setupdating(false);

@@ -2,7 +2,7 @@
 
 export const GetError = (err) => {
     if (!err?.response) {
-        return 'No server response';
+        return 'No server response, the backend server is down';
     }
     if (err?.response?.status === 500) {
         return "An internal server error occurred";

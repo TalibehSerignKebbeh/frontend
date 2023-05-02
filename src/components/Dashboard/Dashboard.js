@@ -9,9 +9,11 @@ import DashboardRounded  from '@mui/icons-material/DashboardRounded';
 import DashboardProductStats from '../Product/DashboardProductStats';
 import DashBoardSalesStats from '../sales/DashBoardSalesStats';
 import DateReportComponent from '../Report/DateReportComponent';
+import { GetError } from '../other/OtherFuctions';
+import ErrorMessage from '../StatusMessages/ErrorMessage';
 
 const Dashboard = () => {
-    const [totalAmountToday, settotalAmountToday] = useState(0);
+    const [errorMessage, seterrorMessage] = useState('');
     const { "0": salesStatsQuery, "1": productsStatesQuery,
     "2":salesTodayQuery, "3":dayStatsQuery } = useQueries({
         queries: [
@@ -36,23 +38,33 @@ const Dashboard = () => {
     useEffect(() => {
         console.log(salesStatsQuery?.data);
         // console.log(salesTodayQuery?.data);
-        if (salesStatsQuery?.data?.response?.status === 403) {
-          
-        }
-           if (salesTodayQuery.data?.sales?.length) {
-               settotalAmountToday(0)
-              settotalAmountToday(salesTodayQuery.data?.sales?.reduce((prevTotal, sale)=>prevTotal +( sale?.quantity * sale?.price), 0))
-        }
+            console.log(salesStatsQuery);
 
-       }, [dayStatsQuery?.data, salesStatsQuery?.data, salesTodayQuery]);
+        if (salesStatsQuery?.isError) {
+            seterrorMessage(GetError(salesStatsQuery?.error))
+        }
+           
+
+       }, [dayStatsQuery.data, salesStatsQuery, salesStatsQuery?.data, salesStatsQuery?.isSuccess, salesTodayQuery]);
     
         const isLoading = salesStatsQuery.isLoading && productsStatesQuery.isLoading && salesTodayQuery.isLoading;
-    if (isLoading) return <Box><CircularProgress /></Box>
+    if (isLoading) return (
+        <Box sx={{
+            width: '100%', display: 'flex', alignSelf: 'center', alignItems: 'center',
+            justifyContent: 'center', height: 'auto',
+            textAlign: 'center'
+        }}>
+        <CircularProgress sx={{color:'red'}} />
+    </Box>)
 
     return (
-        <Box sx={{ mx: 2, display: 'flex', flexDirection:'column', rowGap:3, mb:10}}
+        <Box sx={{width:'100vw', mx: 2, display: 'flex', flexDirection:'column', rowGap:3, mb:10}}
             // className='w-full h-auto flex flex-col gap-5 md:mx-6 my-2 mb-9'
         >
+            {errorMessage?.length ? <ErrorMessage 
+                error={errorMessage}
+                handleReset={()=>seterrorMessage('')}
+            />:null}
             <Header title={"Welcome, Your Dashboard "}
                 icon={<DashboardRounded sx={{transform:'scale(1.5)', mb:1, zIndex:0 }} className='' />} 
             />

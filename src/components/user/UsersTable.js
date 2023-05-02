@@ -6,7 +6,7 @@ import { queryInstance, fetchUsers } from "../../api";
 import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import ConfirmDelete from "../Modal/ConfirmDelete";
-import { userColumns } from "../sales/data";
+
 const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collapseRef }) => {
   const queryClient = new QueryClient();
 
@@ -84,10 +84,10 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
       ],
     },
   ];
-  const UserFetch = useQuery({
-    queryKey: ["users"],
-    queryFn: () => fetchUsers(),
-  });
+  // const UserFetch = useQuery({
+  //   queryKey: ["users"],
+  //   queryFn: () => fetchUsers(),
+  // });
   const handleStartDelete = (user) => {
     setopenDelete(true)
    
@@ -146,16 +146,16 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
 
   return (
     <div className="w-auto h-auto md:mt-6 mt-3">
-      {UserFetch?.isLoading ? (
+      {/* {UserFetch?.isLoading ? (
         <Box>
           <h3 className="p-2 text-lg">Loading....</h3>
         </Box>
-      ) : (
+      ) : ( */}
         <Box height={"460px"}>
           <DataGrid
-            loading={UserFetch?.isLoading}
+            // loading={}
             columns={userColumns}
-            rows={UserFetch?.data?.users}
+            rows={users}
             getRowId={(param) => param?._id}
             onRowEditStart={() => {
               console.log("Edit start");
@@ -199,7 +199,7 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
               succcessMsg={statusMessage?.deleteSuccess}
           />
         </Box>
-      )}
+      {/* )} */}
       {/* {isAdmin || isManager ? (
         <Dialog
           open={openEdit}

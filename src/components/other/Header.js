@@ -5,11 +5,11 @@ const Header = ({ title, icon }) => {
       <Box
               sx={{
               width: {
-            xs: "90%",
+            xs: "90vw",
             lg: "300px",
             xl: "300px",
-            md: "300px",
-            sm: "240px",
+            md: "280px",
+            sm: "210px",
               },
         py: 3, my: 2, textAlign: 'center',
               bgcolor: "white",

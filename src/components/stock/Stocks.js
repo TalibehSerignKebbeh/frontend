@@ -8,9 +8,12 @@ import   Store  from '@mui/icons-material/Store';
 import { Button, Collapse } from '@mui/material';
 import AddStock from './AddStock';
 import CategoryDataGrid from './CategoryDataGrid';
+import { GetError } from '../other/OtherFuctions';
+import ErrorMessage from '../StatusMessages/ErrorMessage';
 
 const StocksPage = () => {
     const formRef = useRef()
+    const [errorMessage, seterrorMessage] = useState('');
     const [pageSize, setpageSize] = useState(5);
     const [page, setpage] = useState(1);
     const [openEdit, setopenEdit] = useState(false);
@@ -18,7 +21,7 @@ const StocksPage = () => {
        _id:'', name: '', description: ''
     });
 
-    const {isLoading,isError, error, data} = useQuery({
+    const {isLoading,isError,isSuccess, error, data} = useQuery({
         queryKey: ['stocks'],
         queryFn:()=>fetchStocks()
     })
@@ -34,11 +37,10 @@ const StocksPage = () => {
     }
 
     useEffect(() => {
-        console.log(data);
-         if (data?.response?.status===403) {
-          
-     }
-    },[data, data?.response?.status])
+        if (isError) {
+           seterrorMessage(GetError(error))
+        }
+    },[error, isError])
     
 
     return (
@@ -49,6 +51,10 @@ const StocksPage = () => {
             '& .':{}, minHeight:'900px',height:'auto', alignSelf:'baseline', textAlign:'start'
         }}
         >
+            {errorMessage?.length ?
+                <ErrorMessage error={errorMessage} 
+                    handleReset={()=>seterrorMessage('')}
+            />: null}
             <Header title={"Manage Stocks"} icon={<Store sx={{ scale: 2 }} />} />
 
             <Button 

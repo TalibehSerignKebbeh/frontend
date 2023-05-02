@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const serverUrl = process.env.REACT_APP_API;
 const token = localStorage.getItem('token')
+console.log(localStorage.getItem('token'));
 export const queryInstance = axios.create({ baseURL: serverUrl });
 queryInstance.interceptors.request.use(
   function (req) {
@@ -69,7 +70,7 @@ export const fetchSalesStats = () => {
       if (res?.data) return res?.data;
     })
     .catch((err) => {
-      return err;
+      return Promise.reject(err);
     });
 };
 export const fetchProductsStats = () => {
@@ -79,7 +80,7 @@ export const fetchProductsStats = () => {
       if (res?.data) return res?.data;
     })
     .catch((err) => {
-      return err;
+       return Promise.reject(err);
     });
 };
 export const fetchSalesToday = () => {
@@ -89,7 +90,7 @@ export const fetchSalesToday = () => {
       if (res?.data) return res?.data;
     })
     .catch((err) => {
-      return err;
+       return Promise.reject(err);
     });
 };
 
@@ -100,7 +101,7 @@ export const fetchSalesStatistic = () => {
       if (res?.data) return res?.data;
     })
     .catch((err) => {
-      return err;
+       return Promise.reject(err);
     });
 };
 
@@ -111,7 +112,7 @@ export const fetchStocks = () => {
       if (res?.data) return res?.data;
     })
     .catch((err) => {
-      return err;
+       return Promise.reject(err);
     });
 };
 export const fetchUsers = () => {
@@ -123,7 +124,7 @@ export const fetchUsers = () => {
     .catch((err) => {
       console.log("logging error ");
       console.log(err);
-      return err;
+       return Promise.reject(err);
     });
 };
 export const UpdateUser = (user) => {
@@ -135,6 +136,6 @@ export const UpdateUser = (user) => {
       return res?.data;
     })
     .catch((err) => {
-      return err;
+       return Promise.reject(err);
     });
 };

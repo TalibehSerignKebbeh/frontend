@@ -17,7 +17,10 @@ body {
   box-sizing: border-box;
 }
 
-
+#root{
+  width: 100vw;
+  height: 100vh;
+}
 
 ::-webkit-scrollbar{
   width: 8px;

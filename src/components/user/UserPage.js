@@ -11,6 +11,9 @@ import {  useQuery } from "@tanstack/react-query";
 // import { useFormik } from "formik";
 // import { registerRoles } from "../../config/allowedRoles";
 import UserForm from "./UserForm";
+import { GetError } from "../other/OtherFuctions";
+import ErrorMessage from "../StatusMessages/ErrorMessage";
+import SuccessMessage from "../StatusMessages/SuccessMessage";
 
 const initialUser = {
   _id:'',
@@ -24,7 +27,8 @@ const initialUser = {
 
 const UserPage = ({ socket }) => {
   const { isAdmin, isManager } = useAuth();
-  const collapseRef = useRef()
+  const collapseRef = useRef(null)
+  const [errorMessage, seterrorMessage] = useState('');
   const [openAdd, setopenAdd] = useState(false);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
@@ -44,13 +48,12 @@ const UserPage = ({ socket }) => {
 
   
   useEffect(() => {
-    if (UserFetch?.data) {
-      if (UserFetch?.data?.response?.status === 403) {
-        console.log("Expired token and session");
-      }
-   
+    if (UserFetch?.isSuccess) {
+      seterrorMessage(GetError(UserFetch?.data))
     }
-  }, [UserFetch?.data])
+    
+    
+  }, [UserFetch?.data, UserFetch?.isSuccess])
 
   return (
     <Box sx={{ mb: 10, mx: 3, px: 1 }} className="w-full h-full ">
@@ -60,10 +63,12 @@ const UserPage = ({ socket }) => {
         </div>
       
       ) :
-           UserFetch?.data?.response ?
-          (<div>
-            <p className="py-3 px-2 text-red-600 bg-slate-50">{UserFetch?.data?.response?.message}</p>
-        </div>):
+           errorMessage?.length?
+          (<>
+          <ErrorMessage error={errorMessage}
+              handleReset={() => { seterrorMessage('') }} />
+          </>
+            ) :
         (
         <>
           {isAdmin || isManager ? (
@@ -102,17 +107,11 @@ const UserPage = ({ socket }) => {
             </Box>
           ) : null}
 
-          {UserFetch?.data?.users?.length ? (
-              <UsersTable users={UserFetch?.data?.users} 
+              <UsersTable users={UserFetch?.data?.users || []} 
                 UserData={UserData} setUserData={setUserData}
                 setopenAdd={setopenAdd}
                 collapseRef={collapseRef}
             />
-          ) : (
-            <div className="p-3 ">
-              <h3>No Users</h3>
-            </div>
-          )}
         </>
       )}
          </Box>

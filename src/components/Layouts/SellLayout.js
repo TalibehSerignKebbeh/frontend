@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SellProductPopper from '../Product/SellProduct';
-import { fetchProducts } from '../../api';
+import { fetchProducts,queryInstance } from '../../api';
 import {useQuery} from '@tanstack/react-query'
 import { Button } from '@mui/material';
 import { AiFillCaretUp } from 'react-icons/ai';
@@ -29,7 +29,11 @@ const SellLayout = ({socket}) => {
 
     // if(loading)
     const [showSellModal, setshowSellModal] = useState(false);
-
+    if (data?.response?.status === 403) {
+        return <div>
+            <h2>Token has expired login again</h2>
+        </div>
+    }
     return (
         <>
             <Outlet />

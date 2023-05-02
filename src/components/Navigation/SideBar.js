@@ -40,11 +40,10 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
         socket.emit("notify_logout", { username, date:new Date() });
         console.log(res);
         clearAuthToken()
+    setisLogingOut(false)
         navigate("/");
       })
-      .finall(() => {
-    setisLogingOut(false)
-      });
+      
   };
   if (!token) return null;
   return (
@@ -81,7 +80,7 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
               margin: "auto",ml:1,fontWeight:'500',
               padding: 1,
               marginY: 1, textTransform:'capitalize',
-              boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.5)",
+              boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.1)",
                 cursor: 'pointer', borderRadius:'3px'
             }}
           >
@@ -166,7 +165,7 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
           <Typography  className="md:text-2xl text-lg">Report</Typography>
         </Link>
           </div>
-      <div className="w-auto mx-auto lg:mt-10 md:5 mt-2">
+      <div className="w-auto mx-auto lg:mt-10 md:mt-5 mt-2">
         <IconButton onClick={handleLogout}>
           {isLogingOut ? (
             <CircularProgress sx={{ fontSize: "3rem" }} />
