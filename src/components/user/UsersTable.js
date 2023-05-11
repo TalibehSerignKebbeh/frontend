@@ -1,14 +1,18 @@
 import React, { useState} from "react";
 
-import { Box } from "@mui/system";
+import  Box  from "@mui/system/Box";
 
 import { queryInstance, fetchUsers } from "../../api";
 import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import ConfirmDelete from "../Modal/ConfirmDelete";
+import { initialUser } from "./Data";
+import useAuth from "../../hooks/useAuth";
+import { allowedRoles } from "../../config/allowedRoles";
 
 const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collapseRef }) => {
   const queryClient = new QueryClient();
+  const {roles} = useAuth()
 
   const [UserToEdit, setUserToEdit] = useState(null);
   const [userToDelete, setuserToDelete] = useState(null);
@@ -89,13 +93,16 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
   //   queryFn: () => fetchUsers(),
   // });
   const handleStartDelete = (user) => {
+    if (!roles?.includes(allowedRoles.admin) && !roles?.includes(allowedRoles.manager)) {
+      return;
+    }
     setopenDelete(true)
    
     setuserToDelete(user)
   }
   const handleInitialiseEdit = (user) => {
     window.scrollTo({top:collapseRef?.current?.offSetTop, behavior:'smooth'})
-
+   setUserData(initialUser)
     setUserData({...user, password: "", confirmNewPassword: ""})
     // setopenEdit(true);
     setopenAdd(true)
@@ -146,15 +153,13 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
 
   return (
     <div className="w-auto h-auto md:mt-6 mt-3">
-      {/* {UserFetch?.isLoading ? (
-        <Box>
-          <h3 className="p-2 text-lg">Loading....</h3>
-        </Box>
-      ) : ( */}
+     
         <Box height={"460px"}>
           <DataGrid
             // loading={}
-            columns={userColumns}
+          columns={[
+            ...userColumns,
+          ]}
             rows={users}
             getRowId={(param) => param?._id}
             onRowEditStart={() => {

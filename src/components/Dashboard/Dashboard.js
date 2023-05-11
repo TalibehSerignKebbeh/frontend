@@ -11,6 +11,7 @@ import DashBoardSalesStats from '../sales/DashBoardSalesStats';
 import DateReportComponent from '../Report/DateReportComponent';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
+import SpinnerLoader from '../Loaders/SpinnerLoader';
 
 const Dashboard = () => {
     const [errorMessage, seterrorMessage] = useState('');
@@ -36,26 +37,23 @@ const Dashboard = () => {
         ],
     })
     useEffect(() => {
-        console.log(salesStatsQuery?.data);
+        // console.log(salesStatsQuery?.data);
         // console.log(salesTodayQuery?.data);
-            console.log(salesStatsQuery);
+            // console.log(salesStatsQuery);
 
         if (salesStatsQuery?.isError) {
             seterrorMessage(GetError(salesStatsQuery?.error))
         }
+        if (salesStatsQuery?.failureReason) {
+      seterrorMessage(GetError(salesStatsQuery?.error))
+    }
            
 
        }, [dayStatsQuery.data, salesStatsQuery, salesStatsQuery?.data, salesStatsQuery?.isSuccess, salesTodayQuery]);
     
         const isLoading = salesStatsQuery.isLoading && productsStatesQuery.isLoading && salesTodayQuery.isLoading;
     if (isLoading) return (
-        <Box sx={{
-            width: '100%', display: 'flex', alignSelf: 'center', alignItems: 'center',
-            justifyContent: 'center', height: 'auto',
-            textAlign: 'center'
-        }}>
-        <CircularProgress sx={{color:'red'}} />
-    </Box>)
+        <SpinnerLoader />)
 
     return (
         <Box sx={{width:'100vw', mx: 2, display: 'flex', flexDirection:'column', rowGap:3, mb:10}}

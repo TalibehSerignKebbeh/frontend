@@ -13,7 +13,7 @@ import AddStock from "./components/stock/AddStock";
 import Stocks from "./components/stock/Stocks";
 import Login from "./components/Auth/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
-import { allowedRoles } from "./config/allowedRoles";
+import { adminRoles, allowedRoles } from "./config/allowedRoles";
 import EditProductPage from "./components/Product/EditProductPage";
 import StockProducts from "./components/stock/StockProducts";
 import SalesPage from "./components/sales/SalesPage";
@@ -21,7 +21,7 @@ import ProductSales from "./components/sales/ProductSales";
 import UserPage from "./components/user/UserPage";
 import Dashboard from "./components/Dashboard/Dashboard";
 import SellLayout from "./components/Layouts/SellLayout";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import useAuth from "./hooks/useAuth";
 // import { queryInstance, serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
@@ -34,22 +34,17 @@ import 'antd/dist/reset.css';
 
 
 function App() {
-  const {token} = useAuth()
-let socket = io(process.env.REACT_APP_API,
- {
-  auth: {
-    token: token,
-  },
-});
+  const [socket, setsocket] = useState(io(process.env.REACT_APP_API, { withCredentials: true }));
+  const { token } = useAuth()
+
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {
-    socket.emit('/public')
-    
+
   }, [socket]);
   return (
     <>
       <Router>
-      <div className="maincontainer flex flex-row   ">
+        <div className="maincontainer flex flex-row   ">
           <SideBar
             socket={socket}
             showSideMenu={showSideMenu}
@@ -120,13 +115,21 @@ let socket = io(process.env.REACT_APP_API,
                       <Route index element={<SalesPage socket={socket} />} />
                     </Route>
                     <Route
-                      path="/users"
-                      element={<UserPage socket={socket} />}
-                    />
-                    <Route
-                      path="/report"
-                      element={<SaleReport />}
-                    />
+                      element={
+                        <ProtectedRoutes
+                          allowedRoles={[...adminRoles]}
+                        />
+                      }
+                    >
+                      <Route
+                        path="/users"
+                        element={<UserPage socket={socket} />}
+                      />
+                      <Route
+                        path="/report"
+                        element={<SaleReport />}
+                      />
+                    </Route>
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
                   </Route>
                 </Route>
@@ -137,7 +140,7 @@ let socket = io(process.env.REACT_APP_API,
               </Routes>
             </div>
             {token && (
-            <div className="card-shadow p-4 bg-white  shadow-sm shadow-orange-50 self-end 
+              <div className="card-shadow p-4 bg-white  shadow-sm shadow-orange-50 self-end 
               justify-end text-center w-full py-4">
                 <h3>
                   &#169; My Mini Market Inventory Management System{" "}
@@ -145,8 +148,8 @@ let socket = io(process.env.REACT_APP_API,
                 </h3>
               </div>
             )}
-        </div>
-        
+          </div>
+
         </div>
       </Router>
     </>

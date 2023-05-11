@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 // Create a new provider component for the authentication token context
 export const AuthProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
+  const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
 
   // Store the authentication token in local storage and update the context state
   const storeAuthToken = (token) => {

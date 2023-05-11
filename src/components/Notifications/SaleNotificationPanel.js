@@ -2,10 +2,11 @@ import { Button } from '@mui/material';
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import './notification.css'
+import { DataGrid } from '@mui/x-data-grid';
 
 const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   const ref = useRef(null)
-
+  console.log(dataArray);
    const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -49,7 +50,7 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
       onMouseUp={handleMouseUp}
       >
             <div className='table-container'>
-          <table className="py-2 relative w-full table-auto">
+          {/* <table className="py-2 relative w-full table-auto">
             <thead className=" bg-white shadow-md py-2">
               <tr>
                 <th className="text-sm font-normal">Msg</th>
@@ -80,10 +81,32 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
                       <tfoot className="w-full text-center">
                          
                       </tfoot>
-                  </table>
-                   <Button sx={{fontSize:'.7rem'}} onClick={handleReadSaleNotification}>
-                              Mark all as read
-                          </Button>
+                  </table> */}
+          <DataGrid 
+            sx={{height:'300px'}}
+            rows={dataArray}
+            columns={[
+              { field: 'message', headerName: '#msg', width: '160', cellClassName: 'text_cell' },
+              { field: 'type', headerName:'type',  },
+              {
+                field: 'quantity', type: 'Number', headerName: '#Qty',
+                valueGetter: ({row }) => row?.data?.quantity
+              },
+              { field: 'data', headerName: '#Price', valueGetter: ({ value }) => value?.quantity * value?.price },
+              {
+                field: 'userId', headerName: 'User',
+                cellClassName:'text_cell',width:170,
+                valueGetter: ({ value }) => value?.firstName + ' ' + value?.lastName
+              },
+              
+            ]}
+            getRowId={(row) => row?._id}
+            hideFooter hideFooterSelectedRowCount
+            hideFooterPagination
+            />
+            <Button sx={{fontSize:'.7rem'}} onClick={handleReadSaleNotification}>
+                      Mark all as read
+          </Button>
         </div>
         </div>
     );

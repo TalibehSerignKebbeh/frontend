@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
-import { Select } from 'antd';
+import { Select, Spin } from 'antd';
 
 const { Option } = Select;
 
-const SearchableProductSelect = ({ products, handleSelect }) => {
+const SearchableProductSelect = ({ products, selected,
+  setselected,handleSelect }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searching, setsearching] = useState(false);
+  const handleSearch = async(string) => {
+    // console.log(string);
+    setsearching(true)
+    setSearchTerm(string);
 
-  const handleSearch = (searchTerm) => {
-    setSearchTerm(searchTerm);
-
-    if (searchTerm.length === 0) {
+    if (string.length === 0) {
       setFilteredProducts([]);
     } else {
       const filtered = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        product?.name?.toLowerCase().includes(string?.toLowerCase())
       );
       setFilteredProducts(filtered);
     }
+    setsearching(false)
   };
 const handleDisplay = (productId) => {
     const selectedProduct = products.find(product => product._id === productId);
@@ -26,12 +30,22 @@ const handleDisplay = (productId) => {
   return (
     <Select
       showSearch
+      size='middle'
+      mode='multiple'
       allowClear
-      value={searchTerm}
+      value={selected}
+      notFoundContent={searching? <Spin size='small'/> : null}
       onSearch={handleSearch}
           style={{ width: 200 }}
           onChange={handleDisplay}
-          onSelect={handleSelect}
+          // onSelect={handleSelect}
+      onDeselect={(value) => {
+        const newValues = selected?.filter(avalue => avalue !== value)
+        setselected(newValues)
+      }}
+      onSelect={(value) => {
+         setselected([...selected, value])
+          }}
     >
       {filteredProducts?.map(product => (
         <Option key={product._id} value={product._id}>

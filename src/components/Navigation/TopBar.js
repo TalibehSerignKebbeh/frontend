@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import img from '../../imgs/unnamed.webp'
 import useAuth from "../../hooks/useAuth";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 import Box from "@mui/material/Box";
@@ -7,8 +6,7 @@ import SaleNotificationPanel from "../Notifications/SaleNotificationPanel";
 import AuthNotificationPanel from "../Notifications/AuthNotificationPanel";
 import {  ProductionQuantityLimitsOutlined, ShoppingBagSharp } from "@mui/icons-material";
 import ProductNotification from "../Notifications/ProductNotification";
-// import { queryInstance } from "../../api";
-// import { useQuery } from "@tanstack/react-query";
+import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
 
 const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
   const [openNotifyPanel, setopenNotifyPanel] = useState(false);
@@ -22,7 +20,7 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
   useEffect(() => {
     if (isAdmin || isManager) {
       socket.emit("get_notifications");
-      socket.on("auth_notifications", async ({authNotifications}) => {
+      socket.on("auth_notifications", async ({ authNotifications }) => {
         setauthNotifications([...authNotifications]);
         // await queryInstance.get(`/notifications/auths`).then((res) => {
         //   if (res?.status === 200) {
@@ -31,9 +29,6 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
         // })
       });
 
-//       salesNotifications
-// authNotifications
-// productNotifies
       socket.on("sales_notifications", async ({ salesNotifications }) => {
         setsales_Notifications([...salesNotifications])
         //  await queryInstance.get(`/notifications/sales`).then((res) => {
@@ -117,9 +112,9 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
             }}
           >
             {authNotifications?.length > 0 && (
-              <AuthNotificationPanel 
+              <AuthNotificationsTable 
                 socket={socket}
-                dataArray={authNotifications}
+                data={authNotifications}
                 open={openNotifyPanel}
                 setopen={setopenNotifyPanel}
               />

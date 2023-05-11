@@ -7,13 +7,14 @@ const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   const ref = useRef(null)
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const containerRef = useRef(null);
+  // const [dragging, setDragging] = useState(false);
+  // const [offset, setOffset] = useState({ x: 0, y: 0 });
+  // const containerRef = useRef(null);
  
 
   const handleClickAuthNotification = () => {
-      const ids = dataArray?.map(notify=>{return notify?._id})
+    console.log(`emitted`);
+    const ids = dataArray?.map(notify => { return notify?._id })
     socket.emit("read_all_auth_notification", {ids});
     };
 

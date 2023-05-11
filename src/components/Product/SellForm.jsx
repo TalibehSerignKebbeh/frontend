@@ -1,10 +1,12 @@
 import  Add  from '@mui/icons-material/Add';
 import React,{useState,useEffect} from 'react';
+import SearchableProductSelect from './Sell/SearchableProductSelect';
 
 const SellForm = ({ product, setproduct, products,setproductsTosell,
 productsTosell }) => {
     const [search, setsearch] = useState('');
     const [options, setoptions] = useState([]);
+    const [selected, setselected] = useState([]);
      const handleChangeProduct = (e) => {
         const value = e.target.value;
         const selectedProduct = products?.find(prod => prod?._id === value)
@@ -58,7 +60,12 @@ productsTosell }) => {
                                         </option>
                                     ))}
                                 </select>
-                            </div>
+            </div>
+            <SearchableProductSelect selected={selected}
+                setselected={setselected}
+                products={products} handleSelect={(obj) => {
+                console.log(obj)
+            }} />
 
                             <div className=" w-auto h-auto ">
                                 <label className='block -mb-1 px-1 text-lg' htmlFor="quantity">quantity</label>

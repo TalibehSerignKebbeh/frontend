@@ -13,14 +13,17 @@ import {
 import { registerRoles } from "../../config/allowedRoles";
 import { getStyles } from "../../other/format";
 import { GetError } from "../other/OtherFuctions";
+import SuccessMessage from "../StatusMessages/SuccessMessage";
+import ErrorMessage from "../StatusMessages/ErrorMessage";
 
-const UserForm = ({ socket, UserData,setUserData, resetFunction }) => {
+const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
+  // console.log(UserData);
   // console.log(UserData);
   const queryClient = new QueryClient();
   const [adding, setadding] = useState(false);
   const [updating, setupdating] = useState(false);
   const [addMessages, setaddMessages] = useState({ error: "", success: "" });
-  const [statusMessage, setstatusMessage] = useState({
+  const [updateStatusMessage, setupdateStatusMessage] = useState({
     success: "",
     error: "",
   });
@@ -70,50 +73,50 @@ const UserForm = ({ socket, UserData,setUserData, resetFunction }) => {
     setaddMessages({ ...addMessages, error: "", success: "" });
     formik.handleReset();
   };
-  const formik = useFormik({
-    initialValues: { ...UserData },
-    validate,
-    onSubmit: async (values, {setSubmitting}) => {
-      console.log("submitting");
-      setupdating({ error: "", success: "" });
-      setaddMessages({ success: "", error: "" });
+  const submitData = async () => {
+    const values = formik.values;
+    setupdating({ error: "", success: "" });
+    setaddMessages({ success: "", error: "" });
 
-      if (values?._id?.trim()?.length) {
-        setupdating(true);
-        const id = values?._id;
-        await queryInstance
-          .put(`/users/${id}`, UserData)
-          .then((res) => {
-            if (res.status === 200) {
-              setstatusMessage({
-                ...statusMessage,
-                updateSuccess: res?.data?.message,
-              });
-              queryClient.invalidateQueries({ queryKey: ["users"] });
-              return;
-            }
-             statusMessage({
-              ...statusMessage,
-              updateError: GetError(res),
+    if (values?._id?.trim()?.length) {
+      setupdating(true);
+      const id = values?._id;
+      await queryInstance
+        .put(`/users/${id}`, UserData)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            setupdateStatusMessage({
+              ...updateStatusMessage,
+              updateSuccess: res?.data?.message,
             });
-          })
-          .catch((err) => {
-            statusMessage({
-              ...statusMessage,
-              updateError: GetError(err),
-            });
-          
-          })
-          .finally(async () => {
-            setupdating(false);
             queryClient.invalidateQueries({ queryKey: ["users"] });
+            return;
+          }
+          updateStatusMessage({
+            ...updateStatusMessage,
+            updateError: GetError(res),
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          updateStatusMessage({
+            ...updateStatusMessage,
+            updateError: GetError(err),
           });
 
-      }else{
+        })
+        .finally(async () => {
+          setupdating(false);
+          queryClient.invalidateQueries({ queryKey: ["users"] });
+        });
+
+    } else {
       setadding(true);
       await queryInstance
         .post(`/users`, values)
         .then((res) => {
+          console.log(res);
           setaddMessages({ ...addMessages, success: res?.data?.message });
           console.log(res);
           socket.emit("notify_add_user");
@@ -126,9 +129,72 @@ const UserForm = ({ socket, UserData,setUserData, resetFunction }) => {
         })
         .finally(() => {
           setadding(false);
+          queryClient.invalidateQueries({ queryKey: ["users"] });
+
         });
     }
-    }
+
+  }
+  const formik = useFormik({
+    initialValues: { ...UserData },
+    validate: validate,
+
+    // onSubmit: async (values) => {
+    //   console.log("submitting");
+    //   setupdating({ error: "", success: "" });
+    //   setaddMessages({ success: "", error: "" });
+
+    //   if (values?._id?.trim()?.length) {
+    //     setupdating(true);
+    //     const id = values?._id;
+    //     await queryInstance
+    //       .put(`/users/${id}`, UserData)
+    //       .then((res) => {
+    //         if (res.status === 200) {
+    //           setupdateStatusMessage({
+    //             ...updateStatusMessage,
+    //             updateSuccess: res?.data?.message,
+    //           });
+    //           queryClient.invalidateQueries({ queryKey: ["users"] });
+    //           return;
+    //         }
+    //          updateStatusMessage({
+    //           ...updateStatusMessage,
+    //           updateError: GetError(res),
+    //         });
+    //       })
+    //       .catch((err) => {
+    //         updateStatusMessage({
+    //           ...updateStatusMessage,
+    //           updateError: GetError(err),
+    //         });
+
+    //       })
+    //       .finally(async () => {
+    //         setupdating(false);
+    //         queryClient.invalidateQueries({ queryKey: ["users"] });
+    //       });
+
+    //   }else{
+    //   setadding(true);
+    //   await queryInstance
+    //     .post(`/users`, values)
+    //     .then((res) => {
+    //       setaddMessages({ ...addMessages, success: res?.data?.message });
+    //       console.log(res);
+    //       socket.emit("notify_add_user");
+    //       queryClient.invalidateQueries({ queryKey: ["users"] });
+    //     })
+    //     .catch((err) => {
+    //       setaddMessages({ ...addMessages, error: err?.data?.message });
+    //       console.log(err?.response?.data?.message);
+    //       console.log(err);
+    //     })
+    //     .finally(() => {
+    //       setadding(false);
+    //     });
+    // }
+    // }
   });
   return (
     <Box
@@ -136,73 +202,25 @@ const UserForm = ({ socket, UserData,setUserData, resetFunction }) => {
       className="bg-white shadow-white drop-shadow-xl py-2 h-auto
           "
     >
-      <form onSubmit={formik.handleSubmit} className=" md:py-3 py:2  px-1 ">
-        {/* status messages starts */}
-        <div>
-          {addMessages?.error?.length ? (
-            <div
-              className=" w-fit h-auto flex flex-row gap-x-40 content-between 
-                items-center bg-slate-100 px-2 rounded"
-            >
-              <p className="text-red-700 text-lg">{addMessages?.error}</p>
-              <span
-                className="text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
-                cursor-pointer m-auto rounded-full"
-                              onClick={() => setaddMessages({...addMessages, error: ""})}
-              >
-                X
-              </span>
-            </div>
-                  ) : null}
-                   {addMessages?.success?.length ? (
-            <div
-              className=" w-fit h-auto flex flex-row gap-x-40 content-between 
-                items-center bg-slate-100 px-2 rounded"
-            >
-              <p className="text-green-700 text-lg">{addMessages?.success}</p>
-              <span
-                className="text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
-                cursor-pointer m-auto rounded-full"
-                              onClick={() => setaddMessages({...addMessages, success: ""})}
-              >
-                X
-              </span>
-            </div>
-          ) : null}
-          
-             {statusMessage?.success?.length ? (
-            <div
-              className=" w-fit h-auto flex flex-row gap-x-40 content-between 
-                items-center bg-slate-100 px-2 rounded"
-            >
-              <p className="text-green-700 text-lg">{statusMessage?.success}</p>
-              <span
-                className="text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
-                cursor-pointer m-auto rounded-full"
-                              onClick={() => setstatusMessage({...statusMessage, success: ""})}
-              >
-                X
-              </span>
-            </div>
-          ) : null}
-          {statusMessage?.error?.length ? (
-            <div
-              className=" w-fit h-auto flex flex-row gap-x-40 content-between 
-                items-center bg-slate-100 px-2 rounded"
-            >
-              <p className="text-red-700 text-lg">{statusMessage?.error}</p>
-              <span
-                className="text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
-                cursor-pointer m-auto rounded-full"
-                              onClick={() => setstatusMessage({...statusMessage, error: ""})}
-              >
-                X
-              </span>
-            </div>
-                  ) : null}
-        </div>
-        {/* status messages ends */}
+      <div>
+        {addMessages?.success?.length && <SuccessMessage message={addMessages?.success}
+          resetFunction={() => { setaddMessages({ ...addMessages, success: '' }) }} />}
 
+        {updateStatusMessage?.success?.length && <SuccessMessage message={updateStatusMessage?.success}
+          resetFunction={() => { setupdateStatusMessage({ ...updateStatusMessage, success: '' }) }} />}
+        {updateStatusMessage?.error?.length && 
+          <ErrorMessage error={updateStatusMessage?.error}
+          handleReset={()=>setupdateStatusMessage('')}
+          />}
+        {addMessages?.error?.length && 
+          <ErrorMessage error={addMessages?.error}
+          handleReset={()=>setaddMessages('')}
+        />}
+      </div>
+      <form onSubmit={formik.handleSubmit}
+        onReset={formik.handleReset}
+        className=" md:py-3 py:2  px-1 ">
+        
         <div className="flex flex-row flex-wrap gap-x-2 gap-y-3 md:px-3 mb-14 ">
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
@@ -369,8 +387,8 @@ const UserForm = ({ socket, UserData,setUserData, resetFunction }) => {
             // disabled={adding || updating}
             className="px-10 py-2 text-lg text-white bg-green-700 rounded-md"
             type="submit"
-            // onClick={formik.handleSubmit}
-            disabled={false}
+            onClick={submitData}
+          // disabled={false}
           >
             {adding || updating ? (
               <CircularProgress />

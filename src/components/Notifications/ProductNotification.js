@@ -1,5 +1,6 @@
-import { Button, Table } from '@mui/material';
-import {DataGrid} from '@mui/x-data-grid'
+// import  Table  from '@mui/material/Table';
+import  Button from '@mui/material/Button';
+import { DataGrid } from '@mui/x-data-grid';
 import { format, parseISO } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
 import './notification.css'
@@ -7,6 +8,7 @@ import './notification.css'
 
 const ProductNotification = ({ dataArray, socket, open, setopen }) => {
   const ref = useRef(null)
+  // console.log(dataArray); 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -54,7 +56,6 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           <table className="py-2 relative w-full table-fixed">
             <thead className=" bg-white shadow-md py-4">
               <tr>
-                {/* <th className="text-sm font-normal">Action</th> */}
                 <th className="text-sm font-normal">Action</th>
                 <th className="text-sm font-normal">Date</th>
                 <th colSpan={7} className="text-sm font-normal">From</th>
@@ -86,6 +87,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
                                       <td>{val?.data?.from?.quantityInStock}</td>
                                       <td>{val?.data?.from?.price}</td>
                                       <td>{val?.data?.from?.description }</td>
+                                      <td>{val?.data?.from?.stockId?.name }</td>
                                   </tr>
                               </tbody>
                         </table>  
@@ -107,7 +109,9 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
                                       <td>{val?.data?.to?.quantity }</td>
                                       <td>{val?.data?.to?.quantityInStock}</td>
                                       <td>{val?.data?.to?.price}</td>
-                                      <td>{val?.data?.to?.description }</td>
+                          <td>{val?.data?.to?.description}</td>
+                                      <td>{val?.data?.to?.stockId?.name }</td>
+                          
                                   </tr>
                               </tbody>
                         </table>  
@@ -117,6 +121,24 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
               ))}
             </tbody>
           </table>
+          {/* <DataGrid sx={{height:'250px', zIndex:2}}
+            rows={dataArray}
+            columns={[
+              { field: 'type', headerName: 'Action', },
+              {
+                field: 'created_at', headerName: 'Date',
+                valueGetter: ({ value }) => value && format(parseISO(value), " EEE MM yyyy, HH:mm b")
+              },
+              {
+                headerName: 'From', colSpan: 7, renderCell: ({row}) => {
+                  <span>{row?.data?.from?.name }</span>
+              },flex:1 },
+              
+              {headerName:'To', colSpan:7, }
+            ]}
+            getRowId={(row) => row?._id}
+            hideFooter
+          /> */}
           <Button onClick={handleClickAuthNotification}>
             Mark All As read
           </Button>

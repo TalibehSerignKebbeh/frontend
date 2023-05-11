@@ -8,6 +8,7 @@ import LoginIcon from '../../imgs/newIncon.png'
 import { GetError } from '../other/OtherFuctions';
 import { useContextHook } from '../../context/AuthContext';
 
+
 const Login = ({ socket }) => {
     const {storeAuthToken }  = useContextHook()
     const navigate = useNavigate();
@@ -51,9 +52,10 @@ const Login = ({ socket }) => {
         setisLoading(true)
         await queryInstance.post(`/auth`, user)
             .then(res => {
-            storeAuthToken(res?.data?.token)
+                storeAuthToken(res?.data?.token)
+                localStorage.setItem('token', res?.data?.token)
             setsuccessMsg(res?.data?.message)
-            console.log(res);
+            // console.log(res);
             socket.emit('notify_login', {username: user?.username, date:new Date()},)
             navigate("dashboard")
         }).catch(err => {

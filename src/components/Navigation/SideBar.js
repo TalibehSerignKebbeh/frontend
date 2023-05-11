@@ -17,18 +17,20 @@ import {
   LogoutTwoTone,
   MenuOutlined,
   ReportOutlined,
+  DashboardOutlined,
 } from "@mui/icons-material";
 import {  AiOutlineUserSwitch } from "react-icons/ai";
 import Box from "@mui/system/Box";
 import { queryInstance } from "../../api";
 import {useContextHook} from '../../context/AuthContext'
+import CustomLink from "./Links/CustomLink";
 
 const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
   const navigate = useNavigate();
   const {clearAuthToken} = useContextHook()
   const [isLogingOut, setisLogingOut] = useState(false);
   // &#9776;
-  const { token, username } = useAuth();
+  const { token, username, isAdmin, isManager } = useAuth();
 
   const handleNavToggle = (e) => {
     setshowSideMenu((prev) => !prev);
@@ -91,79 +93,39 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
       <div
         className={`"w-full flex flex-col 
                          content-center items-start md:gap-y-3 gap-y-2 `}
-      >
-        <Link
-          to="/dashboard"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
         >
-          <button
-            className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg  "
-          >
-            &#9776;
-          </button>
-          <Typography  className="ml-3">
-            Dashboard
-          </Typography>
-        </Link>
-        <Link
-          to="/sales"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
-        >
-          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
-            <PointOfSaleSharp />
-          </button>
-          <Typography  className="md:text-2xl text-lg">Sales</Typography>
-        </Link>
-        <Link
-          to="/stocks"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
-        >
-          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
-            <ProductionQuantityLimits />
-          </button>
-          <Typography  className="md:text-2xl text-lg">Stock</Typography>
-        </Link>
-
-        <Link
-          to="/products"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
-        >
-          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
-            <Inventory2Outlined />
-          </button>
-          <Typography  className="md:text-2xl text-lg">Products</Typography>
-        </Link>
-
-        <Link
-          to="/users"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
-        >
-          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
-            <AiOutlineUserSwitch />
-          </button>
-          <Typography  className="md:text-2xl text-lg">Users</Typography>
-          </Link>
-          <Link
-          to="/report"
-          className={`${showSideMenu ? "w-full ml-5 " : "-ml-96"} mr-auto
-                 m-auto text-start justify-start flex flex-row md:gap-x-7 gap-x-4 items-center 
-                 hover:text-blue-400 transition-all `}
-        >
-          <button className="beatiful-shadow p-1 rounded-lg md:text-lg text-lg">
-            <ReportOutlined />
-          </button>
-          <Typography  className="md:text-2xl text-lg">Report</Typography>
-        </Link>
+          <CustomLink href={'/dashboard'} 
+            icon={<DashboardOutlined />}
+            title={"Dashboard"}
+            showSideMenu={showSideMenu}
+          />
+           <CustomLink href={'/sales'} 
+            icon={<PointOfSaleSharp />}
+            title={"Sales"}
+            showSideMenu={showSideMenu}
+          />
+          <CustomLink href={'/stocks'} 
+            icon={<ProductionQuantityLimits />}
+            title={"Stocks"}
+            showSideMenu={showSideMenu}
+          />
+       <CustomLink href={'/products'} 
+            icon={<Inventory2Outlined />}
+            title={"Products"}
+            showSideMenu={showSideMenu}
+          />
+          {(isAdmin || isManager) ?
+            <CustomLink href={'/users'} 
+            icon={<AiOutlineUserSwitch />}
+            title={"users"}
+            showSideMenu={showSideMenu}
+          /> : null}
+           {(isAdmin || isManager) ?
+           <CustomLink href={'/report'} 
+            icon={<AiOutlineUserSwitch />}
+            title={"report"}
+            showSideMenu={showSideMenu}
+          />: null}
           </div>
       <div className="w-auto mx-auto lg:mt-10 md:mt-5 mt-2">
         <IconButton onClick={handleLogout}>

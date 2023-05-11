@@ -17,6 +17,8 @@ const EditProductPage = ({ socket }) => {
   const [stocks, setstocks] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [isSuccess, setisSuccess] = useState(false);
+  const [page, setpage] = useState(1);
+  const [pageSize, setpageSize] = useState(10);
   const [errorMessage, seterrorMessage] = useState('');
   const [productUpdates, setproductUpdates] = useState([]);
   
@@ -24,17 +26,21 @@ const EditProductPage = ({ socket }) => {
     return stocks?.find(stock => stock?._id?.toString() === id)?.name;
   }
   useEffect(() => {
-    if (isAdmin || isManager) {
-      const fetchUpdates = async () => {
-        await queryInstance.get(`/notifications/products/?id=${id}`).then((res) => {
-          if (res?.status === 200) {
-            setproductUpdates(res?.data?.notifications);
-            console.log(res);
-          }
-        });
-      };
-      fetchUpdates();
-    }
+    // if (isAdmin || isManager) {
+    //   const fetchUpdates = async () => {
+    //     await queryInstance.get(`/notifications/product/?id=${id}/all`)
+    //       .then((res) => {
+    //         console.log(res);
+    //       if (res?.status === 200) {
+    //         setproductUpdates(res?.data?.notifications);
+    //         console.log(res);
+    //       }
+    //       }).catch((err) => {
+    //       console.log(err);
+    //     });
+    //   };
+    //   fetchUpdates();
+    // }
 
     const fetchProduct = async () => {
       setisLoading(true);
@@ -72,16 +78,19 @@ const EditProductPage = ({ socket }) => {
           <CircularProgress sx={{ color: "red" }} />
         </div>
       ) : product ? (
-        <div className="h-auto self-stretch">
+          <div className="flex flex-col gap-8">
+        <div className="h-auto self-stretch justify-center bg-zinc-50">
           <EditForm
             product={product}
             setproduct={setproduct}
             socket={socket}
             stocks={stocks}
           />
-          {((isAdmin || isManager) && productUpdates?.length) && (
-            <Box height={"450px"} width={"100%"} overflow="auto">
-              <table>
+          
+            </div>
+            {/* {((isAdmin || isManager) && productUpdates?.length) && (
+            <Box height={"450px"} width={"100%"} overflow="scroll">
+              <table className="md:w-11/12 sm:w-full xl:w-10/12 ">
                 <thead>
                   <tr>
                     <th className="lg:text-lg md:text-base text-xs font-normal">Action</th>
@@ -108,7 +117,7 @@ const EditProductPage = ({ socket }) => {
                 </thead>
                 <tbody>
                   {productUpdates?.map((notify, id) => (
-                    <tr className={`${!notify?.isRead? 'bg-red-200':'bg-transparent'}`} key={id}>
+                    <tr className={`${!notify?.isRead? 'bg-red-100':'bg-transparent'}`} key={id}>
                       <td className="lg:text-lg md:text-base text-xs">{notify?.type}</td>
                       <td className="lg:text-lg md:text-base text-xs">{format(
                           parseISO(notify?.created_at),
@@ -136,8 +145,8 @@ const EditProductPage = ({ socket }) => {
                 </tbody>
               </table>
             </Box>
-          )}
-        </div>
+          )} */}
+            </div>
       ) : (
             <div className="p-6 text-center my-5">
               <h3>{errorMessage }</h3>

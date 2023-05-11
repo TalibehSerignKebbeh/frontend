@@ -59,7 +59,7 @@ const DateReportComponent = () => {
   }));
   return (
     <div className=" w-auto bg-gray-100 p-2 py-4 block rounded">
-      <h2 className="text-lg font-sans italic opacity-90 pl-1">Date Report Section</h2>
+      <h2 className="text-lg font-normal font-sans italic opacity-90 pl-1">Date Report Section</h2>
       <div className="p-1 w-auto max-w-xs grid grid-cols-1 relative">
         <label className="text-lg font-sans italic font-medium opacity-80" htmlFor="date">
           Choose date

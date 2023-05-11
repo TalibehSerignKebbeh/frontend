@@ -4,6 +4,7 @@ import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { queryInstance } from "../../api";
 import ConfirmDelete from "../Modal/ConfirmDelete";
+import { format } from "date-fns";
 
 const EditForm = ({ product, setproduct, socket, stocks }) => {
   const navigate = useNavigate();
@@ -67,6 +68,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
                         gap-x-3 m-auto md:justify-start justify-center
                         md:mb-3 mb-14"
     >
+    
       <div className="w-full h-auto p-1">
         <div
           className="actionBtns float-right px-2 py-2 flex flex-row gap-16
@@ -104,10 +106,21 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           </span>
         </div>
       ) : null}
-
+      <div className="w-full h-auto py-4 flex 
+      flex-row flex-wrap gap-x-16 gap-y-3
+      mx-3 sm:mx-auto lg:mx-5 xl:mx-9 justify-self-center">
+        <div className="divide-y-2 divide-gray-800">
+          <span>Added At</span>
+          <h2 className="text-gray-600">{format(new Date(product?.createdAt), 'EEE MM yyyy, HH:mm b')}</h2>
+        </div>
+        <div className="divide-y-2 divide-gray-800">
+          <span>Updated At</span>
+          <h2 className="text-gray-600">{format(new Date(product?.updatedAt), 'EEE MM yyyy, HH:mm b')}</h2>
+        </div>
+      </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="name"
         >
@@ -125,7 +138,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start relative">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="quantity-instock"
         >
@@ -148,7 +161,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="quantity"
         >
@@ -166,7 +179,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="price"
         >
@@ -184,7 +197,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="stockId"
         >
@@ -212,7 +225,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="producedDate"
         >
@@ -232,7 +245,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-900 font-semibold text-lg
+          className="text-gray-600 font-semibold text-lg
                              w-full block"
           htmlFor="expiryDate"
         >

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const serverUrl = process.env.REACT_APP_API;
 const token = localStorage.getItem('token')
-console.log(localStorage.getItem('token'));
+console.log(token);
 export const queryInstance = axios.create({ baseURL: serverUrl });
 queryInstance.interceptors.request.use(
   function (req) {
@@ -45,11 +45,11 @@ revenueThreshold }) => {
     .then((res) => Promise.resolve(res?.data))
     .catch((err) =>  Promise.reject(err));
 };
-export const fetchSales = ({ page, pageSize, selectedDate }) => {
+export const fetchSales = ({config, page, pageSize, selectedDate }) => {
   return queryInstance
     .get(
       `/sales?page=${page}&&pageSize=${pageSize}&&saleDate=${selectedDate}`,
-      { params: { page: page, pageSize: pageSize, saleDate: selectedDate } }
+      { params: { page: page, pageSize: pageSize, saleDate: selectedDate }, ...config }
     )
     .then((res) => {
       const hasNext = page * 2 <= res?.data?.totalSales;
@@ -65,7 +65,7 @@ export const fetchSalesStats = () => {
   const month = new Date().getMonth();
   const date = new Date().getDate();
   return queryInstance
-    .get(`/sales/stats?year=${year}&month=${month}&date=${date}`)
+    .get(`/sales/stats?year=${year}&month=${month}&date=${date}`,)
     .then((res) => {
       if (res?.data) return res?.data;
     })
@@ -75,7 +75,7 @@ export const fetchSalesStats = () => {
 };
 export const fetchProductsStats = () => {
   return queryInstance
-    .get(`/products/stats`)
+    .get(`/products/stats`, )
     .then((res) => {
       if (res?.data) return res?.data;
     })

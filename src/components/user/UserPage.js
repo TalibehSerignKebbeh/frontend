@@ -13,17 +13,10 @@ import {  useQuery } from "@tanstack/react-query";
 import UserForm from "./UserForm";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
-import SuccessMessage from "../StatusMessages/SuccessMessage";
+import { initialUser } from "./Data";
 
-const initialUser = {
-  _id:'',
-  firstName: "",
-  lastName: "",
-  username: "",
-  password: "",
-  confirmPassword: "",
-  roles: [],
-};
+
+
 
 const UserPage = ({ socket }) => {
   const { isAdmin, isManager } = useAuth();
@@ -48,12 +41,12 @@ const UserPage = ({ socket }) => {
 
   
   useEffect(() => {
-    if (UserFetch?.isSuccess) {
-      seterrorMessage(GetError(UserFetch?.data))
+    if (UserFetch?.isError) {
+      seterrorMessage(GetError(UserFetch?.error))
     }
     
     
-  }, [UserFetch?.data, UserFetch?.isSuccess])
+  }, [UserFetch.isError, UserFetch.error])
 
   return (
     <Box sx={{ mb: 10, mx: 3, px: 1 }} className="w-full h-full ">

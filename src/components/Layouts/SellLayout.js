@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SellProductPopper from '../Product/SellProduct';
-import { fetchProducts,queryInstance } from '../../api';
-import {useQuery} from '@tanstack/react-query'
+import { fetchProducts } from '../../api';
+import {useQuery,QueryClient} from '@tanstack/react-query'
 import { Button } from '@mui/material';
 import { AiFillCaretUp } from 'react-icons/ai';
-const SellLayout = ({socket}) => {
 
-    const { isLoading, data } =
+const SellLayout = ({ socket }) => {
+
+    const client = new QueryClient()
+   
+    const { isLoading, data, error, failureReason } =
         useQuery(['products'], ()=> fetchProducts({startDate: null, endDate:null, quantityThreshold:0,revenueThreshold:0}))
     // useEffect(() => {        
     //     const fetchProducts = async () => {
@@ -34,6 +37,13 @@ const SellLayout = ({socket}) => {
             <h2>Token has expired login again</h2>
         </div>
     }
+    if (error?.response?.status === 403) { 
+          console.log(error);
+    }
+    if (failureReason?.response?.status === 403) { 
+          console.log(failureReason);
+    }
+
     return (
         <>
             <Outlet />
