@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const serverUrl = process.env.REACT_APP_API;
+export const serverUrl = process.env.API_URL;
 const token = localStorage.getItem('token')
 console.log(token);
 export const queryInstance = axios.create({ baseURL: serverUrl });

@@ -34,7 +34,7 @@ import 'antd/dist/reset.css';
 
 
 function App() {
-  const [socket, setsocket] = useState(io(process.env.REACT_APP_API, { withCredentials: true }));
+  const [socket, setsocket] = useState(io(process.env.API_URL, { withCredentials: true }));
   const { token } = useAuth()
 
   const [showSideMenu, setshowSideMenu] = useState(true);
