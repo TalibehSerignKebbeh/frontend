@@ -1,25 +1,21 @@
 import React, {useState} from "react";
 import './sidebar.css'
-import {
-  Button,
-  CircularProgress,
-  IconButton,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import useAuth from "../../hooks/useAuth";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {
-  ProductionQuantityLimits,
-  Inventory2Outlined,
-  PointOfSaleSharp,
-  LogoutTwoTone,
-  MenuOutlined,
-  ReportOutlined,
-  DashboardOutlined,
-} from "@mui/icons-material";
-import {  AiOutlineUserSwitch } from "react-icons/ai";
+import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimits'
+import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
+import PointOfSaleSharp from '@mui/icons-material/PointOfSaleSharp'
+import LogoutTwoTone from '@mui/icons-material/LogoutTwoTone'
+import MenuOutlined from '@mui/icons-material/MenuOutlined'
+import DashboardOutlined from '@mui/icons-material/DashboardOutlined'
+import ReportOffOutlined from '@mui/icons-material/ReportOffOutlined'
+
+import {  AiOutlineUserSwitch, AiFillNotification } from "react-icons/ai";
 import Box from "@mui/system/Box";
 import { queryInstance } from "../../api";
 import {useContextHook} from '../../context/AuthContext'
@@ -39,11 +35,14 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
     setisLogingOut(true)
     await queryInstance.post(`/auth/logout`)
       .then((res) => {
+        // console.log(username);
         socket.emit("notify_logout", { username, date:new Date() });
-        console.log(res);
+        // console.log(res);
         clearAuthToken()
     setisLogingOut(false)
         navigate("/");
+      }).catch(() => {
+        
       })
       
   };
@@ -122,8 +121,14 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
           /> : null}
            {(isAdmin || isManager) ?
            <CustomLink href={'/report'} 
-            icon={<AiOutlineUserSwitch />}
+            icon={<ReportOffOutlined />}
             title={"report"}
+            showSideMenu={showSideMenu}
+            /> : null}
+          {(isAdmin || isManager) ?
+           <CustomLink href={'/events'} 
+            icon={<AiFillNotification />}
+            title={"events"}
             showSideMenu={showSideMenu}
           />: null}
           </div>

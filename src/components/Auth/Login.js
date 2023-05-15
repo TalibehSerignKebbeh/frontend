@@ -50,17 +50,17 @@ const Login = ({ socket }) => {
         }
         seterrorMsg('')
         setisLoading(true)
-        await queryInstance.post(`/auth`, user)
-            .then(res => {
+        await queryInstance.post(`/auth`, {...user, date:new Date()})
+            .then( async(res) => {
                 storeAuthToken(res?.data?.token)
-                localStorage.setItem('token', res?.data?.token)
-            setsuccessMsg(res?.data?.message)
+                // localStorage.setItem('token', res?.data?.token)
+               setsuccessMsg(res?.data?.message)
             // console.log(res);
-            socket.emit('notify_login', {username: user?.username, date:new Date()},)
+            socket.emit('notify_login')
             navigate("dashboard")
         }).catch(err => {
             // console.log(err?.toString())
-            console.log(err);
+            // console.log(err);
             seterrorMsg(GetError(err))
             // console.log(err?.data?.message);
         }).finally(() => {

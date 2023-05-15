@@ -1,4 +1,15 @@
+import  parseISO  from 'date-fns/parseISO';
+import  isValid  from 'date-fns/isValid';
+import  format  from 'date-fns/format';
 
+export function isStringValidDate(dateString) {
+  const parsedDate = parseISO(dateString);
+  return isValid(parsedDate);
+}
+export function formatDayDateWithTime(dateString) {
+  const parsedDate = parseISO(dateString);
+  return format(parsedDate, '');
+}
 
 export const GetError = (err) => {
     if (!err?.response) {

@@ -3,10 +3,11 @@ import useAuth from "../../hooks/useAuth";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 import Box from "@mui/material/Box";
 import SaleNotificationPanel from "../Notifications/SaleNotificationPanel";
-import AuthNotificationPanel from "../Notifications/AuthNotificationPanel";
+// import AuthNotificationPanel from "../Notifications/AuthNotificationPanel";
 import {  ProductionQuantityLimitsOutlined, ShoppingBagSharp } from "@mui/icons-material";
 import ProductNotification from "../Notifications/ProductNotification";
 import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
+import { queryInstance } from "../../api";
 
 const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
   const [openNotifyPanel, setopenNotifyPanel] = useState(false);
@@ -20,30 +21,32 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
   useEffect(() => {
     if (isAdmin || isManager) {
       socket.emit("get_notifications");
-      socket.on("auth_notifications", async ({ authNotifications }) => {
-        setauthNotifications([...authNotifications]);
-        // await queryInstance.get(`/notifications/auths`).then((res) => {
-        //   if (res?.status === 200) {
-        //     setauthNotifications(res?.data?.notifications)
-        //   }
-        // })
+      socket.on("auth_notifications", async () => {
+        // setauthNotifications([...authNotifications]);
+        await queryInstance.get(`/notifications/auths`).then((res) => {
+          if (res?.status === 200) {
+            setauthNotifications(res?.data?.notifications)
+          }
+        })
       });
 
-      socket.on("sales_notifications", async ({ salesNotifications }) => {
-        setsales_Notifications([...salesNotifications])
-        //  await queryInstance.get(`/notifications/sales`).then((res) => {
-        //   if (res?.status === 200) {
-        //     setsales_Notifications(res?.data?.notifications)
-        //   }
-        // })
+      socket.on("sales_notifications", async () => {
+        // setsales_Notifications([...salesNotifications])
+         await queryInstance.get(`/notifications/sales`).then((res) => {
+          if (res?.status === 200) {
+            // console.log(res?.data);
+            setsales_Notifications(res?.data?.notifications)
+          }
+        })
       });
-      socket.on("get_product_notify", async ({ productNotifies }) => {
-          setproductNotifications([...productNotifies])
-        //    await queryInstance.get(`/notifications/products`).then((res) => {
-        //   if (res?.status === 200) {
-        //     setproductNotifications(res?.data?.notifications)
-        //   }
-        // })
+      socket.on("get_product_notify", async () => {
+          // setproductNotifications([...productNotifies])
+           await queryInstance.get(`/notifications/products`).then((res) => {
+             if (res?.status === 200) {
+            // console.log(res?.data);
+            setproductNotifications(res?.data?.notifications)
+          }
+        })
       });
     }
     return () => {};
@@ -57,7 +60,8 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
       <div className="h-full float-left">
         
       </div>
-      <div className="h-full float-right m-auto text-center my-auto mr-6">
+      {(isAdmin || isManager) ?
+        <div className="h-full float-right m-auto text-center my-auto mr-6">
         <Box
           sx={{
             display: "flex",
@@ -71,7 +75,7 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
             py: 3,
             
           }}
-          className="notifications"
+          className=""
         >
             <div
             onClick={(e) => {
@@ -79,7 +83,7 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
               setopenProductNotify(false);
               setopenNotifyPanel(false);
             }}
-            className="sale-notify relative cursor-pointer flex flex-col h-3"
+            className=" relative cursor-pointer flex flex-col h-3"
           >
             {sales_Notifications?.length > 0 && (
               <SaleNotificationPanel 
@@ -103,7 +107,7 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
             
           </div>
           <div
-            className="auth-notify relative cursor-pointer h-3 "
+            className=" relative cursor-pointer h-3 "
             title="auth"
             onClick={(e) => {
               setopenNotifyPanel((prev) => !prev);
@@ -141,7 +145,7 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
               setopenNotifyPanel(false);
               setopenProductNotify((prev) => !prev);
             }}
-            className="sale-notify relative cursor-pointer flex flex-col h-3"
+            className=" relative cursor-pointer flex flex-col h-3"
           >
             {productNotifications?.length > 0 && (
               <ProductNotification 
@@ -164,7 +168,7 @@ const TopBar = ({ socket,showSideMenu, setshowSideMenu }) => {
             
           </div>
         </Box>
-      </div>
+      </div> : null}
     </div>
   );
 };

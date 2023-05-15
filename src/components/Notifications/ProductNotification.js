@@ -52,7 +52,6 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       >
-           <div className="table-container w-full">
           <table className="py-2 relative w-full table-fixed">
             <thead className=" bg-white shadow-md py-4">
               <tr>
@@ -142,7 +141,6 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           <Button onClick={handleClickAuthNotification}>
             Mark All As read
           </Button>
-        </div>  
         </div>
     );
 }

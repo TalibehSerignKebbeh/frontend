@@ -2,7 +2,6 @@ import  Box  from '@mui/system/Box';
 import React, { useEffect, useState } from 'react';
 import {  fetchProductsStats, fetchSalesStatistic, fetchSalesStats, fetchSalesToday } from '../../api';
 import  {useQueries}  from '@tanstack/react-query';
-import CircularProgress  from '@mui/material/CircularProgress';
 import SalesDataGridVir from '../sales/SalesDataGridVir';
 import Header from '../other/Header';
 import DashboardRounded  from '@mui/icons-material/DashboardRounded';
@@ -38,7 +37,7 @@ const Dashboard = () => {
     })
     useEffect(() => {
         // console.log(salesStatsQuery?.data);
-        // console.log(salesTodayQuery?.data);
+        console.log(salesTodayQuery?.data);
             // console.log(salesStatsQuery);
 
         if (salesStatsQuery?.isError) {
@@ -96,7 +95,7 @@ const Dashboard = () => {
             </div>
             <SalesDataGridVir data={salesTodayQuery?.data?.sales}
                 loading={salesTodayQuery?.isLoading}
-                total={salesTodayQuery?.data?.revenue}
+                total={salesTodayQuery?.data?.money}
             />
             <DateReportComponent />
         </Box>

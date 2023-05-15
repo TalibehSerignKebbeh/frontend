@@ -1,0 +1,14 @@
+
+
+.tab{
+    /* border-radius: 13px; */
+    padding: 4px 10px;
+    padding-bottom: 6px;
+    color: white;
+    background-color: rgb(4, 37, 4);
+    transition: background-color all ease-in-out;
+}
+.tab.active{
+    background-color: rgb(4, 37, 4);
+    background-color: rgb(14, 209, 14);
+}

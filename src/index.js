@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { AuthProvider } from "./context/AuthContext";
+
 
 const client = new QueryClient({
   defaultOptions: { queries: { networkMode: "offlineFirst" } },

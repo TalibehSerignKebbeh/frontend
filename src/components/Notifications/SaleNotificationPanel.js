@@ -1,12 +1,15 @@
 import { Button } from '@mui/material';
-import { format, parseISO } from 'date-fns';
 import React, { useEffect, useRef, useState } from 'react';
+import { FixedSizeList } from "react-window";
+import  format  from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import './notification.css'
-import { DataGrid } from '@mui/x-data-grid';
+import { queryInstance } from '../../api';
+// import { DataGrid } from '@mui/x-data-grid';
 
 const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   const ref = useRef(null)
-  console.log(dataArray);
+  // console.log(dataArray);
    const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -25,9 +28,20 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   const handleMouseUp = () => {
     setDragging(false);
   };
-  const handleReadSaleNotification = () => {
+  const handleReadSaleNotification = async () => {
        const ids =dataArray?.map(notify=>{return notify?._id})
-    socket.emit("read_all_sale_notification", {ids});
+    // socket.emit("read_all_sale_notification", {ids});
+    queryInstance.patch(`notifications`, { ids })
+      .then((res) => {
+   if (res?.status === 200) {
+    socket.emit("read_all_sale_notification", {});
+        }
+
+      // console.log(res);
+      }).catch((err) => {
+      // console.log(err);
+    })
+    
     }
 
     useEffect(() => {
@@ -37,52 +51,46 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
             }
         })
       
-  }, [ref, setopen]);
+    }, [ref, setopen]);
+  
+  const Row = ({ index, style }) => {
+    const val = dataArray[index];
+    const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
+    const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
+    return (
+      <div
+        style={{
+        ...style, display: 'flex', flexDirection: 'column', rowGap: '0px',
+        backgroundColor: 'white',boxShadow:'2px 2px 4px 0px rgba(0,0,0,0.5)',
+          height: 'auto', width: '100%', padding: '0px 5px',
+        borderTop:'1px solid #333',borderBottom:'1px solid #333',
+      textAlign:'center', justifyContent:'center', marginBottom:'20px'}}>
+        <h3 className="font-normal text-lg font-serif">
+          {val?.message}</h3>
+        <span className='text-sm -mt-2 font-serif font-light'>
+          sold by {fullName}
+        </span>
+        <small className="text-xs font-serif font-light">
+          {date}
+        </small>
+      </div>
+    );
+  };
+
+
     return (
         <div ref={ref} className='notification-wrapper'
         style={{
         visibility: open ? "visible" : "hidden",
-        position: 'absolute',left:'auto',
+        position: 'fixed',left:'auto',
              top: position.y, right:0,
         }}
         onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       >
-            <div className='table-container'>
-          {/* <table className="py-2 relative w-full table-auto">
-            <thead className=" bg-white shadow-md py-2">
-              <tr>
-                <th className="text-sm font-normal">Msg</th>
-                <th className="text-sm font-normal">#Qty</th>
-                <th className="text-sm font-normal">#Price</th>
-                <th className="text-sm font-normal">Type</th>
-                <th className="text-sm font-normal">User</th>
-                <th className="text-sm font-normal">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataArray?.map((sale, index) => (
-                <tr key={index} className="py-1">
-                  <td className="capitalize text-xs">{sale?.message}</td>
-                  <td className="capitalize text-xs">{sale?.data?.quantity}</td>
-                  <td className="capitalize text-xs">{sale?.data?.quantity*sale?.data?.price}</td>
-                  <td className="capitalize text-xs">{sale?.type}</td>
-                  <td className="capitalize text-xs break-words">{sale?.userId?.username}</td>
-                  <td className="capitalize text-xs" >
-                    {format(
-                      parseISO(sale?.created_at),
-                      " EEE MM yyyy, HH:mm b"
-                    )}
-                  </td>
-                </tr>
-              ))}
-                      </tbody>
-                      <tfoot className="w-full text-center">
-                         
-                      </tfoot>
-                  </table> */}
-          <DataGrid 
+        
+          {/* <DataGrid 
             sx={{height:'300px'}}
             rows={dataArray}
             columns={[
@@ -103,11 +111,25 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
             getRowId={(row) => row?._id}
             hideFooter hideFooterSelectedRowCount
             hideFooterPagination
-            />
+            /> */}
             <Button sx={{fontSize:'.7rem'}} onClick={handleReadSaleNotification}>
                       Mark all as read
-          </Button>
-        </div>
+        </Button>
+         <FixedSizeList
+             height={250}
+            itemCount={dataArray?.length}
+            itemSize={65}
+                width={"100%"}
+                style={{
+                  marginTop:'60px', 
+                  marginBlock: '10px',
+                  minHeight: '230px',
+                  maxHeight:'400px',
+                height:'auto'}}
+
+          >
+            {Row}
+                  </FixedSizeList>
         </div>
     );
 }

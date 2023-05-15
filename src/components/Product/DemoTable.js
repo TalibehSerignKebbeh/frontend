@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { serverUrl } from '../../api';
+// import { serverUrl } from '../../api';
 import { TableContainer, Table, TableBody, TableHead, TableCell, TableFooter, Paper, TableRow, Typography, Button } from '@mui/material'
 import { Box } from '@mui/system';
 import SellProduct from '../SellProduct';
@@ -13,7 +13,7 @@ const DemoTable = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             setloading(true)
-            await axios.get(`${serverUrl}/product/all`)
+            await axios.get(process.env.custom_url+`/product/all`)
                 .then(res => {
                     console.log(res?.data?.products);
                     setproducts(res?.data?.products)

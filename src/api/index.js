@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export const serverUrl = process.env.API_URL;
+export const serverUrl = 'https://ims-app-backend-api.onrender.com';
+// export const serverUrl = 'http://localhost:4500';
 const token = localStorage.getItem('token')
-console.log(token);
+
 export const queryInstance = axios.create({ baseURL: serverUrl });
 queryInstance.interceptors.request.use(
   function (req) {

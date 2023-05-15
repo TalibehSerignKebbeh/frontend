@@ -2,8 +2,9 @@
    width: auto;
    min-width: 60%;
         height: auto;
+        /* max-height: 200px; */
         padding: "30px 10px";
-        position: absolute;
+        position: fixed;
       
         background-color: #fff;
         box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.4);

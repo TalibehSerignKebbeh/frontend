@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { serverUrl } from '../api';
 import useAuth from '../hooks/useAuth';
 
 const SellProduct = () => {
@@ -10,7 +9,7 @@ const SellProduct = () => {
     const handleSell = async (e) => {
         if(!token) return new AbortController().abort()
         e.preventDefault()
-        await axios.post(serverUrl + `/product/sale`, productToSell)
+        await axios.post(process.env.custom_url + `/product/sale`, productToSell)
             .then(res => {
                 console.log(res);
             }).catch(err => {

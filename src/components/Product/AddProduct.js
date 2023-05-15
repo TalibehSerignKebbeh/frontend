@@ -8,7 +8,7 @@ import {
 import { Stack } from '@mui/system';
 // import { FormControl } from '@mui/material'
 import axios from 'axios';
-import { serverUrl } from '../../api';
+// import { serverUrl } from '../../api';
 // import ButtonComp from '../ButtonComp';
 
 
@@ -36,7 +36,7 @@ const AddProduct = ({ openAddModal, setopenAddModal, socket }) => {
         setuploading(true)
         // console.log([...Array(5).fill(product)]);
         setsuccessMessage('')
-        axios.post(serverUrl + `/product`, product)
+        axios.post(process.env.custom_url + `/product`, product)
             .then(res => {
                 console.log(res);
                 setsuccessMessage(res?.data?.message)

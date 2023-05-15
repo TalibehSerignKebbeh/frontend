@@ -3,10 +3,8 @@ import { FixedSizeList } from "react-window";
 import  parseISO  from 'date-fns/parseISO';
 import React from 'react';
 
-const ProductsTable = ({stocks, productUpdates,}) => {
-     const GetStockName = (id) => {
-    return stocks?.find(stock => stock?._id?.toString() === id)?.name;
-  }
+const ProductsTable = ({ productUpdates,}) => {
+   
     return (
         <div className='w-screen overflow-scroll'>
              <table className='w-auto overflow-scroll mx-auto'>
@@ -68,60 +66,61 @@ const ProductsTable = ({stocks, productUpdates,}) => {
                 </thead>
                 <tbody>
                   {productUpdates?.map((notify, id) => (
-                    <tr className={`${!notify?.isRead? 'bg-red-200':'bg-transparent'}`} key={id}>
-                      <td className="text-lg font-sans font-normal capitalize">
-                      {notify?.type}</td>
-                      <td className="text-lg font-sans font-normal">
+                    <tr k className={`${!notify?.isRead ? 'bg-red-200' : 'bg-transparent'}
+                    py-2 `} key={id}>
+                      <td className="text-2xl font-sans font-normal capitalize">
+                      {notify?.action}</td>
+                      <td className="text-2xl font-sans font-normal">
                       {format(
                           parseISO(notify?.created_at),
                           " EEE MM yyyy, HH:mm b"
                         )}</td>
-                      {notify?.type === 'add' ?
+                      {notify?.action === 'add' ?
                         <>
-                          <td className="text-lg font-sans font-normal">
+                          <td className="text-2xl font-sans font-normal">
                       {notify?.data?.name}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.quantity}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.quantityInStock}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.price}</td>
-                      <td className="text-lg font-sans font-normal">
-                      {GetStockName(notify?.data?.stockId)}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
+                      {notify?.data?.stockId?.name}</td>
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.description}</td>
                         </>:
                         <>
 
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.from?.name}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.from?.quantity}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.from?.quantityInStock}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.from?.price}</td>
-                      <td className="text-lg font-sans font-normal">
-                      {GetStockName(notify?.data?.from?.stockId)}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
+                      {notify?.data?.from?.stockId?.name}</td>
+                      <td className="text-2xl font-sans font-normal">
                             {notify?.data?.from?.description}</td>
-                              <td className="text-lg font-sans font-normal">
-                      {notify?.data?.from?.stockId.name}</td>
+                     {/* <td className="text-2xl font-sans font-normal">
+                      {notify?.data?.from?.stockId.name}</td> */}
 
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.to?.name}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.to?.quantity}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.to?.quantityInStock}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
                       {notify?.data?.to?.price}</td>
-                      <td className="text-lg font-sans font-normal">
-                      {GetStockName(notify?.data?.to?.stockId)}</td>
-                      <td className="text-lg font-sans font-normal">
+                      <td className="text-2xl font-sans font-normal">
+                      {notify?.data?.to?.stockId?.name}</td>
+                      <td className="text-2xl font-sans font-normal">
                             {notify?.data?.to?.description}</td>
-                          <td className="text-lg font-sans font-normal">
-                      {notify?.data?.to?.stockId.name}</td>
+                          <td className="text-2xl font-sans font-normal">
+                      {notify?.data?.to?.stockId?.name}</td>
                         </>
                        }
 

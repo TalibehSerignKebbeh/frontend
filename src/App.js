@@ -23,7 +23,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import SellLayout from "./components/Layouts/SellLayout";
 import { io } from "socket.io-client";
 import useAuth from "./hooks/useAuth";
-// import { queryInstance, serverUrl } from "./api";
+import {  serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 // import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
@@ -31,16 +31,39 @@ import SaleReport from "./components/Report/SaleReport";
 // import TestComponent from "./TestComponent";
 // import PercentChart from "./PercentChart";
 import 'antd/dist/reset.css';
+import Notification from "./components/Notifications/Page/Notification";
 
 
 function App() {
-  const [socket, setsocket] = useState(io(process.env.API_URL, { withCredentials: true }));
+  const {username} = useAuth()
+  const [socket, setsocket] =
+    useState(io(serverUrl, {
+      withCredentials:true,
+      autoConnect: false,
+      reconnectionAttempts: 3,
+      secure:true,
+    }));
   const { token } = useAuth()
 
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {
-
-  }, [socket]);
+    socket.connect()
+    window.addEventListener('offline', (event) => {
+      if (username) {
+      socket.emit('user_user_online', {username: username})
+      }
+    })
+     window.addEventListener('online', (event) => {
+      if (username) {
+      socket.emit('set_user_online', {username: username})
+      }
+    })
+    return () => {
+      socket.emit('set_user_offline', {username: username})
+      socket.disconnect()
+    }
+  }, [socket, username]);
+ 
   return (
     <>
       <Router>
@@ -128,6 +151,11 @@ function App() {
                       <Route
                         path="/report"
                         element={<SaleReport />}
+                      />
+                      <Route
+                        
+                        path="/events"
+                        element={<Notification />}
                       />
                     </Route>
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
