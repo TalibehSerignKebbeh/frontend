@@ -60,7 +60,7 @@ const Login = ({ socket }) => {
             navigate("dashboard")
         }).catch(err => {
             // console.log(err?.toString())
-            // console.log(err);
+            console.log(err);
             seterrorMsg(GetError(err))
             // console.log(err?.data?.message);
         }).finally(() => {
