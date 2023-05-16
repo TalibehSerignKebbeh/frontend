@@ -1,0 +1,14 @@
+.product_updates_container{
+    overflow-x: scroll !important;
+    width: 100% !important;
+}
+.table_head{
+    font-size: 1.1rem !important;
+    font-weight: 400;
+    border: 2px solid rgba(5, 3, 4, 0.2);
+}
+.table_data{
+    font-size: .9rem !important;
+    border: 1px solid #4333;
+
+}

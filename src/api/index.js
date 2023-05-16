@@ -3,15 +3,11 @@ import axios from "axios";
 
 export const serverUrl = 'https://ims-app-backend-api.onrender.com';
 // export const serverUrl = 'http://localhost:4500';
-// const token = localStorage.getItem('token')
 
 export const queryInstance = axios.create({ baseURL: serverUrl });
 queryInstance.interceptors.request.use(
   function (req) {
-    // const {token} = useAuth()
-
-    // req.headers["authorization"] = `Bearer ${token}`;
-    return req;
+      return req;
   },
   function (err) {
     return Promise.reject(err);

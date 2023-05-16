@@ -13,7 +13,6 @@ const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
  
 
   const handleClickAuthNotification = () => {
-    console.log(`emitted`);
     const ids = dataArray?.map(notify => { return notify?._id })
     socket.emit("read_all_auth_notification", {ids});
     };

@@ -28,10 +28,11 @@ const SalesEvents = () => {
       setloading(true)
       await queryInstance.get(`/notifications`, {params:filters,headers:{Authorization:`Bearer ${token}`}})
         .then(res => {
-          console.log(res?.data);
+          // console.log(res?.data);
             setSaleNotifications(res?.data?.notifications)
             settotalPages(res?.data?.totalPages)
-            setCount(res?.data?.count)
+          setCount(res?.data?.count)
+          setpage(page)
             // setCount(res?.data?.count)
         }).then(() => {
          
@@ -52,8 +53,14 @@ const SalesEvents = () => {
           <IconButton disabled={!created_at?.length}
             onClick={() => setCreated_at('')}><Close /></IconButton>
         </div>
-            <DataGrid 
-            sx={{height:'500px', width:{xl:'90%',lg:'90%', md:'90%', sm:'100%',xs:'100%'}}}
+        <DataGrid 
+          onStateChange={(event) => {
+            
+          }}
+          sx={{
+            height: '500px', width:'100%',
+            // width: { xl: '100%', lg: '100%', md: '100%', sm: '100%', xs: '100%' }
+          }}
                 rows={saleNotification}
                 loading={loading}
           columns={[

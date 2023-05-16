@@ -12,6 +12,9 @@ export function formatDayDateWithTime(dateString) {
 }
 
 export const GetError = (err) => {
+  if (!err?.request) { 
+    return 'Request block by cors'
+  }
     if (!err?.response) {
         return 'No backend server response';
     }

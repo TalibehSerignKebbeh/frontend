@@ -5,7 +5,8 @@ import ProductsTable from '../../Notifications/Table/ProductsTable';
 import  Pagination  from '@mui/material/Pagination';
 import SpinnerLoader from '../../Loaders/SpinnerLoader';
 import  IconButton  from '@mui/material/IconButton';
-import  Close  from '@mui/icons-material/Close';
+import Close from '@mui/icons-material/Close';
+
 const ProductsUpdates = () => {
       const {token,isAdmin, isManager} = useAuth()
     const [page, setpage] = useState(0);

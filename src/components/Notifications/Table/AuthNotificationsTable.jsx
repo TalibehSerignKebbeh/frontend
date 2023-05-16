@@ -49,9 +49,9 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
         height: 'auto', width: '100%', padding: '2px 5px',
           textAlign: 'center', justifyContent: 'center',
         }}>
-        <small className="block  capitalize">{val?.message}</small>
-        <small className="font-light text-xs capitalize">Name: <small className="text-lg font-semibold">{ fullName} </small></small>
-        <small className=" block text-xs font-serif font-light">{date}</small>
+        <small className="block font-normal capitalize">{val?.message}</small>
+        <small className="font-light text-xs capitalize">Name: <small className="text-lg font-normal">{ fullName} </small></small>
+        <small className=" block text-xs font-normal">{date}</small>
       </div>
     );
   };

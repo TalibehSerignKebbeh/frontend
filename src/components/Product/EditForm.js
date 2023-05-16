@@ -1,10 +1,13 @@
-import { CircularProgress, IconButton } from "@mui/material";
+import  IconButton  from "@mui/material/IconButton";
+import CircularProgress from "@mui/material/CircularProgress";
 import React, { useState } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { queryInstance } from "../../api";
 import ConfirmDelete from "../Modal/ConfirmDelete";
-import { format } from "date-fns";
+import  format  from "date-fns/format";
+import  isValid  from "date-fns/isValid";
+import parseISO  from "date-fns/parseISO";
 
 const EditForm = ({ product, setproduct, socket, stocks }) => {
   const navigate = useNavigate();
@@ -111,11 +114,13 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       mx-3 sm:mx-auto lg:mx-5 xl:mx-9 justify-self-center">
         <div className="divide-y-2 divide-gray-800">
           <span>Added At</span>
-          <h2 className="text-gray-600">{format(new Date(product?.createdAt), 'EEE MM yyyy, HH:mm b')}</h2>
+          <h2 className="text-gray-600">
+          {isValid(parseISO(product?.createdAt))? format(new Date(product?.createdAt), 'EEE MM dd yyyy, HH:mm b') : 'invalid or not date'}</h2>
         </div>
         <div className="divide-y-2 divide-gray-800">
           <span>Updated At</span>
-          <h2 className="text-gray-600">{format(new Date(product?.updatedAt), 'EEE MM yyyy, HH:mm b')}</h2>
+          <h2 className="text-gray-600">
+          {isValid(parseISO(product?.updatedAt))? format(new Date(product?.updatedAt), 'EEE MM dd yyyy, HH:mm b') : 'invalid or not date'}</h2>
         </div>
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">

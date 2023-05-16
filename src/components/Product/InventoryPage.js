@@ -51,7 +51,7 @@ revenueThreshold:10   })
       seterrorMessage(GetError(productsRequest?.error))
     }
     if (productsRequest?.failureReason) {
-      seterrorMessage(GetError(productsRequest?.error))
+      seterrorMessage(GetError(productsRequest?.failureReason))
     }
     
   }, [productsRequest.data, productsRequest?.error, productsRequest?.failureReason, productsRequest.isError, productsRequest.isSuccess])
