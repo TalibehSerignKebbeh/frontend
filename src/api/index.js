@@ -4,7 +4,9 @@ import axios from "axios";
 export const serverUrl = 'https://ims-app-backend-api.onrender.com';
 // export const serverUrl = 'http://localhost:4500';
 
+
 export const queryInstance = axios.create({ baseURL: serverUrl });
+queryInstance.defaults.withCredentials = true;
 queryInstance.interceptors.request.use(
   function (req) {
       return req;
