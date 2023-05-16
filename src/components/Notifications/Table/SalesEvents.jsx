@@ -4,11 +4,12 @@ import { queryInstance } from '../../../api';
 import { DataGrid } from '@mui/x-data-grid';
 import  IconButton  from '@mui/material/IconButton';
 import  Close  from '@mui/icons-material/Close';
-import { isStringValidDate } from '../../other/OtherFuctions';
 import format from 'date-fns/format';
+import  parseISO  from 'date-fns/parseISO';
+import isValid from 'date-fns/isValid';
 
 const SalesEvents = () => {
-     const {isAdmin, isManager} = useAuth() 
+     const {token, isAdmin, isManager} = useAuth() 
     const [page, setpage] = useState(0);
   const [count, setCount] = useState(0);
   const [created_at, setCreated_at] = useState('');
@@ -25,7 +26,7 @@ const SalesEvents = () => {
        filters={...filters, created_at:created_at}
      }
       setloading(true)
-      await queryInstance.get(`/notifications`, {params:filters})
+      await queryInstance.get(`/notifications`, {params:filters,headers:{Authorization:`Bearer ${token}`}})
         .then(res => {
           console.log(res?.data);
             setSaleNotifications(res?.data?.notifications)
@@ -40,10 +41,10 @@ const SalesEvents = () => {
         }).finally(() => { setloading(false) })
     }
    if(isAdmin || isManager) {fetchProductsNotify()}
-  }, [created_at, isAdmin, isManager, page, pageSize])
+  }, [created_at, isAdmin, isManager, page, pageSize, token])
     return (
       <div>
-        <div className='relative'>
+        <div className='relative w-full'>
           <input className='py-4 px-2 border-2 border-slate-200 mb-3 mt-2'
             type='date' value={created_at}
             onChange={e => setCreated_at(e.target.value)} 
@@ -52,11 +53,14 @@ const SalesEvents = () => {
             onClick={() => setCreated_at('')}><Close /></IconButton>
         </div>
             <DataGrid 
-            sx={{height:'500px'}}
+            sx={{height:'500px', width:{xl:'90%',lg:'90%', md:'90%', sm:'100%',xs:'100%'}}}
                 rows={saleNotification}
                 loading={loading}
           columns={[
-            { field: 'created_at', headerName: 'Date', valueGetter: ({ value }) => isStringValidDate(value) ? format(value, " EEE MM yyyy, HH:mm b") :'invalid date'},
+            {
+              field: 'created_at', headerName: 'Date', width: 210,
+              valueGetter: ({ value }) => isValid(parseISO(value)) ? format(parseISO(value), " EEE MMM dd yyyy, HH:mm b") : 'invalid date'
+            },
               { field: 'message', headerName: '#msg', width: '160', cellClassName: 'text_cell', editable:false},
               { field: 'action', headerName:'action', editable:false  },
               {

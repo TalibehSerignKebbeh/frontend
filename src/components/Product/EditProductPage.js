@@ -1,8 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import  Box  from "@mui/system/Box";
 import axios from "axios";
-import  format from "date-fns/format";
-import  parseISO from "date-fns/parseISO";
 import React, { useState, useEffect } from "react";
 import {  useParams } from "react-router-dom";
 import { queryInstance } from "../../api";
@@ -12,7 +10,7 @@ import "./editProduct.css";
 import { GetError } from "../other/OtherFuctions";
 const EditProductPage = ({ socket }) => {
   const { id } = useParams();
-  const { isAdmin, isManager } = useAuth();
+  const {token, isAdmin, isManager } = useAuth();
   const [product, setproduct] = useState({});
   const [stocks, setstocks] = useState([]);
   const [isLoading, setisLoading] = useState(false);
@@ -48,8 +46,8 @@ const EditProductPage = ({ socket }) => {
       // queryInstance(`/products/${id}`)
       await axios
         .all([
-          queryInstance.get(`/products/${id}`),
-          queryInstance.get(`/stocks`),
+          queryInstance.get(`/products/${id}`, {headers:{Authorization: `Bearer ${token}`}}),
+          queryInstance.get(`/stocks`,{headers:{Authorization: `Bearer ${token}`}}),
         ])
         .then((res) => {
           console.log(res);
@@ -66,7 +64,7 @@ const EditProductPage = ({ socket }) => {
     fetchProduct();
 
     return () => {};
-  }, [id, isAdmin, isManager, socket]);
+  }, [id, isAdmin, isManager, socket, token]);
 
   return (
     <div

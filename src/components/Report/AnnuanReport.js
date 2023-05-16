@@ -8,8 +8,10 @@ import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { DatePicker } from "antd";
+import useAuth from "../../hooks/useAuth";
 
 const AnnuanReport = () => {
+  const {token} = useAuth()
   const [year, setyear] = useState(new Date().getFullYear());
   const [money, setmoney] = useState(0);
   const [productQuantity, setproductQuantity] = useState(0);
@@ -51,7 +53,7 @@ const handleFetchYearReport = async (e) => {
 
     await queryInstance
       .get(`/sales/stats/year?year=${Number(year)}`, {
-        responseType:'json'
+        responseType:'json',headers:{Authorization:`Bearer ${token}`}
       })
       .then((res) => {
         console.log(res);
@@ -78,7 +80,7 @@ const handleFetchYearReport = async (e) => {
     return () => {
 
     };
-  }, [year]);
+  }, [token, year]);
 
   return (
     <div className=" w-full bg-zinc-50 p-2 ml-1 border-2 border-zinc-200">

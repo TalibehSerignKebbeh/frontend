@@ -92,14 +92,15 @@ const Login = ({ socket }) => {
                     {successMsg}
                 </p> : null}
                 {errorMsg?.length ?
-                    <p className='text-red-500 text-lg font-medium px-1'>
+                    <p className='text-red-500 p-1 bg-slate-200
+                    rounded-sm mt-2 text-lg font-medium px-1'>
                         {errorMsg}
                     </p> : null}
                 <div className='md:w-60  sm:w-56 w-44 m-auto text-start mb-2'>
                     <label className='-ml-1 text-lg text-start  font-normal font-serif 
                     px-1 float-left -mb-1 py-2 opacity-75' htmlFor='username'>Username
                     </label>
-                    <input ref={usernameRef}
+                    <input autoComplete='on' ref={usernameRef}
                         className={`${(usernameError && usernameTouch) ? 'border-red-600' : 'border-slate-500 focus:shadow-md'} 
                          mx-auto border-2  h-11 px-4
                           py-2 text-gray-800 rounded-xl w-full
@@ -121,7 +122,7 @@ const Login = ({ socket }) => {
                 <div className='md:w-60 sm:w-56 w-44 m-auto  text-start'>
                     <label className='-ml-1 text-lg text-start font-normal 
                     px-1 float-left -mb-1 py-2 opacity-75' htmlFor='password'>Password</label>
-                    <input className={`${(passwordError && passwordTouch) ? 'border-red-600' : 'border-slate-500 focus:shadow-md'}
+                    <input autoComplete='off' className={`${(passwordError && passwordTouch) ? 'border-red-600' : 'border-slate-500 focus:shadow-md'}
                         mx-auto border-2  h-11
                         px-4 py-2 text-gray-800 rounded-xl w-full
                         `}

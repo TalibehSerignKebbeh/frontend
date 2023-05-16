@@ -1,9 +1,7 @@
 import React, { useState} from "react";
-
 import  Box  from "@mui/system/Box";
-
-import { queryInstance, fetchUsers } from "../../api";
-import { useQuery, QueryClient, useMutation } from "@tanstack/react-query";
+import { queryInstance } from "../../api";
+import {  QueryClient, } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import ConfirmDelete from "../Modal/ConfirmDelete";
 import { initialUser } from "./Data";
@@ -12,12 +10,10 @@ import { allowedRoles } from "../../config/allowedRoles";
 
 const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collapseRef }) => {
   const queryClient = new QueryClient();
-  const {roles} = useAuth()
+  const {token,roles} = useAuth()
 
-  const [UserToEdit, setUserToEdit] = useState(null);
   const [userToDelete, setuserToDelete] = useState(null);
   const [openDelete, setopenDelete] = useState(false);
-  const [userErrors, setuserErrors] = useState(null);
   const [EditStatus, setEditStatus] = useState({
     deleting: false,
     updating: false,
@@ -115,7 +111,7 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
 
     const id = userToDelete?._id;
     await queryInstance
-      .delete(`/users/${id}`)
+      .delete(`/users/${id}`,{headers:{Authorization:`Bearer ${token}`}})
       .then((res) => {
         if (res.status === 200) {
           console.log(res);

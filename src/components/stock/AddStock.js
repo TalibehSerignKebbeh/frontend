@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { queryInstance } from '../../api';
 import { QueryClient } from '@tanstack/react-query';
+import useAuth from '../../hooks/useAuth';
 
 const initialStatus= { uploading: false, error: false, success: false}
-const AddStock = ({stock, setstock}) => {
+const AddStock = ({ stock, setstock }) => {
+    const {token} = useAuth()
     const nameRef = useRef()
     const queryClient = new QueryClient()
     const [addstatusMessages, setaddstatusMessages] = useState({ success: "", error: '' });
@@ -19,7 +21,7 @@ const AddStock = ({stock, setstock}) => {
         e.preventDefault()
         setloading(true)
         if (stock?._id?.length) {
-            await queryInstance.put(`/stocks/${stock?._id}`, { ...stock, lastUpdate: new Date() }).then(res => {
+            await queryInstance.put(`/stocks/${stock?._id}`, { ...stock, lastUpdate: new Date() }, {headers:{Authorization: `Bearer ${token}`}}).then(res => {
                 console.log(res);
                 if (res?.status === 200) {
                     queryClient.invalidateQueries({queryKey: ['stocks']})
@@ -35,7 +37,7 @@ const AddStock = ({stock, setstock}) => {
 
             return;
         }
-        await queryInstance.post("/stocks", { ...stock, createdDate: new Date() }).then(res => {
+        await queryInstance.post("/stocks", { ...stock, createdDate: new Date() },{headers:{Authorization: `Bearer ${token}`}}).then(res => {
             if (res?.status === 200) {
                     queryClient.invalidateQueries({queryKey: ['stocks']})
                 }

@@ -5,6 +5,7 @@ import  CircularProgress from '@mui/material/CircularProgress';
 import   IconButton  from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 import { QueryClient } from '@tanstack/react-query';
+import useAuth from '../../hooks/useAuth';
 
 const initialValues = {
     name: '',stockId: '', price: 0, quantity: 0,
@@ -12,6 +13,7 @@ const initialValues = {
     expiryDate: '',
 }
 const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
+    const {token} = useAuth()
     const [product, setproduct] = useState(initialValues);
     const [stocks, setstocks] = useState([]);
     const nameRef = useRef(showSideModal)
@@ -20,8 +22,10 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
     const [successMessage, setsuccessMessage] = useState('');
     const queryClient = new QueryClient()
 
-    const fetchCategories = async()=> {
-        await queryInstance.get(`/stocks`)
+    
+    useEffect(() => {
+        const fetchCategories = async()=> {
+        await queryInstance.get(`/stocks`,{headers:{Authorization: `Bearer ${token}`}})
             .then(res => {
         setstocks(res?.data?.stocks)
             }).catch((err) => {
@@ -29,20 +33,19 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
         })
     
     }
-    useEffect(() => {
         if (showSideModal) {
             nameRef.current.focus()
             fetchCategories()
         }
         return () => {
         };
-    }, [showSideModal]);
+    }, [showSideModal, token]);
     const handleSubmit = (e) => {
         if (!showSideModal) return;
         setisError(false)
         setuploading(true)
         setsuccessMessage('')
-        queryInstance.post(`/products`, product)
+        queryInstance.post(`/products`, product, {headers:{Authorization: `Bearer ${token}`}})
             .then(res => {
                 console.log(res);
                 if (res?.status === 200) {

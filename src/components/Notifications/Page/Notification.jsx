@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import { queryInstance } from '../../../api';
+import React, {useState} from 'react';
 // import { useParams } from 'react-router-dom';
 import ProductsUpdates from '../../Product/updates/ProductsUpdates';
 import UserNotificationTable from '../Table/UserNotificationTable';
@@ -7,39 +6,8 @@ import './index.css'
 import SalesEvents from '../Table/SalesEvents';
 
 const Notification = () => {
-    // const { tab } = useParams()
     const [tab, setTab] = useState("product")
-    let allowedProps=['model','action']
-    let models=['product', 'sale', 'stock', 'auth']
-    const [filters, setfilters] = useState({
-        model:'', action:'',
-    });
-    let actions = {
-        product: ["add", 'update'],
-        sale: ['add', 'restore','update', 'delete'],
-        stock:['add', 'update','delete'],
-        auth:['login', 'logout']
-    }
-    const handleChangeFilters = (e) => {
-        const { target: { value, name } } = e;
-        setfilters({...filters, [name]:value})
-    }
-    const handleFilterNotification = async () => {
-        if (!filters?.model?.length) {
-            delete filters.model
-        }
-        if (!filters?.action?.length) {
-            delete filters.action
-        }
-
-        await queryInstance.get(`notifications`, { params: filters })
-            .then(res => {
-            console.log(res);
-            })
-            .catch(err => {
-            console.log(err);
-        })
-    }
+    
     return (
         <div className='relative '>
             {/* <h2>Notification </h2> */}

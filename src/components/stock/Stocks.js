@@ -5,13 +5,16 @@ import Header from '../other/Header';
 import { useQuery } from '@tanstack/react-query';
 import { fetchStocks } from '../../api/index'
 import   Store  from '@mui/icons-material/Store';
-import { Button, Collapse } from '@mui/material';
+import  Collapse  from '@mui/material/Collapse';
+import  Button from '@mui/material/Button';
 import AddStock from './AddStock';
 import CategoryDataGrid from './CategoryDataGrid';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
+import useAuth from '../../hooks/useAuth';
 
 const StocksPage = () => {
+    const {token} = useAuth()
     const formRef = useRef()
     const [errorMessage, seterrorMessage] = useState('');
     const [pageSize, setpageSize] = useState(5);
@@ -23,7 +26,7 @@ const StocksPage = () => {
 
     const {isLoading,isError,isSuccess, error, data} = useQuery({
         queryKey: ['stocks'],
-        queryFn:()=>fetchStocks()
+        queryFn:()=>fetchStocks({token})
     })
     const handleOpenCloseCollapse = () => {
         if (openEdit) {

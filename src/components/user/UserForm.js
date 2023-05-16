@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import React, { useState } from "react";
 import { QueryClient } from "@tanstack/react-query";
-import { Formik, useFormik } from "formik";
+import {  useFormik } from "formik";
 import { queryInstance } from "../../api";
 import {
   CircularProgress,
@@ -15,10 +15,12 @@ import { getStyles } from "../../other/format";
 import { GetError } from "../other/OtherFuctions";
 import SuccessMessage from "../StatusMessages/SuccessMessage";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
+import useAuth from "../../hooks/useAuth";
 
 const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
   // console.log(UserData);
   // console.log(UserData);
+  const {token } = useAuth()
   const queryClient = new QueryClient();
   const [adding, setadding] = useState(false);
   const [updating, setupdating] = useState(false);
@@ -82,7 +84,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
       setupdating(true);
       const id = values?._id;
       await queryInstance
-        .put(`/users/${id}`, UserData)
+        .put(`/users/${id}`, UserData,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
@@ -114,7 +116,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
     } else {
       setadding(true);
       await queryInstance
-        .post(`/users`, values)
+        .post(`/users`, values,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
           console.log(res);
           setaddMessages({ ...addMessages, success: res?.data?.message });

@@ -19,7 +19,7 @@ import { initialUser } from "./Data";
 
 
 const UserPage = ({ socket }) => {
-  const { isAdmin, isManager } = useAuth();
+  const {token, isAdmin, isManager } = useAuth();
   const collapseRef = useRef(null)
   const [errorMessage, seterrorMessage] = useState('');
   const [openAdd, setopenAdd] = useState(false);
@@ -28,7 +28,7 @@ const UserPage = ({ socket }) => {
   password: "", confirmPassword: "", roles: [],  });
   const UserFetch = useQuery({
     queryKey: ["users"],
-    queryFn: () => fetchUsers(),
+    queryFn: () => fetchUsers({token}),
   });
 
   const handleCloseCollapse = () => {

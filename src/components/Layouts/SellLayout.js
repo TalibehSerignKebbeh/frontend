@@ -5,13 +5,14 @@ import { fetchProducts } from '../../api';
 import {useQuery,QueryClient} from '@tanstack/react-query'
 import { Button } from '@mui/material';
 import { AiFillCaretUp } from 'react-icons/ai';
+import useAuth from '../../hooks/useAuth';
 
 const SellLayout = ({ socket }) => {
-
+    const {token} = useAuth()
     const client = new QueryClient()
    
     const { isLoading, data, error, failureReason } =
-        useQuery(['products'], ()=> fetchProducts({startDate: null, endDate:null, quantityThreshold:0,revenueThreshold:0}))
+        useQuery(['products'], ()=> fetchProducts({token, startDate: null, endDate:null, quantityThreshold:0,revenueThreshold:0}))
     // useEffect(() => {        
     //     const fetchProducts = async () => {
     //         setloading(true)

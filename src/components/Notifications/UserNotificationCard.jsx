@@ -1,6 +1,7 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import format from 'date-fns/format';
 import  parseISO  from 'date-fns/parseISO';
+import isValid from 'date-fns/isValid';
 
 const UserNotificationCard = ({ notify }) => {
 
@@ -9,7 +10,7 @@ const UserNotificationCard = ({ notify }) => {
         w-auto py-2 px-1 min-h-fit`}>
             {!notify?.isRead ? <small className='text-red-700 '> UnRead</small> : null}
             <br />
-            {notify?.created_at ? <small>{ 
+            {isValid(parseISO(notify?.created_at)) ? <small>{ 
               format(parseISO(notify?.created_at), " EEE MMM dd yyyy, HH:mm b")
 
             }</small> : null}

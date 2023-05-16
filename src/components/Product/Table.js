@@ -1,5 +1,12 @@
 import React from 'react';
-import { TableContainer, Table, TableBody, TableHead, TableCell, TableFooter, Paper, TableRow } from '@mui/material'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableHead from '@mui/material/TableHead'
+import TableFooter from '@mui/material/TableFooter'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
+import TableContainer from '@mui/material/TableContainer'
 import ProductTableRow from './TableRow';
 import './table.css'
 

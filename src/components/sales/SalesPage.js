@@ -4,8 +4,10 @@ import { queryInstance } from "../../api";
 import SalesTablePage from "./SalesTablePage";
 import Header from "../other/Header";
 import { GetError } from "../other/OtherFuctions";
+import useAuth from "../../hooks/useAuth";
 
 const SalesPage = () => {
+  const {token} = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
   const [expiredToken, setexpiredToken] = useState(false);
@@ -23,7 +25,7 @@ const SalesPage = () => {
       seterrorMessage("");
       await queryInstance
         .get(
-          `/sales?page=${page}&&pageSize=${pageSize}&&saleDate=${selectedDate}`
+          `/sales?page=${page}&&pageSize=${pageSize}&&saleDate=${selectedDate}`,{headers:{Authorization:`Bearer ${token}`}}
         )
         .then((res) => {
           console.log(res);

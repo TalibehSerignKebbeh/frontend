@@ -13,7 +13,7 @@ export function formatDayDateWithTime(dateString) {
 
 export const GetError = (err) => {
     if (!err?.response) {
-        return 'No server response, the backend server is down';
+        return 'No backend server response';
     }
     if (err?.response?.status === 500) {
         return "An internal server error occurred";

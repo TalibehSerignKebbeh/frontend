@@ -11,7 +11,7 @@ import ProductsUpdates from './updates/ProductsUpdates';
 import useAuth from '../../hooks/useAuth';
 
 const InventoryPage = ({ socket }) => {
-  const {isAdmin, isManager} = useAuth()
+  const {isAdmin, isManager, token} = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
   const [showUpdates, setshowUpdates] = useState(false);
   const [showAdds, setshowAdds] = useState(false);
@@ -24,7 +24,7 @@ const InventoryPage = ({ socket }) => {
   const endDate=new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
   const productsRequest = useQuery({
     queryKey: ['products'],
-    queryFn: () => fetchProducts({startDate, endDate,quantityThreshold:6,
+    queryFn: () => fetchProducts({token, startDate, endDate,quantityThreshold:6,
 revenueThreshold:10   })
 
   })

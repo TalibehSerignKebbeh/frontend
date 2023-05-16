@@ -10,9 +10,10 @@ import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import  IconButton  from '@mui/material/IconButton';
 import  Cancel  from '@mui/icons-material/Cancel';
+import useAuth from '../../hooks/useAuth';
 
 const WeeklySalesReport = () => {
-  
+  const {token} = useAuth()
   const [money, setmoney] = useState(0);
   const [saleCount, setsaleCount] = useState(0);
   const [daysSale, setdaysSale] = useState([]);
@@ -35,7 +36,7 @@ const [productCount, setproductCount] = useState(0);
       const handleGenerateReport = async () => {
         setisLoading(true)
         resetData()
-                    await queryInstance.get(`/sales/stats/week?week=${weekData?.week}&year=${weekData?.year}`)
+                    await queryInstance.get(`/sales/stats/week?week=${weekData?.week}&year=${weekData?.year}`, {headers:{Authorization:`Bearer ${token}`}})
                 .then((res) => {
                   console.log(res);
                   setdaysSale(res?.data?.daysSale)
@@ -55,7 +56,7 @@ const [productCount, setproductCount] = useState(0);
         return () => {
             
         };
-  }, [weekData?.week, weekData?.year]);
+  }, [token, weekData?.week, weekData?.year]);
   
   const handleChangeWeek = (e) => {
     const { value } = e.target;

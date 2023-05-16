@@ -11,27 +11,29 @@ import DateReportComponent from '../Report/DateReportComponent';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 import SpinnerLoader from '../Loaders/SpinnerLoader';
+import useAuth from '../../hooks/useAuth';
 
 const Dashboard = () => {
+    const {token} = useAuth()
     const [errorMessage, seterrorMessage] = useState('');
     const { "0": salesStatsQuery, "1": productsStatesQuery,
     "2":salesTodayQuery, "3":dayStatsQuery } = useQueries({
         queries: [
             {
                 queryKey: ['salesStats'],
-                queryFn: () => fetchSalesStats(),
+                queryFn: () => fetchSalesStats({token}),
 
             }, {
                 queryKey: ['productsStats'],
-                queryFn: () => fetchProductsStats()
+                queryFn: () => fetchProductsStats({token})
             },
             {
                 queryKey: ['todaysSales'],
-                queryFn: () => fetchSalesToday()
+                queryFn: () => fetchSalesToday({token})
             },
             {
                 queryKey: ['salesstatistics'],
-                queryFn: () => fetchSalesStatistic()
+                queryFn: () => fetchSalesStatistic({token})
             }
         ],
     })

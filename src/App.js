@@ -32,6 +32,7 @@ import SaleReport from "./components/Report/SaleReport";
 // import PercentChart from "./PercentChart";
 import 'antd/dist/reset.css';
 import Notification from "./components/Notifications/Page/Notification";
+import RegisterSale from "./components/sales/RegisterSale";
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
       socket.disconnect()
     }
   }, [socket, username]);
+ 
  
   return (
     <>
@@ -136,6 +138,7 @@ function App() {
                     </Route>
                     <Route path="/sales">
                       <Route index element={<SalesPage socket={socket} />} />
+                      <Route path="add" element={<RegisterSale socket={socket} />} />
                     </Route>
                     <Route
                       element={

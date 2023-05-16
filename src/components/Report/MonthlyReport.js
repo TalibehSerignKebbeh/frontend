@@ -5,6 +5,7 @@ import MonthWeekly from '../Dashboard/chats/MonthWeekly';
 import { CircularProgress } from '@mui/material';
 import { DatePicker } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, LabelList, Cell } from 'recharts';
+import useAuth from '../../hooks/useAuth';
 
 const CustomTooltip = (props) => {
   const { active, payload, label } = props;
@@ -26,6 +27,7 @@ const CustomTooltip = (props) => {
 
 
 const MonthlyReport = () => {
+  const {token} = useAuth()
   const [date, setdate] = useState('');
   const [monthDate, setmonthDate] = useState({
     month: new Date().getMonth(),
@@ -43,7 +45,7 @@ const MonthlyReport = () => {
       setisLoading(false)
       setweekData([])
       await queryInstance
-        .get(`/sales/stats/month?year=${monthDate?.year}&month=${monthDate?.month}`)
+        .get(`/sales/stats/month?year=${monthDate?.year}&month=${monthDate?.month}`, {headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
           console.log(res);
           if (res?.status === 200) {
@@ -63,7 +65,7 @@ const MonthlyReport = () => {
     return () => {
 
     };
-  }, [monthDate?.month, monthDate?.year]);
+  }, [monthDate?.month, monthDate?.year, token]);
 
 
   const getUniqueColor = (index) => COLORS[index % COLORS.length];

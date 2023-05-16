@@ -7,7 +7,7 @@ import SpinnerLoader from '../../Loaders/SpinnerLoader';
 import  IconButton  from '@mui/material/IconButton';
 import  Close  from '@mui/icons-material/Close';
 const ProductsUpdates = () => {
-      const {isAdmin, isManager} = useAuth()
+      const {token,isAdmin, isManager} = useAuth()
     const [page, setpage] = useState(0);
   const [total, settotal] = useState(0);
   const [totalPages, settotalPages] = useState(1);
@@ -26,7 +26,7 @@ const ProductsUpdates = () => {
      }
       setloading(true)
       // await queryInstance.get(`/notifications/products/alldata?page=${page}&pagesize=${pageSize}`)
-      await queryInstance.get(`/notifications`, {params:filters})
+      await queryInstance.get(`/notifications`, {params:filters, headers:{Authorization:`Bearer ${token}`}})
         .then(res => {
           // console.log(res?.data);
             setproductUpdates(res?.data?.notifications)
@@ -41,7 +41,7 @@ const ProductsUpdates = () => {
         }).finally(() => { setloading(false) })
     }
    if(isAdmin || isManager) {fetchProductsNotify()}
-  }, [created_at, isAdmin, isManager, page, pageSize])
+  }, [created_at, isAdmin, isManager, page, pageSize, token])
     return (
         <div className='bg-white shadow-md py-3 flex flex-col justify-center'>
             {loading ?

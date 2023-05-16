@@ -4,9 +4,11 @@ import { queryInstance } from '../../api';
 import SalesTablePage from './SalesTablePage';
 import { EditOffSharp } from '@mui/icons-material'
 import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../hooks/useAuth';
 
 
 const ProductSales = () => {
+    const {token} = useAuth()
     const { id } = useParams()
 
     const [sales, setsales] = useState([]);
@@ -58,7 +60,7 @@ const ProductSales = () => {
     ], [])
     const { isLoading, isError, data, isSuccess } = useQuery({
         queryKey: [`productsSales ${id}`],
-        queryFn:()=> queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`).then(res => { return res?.data }),
+        queryFn:()=> queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,{headers:{Authorization: `Bearer ${token}`}}).then(res => { return res?.data }),
         
     }, { networkMode: 'offlineFirst', keepPreviousData: false })
     if (isSuccess) {
@@ -67,7 +69,7 @@ const ProductSales = () => {
     useEffect(() => {
         const fetchSales = async () => {
         setloading(true)
-        await queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`)
+        await queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,{headers:{Authorization: `Bearer ${token}`}})
             .then(res => {
                 console.log(res);
                 setsales(res?.data?.sales)
@@ -80,7 +82,7 @@ const ProductSales = () => {
         return () => {
             
         };
-    }, [page, pageSize, id]);
+    }, [page, pageSize, id, token]);
 
     useEffect(() => {
         setrowCount(prev => 
