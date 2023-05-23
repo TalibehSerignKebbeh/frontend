@@ -39,6 +39,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
       password: "",
       confirmPassword: "",
       roles: "",
+      active:''
     };
     if (!values.firstName) {
       errors.firstName = "Firstname is required";
@@ -68,6 +69,9 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
     if (!values.roles.length) {
       errors.roles = "Roles is required";
     }
+    if (!typeof values?.active === 'boolean') {
+      errors.roles = "active status undefined";
+    }
     return errors;
   };
   const handleCloseAdd = () => {
@@ -76,15 +80,16 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
     formik.handleReset();
   };
   const submitData = async () => {
+    console.log(`summitting data`);
     const values = formik.values;
     setupdating({ error: "", success: "" });
     setaddMessages({ success: "", error: "" });
-
     if (values?._id?.trim()?.length) {
       setupdating(true);
       const id = values?._id;
+      console.log(values);
       await queryInstance
-        .put(`/users/${id}`, UserData,{headers:{Authorization:`Bearer ${token}`}})
+        .put(`/users/${id}`, values,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
@@ -205,19 +210,19 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
           "
     >
       <div>
-        {addMessages?.success?.length && <SuccessMessage message={addMessages?.success}
-          resetFunction={() => { setaddMessages({ ...addMessages, success: '' }) }} />}
+        {addMessages?.success?.length? <SuccessMessage message={addMessages?.success}
+          resetFunction={() => { setaddMessages({ ...addMessages, success: '' }) }} /> : null}
 
-        {updateStatusMessage?.success?.length && <SuccessMessage message={updateStatusMessage?.success}
-          resetFunction={() => { setupdateStatusMessage({ ...updateStatusMessage, success: '' }) }} />}
-        {updateStatusMessage?.error?.length && 
+        {updateStatusMessage?.success?.length? <SuccessMessage message={updateStatusMessage?.success}
+          resetFunction={() => { setupdateStatusMessage({ ...updateStatusMessage, success: '' }) }} /> : null}
+        {updateStatusMessage?.error?.length? 
           <ErrorMessage error={updateStatusMessage?.error}
           handleReset={()=>setupdateStatusMessage('')}
-          />}
-        {addMessages?.error?.length && 
+          /> : null}
+        {addMessages?.error?.length? 
           <ErrorMessage error={addMessages?.error}
           handleReset={()=>setaddMessages('')}
-        />}
+        /> : null}
       </div>
       <form onSubmit={formik.handleSubmit}
         onReset={formik.handleReset}
@@ -314,6 +319,31 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
             {formik.touched && formik.errors.password ? (
               <p className=" text-start text-red-700">
                 {formik.errors.password}
+              </p>
+            ) : null}
+          </div>
+          <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
+            <label
+              className="text-start font-normal text-lg cursor-pointer"
+              htmlFor="active"
+            >
+            <input
+              className={ `w-full px-20 h-7 rounded-md `}
+              type="checkbox"
+              name="active"
+              id="active"
+                placeholder=""
+                checked={formik.values.active}
+              onBlur={formik.handleBlur}
+              value={formik.values.active}
+              onChange={formik.handleChange}
+              />
+              
+            </label>
+              
+            {formik.touched && formik.errors.active ? (
+              <p className=" text-start text-red-700">
+                {formik.errors.active}
               </p>
             ) : null}
           </div>

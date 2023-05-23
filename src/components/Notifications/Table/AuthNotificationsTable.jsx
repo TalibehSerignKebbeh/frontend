@@ -64,33 +64,8 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
               position: 'fixed', right:0, left:'auto',
       backgroundColor:''
         }}>
-        {/* <DataGrid 
-          sx={{height:'300px'}}
-          rows={data}
-          columns={[{ field: 'message', headerName: 'message', width: 200, },
-            {
-              field: 'userId', headerName: 'username',width: 200,
-              valueGetter: ({ value }) => value?.username
-            },
-            {
-              field: 'created_at', headerName: 'DateTime',width:300,
-              // valueGetter:({value})=>value?.toString(),
-              valueGetter: ({ value }) => format(parseISO(value), " EEE MM yyyy, HH:mm b")
-            }]}
-          getRowId={(row) => row?._id}
-          hideFooterPagination
-          hideFooterSelectedRowCount
-          hideFooter={true}
-         /> */}
-        {/* <div className="bg-white shadow-md">
-          <div className="flex flex-row">
-            <div className=" w-1/3 py-2">Message</div>
-            <div className=" w-1/3 py-2">DateTime</div>
-            <div className=" w-1/3 py-2">Name</div>
-          </div>
-        </div> */}
+       
             <Button color="success"
-              // sx={{ position: 'absolute', top: '5px' }}
                 onClick={handleClickAuthNotification}>
             Read All
           </Button>

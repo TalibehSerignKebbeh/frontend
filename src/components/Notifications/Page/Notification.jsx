@@ -5,15 +5,16 @@ import UserNotificationTable from '../Table/UserNotificationTable';
 import './index.css'
 import SalesEvents from '../Table/SalesEvents';
 
-const Notification = () => {
+const Notification = ({ showSideMenu }) => {
+    
     const [tab, setTab] = useState("product")
     
     return (
         <div className='relative '>
             {/* <h2>Notification </h2> */}
-            <div className='bg-white shadow-slate-500 shadow-md 
+            <div className={`md:${!showSideMenu? 'px-10' : 'px-4'}  py-2 'bg-white shadow-slate-500 shadow-md 
             flex flex-row md:gap-14 sm:gap-2 gap-1
-             px-2 py-2 w-full mt-3 md:mb-8 sm:mb-5 mb-3'>
+              w-full mt-3 md:mb-8 sm:mb-5 mb-3'`}>
                 <button 
                 onClick={e=>setTab('product')} 
                 className={`${tab==='product'? 'tab active':'tab'}  
@@ -36,7 +37,7 @@ const Notification = () => {
             <div>
                 {(tab==='product') && <ProductsUpdates />}
                 {(tab==='user') && <UserNotificationTable />}
-                {(tab === 'sale') && <SalesEvents />}
+                {(tab === 'sale') && <SalesEvents showSideMenu/>}
             </div>
             {/* <div className='sticky top-0 p-1 py-2 bg-orange-200 h-72
             flex flex-col flex-wrap md:gap-3 gap-1 '>

@@ -4,14 +4,12 @@ import { queryInstance } from "../../api";
 import {  QueryClient, } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 import ConfirmDelete from "../Modal/ConfirmDelete";
-import { initialUser } from "./Data";
 import useAuth from "../../hooks/useAuth";
 import { allowedRoles } from "../../config/allowedRoles";
 
 const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collapseRef }) => {
   const queryClient = new QueryClient();
   const {token,roles} = useAuth()
-
   const [userToDelete, setuserToDelete] = useState(null);
   const [openDelete, setopenDelete] = useState(false);
   const [EditStatus, setEditStatus] = useState({
@@ -32,29 +30,30 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
       field: "firstName",
       headerName: "FirstName",
       minWidth: 110,
-      // editable: true,
+      editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       field: "lastName",
       headerName: "LastName",
       minWidth: 110,
-      // editable: true,
+      editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       field: "username",
       headerName: "Username",
       minWidth: 110,
-      // editable: true,
+      editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       type: "string",
       field: "roles",
       headerName: "Roles",
+      valueOptions:['admin', 'manager', 'seller'],
       width: 120,
-      // editable: true,
+      editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
@@ -62,7 +61,7 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
       field: "active",
       headerName: "status",
       minWidth: 110,
-      // editable: true,
+      editable: true,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
@@ -98,8 +97,8 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
   }
   const handleInitialiseEdit = (user) => {
     window.scrollTo({top:collapseRef?.current?.offSetTop, behavior:'smooth'})
-   setUserData(initialUser)
-    setUserData({...user, password: "", confirmNewPassword: ""})
+  //  setUserData(initialUser)
+    setUserData({...UserData, ...user, password: "", confirmNewPassword: ""})
     // setopenEdit(true);
     setopenAdd(true)
     // setUserToEdit({ ...user, password: "", confirmNewPassword: "" });
@@ -149,21 +148,33 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
 
   return (
     <div className="w-auto h-auto md:mt-6 mt-3">
-     
+
         <Box height={"460px"}>
           <DataGrid
             // loading={}
           columns={[
             ...userColumns,
           ]}
+          // onRowModesModelChange={(Object) => {
+          //   console.log(`rows model change \n`,Object)
+          // }}
+          // processRowUpdate={(Object) => {
+          //   console.log(`process row update \n`,Object)
+          //   seteditingId(Object?._id)
+          // }}
+          // onRowEditCommit={(Object) => {
+          //   console.log(`row edit commit \n`,Object)
+          // }}
+          //           onRowEditStart={() => {
+          //   console.log(`row edit start \n`)
+          //  }}
+          //   onRowEditStop={(param) => {
+          //     console.log(`row edit start`);
+          //   }}
+          pageSizeOptions={[10,20, 30, 50, 100]}
             rows={users}
             getRowId={(param) => param?._id}
-            onRowEditStart={() => {
-              console.log("Edit start");
-            }}
-            onRowEditStop={(param) => {
-              console.log(param);
-            }}
+
             localeText={{
               toolbarDensity: "Size",
               toolbarDensityLabel: "Size",
@@ -200,224 +211,7 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
               succcessMsg={statusMessage?.deleteSuccess}
           />
         </Box>
-      {/* )} */}
-      {/* {isAdmin || isManager ? (
-        <Dialog
-          open={openEdit}
-          fullWidth
-          TransitionComponent={Transition}
-          sx={{ p: 3, width: "auto", height: "auto" }}
-        >
-          <DialogTitle
-            sx={{
-              p: 2,
-              fontWeight: "bold",
-              boxShadow: "0px 0px 2px 0px rgba(0,0,0,0.6)",
-            }}
-          >
-            Edit User{" "}
-            <span className="text-red-600">
-              {" " + UserData?.firstName + " " + UserToEdit?.lastName}
-            </span>
-          </DialogTitle>
-          <Box
-            px={2}
-            my={2}
-            sx={{
-              boxShadow:
-                statusMessage?.deleteSuccess || statusMessage?.updateSuccess
-                  ? "0px 0px 2px 0px rgba(0,0,0,0.4)"
-                  : "",
-            }}
-          >
-            {statusMessage?.deleteSuccess?.length ? (
-              <Typography className="text-red-700 text-sm" color={"red"}>
-                {statusMessage?.deleteSuccess}
-              </Typography>
-            ) : statusMessage?.updateSuccess?.length ? (
-              <Typography className="text-green-700 text-sm" color={"green"}>
-                {statusMessage?.updateSuccess}
-              </Typography>
-            ) : null}
-          </Box>
-          {(errorMessages?.deleteError || errorMessages?.updateError) && (
-            <Box
-              px={2}
-              my={2}
-              sx={{ boxShadow: "0px 0px 2px 0px rgba(20,0,0,0.4)" }}
-            >
-              {errorMessages?.deleteError?.length ? (
-                <Typography className="text-red-400 text-sm">
-                  {errorMessages?.deleteError}
-                </Typography>
-              ) : errorMessages?.updateError?.length ? (
-                <Typography className="text-red-400 text-sm">
-                  {errorMessages?.updateError}
-                </Typography>
-              ) : null}
-            </Box>
-          )}
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: {
-                xl: "1fr 1fr",
-                lg: "1fr 1fr",
-                md: "1fr 1fr",
-                sm: "1fr 1fr",
-                xs: "1fr",
-                rowGap: "6px",
-                my: 1,
-              },
-            }}
-          >
-            <Box width="auto" px={2}>
-              <label className="font-semibold text-lg" htmlFor="FirstName">
-                FirstName
-              </label>
-              <input
-                className="px-2 py-4 w-full border-black border-2 rounded-md"
-                type={"text"}
-                value={UserToEdit?.firstName}
-                id="FirstName"
-                name="firstName"
-                placeholder="firstName"
-                onChange={handleInputChange}
-              />
-              {userErrors?.firstName && (
-                <span className="text-red-600">{userErrors?.firstName}</span>
-              )}
-            </Box>
-            <Box width="auto" px={2}>
-              <label className="font-semibold text-lg" htmlFor="LastName">
-                LastName
-              </label>
-              <input
-                className="px-2 py-4 w-full border-black border-2 rounded-md"
-                type={"text"}
-                value={UserToEdit?.lastName}
-                id="LastName"
-                name="lastName"
-                placeholder="lastName"
-                onChange={handleInputChange}
-              />
-              {userErrors?.lastName && (
-                <span className="text-red-600">{userErrors?.lastName}</span>
-              )}
-            </Box>
-            <Box width="auto" px={2}>
-              <label className="font-semibold text-lg" htmlFor="Username">
-                Username
-              </label>
-              <input
-                className="px-2 py-4 w-full border-black border-2 rounded-md"
-                type={"text"}
-                value={UserToEdit?.username}
-                id="Username"
-                name="username"
-                placeholder="username"
-                onChange={handleInputChange}
-              />
-              {userErrors?.username && (
-                <span className="text-red-600">{userErrors?.username}</span>
-              )}
-            </Box>
-            <Box width="auto" px={2}>
-              <RolesSelect user={UserToEdit} setuser={setUserToEdit} />
-              {userErrors?.roles && (
-                <span className="text-red-600">{userErrors?.roles}</span>
-              )}
-            </Box>
-
-            <Box width="auto" px={2}>
-              <label className="font-semibold text-lg" htmlFor="password">
-                New password
-              </label>
-              <input
-                className="px-2 py-4 w-full border-black border-2 rounded-md"
-                type={"password"}
-                value={UserToEdit?.password}
-                id="password"
-                name="password"
-                placeholder="New password"
-                onChange={handleInputChange}
-              />
-              {userErrors?.password && (
-                <span className="text-red-600">{userErrors?.password}</span>
-              )}
-            </Box>
-            <Box width="auto" px={2}>
-              <label className="font-semibold text-lg" htmlFor="confirmPass">
-                ConfirmPassword
-              </label>
-              <input
-                className="px-2 py-4 w-full border-black border-2 rounded-md"
-                type={"password"}
-                value={UserToEdit?.confirmNewPassword}
-                name="confirmNewPassword"
-                id="confirmPass"
-                placeholder="confirm new password"
-                onChange={handleInputChange}
-              />
-              {userErrors?.confirmNewPassword && (
-                <span className="text-red-600">
-                  {userErrors?.confirmNewPassword}
-                </span>
-              )}
-            </Box>
-            <Box width="auto" px={3}>
-              <label
-                htmlFor="active"
-                className="block font-semibold text-base pb-1 mt-2"
-              >
-                Active
-              </label>
-              <input
-                type={"checkbox"}
-                id="active"
-                defaultChecked={UserToEdit?.active}
-                name="acitve"
-                onChange={(e) =>
-                  setUserToEdit({
-                    ...UserToEdit,
-                    active: Boolean(e.target.checked),
-                  })
-                }
-                className={`text-red-700 fifty-percent-radius ${
-                  UserToEdit?.active ? "bg-green-800" : "bg-red-800"
-                } 
-                        p-1 pl-0 h-10 w-10 rounded-3xl checked:bg-green-400  `}
-              />
-            </Box>
-          </Box>
-
-          <DialogActions
-            sx={{ boxShadow: "0px 0px 1px 0px rgba(0,0,0,0.4)", bottom: "0" }}
-          >
-            <Stack direction={"row"} spacing={3}>
-              <Button
-                size="medium"
-                variant="outlined"
-                color={`info`}
-                disabled={EditStatus?.deleting || EditStatus?.updating}
-                sx={{ mr: 2, fontSize: { md: "11px", sm: "7px", xs: "7px" } }}
-                onClick={handleCloseEdit}
-              >
-                Close
-              </Button>
-              <Button
-                size="medium"
-                variant="contained"
-                color={`success`}
-                sx={{ mr: 2, fontSize: { md: "11px", sm: "7px", xs: "7px" } }}
-                onClick={handleUpdateuser}
-              >
-                {EditStatus?.updating ? "Updating..." : "Edit"}
-              </Button>
-              </Stack>
-          </DialogActions>
-        </Dialog>
-      ) : null} */}
+      
     </div>
   );
 };

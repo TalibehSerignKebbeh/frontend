@@ -61,7 +61,13 @@ const SalesTablePage = ({
           setpageSize(newSize);
           setpage(0);
         }}
+        onPaginationModelChange={({page, pageSize}) => {
+          setpage(page);
+          setpageSize(pageSize)
+        }}
+        paginationModel={{ page: page, pageSize: pageSize }}
         keepNonExistentRowsSelected
+        pageSizeOptions={[10, 20, 30, 40, 50, 100]}
         rowsPerPageOptions={[10, 20, 30, 40, 50]}
         loading={loading}
         onSelectionModelChange={(ids) => {

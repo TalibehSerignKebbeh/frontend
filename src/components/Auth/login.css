@@ -1,6 +1,6 @@
 
 .form-container{
-   width: 100% !important;
+   width: 100vw !important;
     min-height: 100% !important;
     height: 100vh !important;
     display: flex !important;
@@ -10,6 +10,9 @@
     position: relative;
     /* background-color: blueviolet; */
     align-self: stretch !important;
+    background-image: url('../../assets/images/minimarket.jpg');
+    background-size: cover;
+    background-clip: border-box;
     /* background: transparent ; */
     /* background-blend-mode: multiply; */
 }

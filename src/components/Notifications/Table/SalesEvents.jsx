@@ -8,7 +8,7 @@ import format from 'date-fns/format';
 import  parseISO  from 'date-fns/parseISO';
 import isValid from 'date-fns/isValid';
 
-const SalesEvents = () => {
+const SalesEvents = ({showSideMenu}) => {
      const {token, isAdmin, isManager} = useAuth() 
     const [page, setpage] = useState(0);
   const [count, setCount] = useState(0);
@@ -55,11 +55,15 @@ const SalesEvents = () => {
         </div>
         <DataGrid 
           onStateChange={(event) => {
-            
+          }}
+          onFilterModelChange={(filterObject) => {
+            // console.log(filterObject)
           }}
           sx={{
-            height: '500px', width:'100%',
-            // width: { xl: '100%', lg: '100%', md: '100%', sm: '100%', xs: '100%' }
+            height: '500px',
+            // width:'850px',
+            maxWidth: '900px', minWidth:'400px',
+            width: { xl: '850px', lg: '850px', md: '850px', sm: '100vw', xs: '100vw' },
           }}
                 rows={saleNotification}
                 loading={loading}

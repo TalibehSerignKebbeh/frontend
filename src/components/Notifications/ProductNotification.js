@@ -1,9 +1,11 @@
 // import  Table  from '@mui/material/Table';
 import  Button from '@mui/material/Button';
-import { DataGrid } from '@mui/x-data-grid';
-import { format, parseISO } from 'date-fns';
+import  format  from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 import React, { useEffect, useRef, useState } from 'react';
 import './notification.css'
+import { FixedSizeList } from "react-window";
+import { queryInstance } from '../../api';
 
 
 const ProductNotification = ({ dataArray, socket, open, setopen }) => {
@@ -27,11 +29,39 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
   const handleMouseUp = () => {
     setDragging(false);
   };
-  const handleClickAuthNotification = () => {
-       const ids = dataArray?.map(notify=>{return notify?._id})
-    socket.emit("read_all_product_notification", {ids});
-    };
+ 
+   const handleClickAuthNotification = () => {
+    const ids = dataArray?.map(notify => { return notify?._id })
+    // socket.emit("read_all_auth_notification", { ids });
+    queryInstance.patch(`notifications`, { ids })
+      .then((res) => {
+        if (res?.status === 200) {
+    socket.emit("read_all_product_notification", {});
+        }
 
+      // console.log(res);
+      }).catch((err) => {
+      // console.log(err);
+    })
+  };
+ const Row = ({ index, style }) => {
+    const val = dataArray[index];
+    const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
+    const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
+    return (
+      <div
+        style={{
+        ...style, display: 'block', flexDirection: 'column', rowGap: '-20px',
+        backgroundColor: 'white',boxShadow:'2px 2px 4px 0px rgba(0,0,0,0.5)',
+        height: 'auto', width: '100%', padding: '2px 5px',
+          textAlign: 'center', justifyContent: 'center',
+        }}>
+        <small className="block font-normal capitalize">{val?.message}</small>
+        <small className="font-light text-xs capitalize">Name: <small className="text-lg font-normal">{ fullName} </small></small>
+        <small className=" block text-xs font-normal">{date}</small>
+      </div>
+    );
+  };
    useEffect(() => {
         window.addEventListener('mousedown', (e) => {
           if (ref?.current && !ref.current?.contains(e.target)) {
@@ -52,95 +82,24 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       >
-          <table className="py-2 relative w-full table-fixed">
-            <thead className=" bg-white shadow-md py-4">
-              <tr>
-                <th className="text-sm font-normal">Action</th>
-                <th className="text-sm font-normal">Date</th>
-                <th colSpan={7} className="text-sm font-normal">From</th>
-                <th colSpan={7} className="text-sm font-normal">To</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataArray?.map((val, index) => (
-                <tr className="text-xs" key={index}>
-                  <td className="capitalize">{val?.type}</td>
-                  <td className="text-xs">
-                    {format(parseISO(val?.created_at), " EEE MM yyyy, HH:mm b")}
-                      </td>
-                      <td className='w-full' colSpan={7} >
-                          <table className='inner-table'>
-                             <thead>
-                                <tr>
-                                   <th className='td-small'>Name</th> 
-                                   <th className='td-small'>Qty</th> 
-                                   <th className='td-small'>Stock</th> 
-                                   <th className='td-small'>Price</th> 
-                                   <th className='td-small'>Desc</th> 
-                                </tr>
-                              </thead> 
-                              <tbody>
-                                  <tr>
-                                      <td>{val?.data?.from?.name }</td>
-                                      <td>{val?.data?.from?.quantity }</td>
-                                      <td>{val?.data?.from?.quantityInStock}</td>
-                                      <td>{val?.data?.from?.price}</td>
-                                      <td>{val?.data?.from?.description }</td>
-                                      <td>{val?.data?.from?.stockId?.name }</td>
-                                  </tr>
-                              </tbody>
-                        </table>  
-                      </td>
-                       <td className='w-full' colSpan={7} >
-                          <table className='inner-table'>
-                             <thead>
-                                <tr>
-                                   <th className='td-small'>Name</th> 
-                                   <th className='td-small'>Qty</th> 
-                                   <th className='td-small'>Stock</th> 
-                                   <th className='td-small'>Price</th> 
-                                   <th className='td-small'>Desc</th> 
-                                </tr>
-                              </thead> 
-                              <tbody>
-                                  <tr>
-                                      <td>{val?.data?.to?.name }</td>
-                                      <td>{val?.data?.to?.quantity }</td>
-                                      <td>{val?.data?.to?.quantityInStock}</td>
-                                      <td>{val?.data?.to?.price}</td>
-                          <td>{val?.data?.to?.description}</td>
-                                      <td>{val?.data?.to?.stockId?.name }</td>
-                          
-                                  </tr>
-                              </tbody>
-                        </table>  
-                      </td>
-                      
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {/* <DataGrid sx={{height:'250px', zIndex:2}}
-            rows={dataArray}
-            columns={[
-              { field: 'type', headerName: 'Action', },
-              {
-                field: 'created_at', headerName: 'Date',
-                valueGetter: ({ value }) => value && format(parseISO(value), " EEE MM yyyy, HH:mm b")
-              },
-              {
-                headerName: 'From', colSpan: 7, renderCell: ({row}) => {
-                  <span>{row?.data?.from?.name }</span>
-              },flex:1 },
-              
-              {headerName:'To', colSpan:7, }
-            ]}
-            getRowId={(row) => row?._id}
-            hideFooter
-          /> */}
-          <Button onClick={handleClickAuthNotification}>
-            Mark All As read
+          <Button color="success"
+                onClick={handleClickAuthNotification}>
+            Read All
           </Button>
+              
+          <FixedSizeList
+            height={250}
+            itemCount={dataArray?.length}
+            itemSize={65}
+                width={"100%"}
+                style={{
+                  marginTop:'60px', 
+                  marginBlock: '10px',
+                  }}
+          >
+            {Row}
+                  </FixedSizeList>
+           
         </div>
     );
 }

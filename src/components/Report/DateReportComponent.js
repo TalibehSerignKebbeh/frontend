@@ -10,33 +10,41 @@ import MyDataGrid from "../sales/MyDataGrid";
 import ReportCard from "../Dashboard/card/ReportCard";
 import { Inventory2Outlined } from "@mui/icons-material";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import useAuth from "../../hooks/useAuth";
+import { GetError } from "../other/OtherFuctions";
+import ErrorMessage from "../StatusMessages/ErrorMessage";
 
 
 const DateReportComponent = () => {
+  const {token} = useAuth()
   const [date, setdate] = useState("");
   const [money, setmoney] = useState(0);
   const [productQuantity, setproductQuantity] = useState(0);
   const [hourlyData, sethourlyData] = useState([]);
   const [sales, setsales] = useState([]);
   const [isLoading, setisLoading] = useState(false);
-
+  const [errorMsg, seterrorMsg] = useState('');
   useEffect(() => {
     const fetchSalesForDay = async () => {
       setisLoading(true);
       await queryInstance
-        .get(`/sales/stats/date?saleDate=${date}`)
+        .get(`/sales/stats/date?saleDate=${date}`, {headers:{Authorization: `Bearer ${token}`}})
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res?.status === 200) {
             console.log(res?.data);
             setsales(res?.data?.sales);
             setmoney(res?.data?.money);
             sethourlyData(res?.data?.hourlySales);
             setproductQuantity(res?.data?.quantityProduct);
+            return
           }
+        seterrorMsg(GetError(res))
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
+        seterrorMsg(GetError(err))
+
         })
         .finally(() => {
           setisLoading(false);
@@ -45,7 +53,7 @@ const DateReportComponent = () => {
     if (date?.length) {
       fetchSalesForDay()
     }
-  }, [date]);
+  }, [date, token]);
 
   const chartData = hourlyData.map(sale =>
   ({
@@ -84,7 +92,10 @@ const DateReportComponent = () => {
             <CircularProgress sx={{ transform: "scale(1.7)" }} />
           </div>
         ) : (
-          <>
+            <>
+              {errorMsg?.length ? <ErrorMessage error={errorMsg}
+                handleReset={()=>seterrorMsg('')}
+              /> : null}
             <h2 className="p-2 text-lg font-normal font-sans italic mt-2 ">
               {format(new Date(`${date} ${customTime}`), 'EEEE do MMM yyyy')}
             </h2>

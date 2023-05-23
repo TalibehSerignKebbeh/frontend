@@ -47,6 +47,7 @@ revenueThreshold:10   })
   // }, [isAdmin, isManager])
   // console.log(productsRequest?.data);
   useEffect(() => {
+    console.log(productsRequest?.data);
     if (productsRequest.isError) {
       seterrorMessage(GetError(productsRequest?.error))
     }

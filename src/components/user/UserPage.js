@@ -14,6 +14,7 @@ import UserForm from "./UserForm";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import { initialUser } from "./Data";
+import SpinnerLoader from "../Loaders/SpinnerLoader";
 
 
 
@@ -25,7 +26,7 @@ const UserPage = ({ socket }) => {
   const [openAdd, setopenAdd] = useState(false);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
-  password: "", confirmPassword: "", roles: [],  });
+  password: "", confirmPassword: "", roles: [],active:false  });
   const UserFetch = useQuery({
     queryKey: ["users"],
     queryFn: () => fetchUsers({token}),
@@ -52,7 +53,7 @@ const UserPage = ({ socket }) => {
     <Box sx={{ mb: 10, mx: 3, px: 1 }} className="w-full h-full ">
       {UserFetch?.isLoading ? (
         <div>
-          <p>Loading ..... </p>
+          <SpinnerLoader />
         </div>
       
       ) :

@@ -5,27 +5,39 @@ import SalesTablePage from "./SalesTablePage";
 import Header from "../other/Header";
 import { GetError } from "../other/OtherFuctions";
 import useAuth from "../../hooks/useAuth";
+import SearchProducts from "./Select/SearchProducts";
+import ProductSearch from "./ProductSearch";
+import ErrorMessage from "../StatusMessages/ErrorMessage";
+import Clear from "@mui/icons-material/Clear";
+import IconButton from "@mui/material/IconButton";
 
 const SalesPage = () => {
   const {token} = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
-  const [expiredToken, setexpiredToken] = useState(false);
   const [sales, setsales] = useState([]);
   const [errorMessage, seterrorMessage] = useState("");
-
-  const [selectedDate, setselectedDate] = useState("");
+  const [date, setdate] = useState('');
+  const [selectedProducts, setselectedProducts] = useState([]);
   const [pageSize, setpageSize] = useState(20);
   const [page, setpage] = useState(0);
 
   useEffect(() => {
     const fetchSales = async () => {
       setloading(true);
-      setexpiredToken(false);
       seterrorMessage("");
+      // const ids = selectedProducts?.reduce((prevIds, product)=> {return [...prevIds, product?._id]}, [])
+      // const id = selectedProducts[selectedProducts?.length - 1]?._id
+      let filters={}
+      
+      if (date?.length) {
+        filters.date = date;
+      }
+      filters.page = page;
+      filters.pageSize = pageSize;
       await queryInstance
         .get(
-          `/sales?page=${page}&&pageSize=${pageSize}&&saleDate=${selectedDate}`,{headers:{Authorization:`Bearer ${token}`}}
+          `/sales`,{headers:{Authorization:`Bearer ${token}`,}, params:{...filters}}
         )
         .then((res) => {
           console.log(res);
@@ -34,14 +46,11 @@ const SalesPage = () => {
             setsales(res?.data?.sales);
             return;
           }
-          if (res?.response?.status === 403) {
-            setexpiredToken(true);
-            seterrorMessage("Your token has expired Please login again");
-            return;
-          }
+         
          seterrorMessage(GetError(res))
         })
         .catch((err) => {
+          console.log(err);
          seterrorMessage(GetError(err))
         })
         .finally(() => {
@@ -50,7 +59,7 @@ const SalesPage = () => {
     };
     fetchSales();
     return () => {};
-  }, [selectedDate, page, pageSize]);
+  }, [ page, pageSize, token, selectedProducts, date]);
   useEffect(() => {
     setrowCount((prevValue) => (loading ? rowCount : prevValue));
   }, [rowCount, loading]);
@@ -62,7 +71,22 @@ const SalesPage = () => {
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
         title={"Manage Sales"}
       />
-      
+      {errorMessage?.length? <div className="w-fit">
+        <ErrorMessage error={errorMessage}
+        handleReset={()=>seterrorMessage('')}/>
+      </div> : null}
+      <div className="flex flex-row flex-wrap gap-3 ">
+        <div className="mb-3">
+          <input className="border-2 border-gray-400 p-2"
+            type="date" defaultValue={''} value={date}
+            onChange={(e)=>setdate(e.target.value)}
+          />
+          <IconButton onClick={()=>setdate('')} ><Clear /></IconButton>
+        </div> 
+         {/* <div>
+          <ProductSearch selected={selectedProducts} setselected={setselectedProducts} />
+       </div>  */}
+      </div>
       <SalesTablePage
         sales={sales}
         rowCount={rowCount}

@@ -7,6 +7,8 @@ import SellTable from './Sell/SellTable';
 import { QueryClient } from '@tanstack/react-query';
 import Box from '@mui/system/Box';
 import SellForm from './SellForm';
+import ErrorMessage from '../StatusMessages/ErrorMessage';
+import SuccessMessage from '../StatusMessages/SuccessMessage';
 const initialProductValues = { productId: '', quantity: 0, price: 0, name: '' }
 const initialStatusMessages = { success: '', error: '' }
 const initialUploadStatus = { loading: false, success: false, error: false }
@@ -26,10 +28,10 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
         if (!showSellModal || !token) return;
         productsTosell?.map(sale => sale.saleDate = new Date().toUTCString())
         //    productsTosell?.
-        console.log(productsTosell);
+        // console.log(productsTosell);
         // return
         setuploadStatus({ ...uploadStatus, success: false, loading: true, error: false })
-        await queryInstance.post(`/sales`, productsTosell)
+        await queryInstance.post(`/sales`, productsTosell, {headers:{Authorization:`Bearer `}})
             .then(res => {
                 console.log(res);
                 let status = res?.status;
@@ -47,7 +49,7 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
                 setstatusMessages({ ...statusMessages, success: '', error: res?.response?.data?.message })
             }).catch(err => {
                 setuploadStatus({ ...uploadStatus, error: true, success: false, loading: false })
-                console.log(err);
+                // console.log(err);
                 setstatusMessages({ ...statusMessages, success: '', error: err?.response?.data?.message })
                 // setisError(true)
             })
@@ -94,22 +96,11 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
             }}>
                 <div>
                     {statusMessages?.success?.length ?
-                        <div className=' w-fit h-auto flex flex-row gap-x-40 content-between 
-                items-center bg-slate-100 px-2 py-2 rounded'>
-                            <p className='text-green-700 text-lg my-auto'>{statusMessages?.success}</p>
-                            <span className='text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
-                cursor-pointer m-auto rounded-full' onClick={() => setstatusMessages(initialStatusMessages)}>
-                                X
-                            </span>
-                        </div> : null}
+                        <SuccessMessage message={statusMessages.success}
+                        resetFunction={()=>setstatusMessages({...statusMessages, success:''})}/> : null}
                     {statusMessages?.error?.length ?
-                        <div className='bg-slate-100 w-full h-auto flex flex-row content-between'>
-                            <p className='text-red-700 text-base'>{statusMessages?.error}</p>
-                            <span className='float-right text-base  p-2 hover:bg-red-400 
-                cursor-pointer m-auto' onClick={() => setstatusMessages(initialStatusMessages)}>
-                                X
-                            </span>
-                        </div> : null}
+                        <ErrorMessage error={statusMessages?.error}
+                            handleReset={() =>setstatusMessages({...statusMessages, error:''})} /> : null}
                     <div className='w-full bg-white md:p-3 p-2'>
                         <SellForm product={product} setproduct={setproduct}
                             products={products} setproductsTosell={setproductsTosell}

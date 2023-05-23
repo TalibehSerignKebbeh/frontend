@@ -131,10 +131,10 @@ function App() {
                         path=":id/products"
                         element={<StockProducts socket={socket} />}
                       />
-                      <Route
+                      {/* <Route
                         path="add"
                         element={<AddStock socket={socket} />}
-                      />
+                      /> */}
                     </Route>
                     <Route path="/sales">
                       <Route index element={<SalesPage socket={socket} />} />
@@ -158,7 +158,7 @@ function App() {
                       <Route
                         
                         path="/events"
-                        element={<Notification />}
+                        element={<Notification showSideMenu/>}
                       />
                     </Route>
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
