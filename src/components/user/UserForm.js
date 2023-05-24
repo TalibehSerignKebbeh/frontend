@@ -80,14 +80,12 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
     formik.handleReset();
   };
   const submitData = async () => {
-    console.log(`summitting data`);
     const values = formik.values;
     setupdating({ error: "", success: "" });
     setaddMessages({ success: "", error: "" });
     if (values?._id?.trim()?.length) {
       setupdating(true);
       const id = values?._id;
-      console.log(values);
       await queryInstance
         .put(`/users/${id}`, values,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
@@ -95,21 +93,21 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
           if (res.status === 200) {
             setupdateStatusMessage({
               ...updateStatusMessage,
-              updateSuccess: res?.data?.message,
+              success: res?.data?.message,
             });
             queryClient.invalidateQueries({ queryKey: ["users"] });
             return;
           }
           updateStatusMessage({
             ...updateStatusMessage,
-            updateError: GetError(res),
+            error: GetError(res),
           });
         })
         .catch((err) => {
           console.log(err);
           updateStatusMessage({
             ...updateStatusMessage,
-            updateError: GetError(err),
+            error: GetError(err),
           });
 
         })
@@ -210,7 +208,8 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
           "
     >
       <div>
-        {addMessages?.success?.length? <SuccessMessage message={addMessages?.success}
+        {addMessages?.success?.length ?
+          <SuccessMessage message={addMessages?.success}
           resetFunction={() => { setaddMessages({ ...addMessages, success: '' }) }} /> : null}
 
         {updateStatusMessage?.success?.length? <SuccessMessage message={updateStatusMessage?.success}

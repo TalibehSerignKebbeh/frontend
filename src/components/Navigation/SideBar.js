@@ -103,11 +103,6 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
             title={"Sales"}
             showSideMenu={showSideMenu}
           />
-           <CustomLink href={'/sales/add'} 
-            icon={<PointOfSaleSharp />}
-            title={"Add Sales"}
-            showSideMenu={showSideMenu}
-          />
           <CustomLink href={'/stocks'} 
             icon={<ProductionQuantityLimits />}
             title={"Stocks"}

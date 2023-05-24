@@ -5,11 +5,13 @@ import SalesTablePage from "./SalesTablePage";
 import Header from "../other/Header";
 import { GetError } from "../other/OtherFuctions";
 import useAuth from "../../hooks/useAuth";
-import SearchProducts from "./Select/SearchProducts";
-import ProductSearch from "./ProductSearch";
+// import SearchProducts from "./Select/SearchProducts";
+// import ProductSearch from "./ProductSearch";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import Clear from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
+import RegisterSale from "./RegisterSale";
+import { motion } from "framer-motion";
 
 const SalesPage = () => {
   const {token} = useAuth()
@@ -21,7 +23,7 @@ const SalesPage = () => {
   const [selectedProducts, setselectedProducts] = useState([]);
   const [pageSize, setpageSize] = useState(20);
   const [page, setpage] = useState(0);
-
+  const [openRegisterSale, setOpenRegisterSale] = useState(false)
   useEffect(() => {
     const fetchSales = async () => {
       setloading(true);
@@ -71,12 +73,24 @@ const SalesPage = () => {
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
         title={"Manage Sales"}
       />
+      <button className="px-2 py-2 rounded-md bg-green-600 text-white font-bold"
+      onClick={()=>setOpenRegisterSale(prev=>!prev)}>
+        {openRegisterSale? `Close`:`Open To`}  Register Sales
+      </button>
+      
+        <motion.div
+          initial={{scale:0}}
+          animate={{ scale: 1 }}
+        >
+          {openRegisterSale ?  <RegisterSale />: null}
+        </motion.div>
+        
       {errorMessage?.length? <div className="w-fit">
         <ErrorMessage error={errorMessage}
         handleReset={()=>seterrorMessage('')}/>
       </div> : null}
-      <div className="flex flex-row flex-wrap gap-3 ">
-        <div className="mb-3">
+      <div className="bg-white shadow-xl shadow-gray-100 flex flex-row flex-wrap gap-3 ">
+        <div className="my-3 mt-6">
           <input className="border-2 border-gray-400 p-2"
             type="date" defaultValue={''} value={date}
             onChange={(e)=>setdate(e.target.value)}
@@ -86,7 +100,6 @@ const SalesPage = () => {
          {/* <div>
           <ProductSearch selected={selectedProducts} setselected={setselectedProducts} />
        </div>  */}
-      </div>
       <SalesTablePage
         sales={sales}
         rowCount={rowCount}
@@ -96,6 +109,10 @@ const SalesPage = () => {
         setpageSize={setpageSize}
         loading={loading}
       />
+      </div>
+      
+
+      
     </div>
   );
 };

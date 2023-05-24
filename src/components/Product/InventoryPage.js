@@ -14,7 +14,6 @@ const InventoryPage = ({ socket }) => {
   const {isAdmin, isManager, token} = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
   const [showUpdates, setshowUpdates] = useState(false);
-  const [showAdds, setshowAdds] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setpageSize] = useState(20);
   // const [loading, setloading] = useState(false);
@@ -88,7 +87,8 @@ revenueThreshold:10   })
         <Button color='success'
             sx={{
               bgcolor: '#fff', boxShadow: '0px 2px 7px rgba(0,0,0,0.7)',
-            mx:{xl:3, lg:3, md:3, sm:2, xs:'auto'}}}
+              mx: { xl: 3, lg: 3, md: 3, sm: 2, xs: 'auto' },
+            mb:3, mt:1}}
         onClick={() => setshowUpdates(prev => !prev)}>
         {showUpdates? 'hide ': 'Show ' }Updates
       </Button>

@@ -9,6 +9,7 @@ import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuan
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { DatePicker } from "antd";
 import useAuth from "../../hooks/useAuth";
+import {motion} from 'framer-motion'
 
 const AnnuanReport = () => {
   const {token} = useAuth()
@@ -56,7 +57,7 @@ const handleFetchYearReport = async (e) => {
         responseType:'json',headers:{Authorization:`Bearer ${token}`}
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res?.status === 200) {
           setloadSuccess(true);
           setmoney(res?.data?.money);
@@ -98,7 +99,9 @@ const handleFetchYearReport = async (e) => {
             <CircularProgress sx={{ transform: "scale(1.7)" }} />
           </div>
         ) : loadSuccess ? (
-          <>
+            <motion.div initial={{scale:0}}
+              animate={{ scale: 1 }}
+            transition={{duration:0.7, delay:0.2}}>
               <h2 className="p-2 mt-2 text-3xl font-serif italic text-gray-700 ">
                 {`${year} report`}
               </h2>
@@ -161,7 +164,7 @@ const handleFetchYearReport = async (e) => {
                   </BarChart>
                 </div> : null}
             </div>
-          </>
+          </motion.div>
         ) : null
       ) : null}
     </div>

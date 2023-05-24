@@ -8,8 +8,9 @@ import { queryInstance } from '../../api';
 import { GetError } from '../other/OtherFuctions';
 import SuccessMessage from '../StatusMessages/SuccessMessage';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
-import { Progress } from 'antd';
+// import { Progress } from 'antd';
 import {motion} from 'framer-motion'
+import  CircularProgress  from '@mui/material/CircularProgress';
 
 
 const RegisterSale = () => {
@@ -22,24 +23,7 @@ const RegisterSale = () => {
 
 
   useEffect(() => {
-    //     setproducts(prev => {
-    //        return prev
-    //    })  
-    //     const fetchProducts = async () => {
-    //         setloading(true)
-    //         await queryInstance.get(`/products`, {headers: {Authorization:`Bearer ${token}`}})
-    //             .then(res => {
-    //                 const newProducts = res?.data?.products
-    //                 setproducts(prev => {
-    //                     if (newProducts?.length) return newProducts
-    //                     return prev;
-    //                 })
-    //             }).catch(err => {
-    //                 console.log(err);
-    //             }
-    //             ).finally(() => { setloading(false) })
-    //     }
-    //     fetchProducts()
+    
 
     return () => {
 
@@ -79,10 +63,13 @@ const RegisterSale = () => {
 
   
   return (
-    <div>
-      <div className='bg-gray-400 w-full md:mx-10 mx-2'>
+    <div
+      // style={{ backgroundColor: `gray`, paddingBlock: `2rem` }}
+      className='bg-slate-200 mb-5 mt-2 py-4 shadow-zinc-300 shadow-md'
+    >
+      <div className='w-full md:mx-10 mx-2'>
 
-      <h2 className='text-2xl mt-4 font-normal '>
+      <h2 className='text-2xl mt-2 font-light '>
         Add Sales Here
       </h2>
         <motion.div style={{height: selected?.length? 'auto': '0px'}}
@@ -92,28 +79,30 @@ const RegisterSale = () => {
       
     >
         <div style={{ maxHeight: `200px`, width: '600px', marginBlock: '30px',  }}
-        className='max-w-screen-sm mt-10'>
-        <table className='table table-fixed'>
+            className='max-w-screen-sm mt-10 
+        bg-white shadow-sm shadow-white p-2 rounded-sm'>
+            <table cellPadding={1} cellSpacing={2}
+              className=' table table-fixed text-align'>
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Qty</th>
-              <th>Total</th>
-              <th colSpan={2}>Actions</th>
+            <tr className=''>
+              <th align='center'>Name</th>
+              <th align='center'>Price</th>
+              <th align='center'>Qty</th>
+              <th align='center'>Total</th>
+              <th align='center' colSpan={2}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {selected?.map((value, index) => (
               <tr key={index}>
-                <td className='font-normal py-2'>{value?.name }</td>
-                <td className='font-normal py-2'>{value?.price }</td>
-                <td className='font-normal py-2'>{value?.quantity }</td>
-                <td className='font-normal py-2'>{value?.price * value?.quantity }</td>
-                <td className='font-normal py-2'><button onClick={e => handleIncrement(value)}>
+                <td className='font-normal text-2xl py-2'>{value?.name }</td>
+                <td className='font-normal text-2xl py-2'>{value?.price }</td>
+                <td className='font-normal text-2xl py-2'>{value?.quantity }</td>
+                <td align='center' className='font-normal text-2xl py-2'>{value?.price * value?.quantity }</td>
+                <td align='center' className='font-normal py-2'><button onClick={e => handleIncrement(value)}>
                   <AddCircle />
                 </button></td>
-                <td className='font-normal py-2'><button onClick={e => handleDecrement(value)} disabled={value?.quantity <= 1}>
+                <td align='center' className='font-normal py-2'><button onClick={e => handleDecrement(value)} disabled={value?.quantity <= 1}>
                   <Minimize />
                 </button></td>
               </tr>
@@ -147,14 +136,14 @@ const RegisterSale = () => {
           products={products}
           setproducts={setproducts}
         />
-        <button
-          style={{ backgroundColor: "green", marginInline:'10px' }}
-          className="ml-10 bg-green-900 p-2
-            text-white py-2 px-8 h-fit rounded-lg "
+        <button disabled={!selected?.length}
+          style={{ backgroundColor: "green", marginInline:'10px', paddingInline:'40px' }}
+          className="ml-10 bg-green-900 
+            text-white py-2 h-fit rounded-sm "
           onClick={handleSubmit}
         >
           {/* {postingSales? `adding....` : `Add`} */}
-          {postingSales? <Progress  percent={percent} size={`small`}/> : `Add`}
+          {postingSales? <CircularProgress size={`small`} /> : `Add`}
         </button>
       </div>
       </div>

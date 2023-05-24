@@ -20,7 +20,7 @@ import SalesPage from "./components/sales/SalesPage";
 import ProductSales from "./components/sales/ProductSales";
 import UserPage from "./components/user/UserPage";
 import Dashboard from "./components/Dashboard/Dashboard";
-import SellLayout from "./components/Layouts/SellLayout";
+// import SellLayout from "./components/Layouts/SellLayout";
 import { io } from "socket.io-client";
 import useAuth from "./hooks/useAuth";
 import {  serverUrl } from "./api";
@@ -42,7 +42,8 @@ function App() {
       withCredentials:true,
       autoConnect: false,
       reconnectionAttempts: 3,
-      secure:true,
+      secure: true,
+      host:serverUrl,
     }));
   const { token } = useAuth()
 
@@ -94,7 +95,6 @@ function App() {
                     <Login socket={socket} />
                   }
                 />
-                <Route element={<SellLayout socket={socket} />}>
                   <Route
                     element={
                       <ProtectedRoutes
@@ -138,7 +138,7 @@ function App() {
                     </Route>
                     <Route path="/sales">
                       <Route index element={<SalesPage socket={socket} />} />
-                      <Route path="add" element={<RegisterSale socket={socket} />} />
+                      {/* <Route path="add" element={<RegisterSale socket={socket} />} /> */}
                     </Route>
                     <Route
                       element={
@@ -163,7 +163,6 @@ function App() {
                     </Route>
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
                   </Route>
-                </Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />
                 <Route path="*" element={<PageNotFound />} />
