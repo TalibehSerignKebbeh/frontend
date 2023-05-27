@@ -13,7 +13,7 @@ import {motion} from 'framer-motion'
 import  CircularProgress  from '@mui/material/CircularProgress';
 
 
-const RegisterSale = () => {
+const RegisterSale = ({socket}) => {
   const { token } = useAuth()
   const [selected, setselected] = useState([])
   const [products, setproducts] = useState([])
@@ -41,8 +41,10 @@ const RegisterSale = () => {
         setpercent(Math.ceil(values?.progress * 100))
       }})
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res?.status === 200) {
+          socket.emit('notify_sale')
+          socket.emit()
           setpostStatus({ ...postStatus, success: res?.data?.message })
           return;
         }

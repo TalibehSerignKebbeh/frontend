@@ -1,19 +1,17 @@
 import  Inventory2  from "@mui/icons-material/Inventory2";
 import React, { useState, useEffect } from "react";
 import { queryInstance } from "../../api";
-import SalesTablePage from "./SalesTablePage";
+import SalesTable from "./SalesTable";
 import Header from "../other/Header";
 import { GetError } from "../other/OtherFuctions";
 import useAuth from "../../hooks/useAuth";
-// import SearchProducts from "./Select/SearchProducts";
-// import ProductSearch from "./ProductSearch";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import Clear from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import RegisterSale from "./RegisterSale";
 import { motion } from "framer-motion";
 
-const SalesPage = () => {
+const SalesPage = ({socket}) => {
   const {token} = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
@@ -68,7 +66,7 @@ const SalesPage = () => {
 
 
   return (
-    <div style={{ width: "100%" }}>
+    <div className="md:px-10 px-4 " style={{ width: "100%" }}>
       <Header
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
         title={"Manage Sales"}
@@ -82,25 +80,26 @@ const SalesPage = () => {
           initial={{scale:0}}
           animate={{ scale: 1 }}
         >
-          {openRegisterSale ?  <RegisterSale />: null}
+          {openRegisterSale ?  <RegisterSale socket={socket}/>: null}
         </motion.div>
         
-      {errorMessage?.length? <div className="w-fit">
-        <ErrorMessage error={errorMessage}
-        handleReset={()=>seterrorMessage('')}/>
-      </div> : null}
-      <div className="bg-white shadow-xl shadow-gray-100 flex flex-row flex-wrap gap-3 ">
-        <div className="my-3 mt-6">
+     
+      <div className="bg-white shadow-xl shadow-gray-100 flex flex-col flex-wrap gap-3 ">
+        <div className="my-3 mt-12">
           <input className="border-2 border-gray-400 p-2"
-            type="date" defaultValue={''} value={date}
+            type="date"  value={date}
             onChange={(e)=>setdate(e.target.value)}
           />
           <IconButton onClick={()=>setdate('')} ><Clear /></IconButton>
-        </div> 
+        </div>
+         {errorMessage?.length? <div className="w-fit block mt-3">
+        <ErrorMessage error={errorMessage}
+        handleReset={()=>seterrorMessage('')}/>
+      </div> : null}
          {/* <div>
           <ProductSearch selected={selectedProducts} setselected={setselectedProducts} />
        </div>  */}
-      <SalesTablePage
+      <SalesTable
         sales={sales}
         rowCount={rowCount}
         page={page}

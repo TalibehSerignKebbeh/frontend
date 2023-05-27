@@ -5,7 +5,6 @@ import {
   GridToolbar,
   gridClasses,
 } from "@mui/x-data-grid";
-import  Box  from "@mui/material/Box";
 // import  IconButton  from "@mui/material/IconButton";
 import  format  from "date-fns/format";
 // import { Inventory2 } from "@mui/icons-material";
@@ -116,10 +115,11 @@ const ProductsDataGrid = ({
   ];
 
   return (
-    <Box mb={3}>
+    <div className="mb-3">
       <DataGrid
         rows={products?.length ? products : []}
         columns={columns}
+        
         pageSize={pageSize}
         page={page}
         onPageChange={(newPage) => setpage(newPage)}
@@ -158,7 +158,7 @@ const ProductsDataGrid = ({
           },
         }}
       />
-    </Box>
+    </div>
   );
 };
 

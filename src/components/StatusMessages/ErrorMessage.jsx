@@ -2,14 +2,16 @@ import React from 'react';
 
 const ErrorMessage = ({ error, handleReset }) => {
     return (
-        <div style={{backgroundColor:'red', color:'white'}} className='bg-red-800 md:w-96 w-11/12
+        <div  className='bg-red-800 md:w-96 w-11/12
         h-auto flex flex-row justify-between
         items-center px-1 py-2 mx-auto rounded-sm'>
-            <p className='text-black text-base my-auto'>{error}</p>
-            <span className=' text-base text-black  py-1 px-2 hover:bg-white 
-                cursor-pointer rounded-2xl' onClick={handleReset}>
+            <p className='text-black dark:text-white text-base my-auto'>{error}</p>
+            <button className=' text-base  text-white  
+             px-2 w-7 h-7
+                cursor-pointer rounded-2xl
+                bg-slate-500' onClick={handleReset}>
                 X
-            </span>
+            </button>
         </div>
     );
 }

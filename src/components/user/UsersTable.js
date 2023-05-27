@@ -184,7 +184,8 @@ const UsersTable = ({ users, setusers, UserData, setUserData, setopenAdd, collap
               toolbarFiltersTooltipActive: 2,
             }}
             sx={{
-              maxWidth: "750px",
+              maxWidth: "800px",
+              width:'100%',
               p: 2,
               ml: {xl:2,lg:2,md:1, sm:'0', xs:'0' },mr:'auto',
               boxShadow:

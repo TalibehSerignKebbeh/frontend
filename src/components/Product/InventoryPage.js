@@ -57,8 +57,8 @@ revenueThreshold:10   })
   }, [productsRequest.data, productsRequest?.error, productsRequest?.failureReason, productsRequest.isError, productsRequest.isSuccess])
   return (
     <div className=' w-full h-auto md:mb-6 sm:mb-10 xl:my-0 mb-12'>
-      {productsRequest?.isLoading ?
-        <section><p>loading.....</p></section> :
+      
+       
         <Box className='w-auto self-start  h-auto  mb-5  text-center
         ' sx={{ mx: { lg: "20px", xl: "30", md: '14px', sm: '3px' }, my: 2 }}>
           {errorMessage?.length ?
@@ -72,10 +72,10 @@ revenueThreshold:10   })
          
           <ProductsDataGrid products={productsRequest?.data?.products} page={page}
             setpage={setpage} pageSize={pageSize}
-            setpageSize={setpageSize} loading={ productsRequest?.isLoading} />
+            setpageSize={setpageSize} loading={ productsRequest.isLoading} />
           {/* <ProductTable  products={products} /> */}
         </Box>
-      }
+      
       
       <SideModal showSideModal={openAddModal}
         setShowSideModal={setopenAddModal} 

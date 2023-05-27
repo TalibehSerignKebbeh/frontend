@@ -20,6 +20,7 @@ import Box from "@mui/system/Box";
 import { queryInstance } from "../../api";
 import {useContextHook} from '../../context/AuthContext'
 import CustomLink from "./Links/CustomLink";
+// import DarkModeToggle from "../../hooks/DarkModeToggler";
 
 const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
   const navigate = useNavigate();
@@ -61,15 +62,16 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
         onClick={handleNavToggle}
         disableTouchRipple
         disableFocusRipple
-        sx={{ fontSize: "1.2rem", ml: "auto", color: "black", position:'fixed' }}
+        sx={{bgcolor:`lightgray`, fontSize: "1.2rem", ml: "auto", color: "black", position:'fixed' }}
         className={`menu-toggle-btn ${showSideMenu ? "ml-auto" : "md:ml-0 -m-1"} 
-                   w-auto ml-auto zIndex-2 -mr-8 text-2xl pointer p-0 md:relative absolute `}
+                   w-auto ml-auto zIndex-2 -mr-8 text-2xl pointer p-0 md:relative absolute
+                   `}
       >
         {/* &#9776; */}
         <MenuOutlined sx={{scale:1.1}}/>
       </Button>
       <Box sx={{
-        position: 'absolute', mt: 4, textAlign: 'center',
+        mt: 4, textAlign: 'center',
              }}>
 
       <Box className="md:py-3 my-2" sx={{ textAlign: "center" }}>
@@ -90,7 +92,7 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
         </Tooltip>
       </Box>
       <div
-        className={`"w-full flex flex-col 
+        className={`"w-full h-full flex flex-col 
                          content-center items-start md:gap-y-3 gap-y-2 `}
         >
           <CustomLink href={'/dashboard'} 
@@ -141,8 +143,12 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
           )}
         </IconButton>
         </div>
-      </Box>
+        {/* <div className="text-center w-full">
+        <DarkModeToggle />
         
+        </div> */}
+      </Box>
+      
     </Box>
   );
 };

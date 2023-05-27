@@ -326,8 +326,10 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
               className="text-start font-normal text-lg cursor-pointer"
               htmlFor="active"
             >
-            <input
-              className={ `w-full px-20 h-7 rounded-md `}
+            
+            </label>
+              <input
+              className={ `w-full px-96 h-7 rounded-md `}
               type="checkbox"
               name="active"
               id="active"
@@ -337,8 +339,6 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
               value={formik.values.active}
               onChange={formik.handleChange}
               />
-              
-            </label>
               
             {formik.touched && formik.errors.active ? (
               <p className=" text-start text-red-700">

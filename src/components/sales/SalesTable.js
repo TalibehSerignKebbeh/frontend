@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import  IconButton  from "@mui/material/IconButton";
 import  {DataGrid,gridClasses,GridToolbar}  from "@mui/x-data-grid";
-import { AiFillDelete } from "react-icons/ai";
-import Box from "@mui/system/Box";
+// import Box from "@mui/system/Box";
 import  Delete  from "@mui/icons-material/Delete";
 import { salesColumns } from "./data";
-const SalesTablePage = ({
+const SalesTable = ({
   sales,
   page,
   setpage,
@@ -18,19 +17,20 @@ const SalesTablePage = ({
   const [selectedIds, setselectedIds] = useState([]);
   
   return (
-    <Box
-      position={"relative"}
-      height={"700px"}
-      sx={{
-        width: {
-          xl: "80%",
-          lg: "90%",
-          md: "100%",
-          sm: "100%",
-          xs: "100%",
-          mb: 6,
-        },
-      }}
+    <div 
+      className="w-fit bg-white dark:bg-slate-700 text-gray-500
+     shadow-xl shadow-white"
+      // sx={{
+      //   width: {
+      //     xl: "80%",
+      //     lg: "90%",
+      //     md: "100%",
+      //     sm: "100%",
+      //     xs: "100%",
+      //     mb: 6,
+      //   },
+      // }}
+      
     >
       {selectedIds?.length ? (
           <IconButton
@@ -47,7 +47,7 @@ const SalesTablePage = ({
             {/* <AiFillDelete /> */}
           </IconButton>
       ) : null}
-      <DataGrid
+      <DataGrid autoHeight
         rowCount={rowCount}
         rows={sales?.length ? sales : []}
         checkboxSelection
@@ -112,8 +112,8 @@ const SalesTablePage = ({
           px: 2,
         }}
       />
-          </Box>
+          </div>
   );
 };
 
-export default SalesTablePage;
+export default SalesTable;

@@ -9,7 +9,6 @@ import {
 import InventoryPage from "./components/Product/InventoryPage";
 import SideBar from "./components/Navigation/SideBar";
 import TopBar from "./components/Navigation/TopBar";
-import AddStock from "./components/stock/AddStock";
 import Stocks from "./components/stock/Stocks";
 import Login from "./components/Auth/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -26,13 +25,9 @@ import useAuth from "./hooks/useAuth";
 import {  serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
-// import ExpiredRefreshToken from "./components/Modal/ExpiredRefreshToken";
 import SaleReport from "./components/Report/SaleReport";
-// import TestComponent from "./TestComponent";
-// import PercentChart from "./PercentChart";
 import 'antd/dist/reset.css';
 import Notification from "./components/Notifications/Page/Notification";
-import RegisterSale from "./components/sales/RegisterSale";
 
 
 function App() {
@@ -50,18 +45,8 @@ function App() {
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {
     socket.connect()
-    window.addEventListener('offline', (event) => {
-      if (username) {
-      socket.emit('user_user_online', {username: username})
-      }
-    })
-     window.addEventListener('online', (event) => {
-      if (username) {
-      socket.emit('set_user_online', {username: username})
-      }
-    })
+     
     return () => {
-      socket.emit('set_user_offline', {username: username})
       socket.disconnect()
     }
   }, [socket, username]);
@@ -70,14 +55,14 @@ function App() {
   return (
     <>
       <Router>
-        <div className="maincontainer flex flex-row   ">
+        <div className="flex flex-row w-screen h-screen  ">
           <SideBar
             socket={socket}
             showSideMenu={showSideMenu}
             setshowSideMenu={setshowSideMenu}
           />
           {/* other content */}
-          <div className="content relative w-full h-auto flex flex-col items-stretch">
+          <div className="content relative w-screen h-screen flex flex-col items-stretch">
             <TopBar
               socket={socket}
               showSideMenu={showSideMenu}
@@ -112,10 +97,10 @@ function App() {
                         index
                         element={<InventoryPage socket={socket} />}
                       />
-                      <Route
+                      {/* <Route
                         path="add"
                         element={<AddStock socket={socket} />}
-                      />
+                      /> */}
                       <Route
                         path=":id"
                         element={<EditProductPage socket={socket} />}
