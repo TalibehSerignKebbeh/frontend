@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import useAuth from '../hooks/useAuth';
 
 const SellProduct = () => {
-    const {token, roles} = useAuth()
+    const {token} = useAuth()
     const [productToSell, setproductToSell] = useState({ name: '', quantity: 0 });
 
     const handleSell = async (e) => {

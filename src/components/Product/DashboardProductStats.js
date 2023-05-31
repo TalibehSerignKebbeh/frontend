@@ -6,9 +6,10 @@ import Typography from '@mui/material/Typography'
 const DashboardProductStats = (props) => {
     const { productsStatesQuery} = props;
     return (
-        <Box
+        <Box className={`bg-white dark:bg-slate-700`}
                     sx={{
-                    bgcolor: "#fff", p: 1, display: 'flex', flexDirection: 'row',
+                // bgcolor: "#fff",
+                p: 1, display: 'flex', flexDirection: 'row',
                     flexWrap: 'wrap', gap: '.8rem',columnGap:'.6rem', borderRadius:'4px',
                 width: "auto", textAlign: 'start',
             //   boxShadow:
@@ -16,8 +17,9 @@ const DashboardProductStats = (props) => {
        
                 }}
                 >
-                    <div className='w-full h-auto text-start'>
-                        <Typography sx={{ fontSize: '1.3rem', fontWeight: 'semibold' }}>
+            <div className='w-full h-auto text-start font-light
+                    text-gray-700 dark:text-white'>
+                        <Typography sx={{ fontSize: '1.3rem', }}>
                             Products Details
                         </Typography>
                     </div>

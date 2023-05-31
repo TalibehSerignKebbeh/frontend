@@ -44,31 +44,47 @@ const ProductsUpdates = () => {
    if(isAdmin || isManager) {fetchProductsNotify()}
   }, [created_at, isAdmin, isManager, page, pageSize, token])
     return (
-        <div className='bg-white shadow-md py-3 flex flex-col justify-center'>
+      <div className='bg-white dark:bg-slate-700 
+        shadow-md py-3 flex flex-col justify-center'>
             {loading ?
           <SpinnerLoader /> :
-          <div>
+          <div className='bg-inherit '>
             <div>
-          <input className='py-4 px-2 border-2 border-slate-200 mb-3 mt-2'
+              <input className='
+              bg-white dark:bg-slate-400 
+                    text-slate-700 dark:text-white
+                    py-4 px-2 border-2 
+          border-slate-200 dark:border-slate-500
+          mb-3 mt-2'
             type='date' value={created_at}
                 onChange={e => setCreated_at(e.target.value)} />
               <IconButton disabled={!created_at?.length}
             onClick={() => setCreated_at('')}><Close /></IconButton>
  
-        </div>
+            </div>
+            
             <ProductsTable productUpdates={productUpdates} />
-            </div>}
-            <div className='md:mx-10 mx-auto my-2 text-center'>
-                <Pagination page={page+1} siblingCount={3}
-                    count={totalPages} showFirstButton showLastButton
+
+            <div className='md:mx-10 mx-auto my-2 text-center
+            text-slate-700 dark:text-white'>
+              <Pagination
+                className='
+          text-slate-700 dark:text-white'
+                variant='text'
+            page={page + 1} siblingCount={3}
+                count={totalPages}
+                showFirstButton
+                showLastButton
             onChange={(event, page) => {
                         setpage(page-1)
             }}
-            sx={{m:'auto'}}
+            sx={{m:'auto',}}
             shape='rounded'
-           
+          //  classes={{''}}
                 />
             </div>
+            </div>}
+        
         </div>
     );
 }

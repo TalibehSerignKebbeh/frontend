@@ -51,7 +51,8 @@ const EditProductPage = ({ socket }) => {
   return (
     <div
       className="w-full h-auto flex flex-row
-         items-center justify-center md:mt-12 mt-5"
+         items-center justify-center md:mt-12 mt-5
+         self-stretch bg-inherit "
     >
       {!product && isLoading ? (
         <SpinnerLoader />
@@ -60,13 +61,14 @@ const EditProductPage = ({ socket }) => {
        product ? (
           <div className="flex flex-col gap-8">
            { isLoading &&
-          <div className="absolute top-0 bottom-0 right-0 left-0 opacity-40 bg-gray-500 m-auto">
-            <CircularProgress />
+              <div className="absolute top-0 bottom-0 right-0 left-0 
+          opacity-40 bg-gray-500 m-auto">
+            <SpinnerLoader />
           </div>}
             {errorMessage?.length?
               (<ErrorMessage error={errorMessage}
               handleReset={() => { seterrorMessage('') }} />) : null}
-        <div className="h-auto self-stretch justify-center bg-zinc-50 py-2">
+        <div className="h-auto w-full self-stretch justify-center py-2">
           <EditForm
             product={product}
             setproduct={setproduct}

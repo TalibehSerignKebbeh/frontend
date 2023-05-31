@@ -5,16 +5,22 @@ import UserNotificationTable from '../Table/UserNotificationTable';
 import './index.css'
 import SalesEvents from '../Table/SalesEvents';
 
-const Notification = ({ showSideMenu }) => {
+const Events = ({ showSideMenu }) => {
     
     const [tab, setTab] = useState("product")
     
     return (
         <div className='relative '>
-            {/* <h2>Notification </h2> */}
-            <div className={`md:${!showSideMenu? 'px-10' : 'px-4'}  py-2 'bg-white shadow-slate-500 shadow-md 
+            {/* <h2>Events </h2> */}
+            <div className={` 
+             py-2 ' bg-white dark:bg-slate-700
+             shadow-slate-500 shadow-md 
             flex flex-row md:gap-14 sm:gap-2 gap-1
-              w-full mt-3 md:mb-8 sm:mb-5 mb-3'`}>
+              w-full mt-3 md:mb-8 sm:mb-5 mb-3
+              xl:mx-16
+              lg:mx-12 sm:mx-6 mx-[2px]'
+              
+              ${!showSideMenu ? 'lg:px-20 md:px-16' : 'lg:px-12 md:px-8 px-[4px]'}`}>
                 <button 
                 onClick={e=>setTab('product')} 
                 className={`${tab==='product'? 'tab active':'tab'}  
@@ -34,7 +40,11 @@ const Notification = ({ showSideMenu }) => {
                 User
                 </button>
             </div>
-            <div>
+            <div className='lg:mx-14 xl:mx-14 md:mx-8 sm:mx-[6px] mx-[2px]
+            bg-slate-100
+             dark:bg-slate-950 
+            
+             '>
                 {(tab==='product') && <ProductsUpdates />}
                 {(tab==='user') && <UserNotificationTable />}
                 {(tab === 'sale') && <SalesEvents showSideMenu/>}
@@ -46,7 +56,7 @@ const Notification = ({ showSideMenu }) => {
                         Model
               </label>
                     <select className='ml-2 boder-2 border-gray-400 focus:border-red-200
-                    px-2'
+                    mx-2'
                      name="model" id="model"
                         value={filters?.model}
                         onChange={handleChangeFilters}
@@ -90,4 +100,4 @@ const Notification = ({ showSideMenu }) => {
     );
 }
 
-export default Notification;
+export default Events;

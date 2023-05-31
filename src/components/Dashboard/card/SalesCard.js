@@ -6,16 +6,21 @@ const SalesCard = ({ stats, text, }) => {
    
     return (
         <>
-<div className="card">
+        <div className="card shadow bg-white dark:bg-slate-600 
+text-gray-700 dark:text-white">
   <div className="card-body">
-    <h5 className="card-title">{text} Report</h5>
-            <p className="card-text">#Sales: <span className="sales-num">
+            <h5 className="card-title text-gray-700 dark:text-white
+     bg-slate-100 dark:bg-slate-500">{text} Report</h5>
+            <p className="card-text text-gray-700 dark:text-white">
+            #Sales: <span className="sales-num">
               {stats?.length? stats[stats?.length - 1]?.saleCount || 0 : 0}
             </span></p>
-            <p className="card-text">#Products: <span className="sales-num">
+            <p className="card-text text-gray-700 dark:text-white">
+            #Products: <span className="sales-num">
               {stats?.length? stats[stats?.length - 1]?.quantityProduct || 0 : 0}
             </span></p>
-            <p className="card-text">Revenue : D <span className="sales-num">
+            <p className="card-text text-gray-700 dark:text-white">
+            Revenue : D <span className="sales-num">
               {stats?.length? stats[stats?.length-1]?.money? formatNumber(stats[stats?.length - 1]?.money) : 0 : 0}
             </span></p>
   </div>

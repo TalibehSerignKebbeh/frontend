@@ -1,4 +1,4 @@
-import  Inventory2  from "@mui/icons-material/Inventory2";
+import Inventory2 from "@mui/icons-material/Inventory2";
 import React, { useState, useEffect } from "react";
 import { queryInstance } from "../../api";
 import SalesTable from "./SalesTable";
@@ -10,108 +10,211 @@ import Clear from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import RegisterSale from "./RegisterSale";
 import { motion } from "framer-motion";
+import SingleProductSearch from "./Select/SingleProductSearch";
+import SearchUser from "../user/SearchUser";
 
-const SalesPage = ({socket}) => {
-  const {token} = useAuth()
+const SalesPage = ({ socket }) => {
+  const { token } = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
   const [sales, setsales] = useState([]);
   const [errorMessage, seterrorMessage] = useState("");
   const [date, setdate] = useState('');
-  const [selectedProducts, setselectedProducts] = useState([]);
   const [pageSize, setpageSize] = useState(20);
   const [page, setpage] = useState(0);
   const [openRegisterSale, setOpenRegisterSale] = useState(false)
+  const [product, setproduct] = useState('');
+  const [user, setuser] = useState('');
+
+  const [searchFilters, setsearchFilters] = useState({
+    date:'', product:'', user:''
+  });
   useEffect(() => {
     const fetchSales = async () => {
       setloading(true);
       seterrorMessage("");
-      // const ids = selectedProducts?.reduce((prevIds, product)=> {return [...prevIds, product?._id]}, [])
-      // const id = selectedProducts[selectedProducts?.length - 1]?._id
-      let filters={}
+      let filters = {...searchFilters}
       
-      if (date?.length) {
-        filters.date = date;
-      }
       filters.page = page;
       filters.pageSize = pageSize;
+     
       await queryInstance
         .get(
-          `/sales`,{headers:{Authorization:`Bearer ${token}`,}, params:{...filters}}
+          `/sales`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
         )
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res?.status === 200) {
             setrowCount(res?.data?.totalSales);
             setsales(res?.data?.sales);
             return;
           }
-         
-         seterrorMessage(GetError(res))
+
+          seterrorMessage(GetError(res))
         })
         .catch((err) => {
           console.log(err);
-         seterrorMessage(GetError(err))
+          seterrorMessage(GetError(err))
         })
         .finally(() => {
           setloading(false);
         });
     };
     fetchSales();
-    return () => {};
-  }, [ page, pageSize, token, selectedProducts, date]);
+    return () => { };
+  }, [page, pageSize, searchFilters, token]);
+    
+  
   useEffect(() => {
     setrowCount((prevValue) => (loading ? rowCount : prevValue));
   }, [rowCount, loading]);
 
-
+  const ApplyFilters = () => {
+    if (product?.length) {
+    setsearchFilters({...searchFilters, product: product}) 
+    }else {
+      delete searchFilters[product]
+    }
+    if (date?.length) {
+      setsearchFilters({...searchFilters, date:date})
+    } else {
+      delete searchFilters[date]
+    }
+    if (user?.length) {
+      setsearchFilters({...searchFilters, user: user})
+    }else {
+      delete searchFilters[user]
+    }
+  }
+  const ClearFilters = () => {
+    setsearchFilters({ date: '', product: '', user:'' })
+    setproduct('')
+    setdate('')
+    setuser('')
+  }
+  
   return (
-    <div className="md:px-10 px-4 " style={{ width: "100%" }}>
+    <div className="md:px-10 px-4 w-full" >
       <Header
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
         title={"Manage Sales"}
       />
-      <button className="px-2 py-2 rounded-md bg-green-600 text-white font-bold"
-      onClick={()=>setOpenRegisterSale(prev=>!prev)}>
-        {openRegisterSale? `Close`:`Open To`}  Register Sales
+      <button className="px-2 py-2 rounded-md 
+        shadow-md shadow-slate-50 dark:shadow-slate-700
+        bg-white dark:bg-slate-700
+      text-slate-700 dark:text-white font-bold mb-4"
+        onClick={() => setOpenRegisterSale(prev => !prev)}>
+        {openRegisterSale ? `Close` : `Open`}  Register Sales
       </button>
-      
-        <motion.div
-          initial={{scale:0}}
-          animate={{ scale: 1 }}
-        >
-          {openRegisterSale ?  <RegisterSale socket={socket}/>: null}
-        </motion.div>
-        
-     
-      <div className="bg-white shadow-xl shadow-gray-100 flex flex-col flex-wrap gap-3 ">
-        <div className="my-3 mt-12">
-          <input className="border-2 border-gray-400 p-2"
-            type="date"  value={date}
-            onChange={(e)=>setdate(e.target.value)}
-          />
-          <IconButton onClick={()=>setdate('')} ><Clear /></IconButton>
-        </div>
-         {errorMessage?.length? <div className="w-fit block mt-3">
-        <ErrorMessage error={errorMessage}
-        handleReset={()=>seterrorMessage('')}/>
-      </div> : null}
-         {/* <div>
-          <ProductSearch selected={selectedProducts} setselected={setselectedProducts} />
-       </div>  */}
-      <SalesTable
-        sales={sales}
-        rowCount={rowCount}
-        page={page}
-        setpage={setpage}
-        pageSize={pageSize}
-        setpageSize={setpageSize}
-        loading={loading}
-      />
-      </div>
-      
 
-      
+      <motion.div
+        // initial={{scale:0}}
+        animate={{ scale: openRegisterSale ? 1 : 0 }}
+      >
+         <RegisterSale socket={socket} />   
+      </motion.div>
+
+
+      <div className="bg-white dark:bg-slate-700 
+      shadow-xl shadow-gray-100 dark:shadow-slate-700
+      flex flex-col flex-wrap gap-3 "
+      >
+        <div className="flex flex-row flex-wrap items-center
+        lg:gap-4 md:gap-3 gap-1 
+        my-3 mt-12 bg-white  dark:bg-slate-700
+        shadow-sm
+        w-fit p-2 text-gray-600 dark:text-slate-50"
+        >
+          {/* <h3 className="w-full justify-stretch
+          ">Filter Sales</h3> */}
+          <div className="flex-none">
+            <label htmlFor="data"
+              className="font-normal mb-2 py-2 
+              text-[1.3rem]">Date</label>
+            <br />
+            <input className="bg-white dark:bg-slate-400 
+            border-2 border-gray-400 p-2 rounded"
+              type="date" name="data" id="data" value={date}
+              onChange={(e) => {
+                setdate(e.target.value)
+                // setsearchFilters({...searchFilters, date: e.target.value})
+              }}
+            />
+            <IconButton className="text-gray-800 dark:text-white
+            bg-white dark:bg-gray-600
+            shadow-md hover:bg-current ml-1"
+              onClick={() => {
+                setdate('')
+              setsearchFilters({...searchFilters, date:''})}} >
+              <Clear />
+            </IconButton>
+          </div>
+          <div className="flex flex-col">
+            <span>Search Product</span>
+            <SingleProductSearch
+              product={product}
+              setproduct={setproduct}
+              onClear={() => {
+                setproduct('')
+                setsearchFilters({...searchFilters, product:''})
+              }}
+              onSelect={(value) => {
+                // setsearchFilters({ ...searchFilters, product: value })
+                setproduct(value)
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <span>Search Seller</span>
+            <SearchUser user={user}
+              setuser={setuser}
+              onSelect={(value) => {
+                setuser(value)
+                setsearchFilters({...searchFilters, user:value})
+              }}
+              onClear={() => {
+                setsearchFilters({ ...searchFilters, user: '' })
+                setuser('')
+                
+              }}
+            />
+
+          </div>
+
+          <button
+            disabled={!date?.length && !product?.length && !user?.length}
+            onClick={ApplyFilters}
+            className={`${(!date?.length && !product?.length && !user?.length) ?
+            'cursor-not-allowed':'cursor-pointer'} mt-4 bg-green-700 
+            text-white p-3 h-fit rounded-md 
+            `}>Apply filters</button>
+          <button
+            disabled={!date?.length && !product?.length && !user?.length}
+            onClick={ClearFilters}
+            className={`${(!date?.length && !product?.length && !user?.length) ?
+            'cursor-not-allowed':'cursor-pointer'} mt-4 bg-pink-300 
+            text-white p-3 h-fit rounded-md 
+            `}>Clear filters</button>
+        </div>
+
+        {errorMessage?.length ? <div className="w-fit block mt-3">
+          <ErrorMessage error={errorMessage}
+            handleReset={() => seterrorMessage('')} />
+        </div> : null}
+       
+        <SalesTable
+          sales={sales}
+          rowCount={rowCount}
+          page={page}
+          setpage={setpage}
+          pageSize={pageSize}
+          setpageSize={setpageSize}
+          loading={loading}
+        />
+      </div>
+
+
+
     </div>
   );
 };

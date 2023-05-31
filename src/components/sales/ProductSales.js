@@ -110,9 +110,12 @@ const ProductSales = () => {
                 {(!product && !loading) ?
                       <h3>Product Not found</h3>
                     : ((product && loading) || product)?
-                        <div className='py-2 px-3 md:my-5 my-2 w-fit bg-white dark:bg-slate-600
+                        <div className='py-2 px-3 md:my-5 my-2 w-fit
+                         bg-white dark:bg-slate-600
                          text-gray-800 dark:text-white
-                         shadow-xl dark:shadow-slate-400 shadow-zinc-100'>
+                         shadow-md dark:shadow-slate-400 shadow-zinc-100
+                         dark:shadwo-slate-500
+                         '>
                             <p className='text-sm font-thin my-0'>Product name</p>
                             <h3 className='font-semibold capitalize text-2xl'>
                                 {product?.name}

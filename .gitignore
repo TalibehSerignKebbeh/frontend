@@ -2,7 +2,11 @@
 
 tempcodes.js
 TestComponent.js
-setupTests.js
+setupTests.jsx
+test.js
+SampleSelect.jsx
+PercentChart.jsx
+App.test.js
 /build
 
 # dependencies

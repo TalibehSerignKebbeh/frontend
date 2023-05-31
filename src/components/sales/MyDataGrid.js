@@ -5,21 +5,22 @@ import Box from "@mui/material/Box";
 
 const MyDataGrid = ({ data, loading }) => {
   return (
-    <Box
+    <Box className={`bg-white dark:bg-slate-600
+    text-gray-600 dark:text-white w-fit`}
       sx={{
-        bgcolor: "#fff",
+        // bgcolor: "#fff",
         boxShadow:
           "2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09)",
-        width: "auto",
         height: "auto",
       }}
     >
-      <DataGrid
+      <DataGrid className="text-slate-700 dark:text-slate-50
+      w-fit"
         columns={salesColumns}
-        autoHeight
+        autoHeight 
         rows={data?.length ? data : []}
         columnBuffer={4}
-        columnThreshold={2}
+        columnThreshold={4}
         hideFooterPagination={true}
         getRowId={(row) => row?._id}
         loading={loading}
@@ -36,12 +37,12 @@ const MyDataGrid = ({ data, loading }) => {
         }}
         sx={{
           maxHeight: "500px",
-          width: { xl: "75%", lg: "80%", md: "95%", sm: "95%", xs: "98%" },
+          // width: { xl: "75%", lg: "80%", md: "95%", sm: "95%", xs: "98%" },
           p: 2,
           [`& .${gridClasses.columnHeader}`]: {
             fontSize: "1rem",
-            fontWeight: "700",
-            color: "#3339",
+            fontWeight: "500",
+            color: "inherit",
           },
         }}
       />

@@ -27,8 +27,7 @@ import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 import SaleReport from "./components/Report/SaleReport";
 import 'antd/dist/reset.css';
-import Notification from "./components/Notifications/Page/Notification";
-
+import Events from "./components/Notifications/Page/Events";
 
 function App() {
   const {username} = useAuth()
@@ -55,14 +54,17 @@ function App() {
   return (
     <>
       <Router>
-        <div className="flex flex-row w-screen h-screen  ">
+        <div className="flex flex-row w-screen h-screen  overflow-x-hidden 
+        bg-slate-50 dark:bg-gray-800">
           <SideBar
             socket={socket}
             showSideMenu={showSideMenu}
             setshowSideMenu={setshowSideMenu}
           />
           {/* other content */}
-          <div className="content relative w-screen h-screen flex flex-col items-stretch">
+          <div className="content relative w-screen h-screen 
+          flex flex-col items-stretch
+          bg-inherit">
             <TopBar
               socket={socket}
               showSideMenu={showSideMenu}
@@ -71,7 +73,7 @@ function App() {
 
             <div
               className={`' w-full  md:mx-2 mx-auto flex flex-1
-          items-stretch justify-start  my-auto'  '`}
+          items-stretch justify-stretch  my-auto bg-inherit'  '`}
             >
               <Routes>
                 <Route
@@ -143,7 +145,7 @@ function App() {
                       <Route
                         
                         path="/events"
-                        element={<Notification showSideMenu/>}
+                        element={<Events showSideMenu/>}
                       />
                     </Route>
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
@@ -155,8 +157,12 @@ function App() {
               </Routes>
             </div>
             {token && (
-              <div className="card-shadow p-4 bg-white  shadow-sm shadow-orange-50 self-end 
-              justify-end text-center w-full py-4">
+              <div className="card-shadow p-4 
+              bg-white  dark:bg-slate-700
+              shadow-sm shadow-orange-50 self-end 
+              justify-end text-center py-4
+              text-gray-700 dark:text-white
+              w-full">
                 <h3>
                   &#169; My Mini Market Inventory Management System{" "}
                   {new Date().getFullYear()}

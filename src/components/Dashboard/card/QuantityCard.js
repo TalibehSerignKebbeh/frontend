@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 
 const QuantityCard = ({ header, quantityText,linkTo }) => {
     return (
-        <Box sx={{
+        <Box className={`text-gray-800 dark:text-slate-50
+        bg-white dark:bg-slate-600`}
+            sx={{
             p: '8px',px:'13px', width: { xl: 'auto', lg: 'auto', md: 'auto', sm: 'auto', xs:'auto' },
-            color: 'black',borderRadius: '3px',
+            borderRadius: '3px',
             boxShadow:
                 "2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09)",
         }}>

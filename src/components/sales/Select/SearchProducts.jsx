@@ -30,8 +30,8 @@ const SearchProducts = ({ selected, setselected, products, setproducts }) => {
   };
   const productKeysToDelete = ['addedBy','expiryDate','producedDate','updatedAt','quantity']
     return (
-        <div className='w-fit'>
-            <Select className='md:w-1/2 sm:w-10/12 w-11/12'
+        <div className=''>
+            <Select className='md:w-96 sm:w-80 w-40 max-w-full min-h-max'
       showSearch
       size='large'
       mode='multiple'
@@ -42,7 +42,7 @@ const SearchProducts = ({ selected, setselected, products, setproducts }) => {
       notFoundContent={searching? <Spin size='small'/> : null}
           onSearch={handleSearch}
           
-          style={{ width: 200 }}
+          // style={{ width: 300, }}
           onChange={handleDisplay}
           // onSelect={handleSelect}
           // loading={searching}

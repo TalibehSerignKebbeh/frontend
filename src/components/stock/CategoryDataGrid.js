@@ -77,7 +77,10 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
       width: 190,
       getActions: (params) => [
 
-        <GridActionsCellItem sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+        <GridActionsCellItem
+          className='text-slate-800 dark:text-white
+           text-xs' 
+          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           icon={
             <Link
               className="font-normal  p-1"
@@ -89,12 +92,16 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
 
           label="Products"
         />,
-        <GridActionsCellItem sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+        <GridActionsCellItem
+        className='text-slate-800 dark:text-white' 
+        sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           onClick={() => { setopenEdit(true); setstock(params?.row) }}
           icon={<EditRounded />}
           label="Edit"
         />,
-        <GridActionsCellItem sx={{ p: 1, py: '4px', color: 'darkred', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+        <GridActionsCellItem
+        className='text-slate-800 dark:text-white' 
+        sx={{ p: 1, py: '4px', color: 'darkred', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           onClick={() => handleStartDelete(params?.row)}
           icon={<DeleteSweep />}
           label="Delete"
@@ -105,7 +112,11 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
   return (
     <>
 
-      <DataGrid rows={data?.stocks?.length ? data?.stocks : []} columns={columns}
+      <DataGrid
+        className='bg-slate-100 dark:bg-slate-700
+        text-gray-700 dark:text-white'
+        rows={data?.stocks?.length ? data?.stocks : []}
+        columns={columns}
         pageSize={pageSize}
         page={page}
         onPageChange={newPage => setpage(newPage)}
@@ -128,11 +139,11 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
         getRowId={row => row._id}
         sx={{
           minHeight: '400px',
-          bgcolor: '#fff', boxShadow: '2px 2px 3px rgba(0,0,0,0.4)',
+          // bgcolor: '#fff', boxShadow: '2px 2px 3px rgba(0,0,0,0.4)',
           height: '400px', width: '100%',
           pt: 1, px: 1, mb: 4,
           [`& .${gridClasses.columnHeader}`]: {
-            fontSize: '1rem', fontWeight: '700', color: '#3339'
+            fontSize: '1rem', fontWeight: '300',
           },
         }}
       />

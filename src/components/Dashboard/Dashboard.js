@@ -65,7 +65,8 @@ const Dashboard = () => {
                 handleReset={()=>seterrorMessage('')}
             />:null}
             <Header title={"Welcome, Your Dashboard "}
-                icon={<DashboardRounded sx={{transform:'scale(1.5)', mb:1, zIndex:0 }} className='' />} 
+                icon={<DashboardRounded sx={{ transform: 'scale(1.5)', mb: 1, zIndex: 0 }}
+                    className='text-gray-800 dark:text-white' />} 
             />
             {/* <div className='flex flex-row content-center justify-start items-baseline w-full mx-2'>
                 <div className='beatiful-shadow md:w-72 w-64 flex flex-col items-start bg-white p-1 rounded-lg '>
@@ -87,14 +88,17 @@ const Dashboard = () => {
                 </div>
 
             </div> */}
-            <div className='flex flex-row md:flex-nowrap sm:flex-wrap flex-wrap justify-start items-end w-full
-               gap-1'>
+            <div className='flex flex-row md:flex-nowrap 
+            sm:flex-wrap flex-wrap justify-start 
+            items-end w-full
+               gap-1 bg-inherit'>
                  <DashBoardSalesStats salesStatsQuery={salesStatsQuery} />
                 <DashboardProductStats
                     productsStatesQuery={productsStatesQuery} 
                 />
                
             </div>
+
             <SalesDataGridVir data={salesTodayQuery?.data?.sales}
                 loading={salesTodayQuery?.isLoading}
                 total={salesTodayQuery?.data?.money}

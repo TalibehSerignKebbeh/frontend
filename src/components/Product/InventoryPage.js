@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchProducts } from '../../api';
-// import ProductTable from './Table';
+import { fetchProducts, queryInstance } from '../../api';
 import SideModal from './SideModal';
 import { Box, Button } from '@mui/material';
 import ProductsDataGrid from './ProductsDataGrid';
@@ -16,47 +15,62 @@ const InventoryPage = ({ socket }) => {
   const [showUpdates, setshowUpdates] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setpageSize] = useState(20);
-  // const [loading, setloading] = useState(false);
+  const [totalPages, settotalPages] = useState(0);
+  const [loading, setloading] = useState(false);
+  const [products, setproducts] = useState([]);
+
   // const [productUpdates, setproductUpdates] = useState([]);
   const [errorMessage, seterrorMessage] = useState('');
-  const startDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7);
-  const endDate=new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-  const productsRequest = useQuery({
-    queryKey: ['products'],
-    queryFn: () => fetchProducts({token, startDate, endDate,quantityThreshold:6,
-revenueThreshold:10   })
-
-  })
-  // useEffect(() => {
-   
-  //   const fetchProductsNotify = async () => {
-  //     setloading(true)
-  //     await queryInstance.get(`/notifications/products/alldata?page=${page}&pagesize=${pageSize}`)
-  //       .then(res => {
-  //         console.log(res?.data);
-  //         setproductUpdates(res?.data?.notifications)
-  //       }).then(() => {
-         
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       }).finally(() => { setloading(false) })
-  //   }
-  //  if(isAdmin || isManager) {fetchProductsNotify()}
-  // }, [isAdmin, isManager])
-  // console.log(productsRequest?.data);
+  
   useEffect(() => {
-    console.log(productsRequest?.data);
-    if (productsRequest.isError) {
-      seterrorMessage(GetError(productsRequest?.error))
+   
+    const fetchProducts = async () => {
+      console.log(page, pageSize, );
+      setloading(true)
+      await queryInstance.get(`/products?page=${page}&pageSize=${pageSize}`, {headers:{Authorization:`Bearer ${token}`}})
+        .then(res => {
+          // console.log(res?.data);
+          setproducts(res?.data?.products)
+          setpage(Number(res?.data?.page))
+          setpageSize(Number(res?.data?.pageSize))
+          settotalPages(Number(res?.data?.totalPages))
+        })
+        .catch(err => {
+          console.log(err);
+        }).finally(() => { setloading(false) })
     }
-    if (productsRequest?.failureReason) {
-      seterrorMessage(GetError(productsRequest?.failureReason))
-    }
+   fetchProducts()
+  }, [page, pageSize, token])
+  // const startDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7);
+  // const endDate=new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+//   const productsRequest = useQuery({
+//     queryKey: ['products', page, pageSize],
+//     queryFn: () => fetchProducts({token, startDate, endDate,quantityThreshold:6,
+// revenueThreshold:10   })
+
+//   })
+  // console.log(productsRequest?.data);
+  // useEffect(() => {
+  //   console.log(productsRequest?.data);
+  //   if (productsRequest.isError) {
+  //     seterrorMessage(GetError(productsRequest?.error))
+  //   }
+  //   if (productsRequest?.failureReason) {
+  //     seterrorMessage(GetError(productsRequest?.failureReason))
+  //   }
     
-  }, [productsRequest.data, productsRequest?.error, productsRequest?.failureReason, productsRequest.isError, productsRequest.isSuccess])
+  // }, [productsRequest.data, productsRequest?.error, productsRequest?.failureReason, productsRequest.isError, productsRequest.isSuccess])
+
+  // useEffect(() => {
+  //    if (productsRequest.isSuccess) {
+  //     setpage(Number(productsRequest?.data?.page))
+  //     setpageSize(Number(productsRequest?.data?.pageSize))
+  //     settotalPages(Number(productsRequest?.data?.totalPages))
+  //   }
+
+  // }, []);
   return (
-    <div className=' w-full h-auto md:mb-6 sm:mb-10 xl:my-0 mb-12'>
+    <div className=' w-full h-full md:mb-6 sm:mb-10 xl:my-0 mb-12'>
       
        
         <Box className='w-auto self-start  h-auto  mb-5  text-center
@@ -65,15 +79,20 @@ revenueThreshold:10   })
             <ErrorMessage error={errorMessage}
               handleReset={() => seterrorMessage('')} /> : null}
            <button onClick={()=>setopenAddModal(true)}
-                className='float-right mx-1 mr-5 px-3 py-1 mb-3 rounded bg-green-600
-              shadow shadow-green-600'>
+                className='float-right mx-1 mr-5 px-4 py-2 mb-3 rounded bg-green-600
+              shadow shadow-slate-200 text-white
+              dark:text-slate-100'>
                 Add Product
               </button>
          
-          <ProductsDataGrid products={productsRequest?.data?.products} page={page}
+        <ProductsDataGrid
+          products={products}
+          page={page}
             setpage={setpage} pageSize={pageSize}
-            setpageSize={setpageSize} loading={ productsRequest.isLoading} />
-          {/* <ProductTable  products={products} /> */}
+          setpageSize={setpageSize}
+          totalPages={totalPages}
+          loading={loading} 
+          />
         </Box>
       
       
@@ -84,9 +103,11 @@ revenueThreshold:10   })
       {(isAdmin || isManager) ?
         <>
 
-        <Button color='success'
+          <Button
+            className='text-lg text-slate-700 dark:text-slate-50
+             shadow-md bg-slate-50 dark:bg-slate-700 '
+            color='success'
             sx={{
-              bgcolor: '#fff', boxShadow: '0px 2px 7px rgba(0,0,0,0.7)',
               mx: { xl: 3, lg: 3, md: 3, sm: 2, xs: 'auto' },
             mb:3, mt:1}}
         onClick={() => setshowUpdates(prev => !prev)}>

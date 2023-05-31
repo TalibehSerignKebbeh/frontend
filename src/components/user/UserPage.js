@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import UsersTable from "./UsersTable";
-import { fetchUsers } from "../../api";
+import { fetchUsers, queryInstance } from "../../api";
 import   Collapse from "@mui/material/Collapse";
 import   Button from "@mui/material/Button";
-
 import  Add  from "@mui/icons-material/Add";
 import  Box  from "@mui/system/Box";
 import useAuth from "../../hooks/useAuth";
@@ -14,23 +13,34 @@ import UserForm from "./UserForm";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import { initialUser } from "./Data";
-import SpinnerLoader from "../Loaders/SpinnerLoader";
-
-
 
 
 const UserPage = ({ socket }) => {
-  const {token, isAdmin, isManager } = useAuth();
+  const {token } = useAuth();
   const collapseRef = useRef(null)
   const [errorMessage, seterrorMessage] = useState('');
   const [openAdd, setopenAdd] = useState(false);
+  const [page, setpage] = useState(0);
+  const [pageSize, setPageSize] = useState(5);
+  const [totalPages, settotalPages] = useState(0);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
-  password: "", confirmPassword: "", roles: [],active:false  });
-  const UserFetch = useQuery({
-    queryKey: ["users"],
-    queryFn: () => fetchUsers({token}),
+    password: "", confirmPassword: "", roles: [], active: false
   });
+  
+  const UserFetch = useQuery({
+    queryKey: ["users", page, pageSize],
+    queryFn: () => fetchUsers({ token, page, pageSize }),
+    // suspense: true, 
+    getNextPageParam: () => { },
+    getPreviousPageParam: () => {
+      
+    },
+    
+  
+  });
+
+
 
   const handleCloseCollapse = () => {
     if (openAdd) {
@@ -42,36 +52,37 @@ const UserPage = ({ socket }) => {
 
   
   useEffect(() => {
-    if (UserFetch?.isError) {
-      seterrorMessage(GetError(UserFetch?.error))
+   
+    if (UserFetch.isSuccess) {
+      console.log(UserFetch.data);
+      setpage(Number(UserFetch?.data?.page))
+      setPageSize(Number(UserFetch?.data?.pageSize))
+      settotalPages(Number(UserFetch?.data?.total))
     }
     
-    
-  }, [UserFetch.isError, UserFetch.error])
+  }, [UserFetch?.isError, UserFetch?.data, UserFetch.isSuccess])
+  useEffect(() => {
+     if (UserFetch?.isError) {
+      seterrorMessage(GetError(UserFetch?.error))
+    }
 
+  }, [UserFetch?.error, UserFetch?.isError]);
   return (
-    <Box sx={{ mb: 10, mx: 3, px: 1 }} className="w-full h-full ">
-      {UserFetch?.isLoading ? (
-        <div>
-          <SpinnerLoader />
-        </div>
-      
-      ) :
-           errorMessage?.length?
+    <Box
+      sx={{ mx: {lg:3, md:2, sm:'3px', xs:'0px', py:2} }}
+      className="w-full h-full ">
+     
+           {errorMessage?.length?
           (<>
           <ErrorMessage error={errorMessage}
               handleReset={() => { seterrorMessage('') }} />
           </>
-            ) :
-        (
+            ) : null}
         <>
-          {isAdmin || isManager ? (
             <Box
               mt={2}
               sx={{
-                // float: { xl: 'right', lg: 'right', md: 'right', sm: 'none', xs: 'none' },
                 zIndex: 2,textAlign:'start',
-                // ml: 'auto', mr: {lg:'40px', xl:'80px', md: '40px', sm: '20px', xs: "20px" },
                 mb: { md: "0", sm: "10px", xs: "10px" },
               }}
               >
@@ -88,7 +99,8 @@ const UserPage = ({ socket }) => {
               >
                 Add User
               </Button>
-                <Collapse ref={collapseRef} in={openAdd} timeout="auto" unmountOnExit>
+            <Collapse ref={collapseRef} 
+              in={openAdd} timeout="auto" unmountOnExit>
                   <UserForm socket={socket}
                     UserData={UserData} setUserData={setUserData}
                     resetFunction={() => {
@@ -99,15 +111,18 @@ const UserPage = ({ socket }) => {
               </Collapse>
               
             </Box>
-          ) : null}
 
-              <UsersTable users={UserFetch?.data?.users || []} 
+        <UsersTable loading={UserFetch.isLoading}
+          page={page} setpage={setpage}
+                pageSize={pageSize} setPageSize={setPageSize}
+                totalPages={Number(UserFetch?.data?.total)}
+                users={UserFetch?.data?.users || []} 
                 UserData={UserData} setUserData={setUserData}
                 setopenAdd={setopenAdd}
                 collapseRef={collapseRef}
-            />
+        />
+        
         </>
-      )}
          </Box>
   );
 };

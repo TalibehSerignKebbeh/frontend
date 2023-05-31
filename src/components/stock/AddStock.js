@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { queryInstance } from '../../api';
 import { QueryClient } from '@tanstack/react-query';
 import useAuth from '../../hooks/useAuth';
+import SuccessMessage from '../StatusMessages/SuccessMessage';
+import ErrorMessage from '../StatusMessages/ErrorMessage';
 
 const initialStatus= { uploading: false, error: false, success: false}
 const AddStock = ({ stock, setstock }) => {
@@ -56,51 +58,61 @@ const AddStock = ({ stock, setstock }) => {
         <div className='w-full h-auto '>
             <form onSubmit={handleSubmitForm}
                 className='p-6 py-2 w-fit mx-auto flex-auto
-             bg-white shadow shadow-white my-3
-             apply-form-boxshadow'>
-                <h3 className='text-black text-lg text-center '
+             bg-white dark:bg-slate-700
+              shadow shadow-white my-3
+             apply-form-boxshadow
+             text-gray-700 dark:text-white'>
+                <h3 className='text-lg text-center mt-2 '
                 >{stock?._id?.length? "Edit": "Add"} Category</h3>
                 {/* add status messages */}
                 {addstatusMessages?.success?.length ?
-                    <div className='bg-gray-100 py-3 px-3 rounded-md md:w-96 sm:w-52 flex flex-row justify-between items-center'>
-                    <span className='text-green-500'>
-                        {addstatusMessages?.success}
-                    </span> 
-                    <span title='close' className='text-xs px-2 py-1 rounded-lg hover:bg-red-400 cursor-pointer'
-                        onClick={e => setaddstatusMessages({...addstatusMessages,success: ''})}>X</span>
-                </div> : null}
+                    <SuccessMessage message={addstatusMessages?.success} 
+                        resetFunction={() => {
+                            setaddstatusMessages({
+                                ...addstatusMessages,
+                                success: ''
+                            })
+                        }}
+                    /> : null}
                 {addstatusMessages?.error?.length ?
-                    <div className='bg-gray-100 py-3 px-3 rounded-md md:w-96 sm:w-52 flex flex-row justify-between items-center'>
-                    <span className='text-red-500'>
-                        {addstatusMessages?.error}
-                    </span> 
-                    <span title='close' className='text-xs px-2 py-1 rounded-lg hover:bg-red-400 cursor-pointer'
-                        onClick={e => setaddstatusMessages({...addstatusMessages,error: ''})}>X</span>
-                </div> : null}
+                    <ErrorMessage
+                        error={addstatusMessages?.error}
+                        handleReset={() => {
+                            setaddstatusMessages({
+                                ...addstatusMessages,
+                                error: ''
+                            })
+                        }}
+                    /> : null}
                 
                 {/* update status messages */}
                 {updateStatusMessages?.success?.length ?
-                    <div className='bg-gray-100 py-3 px-3 rounded-md md:w-96 sm:w-52 flex flex-row justify-between items-center'>
-                    <span className='text-green-500'>
-                        {updateStatusMessages?.success}
-                    </span> 
-                    <span title='close' className='text-xs px-2 py-1 rounded-lg hover:bg-red-400 cursor-pointer'
-                        onClick={e => setupdateStatusMessages({...updateStatusMessages,success: ''})}>X</span>
-                </div> : null}
+                    <SuccessMessage message={updateStatusMessages?.success} 
+                        resetFunction={() => {
+                            setupdateStatusMessages({
+                                ...updateStatusMessages,
+                                success: ''
+                            })
+                        }}
+                    /> : null} 
                 {updateStatusMessages?.error?.length ?
-                    <div className='bg-gray-100 py-3 px-3 rounded-md md:w-96 sm:w-52 flex flex-row justify-between items-center'>
-                    <span className='text-red-500'>
-                        {updateStatusMessages?.error}
-                    </span> 
-                    <span title='close' className='text-xs px-2 py-1 rounded-lg hover:bg-red-400 cursor-pointer'
-                        onClick={e => setupdateStatusMessages({...updateStatusMessages,error: ''})}>X</span>
-                </div> : null}
+                    <ErrorMessage
+                        error={updateStatusMessages?.error}
+                        handleReset={() => {
+                            setupdateStatusMessages({
+                                ...addstatusMessages,
+                                error: ''
+                            })
+                        }}
+                    />: null}
 
                 {/* form fields */}
                 <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
-                    <label className='block py-1 text-gray-900' htmlFor='name' >Name</label>
+                    <label className='block py-1 ' htmlFor='name' >Name</label>
                     <input type={'text'} id="name" 
-                    className="w-full p-2 border-2 border-slate-900 rounded-md"
+                    className="bg-white dark:bg-slate-400 
+                    text-slate-700 dark:text-white
+                    text-xl w-full p-2 border-2 border-slate-900 rounded-md"
                         value={stock.name}
                         name="name"
                         ref={nameRef}
@@ -108,9 +120,11 @@ const AddStock = ({ stock, setstock }) => {
                     />
                 </div>
                 <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
-                    <label className='block py-1 text-gray-900' htmlFor='description' >Description</label>
+                    <label className='block py-1 ' htmlFor='description' >Description</label>
                     <input type={'text'} id="description" name='description' 
-                    className="w-full p-2 border-2 border-slate-900 rounded-md"
+                    className="bg-white dark:bg-slate-400 
+                    text-slate-700 dark:text-white
+                    text-xl w-full p-2 border-2 border-slate-900 rounded-md"
                         value={stock.description}
                         onChange={e => setstock({ ...stock, description: e.target.value })}
                     />

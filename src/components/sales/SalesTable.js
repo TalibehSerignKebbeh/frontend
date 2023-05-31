@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import  IconButton  from "@mui/material/IconButton";
 import  {DataGrid,gridClasses,GridToolbar}  from "@mui/x-data-grid";
-// import Box from "@mui/system/Box";
+import Box from "@mui/system/Box";
 import  Delete  from "@mui/icons-material/Delete";
 import { salesColumns } from "./data";
+import styled from "@emotion/styled";
+import { Pagination } from "antd";
+import Paginnation from "./Paginnation";
 const SalesTable = ({
   sales,
   page,
@@ -16,24 +19,29 @@ const SalesTable = ({
  
   const [selectedIds, setselectedIds] = useState([]);
   
+  const customPagination = () => {
+    
+  }
+
   return (
-    <div 
-      className="w-fit bg-white dark:bg-slate-700 text-gray-500
-     shadow-xl shadow-white"
-      // sx={{
-      //   width: {
-      //     xl: "80%",
-      //     lg: "90%",
-      //     md: "100%",
-      //     sm: "100%",
-      //     xs: "100%",
-      //     mb: 6,
-      //   },
-      // }}
+    <Box 
+      className="w-fit bg-white 
+      dark:bg-slate-700 
+      text-gray-500 dark:text-white
+     shadow shadow-white dark:shadow-slate-700
+     max-w-full overflow-scroll p-0"
+      sx={{
+        // eslint-disable-next-line no-useless-computed-key
+        ['& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar']: {
+          color: 'inherit',
+          bgcolor:'inherit'
+           }
+      }}
       
     >
       {selectedIds?.length ? (
-          <IconButton
+        <IconButton
+          className="bg-slate-500 dark:bg-slate-100"
             sx={{
               cursor: "pointer",
                       float: 'right',
@@ -47,7 +55,9 @@ const SalesTable = ({
             {/* <AiFillDelete /> */}
           </IconButton>
       ) : null}
-      <DataGrid autoHeight
+      <DataGrid className="text-gray-600 dark:text-white"
+        autoHeight
+        
         rowCount={rowCount}
         rows={sales?.length ? sales : []}
         checkboxSelection
@@ -61,6 +71,9 @@ const SalesTable = ({
           setpageSize(newSize);
           setpage(0);
         }}
+      
+        pagination={true}
+      
         onPaginationModelChange={({page, pageSize}) => {
           setpage(page);
           setpageSize(pageSize)
@@ -77,6 +90,7 @@ const SalesTable = ({
         columnThreshold={2}
         components={{
           Toolbar: GridToolbar,
+          // Pagination: Paginnation({page, pageSize, rowCount, setpage, setpageSize}),
         }}
         localeText={{
           toolbarDensity: "Size",
@@ -87,12 +101,13 @@ const SalesTable = ({
           toolbarFiltersTooltipActive: 2,
           
         }}
+        
            getRowSpacing={(params) => ({
           top: params.isFirstVisible ? 0 : 5,
           bottom: params.isLastVisible ? 0 : 5,
         })}
+        
         sx={{
-          boxShadow: "2px 2px 2px rgba(0,0,0,0.4)",
           height: "100%",
           width: "100%",
           mx: "auto",
@@ -103,16 +118,21 @@ const SalesTable = ({
           [`& .${gridClasses.columnHeader}`]: {
             fontSize: "1rem",
             fontWeight: "700",
-            color: "#3339",
           },
           [`& .${gridClasses.actionsCell}`]: {
             fontSize: "1.1rem",
           },
+          // eslint-disable-next-line no-template-curly-in-string
+          '& .${gridClass.mui-datagrid-footer-pagination}': {
+          color: 'inherit',
+          bgcolor:'inherit'
+           },
+          // ['& .{$gridClasses}']
           py: 3,
           px: 2,
         }}
       />
-          </div>
+          </Box>
   );
 };
 

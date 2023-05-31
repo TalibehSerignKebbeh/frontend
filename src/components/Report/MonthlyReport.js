@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { queryInstance } from '../../api';
-import ReportForm from './ReportForm';
-import MonthWeekly from '../Dashboard/chats/MonthWeekly';
+// import ReportForm from './ReportForm';
+// import MonthWeekly from '../Dashboard/chats/MonthWeekly';
 import { CircularProgress } from '@mui/material';
 import { DatePicker } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, LabelList, Cell } from 'recharts';
@@ -16,7 +16,7 @@ const CustomTooltip = (props) => {
         <p>{`Date: ${label}`}</p>
         {payload?.map((data, index) => (
           <p key={index} style={{ color: data.color }}>
-            {`${data.week}: ${data.percent}`}
+            {`week ${data.week}: ${data.percent}`}
           </p>
         ))}
       </div>
@@ -28,7 +28,7 @@ const CustomTooltip = (props) => {
 
 const MonthlyReport = () => {
   const {token} = useAuth()
-  const [date, setdate] = useState('');
+  // const [date, setdate] = useState('');
   const [monthDate, setmonthDate] = useState({
     month: new Date().getMonth(),
     year: new Date().getFullYear()
@@ -73,38 +73,63 @@ const MonthlyReport = () => {
 
 
   return (
-    <div className='w-full bg-gray-50 p-2'>
-      <h2 className="py-3 text-lg font-sans italic ">Monthly Report Section</h2>
+    <div className='w-full bg-gray-50 dark:bg-slate-700 p-2'>
+      <h2 className="py-3 text-lg font-sans mt-3
+      text-gray-700 dark:text-gray-50 ">Monthly Report Section</h2>
 
-      <DatePicker picker="month" allowClear
+      <DatePicker
+        picker="month" allowClear
+        // className='' 
+        className='bg-white dark:bg-slate-400 
+        text-gray-600dark:text-white
+        mb-4 p-3 text-lg '
         
+        // value={`${monthDate?.year}-${monthDate?.month}`}
         onChange={(val) => {
           setmonthDate({ year: val?.$y, month: val?.$M })
         }}
       />
+
       {
         isLoading ? <CircularProgress sx={{ margin: 'auto' }} /> :
           loadSuccess ? <div>
 
             {weekData?.length ?
-              <div className='flex flex-wrap w-full py-3 md:gap-x-3 gap-x-1 gap-y-2 items-start justify-start'>
-                <div>
-                <BarChart width={600} height={400} data={weekData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
+              <div className='flex flex-wrap w-full py-3 md:gap-x-3 gap-x-1 gap-y-2 
+              items-center justify-start
+              bg-slate-300
+              '>
+                <div className=''>
+                  <BarChart width={600} height={400}
+                    data={weekData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" 
+                      
+                  />
                   <XAxis dataKey="week" />
-                  <YAxis />
+                  <YAxis dataKey={'money'}/>
                   <Tooltip />
                   <Legend />
-                  <LabelList />
+                  <LabelList  />
               
-                  <Bar dataKey="money" fill="#8884d8" barSize={30} spacing={3}/>
+                    <Bar dataKey="money" fill='#8884d8' fillRule='inherit' barSize={30} spacing={3}
+                      colorRendering={2} g1={10} g2={10}
+                    />
+                    
                   </BarChart>
                 </div>
-                <div>
-                <PieChart width={200} height={200} data={weekData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <Pie data={weekData} dataKey="percent" nameKey="week" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" >
+                <div className='min-w-fit'>
+                  <PieChart width={300} height={300}
+                    data={weekData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                    <Pie data={weekData} dataKey="percent"
+                      nameKey="week" cx="50%" cy="50%"
+                      outerRadius={140} fill="#8884d8" >
                     {weekData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={getUniqueColor(index)} />
+                      <Cell key={`cell-${index}`} fill={getUniqueColor(index)}
+                        visibility={.9}
+                        alignmentBaseline='middle'
+                      
+                      />
                     ))}
                   </Pie>
                   <Tooltip  />

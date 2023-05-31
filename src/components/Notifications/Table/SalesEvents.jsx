@@ -45,8 +45,14 @@ const SalesEvents = ({showSideMenu}) => {
   }, [created_at, isAdmin, isManager, page, pageSize, token])
     return (
       <div>
-        <div className='relative w-full'>
-          <input className='py-4 px-2 border-2 border-slate-200 mb-3 mt-2'
+        <div className='relative w-full 
+        bg-slate-50 dark:bg-slate-600 '>
+          <input className='py-4 px-2 border-2 
+          bg-white dark:bg-slate-400 
+          text-slate-700 dark:text-white
+           border-slate-200 dark:border-slate-500 
+           mb-3  mt-2
+           '
             type='date' value={created_at}
             onChange={e => setCreated_at(e.target.value)} 
           />
@@ -54,6 +60,9 @@ const SalesEvents = ({showSideMenu}) => {
             onClick={() => setCreated_at('')}><Close /></IconButton>
         </div>
         <DataGrid 
+          className='text-slate-700 dark:text-slate-50
+           bg-slate-50 dark:bg-slate-700
+          shadow shadow-white dark:shadow-slate-500'
           onStateChange={(event) => {
           }}
           onFilterModelChange={(filterObject) => {
@@ -65,6 +74,7 @@ const SalesEvents = ({showSideMenu}) => {
             maxWidth: '900px', minWidth:'400px',
             width: { xl: '850px', lg: '850px', md: '850px', sm: '100vw', xs: '100vw' },
           }}
+         
                 rows={saleNotification}
                 loading={loading}
           columns={[
@@ -93,9 +103,11 @@ const SalesEvents = ({showSideMenu}) => {
                     setpage(page)
                     setpageSize(pageSize)
                 }}  
+                
                 pageSizeOptions={[10, 20, 30, 50, 75,100]}
             getRowId={(row) => row?._id}
-             hideFooterSelectedRowCount
+          hideFooterSelectedRowCount
+          disableRowSelectionOnClick
             
             />
             

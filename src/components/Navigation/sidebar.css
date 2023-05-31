@@ -5,14 +5,15 @@
   bottom: 0 !important;
   position: relative !important;
   display: block !important;
-  box-shadow: 3px 0px 2px 0px rgba(0, 0, 0, 0.2);
-  background-color: white !important;
+  /* box-shadow: 3px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  background-color: white !important; */
   align-self: stretch;
   overflow-y: scroll;
 }
 .sidebar-main-active::-webkit-scrollbar-track{
   display: none;
 }
+
 .sidebar-main-active{
   width: 270px !important;
 }

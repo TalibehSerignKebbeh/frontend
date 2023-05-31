@@ -53,20 +53,24 @@ const StocksPage = () => {
             justifyContent: 'flex-start', width: {xl:'50%', lg:'70%', md:'85%', sm:'95%', xs:'100%'},
             '& .':{}, minHeight:'900px',height:'auto', alignSelf:'baseline', textAlign:'start'
         }}
+            className={``}
         >
             {errorMessage?.length ?
                 <ErrorMessage error={errorMessage} 
                     handleReset={()=>seterrorMessage('')}
             />: null}
-            <Header title={"Manage Stocks"} icon={<Store sx={{ scale: 2 }} />} />
+            <Header title={"Manage Stocks"}
+                icon={<Store className='text-black dark:text-white' sx={{ scale: 2 }} />} />
 
             <Button 
+                className='bg-white dark:bg-slate-700
+                hover:bg-slate-50 dark:hover:bg-slate-500
+                text-slate-800 dark:text-white
+                shadow shadow-slate-100 dark:shadow-slate-500'
             sx={{
                 mb: openEdit ? 0 : 2,
-                boxShadow:'0px 0px 2px 0px rgba(0,0,0,0.07),0px 3px 6px 2px rgba(0,0,0,0.07)',
-                 color: 'black', bgcolor: '#fff',opacity:.8,px:3,py:'6px',
-                ':hover': { bgcolor: '#fff', opacity: 1, } 
-            }} color='success'
+                 px: 3, py: '6px',
+            }} 
                 onClick={handleOpenCloseCollapse}>
                {openEdit? "Close":"Open"} Add
             </Button>

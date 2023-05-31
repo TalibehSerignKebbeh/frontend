@@ -5,16 +5,17 @@ import Box from '@mui/material/Box'
 const DashBoardSalesStats = ({ salesStatsQuery }) => {
    
     return (
-        <Box
+        <Box className={`bg-white dark:bg-slate-700`}
             sx={{
-                    bgcolor: "#fff", p: '4px', display: 'flex', flexDirection: 'row',
-                    flexWrap: 'wrap', gap: '12px',
+                bgcolor: "#fff", p: '4px', display: 'flex',
+                flexDirection: 'row',flexWrap: 'wrap', gap: '12px',
                 width: 'auto', borderRadius: '6px',
                 //     boxShadow:
                 // "0px 1px 1px 0px rgba(0,0,0,0.04), 0px 1px 1px 0px rgba(0,0,0,0.09)",
 
                 }}>
-            <h3 className='w-full px-1 text-start text-2xl font-semibold opacity-70 '>
+            <h3 className='w-full px-1 text-start text-2xl 
+            font-light text-gray-700 dark:text-white '>
                 Sales Statistics</h3>
              <SalesCard stats={salesStatsQuery?.data?.thisWeekStats}
                       text={'This Weeks'}  />

@@ -7,8 +7,6 @@ import useAuth from "../hooks/useAuth";
 const ProtectedRoutes = ({ allowedRoles }) => {
     const location = useLocation()
     const { roles, token } = useAuth()
-    // console.log(roles);
-    // console.log(roles?.some(role => allowedRoles?.includes(role)));
     if (!token)
         return <Navigate to={'/'} state={{ from: location }} replace />
     if (roles?.some(role => allowedRoles?.includes(role)))

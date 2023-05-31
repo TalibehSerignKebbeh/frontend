@@ -18,8 +18,6 @@ import ErrorMessage from "../StatusMessages/ErrorMessage";
 import useAuth from "../../hooks/useAuth";
 
 const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
-  // console.log(UserData);
-  // console.log(UserData);
   const {token } = useAuth()
   const queryClient = new QueryClient();
   const [adding, setadding] = useState(false);
@@ -204,7 +202,9 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
   return (
     <Box
       sx={{ mx: { xl: 2, lg: 2, md: 1, sm: "0", xs: "0" }, mr: "auto" }}
-      className="bg-white shadow-white drop-shadow-xl py-2 h-auto
+      className="bg-white dark:bg-slate-700
+      shadow-white dark:sahdow-slate-500 
+      drop-shadow-xl py-2 h-auto
           "
     >
       <div>
@@ -230,13 +230,17 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
         <div className="flex flex-row flex-wrap gap-x-2 gap-y-3 md:px-3 mb-14 ">
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
-              className="text-start font-normal text-lg"
+              className=" text-start text-slate-700 dark:text-slate-50
+               font-normal text-lg"
               htmlFor="firstname"
             >
               FirstName
             </label>
             <input
-              className={`w-full py-1 px-2 rounded-lg text-lg h-12 text-black border-2 border-black`}
+              className={`w-full py-1 px-2 rounded-lg text-lg h-12 
+              bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                 border-2 border-black`}
               type="text"
               name="firstName"
               id="firstname"
@@ -253,13 +257,17 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
           </div>
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
-              className="text-start font-normal text-lg"
+              className=" text-start text-slate-700 dark:text-slate-50
+               font-normal text-lg"
               htmlFor="lastname"
             >
               LastName
             </label>
             <input
-              className={`w-full py-1 px-2 rounded-lg text-lg h-12 text-black border-2 border-black`}
+              className={`w-full py-1 px-2 rounded-lg text-lg h-12 
+              bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                 border-2 border-black`}
               type="text"
               name="lastName"
               id="lastname"
@@ -277,13 +285,17 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
 
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
-              className="text-start font-normal text-lg"
+              className=" text-start text-slate-700 dark:text-slate-50
+               font-normal text-lg"
               htmlFor="username"
             >
               Username
             </label>
             <input
-              className={`w-full py-1 px-2 rounded-lg text-lg h-12 text-black border-2 border-black`}
+              className={`w-full py-1 px-2 rounded-lg text-lg h-12 
+              bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                 border-2 border-black`}
               type="text"
               name="username"
               id="username"
@@ -300,13 +312,17 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
           </div>
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
-              className="text-start font-normal text-lg"
+              className=" text-start text-slate-700 dark:text-slate-50
+               font-normal text-lg"
               htmlFor="password"
             >
               Password
             </label>
             <input
-              className={`w-full py-1 px-2 rounded-lg text-lg h-12 text-black border-2 border-black`}
+              className={`w-full py-1 px-2 rounded-lg text-lg h-12 
+              bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                 border-2 border-black`}
               type="password"
               name="password"
               id="password"
@@ -321,40 +337,20 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
               </p>
             ) : null}
           </div>
+          
           <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label
-              className="text-start font-normal text-lg cursor-pointer"
-              htmlFor="active"
-            >
-            
-            </label>
-              <input
-              className={ `w-full px-96 h-7 rounded-md `}
-              type="checkbox"
-              name="active"
-              id="active"
-                placeholder=""
-                checked={formik.values.active}
-              onBlur={formik.handleBlur}
-              value={formik.values.active}
-              onChange={formik.handleChange}
-              />
-              
-            {formik.touched && formik.errors.active ? (
-              <p className=" text-start text-red-700">
-                {formik.errors.active}
-              </p>
-            ) : null}
-          </div>
-          <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
-            <label
-              className="text-start font-normal text-lg"
+              className=" text-start text-slate-700 dark:text-slate-50
+               font-normal text-lg"
               htmlFor="confirm password"
             >
               Confirm Password
             </label>
             <input
-              className={`w-full py-1 px-2 rounded-lg text-lg h-12 text-black border-2 border-black`}
+              className={`w-full py-1 px-2 rounded-lg text-lg h-12 
+              bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                 border-2 border-black`}
               type="password"
               name="confirmPassword"
               id="confirm password"
@@ -371,7 +367,9 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
           </div>
           <div className=" md:w-64 sm:w-60 w-56  h-12 input-container">
             <label
-              className="font-semibold text-lg -mb-1"
+              className="font-semibold text-lg -mb-1
+               text-slate-700 dark:text-slate-50
+              "
               htmlFor="roles-select'"
             >
               Roles
@@ -387,6 +385,9 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
                 onChange={formik.handleChange}
                 name="roles"
                 id="roles"
+                className="bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                h-12"
               >
                 {registerRoles?.map((role, id) => (
                   <MenuItem
@@ -405,6 +406,49 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
             ) : null}
           </div>
         </div>
+        <div className="w-auto -mt-8 mb-3 md:mx-2 mx-1 
+        h-auto p-1
+         rounded-md input-container">
+          <span className="py-2 text-lg
+           font-normal text-slate-700 dark:text-slate-50 
+           ">Active</span>
+            <label
+            className={`${formik?.values?.active ?
+              'bg-green-400' : 'bg-gray-400'} 
+            w-24 rounded-md
+             shadow-md p-[2px]
+             text-start font-normal 
+              text-lg cursor-pointer
+              flex items-center justify-start`}
+              htmlFor="active"
+            >
+            
+              <input
+              className={ `hidden peer w-full h-full rounded-md `}
+              type="checkbox"
+              name="active"
+              id="active"
+                placeholder=""
+                checked={formik.values.active}
+              onBlur={formik.handleBlur}
+              value={formik.values.active}
+              onChange={formik.handleChange}
+            />
+            <span className="
+            bg-slate-200 
+            h-10 w-10 rounded-[50%] 
+            transform   
+            transition-transform ease-in-out 
+            translate-x-[1px] peer-checked:translate-x-[53px]
+            "></span>
+            </label>
+              
+            {formik.touched && formik.errors.active ? (
+              <p className=" text-start text-red-700">
+                {formik.errors.active}
+              </p>
+            ) : null}
+          </div>
         <div className="grid grid-cols-2 gap-x-3 md:w-80 w-full mr-1 ml-auto">
           <button
             disabled={adding || updating}

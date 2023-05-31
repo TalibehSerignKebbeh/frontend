@@ -22,16 +22,7 @@ queryInstance.interceptors.response.use(
     return Promise.resolve(res);
   },
   function (err) {
-    if (err?.response?.status === 403) {
-      // console.log(err?.response?.data?.message);
-      // console.log("What has happen");
-      // const customEvent = new CustomEvent()
-      // document.dispatchEvent()
-      const tokenExpiredEvent = new CustomEvent("tokenExpired", {
-        detail: { status: 403 },
-      });
-      document.dispatchEvent(tokenExpiredEvent);
-    }
+    
     return Promise.reject(err);
   }
 );
@@ -115,9 +106,12 @@ export const fetchStocks = ({token}) => {
        return Promise.reject(err);
     });
 };
-export const fetchUsers = ({token}) => {
+export const fetchUsers = ({token,page,pageSize}) => {
   return queryInstance
-    .get(`/users`,{headers:{Authorization:`Bearer ${token}`}})
+    .get(`/users`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params:{page:page, pageSize:pageSize}
+    })
     .then((res) => {
       if (res?.data) return res?.data;
     })

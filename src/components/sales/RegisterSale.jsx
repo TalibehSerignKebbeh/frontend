@@ -44,7 +44,7 @@ const RegisterSale = ({socket}) => {
         // console.log(res);
         if (res?.status === 200) {
           socket.emit('notify_sale')
-          socket.emit()
+          // socket.emit()
           setpostStatus({ ...postStatus, success: res?.data?.message })
           return;
         }
@@ -67,11 +67,15 @@ const RegisterSale = ({socket}) => {
   return (
     <div
       // style={{ backgroundColor: `gray`, paddingBlock: `2rem` }}
-      className='bg-slate-200 mb-5 mt-2 py-4 shadow-zinc-300 shadow-md'
+      className='bg-slate-200 dark:bg-slate-700 
+      mb-5 mt-2 py-4 
+      shadow-zinc-300 shadow-md'
     >
       <div className='w-full md:mx-10 mx-2'>
 
-      <h2 className='text-2xl mt-2 font-light '>
+        <h2 className='text-2xl mt-2 font-light 
+       dark:text-slate-50 text-slate-700'
+        >
         Add Sales Here
       </h2>
         <motion.div style={{height: selected?.length? 'auto': '0px'}}
@@ -139,9 +143,13 @@ const RegisterSale = ({socket}) => {
           setproducts={setproducts}
         />
         <button disabled={!selected?.length}
-          style={{ backgroundColor: "green", marginInline:'10px', paddingInline:'40px' }}
+            style={{
+              backgroundColor: "green",
+              marginInline: '10px', paddingInline: '40px'
+            }}
           className="ml-10 bg-green-900 
-            text-white py-2 h-fit rounded-sm "
+            text-white py-2 h-fit rounded-md 
+            "
           onClick={handleSubmit}
         >
           {/* {postingSales? `adding....` : `Add`} */}

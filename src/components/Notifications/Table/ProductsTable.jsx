@@ -6,8 +6,10 @@ import './productupdatestable.css'
 const ProductsTable = ({ productUpdates,}) => {
    
     return (
-      <div className='product_updates_container 
-        w-full overflow-scroll'>
+      <div className='w-fit overflow-scroll
+        bg-slate-50 dark:bg-slate-700
+        text-slate-700 dark:text-slate-50
+        '>
              <table className='w-auto overflow-scroll mx-auto'>
                 <thead>
                   <tr>

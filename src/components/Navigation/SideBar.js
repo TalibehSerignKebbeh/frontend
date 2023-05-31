@@ -14,13 +14,14 @@ import LogoutTwoTone from '@mui/icons-material/LogoutTwoTone'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import DashboardOutlined from '@mui/icons-material/DashboardOutlined'
 import ReportOffOutlined from '@mui/icons-material/ReportOffOutlined'
-
 import {  AiOutlineUserSwitch, AiFillNotification } from "react-icons/ai";
 import Box from "@mui/system/Box";
 import { queryInstance } from "../../api";
 import {useContextHook} from '../../context/AuthContext'
 import CustomLink from "./Links/CustomLink";
-// import DarkModeToggle from "../../hooks/DarkModeToggler";
+import DarkModeToggle from "../../hooks/DarkModeToggler";
+
+
 
 const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
   const navigate = useNavigate();
@@ -28,7 +29,6 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
   const [isLogingOut, setisLogingOut] = useState(false);
   // &#9776;
   const { token, username, isAdmin, isManager } = useAuth();
-
   const handleNavToggle = (e) => {
     setshowSideMenu((prev) => !prev);
   };
@@ -51,7 +51,9 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
   return (
     <Box
       height={'100vh'}
-      className={`${
+      className={`bg-gray-50 dark:bg-slate-700
+      text-gray-700 dark:text-slate-50 overflow-x-hidden
+      ${
         showSideMenu
           ? "sidebar-main-active "
           : " sidebar-main "
@@ -62,9 +64,19 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
         onClick={handleNavToggle}
         disableTouchRipple
         disableFocusRipple
-        sx={{bgcolor:`lightgray`, fontSize: "1.2rem", ml: "auto", color: "black", position:'fixed' }}
-        className={`menu-toggle-btn ${showSideMenu ? "ml-auto" : "md:ml-0 -m-1"} 
-                   w-auto ml-auto zIndex-2 -mr-8 text-2xl pointer p-0 md:relative absolute
+        sx={{
+          bgcolor: 'inherit',
+          ":hover": {
+          bgcolor: 'inherit',
+          },
+          fontSize: "1.2rem", 
+          ml: "3px",mt:'2px', position: 'fixed', p: '4px',
+          
+        }}
+        className={`text-gray-800 dark:text-white
+        menu-toggle-btn 
+            ${showSideMenu ? "ml-auto" : " -m-1 ml-1"} 
+             w-auto ml-auto zIndex-2 -mr-8 text-2xl pointer p-0 
                    `}
       >
         {/* &#9776; */}
@@ -133,20 +145,30 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
             title={"events"}
             showSideMenu={showSideMenu}
           />: null}
-          </div>
-      <div className="w-auto mx-auto lg:mt-10 md:mt-5 mt-2">
-        <IconButton onClick={handleLogout}>
+        </div>
+        <div className="mr-2 my-5 mt-10 text-center 
+         w-full h-auto flex justify-center items-center
+        ">
+          <DarkModeToggle />
+        </div>
+        <div className="w-auto mx-auto lg:mt-10 md:mt-5 mt-2
+      ">
+          <Tooltip title="logout">
+
+          <IconButton className="text-gray-900 dark:text-white
+          bg-zinc-300 dark:bg-gray-500 
+          dark:hover:bg-gray-500"
+            onClick={handleLogout}>
           {isLogingOut ? (
             <CircularProgress sx={{ fontSize: "3rem" }} />
           ) : (
             <LogoutTwoTone sx={{ fontSize: "2.4rem" }} />
           )}
-        </IconButton>
+            </IconButton>
+          </Tooltip>
+            
         </div>
-        {/* <div className="text-center w-full">
-        <DarkModeToggle />
-        
-        </div> */}
+       
       </Box>
       
     </Box>

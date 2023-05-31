@@ -52,13 +52,20 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       <div
         style={{
         ...style, display: 'block', flexDirection: 'column', rowGap: '-20px',
-        backgroundColor: 'white',boxShadow:'2px 2px 4px 0px rgba(0,0,0,0.5)',
+        // backgroundColor: 'white',boxShadow:'2px 2px 4px 0px rgba(0,0,0,0.5)',
         height: 'auto', width: '100%', padding: '2px 5px',
           textAlign: 'center', justifyContent: 'center',
-        }}>
-        <small className="block font-normal capitalize">{val?.message}</small>
-        <small className="font-light text-xs capitalize">Name: <small className="text-lg font-normal">{ fullName} </small></small>
-        <small className=" block text-xs font-normal">{date}</small>
+        }}
+        className='bg-white dark:bg-slate-600 shadow-md 
+        shadow-slate-100 dark:shadow-slate-400
+      '>
+        <small className="text-gray-700 dark:text-slate-100
+         block font-normal capitalize">{val?.message}</small>
+        <small className="text-gray-700 dark:text-slate-100
+         font-light text-xs capitalize">Name:
+          <small className="text-lg font-normal">{fullName} </small></small>
+        <small className="text-gray-700 dark:text-slate-100
+          block text-xs font-normal">{date}</small>
       </div>
     );
   };
@@ -72,7 +79,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
   }, [ref, setopen]);
     return (
       <div ref={ref}
-        className='notification-wrapper'
+        className='notification-wrapper bg-slate-200 dark:bg-slate-700'
           style={{
             visibility: open ? "visible" : "hidden",
             position: 'absolute',

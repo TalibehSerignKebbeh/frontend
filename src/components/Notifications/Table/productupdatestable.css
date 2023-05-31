@@ -5,10 +5,10 @@
 .table_head{
     font-size: 1.1rem !important;
     font-weight: 400;
-    border: 2px solid rgba(5, 3, 4, 0.2);
+    border: 2px solid inherit;
 }
 .table_data{
     font-size: .9rem !important;
-    border: 1px solid #4333;
+    border: 1px solid inherit;
 
 }

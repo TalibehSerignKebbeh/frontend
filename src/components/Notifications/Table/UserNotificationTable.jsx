@@ -43,24 +43,40 @@ const UserNotificationTable = () => {
     return (
         <div>
 
-            {loading ? <SpinnerLoader /> :
-                <div >
+            {loading ?
+                <div className='w-52 h-52 bg-slate-400'>
+                    
+                <SpinnerLoader />
+                </div>
+                :
+                <div className='text-slate-700 dark:text-slate-50
+                bg-slate-50 dark:bg-slate-700'>
                     <div>
-                        <input className='py-4 px-2 border-2 border-slate-200 mb-3 mt-2'
+                        <input className='py-4 px-2 border-2 
+                        bg-white dark:bg-slate-400 
+                    text-slate-700 dark:text-white
+                        border-slate-200 dark:border-slate-500
+                        mb-3 mt-2'
                             type='date' value={created_at}
                             onChange={e => setCreated_at(e.target.value)} />
                         <IconButton disabled={!created_at?.length}
-                            onClick={() => setCreated_at('')}><Close /></IconButton>
+                            className='bg-slate-400 text-slate-800 dark:text-slate-100'
+                            onClick={() => setCreated_at('')}>
+                            <Close className='text-slate-800 dark:text-slate-100' />
+                        </IconButton>
 
                     </div>
-                    <div className='flex flex-row flex-wrap gap-2'>
+                    <div className='flex flex-row flex-wrap gap-2
+                    bg-inherit'>
                         {userEvents?.map((value, index) => (
                             <UserNotificationCard key={index}
                                 notify={value}
                             />
                         ))}
                     </div>
-                    <div className='md:mx-10 mx-auto my-2 text-center'>
+                    <div className='md:mx-10 mx-auto my-2 text-center
+                    text-slate-700 dark:text-white
+                    bg-inherit'>
                         <Pagination
                             disabled={loading}
                             page={page + 1} siblingCount={3}

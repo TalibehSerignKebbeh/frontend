@@ -45,27 +45,43 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
       <div
         style={{
         ...style, display: 'block', flexDirection: 'column', rowGap: '-20px',
-        backgroundColor: 'white',boxShadow:'2px 2px 4px 0px rgba(0,0,0,0.5)',
         height: 'auto', width: '100%', padding: '2px 5px',
           textAlign: 'center', justifyContent: 'center',
-        }}>
-        <small className="block font-normal capitalize">{val?.message}</small>
-        <small className="font-light text-xs capitalize">Name: <small className="text-lg font-normal">{ fullName} </small></small>
-        <small className=" block text-xs font-normal">{date}</small>
+        }}
+        className='bg-inherite'
+      >
+        <div className="bg-white dark:bg-gray-600 
+             shadow-md shadow-slate-100 dark:shadow-slate-400">
+          
+        <small className="text-gray-700 dark:text-gray-50 
+        block font-normal capitaliz
+        e
+        ">{val?.message}</small>
+        <small className="text-gray-700 dark:text-gray-50 
+        font-light text-xs capitalize"
+        >
+        Name: <small className="text-lg font-normal">{ fullName} </small></small>
+        <small className="text-gray-700 dark:text-gray-50 
+         block text-xs font-normal"
+         >
+         {date}</small>
+      
       </div>
+        </div>
     );
   };
 
     return (
        <div  ref={ref}
-        className='notification-wrapper'
+        className='notification-wrapper
+        bg-slate-100 dark:bg-slate-800'
             style={{
         visibility: open ? "visible" : "hidden",
               position: 'fixed', right:0, left:'auto',
-      backgroundColor:''
-        }}>
+        }}
+      >
        
-            <Button color="success"
+            <Button className="mt-4" color="success"
                 onClick={handleClickAuthNotification}>
             Read All
           </Button>

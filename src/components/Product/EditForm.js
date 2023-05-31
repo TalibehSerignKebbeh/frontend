@@ -67,15 +67,18 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
   return (
     <form
       className="h-auto flex flex-row flex-wrap 
-                        items-center md:w-11/12 w-full gap-y-4 
-                        gap-x-3 m-auto md:justify-start justify-center
-                        md:mb-3 mb-14"
+                items-center md:w-11/12 w-full gap-y-4 
+                gap-x-3 m-auto md:justify-start justify-center
+                md:mb-3 mb-14 bg-slate-100 dark:bg-slate-700
+              text-gray-600 dark:text-slate-100
+                p-3"
     >
     
       <div className="w-full h-auto p-1">
         <div
-          className="actionBtns float-right px-2 py-2 flex flex-row gap-16
-                            md:mr-72 sm:mr-20 mr-4"
+          className="actionBtns float-right 
+          px-2 py-2 flex flex-row gap-16
+          md:mr-72 sm:mr-20 mr-4"
         >
           <IconButton onClick={handleEditProduct}>
             {updateLoading ? (
@@ -109,31 +112,38 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           </span>
         </div>
       ) : null}
-      <div className="w-full h-auto py-4 flex 
+      <div className="w-full h-auto ">
+        <div className="w-fit py-4 flex 
       flex-row flex-wrap gap-x-16 gap-y-3
-      mx-3 sm:mx-auto lg:mx-5 xl:mx-9 justify-self-center">
-        <div className="divide-y-2 divide-gray-800">
-          <span>Added At</span>
-          <h2 className="text-gray-600">
+      justify-self-center
+      bg-white dark:bg-slate-500 p-3">
+        <div className="divide-y-2 divide-gray-800
+        dark:divide-slate-50">
+          <span className="text-xs font-normal ">Added At</span>
+          <h2 className="text-gray-600 dark:text-white">
           {isValid(parseISO(product?.createdAt))? format(new Date(product?.createdAt), 'EEE MM dd yyyy, HH:mm b') : 'invalid or not date'}</h2>
         </div>
-        <div className="divide-y-2 divide-gray-800">
-          <span>Updated At</span>
-          <h2 className="text-gray-600">
+        <div className="divide-y-2 divide-gray-800
+        dark:divide-slate-50">
+          <span className="text-xs font-normal ">Updated At</span>
+          <h2 className="text-gray-600 dark:text-white">
           {isValid(parseISO(product?.updatedAt))? format(new Date(product?.updatedAt), 'EEE MM dd yyyy, HH:mm b') : 'invalid or not date'}</h2>
         </div>
       </div>
+        </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+          w-full block"
           htmlFor="name"
         >
           Name
         </label>
         <input
-          className="text-xl font-medium py-3 px-2 border-2 border-gray-500
-                                 rounded-md w-full"
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3
+           px-2 border-2 border-gray-500
+           rounded-md w-full"
           type={"text"}
           value={product?.name || ""}
           onChange={(e) => setproduct({ ...product, name: e.target.value })}
@@ -143,15 +153,17 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start relative">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+          w-full block"
           htmlFor="quantity-instock"
         >
           Quantity In Stock
         </label>
         <input
-          className="text-xl font-medium py-3 px-2 border-2 border-gray-500
-                                 rounded-md w-full"
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3
+            px-2 border-2 border-gray-500
+            rounded-md w-full"
           type={"text"}
           value={product?.quantityInStock || ""}
           onChange={(e) =>
@@ -166,15 +178,17 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+          w-full block"
           htmlFor="quantity"
         >
           Quantity
         </label>
         <input
-          className="text-xl font-medium py-3 px-2 border-2 border-gray-500
-                                 rounded-md w-full"
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3 
+           px-2 border-2 border-gray-500
+           rounded-md w-full"
           type={"text"}
           value={product?.quantity || ""}
           onChange={(e) => setproduct({ ...product, quantity: e.target.value })}
@@ -184,15 +198,17 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+            w-full block"
           htmlFor="price"
         >
           Price
         </label>
         <input
-          className="text-xl font-medium py-3 px-2 border-2 border-gray-500
-                                 rounded-md w-full"
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3 px-2
+            border-2 border-gray-500
+           rounded-md w-full"
           type={"text"}
           value={product?.price || ""}
           onChange={(e) => setproduct({ ...product, price: e.target.value })}
@@ -202,15 +218,18 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+           w-full block"
           htmlFor="stockId"
         >
           Category
         </label>
         <select
-          className="border-2 border-gray-700 w-full font-medium
-                            h-14 rounded-md px-2 mx-auto my-3 p-1"
+          className="text-gray-600 bg-slate-100
+          dark:bg-slate-500
+          dark:text-white border-2
+           border-gray-700 w-full font-medium
+          h-14 rounded-md px-2 mx-auto my-3 p-1"
           value={product?.stockId?._id}
           id="stockId"
           onChange={(e) => setproduct({ ...product, stockId: e.target.value })}
@@ -221,7 +240,8 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
             <option
               key={id}
               value={stock?._id}
-              className={`first-letter:uppercase `}
+              className={`first-letter:uppercase 
+              text-gray-700 dark:text-white `}
             >
               {`${stock?.name},  ${stock?.description || ""}`}
             </option>
@@ -230,15 +250,17 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+           w-full block"
           htmlFor="producedDate"
         >
           Produced Date
         </label>
         <input
-          className="text-xl font-medium py-3 px-2 border-2 border-gray-500
-                                 rounded-md w-full"
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3 
+           px-2 border-2 border-gray-500
+           rounded-md w-full"
           type={"date"}
           value={product?.producedDate?.slice(0, 10)?.toString() || ""}
           onChange={(e) =>
@@ -250,15 +272,17 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
-          className="text-gray-600 font-semibold text-lg
-                             w-full block"
+          className=" font-semibold text-lg
+           w-full block"
           htmlFor="expiryDate"
         >
           Expiry Date
         </label>
         <input
-          className="text-xl font-medium py-3 px-2 border-2 border-gray-500
-                                rounded-md w-full"
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium 
+           py-3 px-2 border-2 border-gray-500
+           rounded-md w-full"
           type={"date"}
           value={product?.expiryDate?.slice(0, 10)?.toString() || ""}
           onChange={(e) =>
