@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import SingleProductSearch from "./Select/SingleProductSearch";
 import SearchUser from "../user/SearchUser";
 
-const SalesPage = ({ socket }) => {
+const SalesPage = ({ socket,setactiveNavLink }) => {
   const { token } = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
@@ -22,7 +22,7 @@ const SalesPage = ({ socket }) => {
   const [date, setdate] = useState('');
   const [pageSize, setpageSize] = useState(20);
   const [page, setpage] = useState(0);
-  const [openRegisterSale, setOpenRegisterSale] = useState(false)
+  const [openRegisterSale, setOpenRegisterSale] = useState(true)
   const [product, setproduct] = useState('');
   const [user, setuser] = useState('');
 
@@ -30,21 +30,27 @@ const SalesPage = ({ socket }) => {
     date:'', product:'', user:''
   });
   useEffect(() => {
+    setactiveNavLink('sales')
     const fetchSales = async () => {
       setloading(true);
       seterrorMessage("");
-      let filters = {...searchFilters}
+      let filters = {}
+
+      Object.keys(searchFilters).forEach((key) => {
+        if (searchFilters[key]?.length) {
+            filters[key]= searchFilters[key]
+         }
+      })
       
       filters.page = page;
       filters.pageSize = pageSize;
-     
       await queryInstance
         .get(
           `/sales`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
         )
         .then((res) => {
-          // console.log(res);
           if (res?.status === 200) {
+          // console.log(res?.data);
             setrowCount(res?.data?.totalSales);
             setsales(res?.data?.sales);
             return;
@@ -72,18 +78,12 @@ const SalesPage = ({ socket }) => {
   const ApplyFilters = () => {
     if (product?.length) {
     setsearchFilters({...searchFilters, product: product}) 
-    }else {
-      delete searchFilters[product]
     }
     if (date?.length) {
       setsearchFilters({...searchFilters, date:date})
-    } else {
-      delete searchFilters[date]
-    }
+    } 
     if (user?.length) {
       setsearchFilters({...searchFilters, user: user})
-    }else {
-      delete searchFilters[user]
     }
   }
   const ClearFilters = () => {
@@ -106,13 +106,23 @@ const SalesPage = ({ socket }) => {
         onClick={() => setOpenRegisterSale(prev => !prev)}>
         {openRegisterSale ? `Close` : `Open`}  Register Sales
       </button>
-
+      <div>
+        
       <motion.div
-        // initial={{scale:0}}
-        animate={{ scale: openRegisterSale ? 1 : 0 }}
+        initial={{scale:0,height:0 }}
+          animate={{
+          transition:'.8s',
+          scale: openRegisterSale ? 1 : 0,
+          opacity: openRegisterSale ? 1 : 0,
+          height: openRegisterSale? 'auto':'0'
+        }}
+        className="h-auto w-auto relative block"
+        transition={{type:'tween', duration:'0.8',easings:['easeIn', 'easeOut']}}
+        
       >
          <RegisterSale socket={socket} />   
       </motion.div>
+</div>
 
 
       <div className="bg-white dark:bg-slate-700 
@@ -125,8 +135,7 @@ const SalesPage = ({ socket }) => {
         shadow-sm
         w-fit p-2 text-gray-600 dark:text-slate-50"
         >
-          {/* <h3 className="w-full justify-stretch
-          ">Filter Sales</h3> */}
+         
           <div className="flex-none">
             <label htmlFor="data"
               className="font-normal mb-2 py-2 
@@ -159,7 +168,7 @@ const SalesPage = ({ socket }) => {
                 setsearchFilters({...searchFilters, product:''})
               }}
               onSelect={(value) => {
-                // setsearchFilters({ ...searchFilters, product: value })
+                setsearchFilters({ ...searchFilters, product: value })
                 setproduct(value)
               }}
             />
@@ -210,6 +219,7 @@ const SalesPage = ({ socket }) => {
           pageSize={pageSize}
           setpageSize={setpageSize}
           loading={loading}
+          socket={socket}
         />
       </div>
 

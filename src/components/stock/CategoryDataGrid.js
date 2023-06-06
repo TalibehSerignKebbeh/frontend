@@ -10,10 +10,13 @@ import { format } from 'date-fns';
 import ConfirmDelete from '../Modal/ConfirmDelete';
 import { queryInstance } from '../../api';
 import { QueryClient } from '@tanstack/react-query';
+import { GetError } from '../other/OtherFuctions';
+import useAuth from '../../hooks/useAuth';
 
 const CategoryDataGrid = ({ data, setopenEdit, setstock,
   page, setpage, setpageSize, pageSize, isLoading,
 }) => {
+  const {token} = useAuth()
   const [openDelete, setopenDelete] = useState(false);
   const [stockToDelete, setstockToDelete] = useState(null);
   const [deletLoading, setdeletLoading] = useState(false);
@@ -23,25 +26,16 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
 
   const HandleDeleteStock = async () => {
     setdeletLoading(true)
-    await queryInstance.delete(`/stocks/${stockToDelete?._id}`)
+    await queryInstance.delete(`/categories/${stockToDelete?._id}`, {headers:{Authorization: `Bearer ${token}`}})
       .then((res) => {
         if (res?.status === 200) {
           setdeleteSuccessMessage(res?.data?.message)
-          queryClient.invalidateQueries({ queryKey: ['stocks'] })
+          queryClient.invalidateQueries({ queryKey: ['stocks', page, pageSize] })
+          return;
         }
-        if (res?.status === 400) {
-          setdeleteErrorMessage(res?.response?.data?.message)
-        }
+       setdeleteErrorMessage(GetError(res))
       }).catch((err) => {
-        if (err?.status === 400) {
-          setdeleteErrorMessage(err?.response?.data?.message)
-          return
-        }
-        if (err?.status === 403) {
-          setdeleteErrorMessage(err?.response?.data?.message)
-          return
-        }
-        setdeleteErrorMessage("Internal server error")
+       setdeleteErrorMessage(GetError(err))
       }).finally(() => {
         setdeletLoading(false)
 
@@ -84,7 +78,7 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
           icon={
             <Link
               className="font-normal  p-1"
-              to={`/stocks/${params.id}/products`}
+              to={`/categories/${params.id}/products`}
             >
               Products
             </Link>
@@ -113,18 +107,27 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
     <>
 
       <DataGrid
-        className='bg-slate-100 dark:bg-slate-700
-        text-gray-700 dark:text-white'
-        rows={data?.stocks?.length ? data?.stocks : []}
+        className='bg-slate-200 dark:bg-slate-700
+        text-gray-700 dark:text-white 
+        shadow-md '
+        rows={data?.categories?.length ? data?.categories : []}
         columns={columns}
         pageSize={pageSize}
         page={page}
-        onPageChange={newPage => setpage(newPage)}
+        rowCount={data?.count}
+        
+        // onPageChange={newPage => setpage(newPage)}
+        onPaginationModelChange={({page, pageSize }) => {
+          setpage(page);
+          setpageSize(pageSize)
+        }}
+         paginationMode='server'
+        paginationModel={{page:page, pageSize:pageSize}}
         loading={isLoading}
         columnBuffer={4}
         columnThreshold={2}
         pageSizeOptions={[5, 10, 20, 30, 50, 70, 100]}
-        onPageSizeChange={newSize => setpageSize(newSize)}
+        // onPageSizeChange={newSize => setpageSize(newSize)}
         components={{
           Toolbar: GridToolbar,
         }}
@@ -136,7 +139,7 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
           toolbarDensityStandard: 'Medium',
           toolbarDensityComfortable: 'Large',
         }}
-        getRowId={row => row._id}
+        getRowId={row => row?._id}
         sx={{
           minHeight: '400px',
           // bgcolor: '#fff', boxShadow: '2px 2px 3px rgba(0,0,0,0.4)',

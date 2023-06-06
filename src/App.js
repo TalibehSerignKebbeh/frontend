@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
+  useNavigate,
 } from "react-router-dom";
 import InventoryPage from "./components/Product/InventoryPage";
 import SideBar from "./components/Navigation/SideBar";
@@ -28,21 +29,34 @@ import UnAuthorized from "./other/UnAuthorized";
 import SaleReport from "./components/Report/SaleReport";
 import 'antd/dist/reset.css';
 import Events from "./components/Notifications/Page/Events";
+import Test from "./Test";
+// import TypingAnimation from "./TextAnimation";
+// import BasicTable from './BasicTable'
 
 function App() {
-  const {username} = useAuth()
-  const [socket, setsocket] =
-    useState(io(serverUrl, {
-      withCredentials:true,
+  const { username } = useAuth()
+  const [activeNavLink, setactiveNavLink] = useState('');
+  // const navigate = useNavigate()
+  // const [socket, setsocket] =
+  //   useState(io(serverUrl, {
+  //     withCredentials:true,
+  //     autoConnect: false,
+  //     reconnectionAttempts: 3,
+  //     secure: true,
+  //     host:serverUrl,
+  //   }));
+  const socket = io(serverUrl, {
+    withCredentials:true,
       autoConnect: false,
       reconnectionAttempts: 3,
       secure: true,
       host:serverUrl,
-    }));
+  })
   const { token } = useAuth()
 
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {
+    // console.dir(navigate);
     socket.connect()
      
     return () => {
@@ -55,8 +69,8 @@ function App() {
     <>
       <Router>
         <div className="flex flex-row w-screen h-screen  overflow-x-hidden 
-        bg-slate-50 dark:bg-gray-800">
-          <SideBar
+        bg-slate-100 dark:bg-gray-800">
+          <SideBar activeNavLink={activeNavLink}
             socket={socket}
             showSideMenu={showSideMenu}
             setshowSideMenu={setshowSideMenu}
@@ -64,7 +78,7 @@ function App() {
           {/* other content */}
           <div className="content relative w-screen h-screen 
           flex flex-col items-stretch
-          bg-inherit">
+          bg-inherit overflow-x-hidden">
             <TopBar
               socket={socket}
               showSideMenu={showSideMenu}
@@ -79,7 +93,7 @@ function App() {
                 <Route
                   index
                   element={
-                    <Login socket={socket} />
+                    <Test  socket={socket} setactiveNavLink={setactiveNavLink}/>
                   }
                 />
                   <Route
@@ -91,40 +105,34 @@ function App() {
                   >
                     <Route
                       path="/dashboard"
-                      element={<Dashboard socket={socket} />}
+                      element={<Dashboard socket={socket} setactiveNavLink={setactiveNavLink}/>}
                     />
 
                     <Route path="products">
                       <Route
                         index
-                        element={<InventoryPage socket={socket} />}
+                        element={<InventoryPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
                       />
-                      {/* <Route
-                        path="add"
-                        element={<AddStock socket={socket} />}
-                      /> */}
+                      
                       <Route
                         path=":id"
-                        element={<EditProductPage socket={socket} />}
+                        element={<EditProductPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
                       />
                       <Route
                         path=":id/sales"
-                        element={<ProductSales socket={socket} />}
+                        element={<ProductSales socket={socket} setactiveNavLink={setactiveNavLink}/>}
                       />
                     </Route>
-                    <Route path="stocks">
-                      <Route index element={<Stocks socket={socket} />} />
+                    <Route path="categories">
+                      <Route index element={<Stocks socket={socket} setactiveNavLink={setactiveNavLink}/>} />
                       <Route
                         path=":id/products"
-                        element={<StockProducts socket={socket} />}
+                        element={<StockProducts socket={socket} setactiveNavLink={setactiveNavLink}/>}
                       />
-                      {/* <Route
-                        path="add"
-                        element={<AddStock socket={socket} />}
-                      /> */}
+                     
                     </Route>
                     <Route path="/sales">
-                      <Route index element={<SalesPage socket={socket} />} />
+                      <Route index element={<SalesPage socket={socket} setactiveNavLink={setactiveNavLink}/>} />
                       {/* <Route path="add" element={<RegisterSale socket={socket} />} /> */}
                     </Route>
                     <Route
@@ -136,16 +144,18 @@ function App() {
                     >
                       <Route
                         path="/users"
-                        element={<UserPage socket={socket} />}
+                        element={<UserPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
                       />
                       <Route
                         path="/report"
-                        element={<SaleReport />}
+                        element={<SaleReport setactiveNavLink={setactiveNavLink}/>}
                       />
                       <Route
                         
                         path="/events"
-                        element={<Events showSideMenu/>}
+                      element={<Events showSideMenu
+                          socket={socket}
+                        setactiveNavLink={setactiveNavLink}/>}
                       />
                     </Route>
                     {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}

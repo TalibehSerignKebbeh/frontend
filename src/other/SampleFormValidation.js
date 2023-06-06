@@ -48,7 +48,7 @@ const SampleFormValidation = () => {
         e.preventDefault()
         setloading(true)
         setsuccess(false)
-        await queryInstance.post("/stocks",  {...stockData, createdDate: new Date()} ).then(res => {
+        await queryInstance.post("/categories",  {...stockData, createdDate: new Date()} ).then(res => {
             setAddStatus({ ...AddStatus, success: true })
             console.log(res);
             console.log(res?.data?.message);

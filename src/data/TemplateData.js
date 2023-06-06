@@ -28,7 +28,7 @@ import React from 'react';
 //           icon={
 //             <Link
 //               className="font-normal  p-1"
-//               to={`/stocks/${params.id}/products`}
+//               to={`/categories/${params.id}/products`}
 //             >
 //               Products
 //             </Link>

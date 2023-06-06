@@ -29,11 +29,11 @@ const DarkModeToggle = () => {
 
   return (
       <label htmlFor='toggle'
-      className={`mx-auto ' w-16 h-fit p-1  
+      className={`mx-auto  w-20 h-fit p-1  
         flex items-center justify-start
-    cursor-pointer' border rounded
-    ${darkMode ? 'bg-gray-950' : 'bg-gray-700'}
-    border-slate-800  
+    cursor-pointer border rounded bg-gray-300
+    ${darkMode ? ' border-slate-300' : ' border-slate-800'}
+      
     cursor-pointer`}>
       <input type="checkbox" name="toggle" id="toggle"
         defaultChecked={darkMode}
@@ -44,8 +44,8 @@ const DarkModeToggle = () => {
         <span style={{}} className={`
         w-auto h-auto  transform
         transition-all 
-        rounded-[50%] 
-        ${darkMode ? 'mr-auto  ml-16' : ' ml-auto mr-0'}
+        rounded-[50%] mr-auto
+        ${darkMode ? 'ml-11' : 'ml-0'}
         ${darkMode ? 'bg-slate-500' : 'bg-slate-300'}
         `}>
         {darkMode ?
@@ -54,7 +54,7 @@ const DarkModeToggle = () => {
             sx={{ transform: 'scale(1.3)', p: '2px' }} />
           :
           <LightMode
-          className='text-slate-50 bg-slate-700'
+          className='text-slate-50 bg-slate-400 rounded-full'
           sx={{ transform: 'scale(1.3)', p:'2px' }} />}
        </span>
       </label>

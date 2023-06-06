@@ -14,6 +14,9 @@
            /* background-color: rgb(241, 238, 238); */
 
        }
+       .side-modal.active {
+        right: -5px;
+       }
        .side-modal .close-div{
         width: 100%;
         height: 15px;
@@ -24,8 +27,8 @@
        .close-div>span{
         float: right;
         cursor: pointer;
-        padding: 2px 10px;
-        padding-bottom: 7px;
+        padding: 2px 15px;
+        padding-bottom: 11px;
        }
        .close-div>span:hover{
         background-color: rgb(200, 80, 80);
@@ -34,9 +37,7 @@
         font-weight: bold;
        }
 
-       .side-modal.active {
-        right: 0;
-       }
+       
        .side-modal {
         display: flex;
           flex-direction: column;
@@ -74,7 +75,7 @@
     gap:20px;
     position: relative;
     margin: auto;
-    margin-top: 25px;
+    /* margin-top: 25px; */
    
 }
  .buttons>button{
@@ -86,11 +87,3 @@
     cursor: pointer;
     font-size: 1.1rem;
 }
-/* button.reset:hover{
-    background-color: rgb(16, 161, 161);
-    color: rgb(212, 75, 75);
-    }
-button.submit:hover{
-    background-color: rgb(16, 161, 161);
-    color: white;
-} */

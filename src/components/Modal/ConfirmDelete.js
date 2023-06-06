@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack'
 import React from 'react';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  console.log(props);
+  // console.log(props);
   return <Slide direction="up" ref={ref} {...props} />;
 });
 const ConfirmDelete = ({ open, setopen, resetFunc, deleteFunction,

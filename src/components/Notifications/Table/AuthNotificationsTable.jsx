@@ -2,10 +2,8 @@ import React, { useEffect,useRef } from "react";
 import { FixedSizeList } from "react-window";
 import  format  from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import  Button  from '@mui/material/Button';
 import '../notification.css'
 import { queryInstance } from "../../../api";
-// import { DataGrid } from "@mui/x-data-grid";
 
 const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
 
@@ -16,13 +14,15 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
     // socket.emit("read_all_auth_notification", { ids });
     queryInstance.patch(`notifications`, { ids })
       .then((res) => {
+        console.log(res);
         if (res?.status === 200) {
-    socket.emit("read_all_auth_notification", {});
+           socket.emit("read_all_auth_notification", {});
         }
 
       // console.log(res);
       }).catch((err) => {
       // console.log(err);
+        alert('some error occurred')
     })
   };
   useEffect(() => {
@@ -80,11 +80,16 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
               position: 'fixed', right:0, left:'auto',
         }}
       >
-       
-            <Button className="mt-4" color="success"
+        <div className="w-full text-center">
+          <button
+            className='mx-auto p-2 px-8 mt-2 rounded  
+            bg-green-700 hover:bg-green-600
+            text-white hover:text-white  '
                 onClick={handleClickAuthNotification}>
             Read All
-          </Button>
+          </button>
+       </div>
+
               
           <FixedSizeList
             height={250}

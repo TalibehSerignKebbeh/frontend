@@ -3,6 +3,7 @@ import {formatNumber} from '../../../other/format'
 import './index.css'
 
 const SalesCard = ({ stats, text, }) => {
+  // console.log(`single starts`, stats);
    
     return (
         <>
@@ -13,11 +14,11 @@ text-gray-700 dark:text-white">
      bg-slate-100 dark:bg-slate-500">{text} Report</h5>
             <p className="card-text text-gray-700 dark:text-white">
             #Sales: <span className="sales-num">
-              {stats?.length? stats[stats?.length - 1]?.saleCount || 0 : 0}
+              {stats?.length? stats[stats?.length - 1]?.count || 0 : 0}
             </span></p>
             <p className="card-text text-gray-700 dark:text-white">
             #Products: <span className="sales-num">
-              {stats?.length? stats[stats?.length - 1]?.quantityProduct || 0 : 0}
+              {stats?.length? stats[stats?.length - 1]?.quantity || 0 : 0}
             </span></p>
             <p className="card-text text-gray-700 dark:text-white">
             Revenue : D <span className="sales-num">

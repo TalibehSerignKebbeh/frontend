@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import UsersTable from "./UsersTable";
-import { fetchUsers, queryInstance } from "../../api";
+import { fetchUsers } from "../../api";
 import   Collapse from "@mui/material/Collapse";
 import   Button from "@mui/material/Button";
 import  Add  from "@mui/icons-material/Add";
@@ -15,7 +15,7 @@ import ErrorMessage from "../StatusMessages/ErrorMessage";
 import { initialUser } from "./Data";
 
 
-const UserPage = ({ socket }) => {
+const UserPage = ({ socket,setactiveNavLink }) => {
   const {token } = useAuth();
   const collapseRef = useRef(null)
   const [errorMessage, seterrorMessage] = useState('');
@@ -52,7 +52,7 @@ const UserPage = ({ socket }) => {
 
   
   useEffect(() => {
-   
+   setactiveNavLink('users')
     if (UserFetch.isSuccess) {
       console.log(UserFetch.data);
       setpage(Number(UserFetch?.data?.page))

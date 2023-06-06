@@ -3,14 +3,14 @@ table{
 }
 table{
   width: 100%;
-  table-layout: fixed;
+  table-layout: auto;
 }
 th{
     font-weight: 700;
     opacity: .8;
 }
 th, td {
-  padding: auto;
+  padding: 3px 4px;
   text-align: left;
   text-align: start;
     vertical-align: middle;

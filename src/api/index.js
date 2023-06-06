@@ -54,7 +54,7 @@ export const fetchSales = ({ page, pageSize, selectedDate,token }) => {
 export const fetchSalesStats = ({token}) => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth();
-  const date = new Date().getDate();
+  const date = new Date().getDate()-3;
   return queryInstance
     .get(`/sales/stats?year=${year}&month=${month}&date=${date}`,{headers:{Authorization:`Bearer ${token}`}})
     .then((res) => {
@@ -96,9 +96,12 @@ export const fetchSalesStatistic = ({token}) => {
     });
 };
 
-export const fetchStocks = ({token}) => {
+export const fetchStocks = ({token,page,pageSize}) => {
   return queryInstance
-    .get(`/stocks`,{headers:{Authorization:`Bearer ${token}`}})
+    .get(`/categories`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: {page, pageSize}
+    })
     .then((res) => {
       if (res?.data) return res?.data;
     })

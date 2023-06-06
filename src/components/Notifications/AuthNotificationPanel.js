@@ -1,20 +1,25 @@
-import { Button } from '@mui/material';
 import { format, parseISO } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './notification.css'
+import { queryInstance } from '../../api';
 
 const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   const ref = useRef(null)
 
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  // const [dragging, setDragging] = useState(false);
-  // const [offset, setOffset] = useState({ x: 0, y: 0 });
-  // const containerRef = useRef(null);
- 
-
-  const handleClickAuthNotification = () => {
+  const handleClickAuthNotification = async() => {
     const ids = dataArray?.map(notify => { return notify?._id })
-    socket.emit("read_all_auth_notification", {ids});
+     await queryInstance.patch(`notifications`, { ids })
+      .then((res) => {
+   if (res?.status === 200) {
+    //  socket.emit("read_all_sale_notification", {});
+     socket.emit("read_all_sale_notification", { ids });
+     console.log(`message`);
+        }
+
+      }).catch((err) => {
+      // console.log(err);
+    })
+   
     };
 
   useEffect(() => {
@@ -62,7 +67,7 @@ const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
             style={{
         visibility: open ? "visible" : "hidden",
       position: 'absolute',left:'auto',
-             top: position.y, right: position.x 
+             top: 0, right: 0 
         }}
         
       
@@ -96,9 +101,12 @@ const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
               ))}
             </tbody>
           </table>
-          <Button onClick={handleClickAuthNotification}>
+          <button  className='mx-auto p-2 px-8 mt-2 rounded  
+            bg-green-700 hover:bg-green-600
+            text-white hover:text-white  '
+            onClick={handleClickAuthNotification}>
             Mark All As read
-          </Button>
+          </button>
         </div> 
         </div>
     );

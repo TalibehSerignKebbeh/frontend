@@ -1,8 +1,8 @@
 import  Box  from '@mui/system/Box';
 import React, { useEffect, useState } from 'react';
-import {  fetchProductsStats, fetchSalesStatistic, fetchSalesStats, fetchSalesToday } from '../../api';
+import {  fetchProductsStats,  fetchSalesStats } from '../../api';
 import  {useQueries}  from '@tanstack/react-query';
-import SalesDataGridVir from '../sales/SalesDataGridVir';
+// import SalesDataGridVir from '../sales/SalesDataGridVir';
 import Header from '../other/Header';
 import DashboardRounded  from '@mui/icons-material/DashboardRounded';
 import DashboardProductStats from '../Product/DashboardProductStats';
@@ -10,14 +10,16 @@ import DashBoardSalesStats from '../sales/DashBoardSalesStats';
 import DateReportComponent from '../Report/DateReportComponent';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
-import SpinnerLoader from '../Loaders/SpinnerLoader';
 import useAuth from '../../hooks/useAuth';
+// import SalesTodayStats from './TodayStats/SalesTodayStats';
+import SkeletonLoaders from '../Loaders/SkelelonLoader';
 
-const Dashboard = () => {
-    const {token} = useAuth()
+const Dashboard = ({socket, setactiveNavLink}) => {
+    const { token } = useAuth()
+    
     const [errorMessage, seterrorMessage] = useState('');
     const { "0": salesStatsQuery, "1": productsStatesQuery,
-    "2":salesTodayQuery, "3":dayStatsQuery } = useQueries({
+  } = useQueries({
         queries: [
             {
                 queryKey: ['salesStats'],
@@ -27,21 +29,18 @@ const Dashboard = () => {
                 queryKey: ['productsStats'],
                 queryFn: () => fetchProductsStats({token})
             },
-            {
-                queryKey: ['todaysSales'],
-                queryFn: () => fetchSalesToday({token})
-            },
-            {
-                queryKey: ['salesstatistics'],
-                queryFn: () => fetchSalesStatistic({token})
-            }
+            // {
+            //     queryKey: ['salesstatistics'],
+            //     queryFn: () => fetchSalesStatistic({token})
+            // }
         ],
     })
     useEffect(() => {
+        setactiveNavLink('dashboard')
         // console.log(salesStatsQuery?.data);
-        console.log(salesTodayQuery?.data);
+        // console.log(salesTodayQuery?.data);
             // console.log(salesStatsQuery);
-
+    //    console.log(salesStatsQuery?.data);
         if (salesStatsQuery?.isError) {
             seterrorMessage(GetError(salesStatsQuery?.error))
         }
@@ -50,11 +49,11 @@ const Dashboard = () => {
     }
            
 
-       }, [dayStatsQuery.data, salesStatsQuery, salesStatsQuery?.data, salesStatsQuery?.isSuccess, salesTodayQuery]);
+       }, [salesStatsQuery, salesStatsQuery.data, salesStatsQuery.isSuccess, setactiveNavLink]);
     
-        const isLoading = salesStatsQuery.isLoading && productsStatesQuery.isLoading && salesTodayQuery.isLoading;
+        const isLoading = salesStatsQuery.isLoading && productsStatesQuery.isLoading;
     if (isLoading) return (
-        <SpinnerLoader />)
+        <SkeletonLoaders />)
 
     return (
         <Box sx={{width:'100vw', mx: 2, display: 'flex', flexDirection:'column', rowGap:3, mb:10}}
@@ -68,30 +67,10 @@ const Dashboard = () => {
                 icon={<DashboardRounded sx={{ transform: 'scale(1.5)', mb: 1, zIndex: 0 }}
                     className='text-gray-800 dark:text-white' />} 
             />
-            {/* <div className='flex flex-row content-center justify-start items-baseline w-full mx-2'>
-                <div className='beatiful-shadow md:w-72 w-64 flex flex-col items-start bg-white p-1 rounded-lg '>
-                    <div className='' >
-                        <ReviewsOutlined sx={{width:'65px', height:'56px'}}/>
-                    </div>
-                    <div className='flex flex-row w-full items-center justify-between text-start'>
-                        <div className='p-2 rounded-md'>
-                            <h2>Amount</h2>
-                             <h3>D234000</h3> 
-                        </div>
-                        <div className='p-2'>
-                            <h2>Profit</h2>
-                             <h3>D120000</h3> 
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div> */}
-            <div className='flex flex-row md:flex-nowrap 
-            sm:flex-wrap flex-wrap justify-start 
-            items-end w-full
-               gap-1 bg-inherit'>
+         
+            <div className='flex flex-col  justify-start 
+            items-start w-full
+               gap-8 bg-inherit'>
                  <DashBoardSalesStats salesStatsQuery={salesStatsQuery} />
                 <DashboardProductStats
                     productsStatesQuery={productsStatesQuery} 
@@ -99,10 +78,7 @@ const Dashboard = () => {
                
             </div>
 
-            <SalesDataGridVir data={salesTodayQuery?.data?.sales}
-                loading={salesTodayQuery?.isLoading}
-                total={salesTodayQuery?.data?.money}
-            />
+           {/* <SalesTodayStats /> */}
             <DateReportComponent />
         </Box>
     );

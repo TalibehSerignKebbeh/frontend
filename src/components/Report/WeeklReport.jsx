@@ -13,6 +13,7 @@ import Cancel from '@mui/icons-material/Cancel';
 import useAuth from '../../hooks/useAuth';
 import { GetError } from '../other/OtherFuctions'
 import ErrorMessage from '../StatusMessages/ErrorMessage'
+import WeeklyChart from '../Dashboard/chats/WeeklyChart';
 
 const WeeklySalesReport = () => {
   const { token } = useAuth()
@@ -160,20 +161,7 @@ const WeeklySalesReport = () => {
                 overflow-x-scroll scroll-smooth
                 bg-slate-300 py-5
                 '>
-                <LineChart
-                  width={600}
-                  height={300}
-                  data={daysSale}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="money" stroke="#8884d8" activeDot={{ r: 8 }} />
-                  <Line type="monotone" dataKey="productQuantity" stroke="#8884d8" activeDot={{ r: 8 }} />
-                  </LineChart>
+                <WeeklyChart daysDate={daysSale} />
                 </div> : null}
             </div>
 

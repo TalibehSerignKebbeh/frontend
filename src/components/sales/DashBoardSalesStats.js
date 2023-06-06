@@ -1,26 +1,33 @@
 import React from 'react';
 import SalesCard from '../Dashboard/card/SalesCard';
 import Box from '@mui/material/Box'
+import DailyChart from '../Dashboard/chats/DailyChart';
 
 const DashBoardSalesStats = ({ salesStatsQuery }) => {
-   
+//    console.log(`sales query `, salesStatsQuery?.data?.thisMonthStats);
     return (
-        <Box className={`bg-white dark:bg-slate-700`}
+        <Box className={`w-full bg-white dark:bg-slate-700
+        md:px-8 sm:p-4 px-1`}
             sx={{
-                bgcolor: "#fff", p: '4px', display: 'flex',
+                bgcolor: "#fff", display: 'flex',
                 flexDirection: 'row',flexWrap: 'wrap', gap: '12px',
                 width: 'auto', borderRadius: '6px',
-                //     boxShadow:
-                // "0px 1px 1px 0px rgba(0,0,0,0.04), 0px 1px 1px 0px rgba(0,0,0,0.09)",
-
                 }}>
             <h3 className='w-full px-1 text-start text-2xl 
             font-light text-gray-700 dark:text-white '>
                 Sales Statistics</h3>
              <SalesCard stats={salesStatsQuery?.data?.thisWeekStats}
                       text={'This Weeks'}  />
-                    <SalesCard stats={salesStatsQuery?.data?.thisMonthStats} text={'This Month'} />
-                    <SalesCard stats={salesStatsQuery?.data?.thisYearStats} text={'This Year'} />
+            <SalesCard stats={salesStatsQuery?.data?.thisMonthStats}
+                text={'This Month'} />
+            <SalesCard stats={salesStatsQuery?.data?.thisYearStats}
+                text={'This Year'} />
+            <div className='h-auto overflow-auto my-7 max-w-full'>
+                <h2 className='text-center text-lg font-normal
+                text-slate-700 dark:text-slate-100'
+                >This Weeks Daily Sales Analysis</h2>
+                <DailyChart chartData={salesStatsQuery?.data?.thisWeekStats}/>
+            </div>
                 </Box>
     );
 }

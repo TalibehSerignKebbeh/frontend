@@ -10,14 +10,14 @@ import ErrorMessage from '../StatusMessages/ErrorMessage';
 import axios from 'axios';
 
 const initialValues = {
-    name: '',stockId: '', price: 0, quantity: 0,
+    name: '',sub_name:'',stockId: '', price: 0, unit_cost:0, quantity: 0,
     dimensions: '', description: '', picture: '', producedDate: '',
     expiryDate: '',
 }
 const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
     const {token} = useAuth()
     const [product, setproduct] = useState(initialValues);
-    const [stocks, setstocks] = useState([]);
+    const [categories, setCategories] = useState([]);
     const nameRef = useRef(showSideModal)
     const [uploading, setuploading] = useState(false);
     const [error, setError] = useState('');
@@ -30,9 +30,9 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
             // nameRef.current.focus()
 
         const fetchCategories = async()=> {
-        await queryInstance.get(`/stocks`,{headers:{Authorization: `Bearer ${token}`}, signal:getStockcontroller.signal})
+        await queryInstance.get(`/categories`,{headers:{Authorization: `Bearer ${token}`}, signal:getStockcontroller.signal})
             .then(res => {
-        setstocks(res?.data?.stocks)
+        setCategories(res?.data?.categories)
             }).catch((err) => {
             console.log(err);
         })
@@ -68,7 +68,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                 if (axios.isCancel(err)) {
                     setError(`requst cancelled`, err?.message)
                 }
-                // console.log(err);
+                console.log(err);
                 setError(GetError(err))
             }).finally(() => setuploading(false))
 
@@ -82,11 +82,15 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
     return (
         <div
             className={` side-modal ${showSideModal ? 'active' : ''} 
-            rounded-md bg-white shadow-md
-            shadow-white  pb-4`}>
-            <div className="close-div mt-1 text-2xl mr-2  mb-3">
-                <span id="close" title='Close' onClick={() => setShowSideModal(false)}>x</span>
+            rounded-md bg-white dark:bg-slate-600 shadow-md
+            shadow-white dark:shadow-gray-600  pb-4 `}>
+            <div className="close-div mt-1 text-2xl mr-2  mb-3 py-4">
+                <span id="close" title='Close'
+                    className='text-slate-800 dark:text-white'
+                    onClick={() => setShowSideModal(false)}>x</span>
             </div>
+            <div className='h-auto w-full'>
+
             {successMessage ?
                 <SuccessMessage message={successMessage} 
                     resetFunction={()=>setsuccessMessage('')}
@@ -94,31 +98,63 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
             {error ?
                 <ErrorMessage error={error} 
                     handleReset={()=>setError('')}
-                /> : null}
-            <div  className="  
+                    /> : null}
+            </div>
+                
+            <div  className=" border-2 border-teal-300
                  md:px-12 py-5  px-6 overflow-y-scroll
-                 relative border-y-2 border-gray-600">
+                 relative ">
                 <div className='flex flex-col gap-1 '>
 
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="name">Name</label>
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="name">Name</label>
                         <input ref={nameRef}
-                            className='w-full border-2 border-black '
+                            className='w-full border border-slate-500 dark:border-slate-100 
+                            bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                            text-lg'
                             type="text" name="name" id="name" placeholder='product name'
                             value={product?.name} onChange={e => setproduct({ ...product, name: e.target.value })} />
                     </div>
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="price">price</label>
-                        <input className='w-full border-2 border-black '
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="name">Sub Name</label>
+                        <input 
+                            className='w-full border border-slate-500 dark:border-slate-100 
+                            bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                            text-lg'
+                            type="text" name="sub_name" id="sub_name" placeholder='product sub name'
+                            value={product?.sub_name} onChange={e => setproduct({ ...product, sub_name: e.target.value })} />
+                    </div>
+                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="price">price</label>
+                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                        text-lg'
                             type="text" name="price" id="price" placeholder='product price'
                             value={product?.price || ''}
                             onChange={e => setproduct({ ...product, price: Number(e.target.value) })}
                         />
                     </div>
+                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="price">Cost Per Unit</label>
+                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                        text-lg'
+                            type="text" name="unit_cost" id="unit_cost" placeholder='product per unit cost'
+                            value={product?.unit_cost || ''}
+                            onChange={e => setproduct({ ...product, unit_cost: Number(e.target.value) })}
+                        />
+                    </div>
 
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="quantity">quantity</label>
-                        <input className='w-full border-2 border-black 
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="quantity">quantity</label>
+                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                        text-lg
                         ' type="text" name="quantity" id="quantity"
                             placeholder='product quantity'
                             value={product?.quantity || ''}
@@ -126,24 +162,30 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                         />
                     </div>
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="category">Category</label>
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="category">Category</label>
                         <select value={product?.stockId}
                             id="category" name='stockId'
                             onChange={e => setproduct({ ...product, stockId: e.target.value })}
-                            className='w-full border-2 border-black h-12 p-2 rounded-lg '
+                            className='w-full border border-slate-500 dark:border-slate-100 
+                            bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3h-12 p-2 rounded-lg 
+                            text-lg'
                         >
                            {!product?.stockId? <option>Select Category</option>: null}
-                            {stocks?.map((stock, id) => (
+                            {categories?.map((stock, id) => (
                                 <option value={stock?._id} key={id}
-                                className="p-1  font-normal">
+                                className="p-1 font-normal text-slate-700 dark:text-white">
                                     {stock?.name}
                                 </option>
                         ))}
                         </select>
                     </div>
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="description">description</label>
-                        <input className='w-full border-2 border-black '
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="description">description</label>
+                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                        text-lg'
                             type="text" name="description" id="description"
                             value={product?.description}
                             placeholder="product description"
@@ -151,16 +193,22 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                         />
                     </div>
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="Produced date">Produced date</label>
-                        <input className='w-full border-2 border-black ' type="date" name="producedDate"
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="Produced date">Produced date</label>
+                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3  text-lg' type="date" name="producedDate
+                       "
                             id="Produced date" value={product?.producedDate}
                             onChange={e => setproduct({ ...product, producedDate: e.target.value })}
 
                         />
                     </div>
                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg' htmlFor="expired date">expired date</label>
-                        <input className='w-full border-2 border-black '
+                        <label className='text-lg text-slate-700 dark:text-slate-100'
+                         htmlFor="expired date">expired date</label>
+                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                        text-lg'
                             type="date" name="expiryDate" id="expired date"
                             value={product?.expiryDate}
                             onChange={e => setproduct({ ...product, expiryDate: e.target.value })}
@@ -184,7 +232,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                 {uploading? <button className="reset py-2 px-5 rounded-md
                  text-lg bg-red-300" type="reset"
                     disabled={!uploading}
-                    onClick={e=>postController.abort}
+                    onClick={e=>postController.abort(`i made a mistake`)}
                 >Cancell
                 </button> : null}
                 <button onClick={handleSubmit}

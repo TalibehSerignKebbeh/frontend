@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import  IconButton  from "@mui/material/IconButton";
+// import  IconButton  from "@mui/material/IconButton";
 import  {DataGrid,gridClasses,GridToolbar}  from "@mui/x-data-grid";
 import Box from "@mui/system/Box";
-import  Delete  from "@mui/icons-material/Delete";
+// import  Delete  from "@mui/icons-material/Delete";
 import { salesColumns } from "./data";
-import styled from "@emotion/styled";
-import { Pagination } from "antd";
-import Paginnation from "./Paginnation";
+import { queryInstance } from "../../api";
+import useAuth from "../../hooks/useAuth";
+import { GetError } from "../other/OtherFuctions";
+import ErrorMessage from "../StatusMessages/ErrorMessage";
+import SuccessMessage from "../StatusMessages/SuccessMessage";
+
 const SalesTable = ({
   sales,
   page,
@@ -15,20 +18,42 @@ const SalesTable = ({
   setpageSize,
   rowCount,
   loading,
+  socket,
 }) => {
- 
+  const [cancelling, setCancelling] = useState(false);
+ const {token}= useAuth()
   const [selectedIds, setselectedIds] = useState([]);
+  const [cancelledStatus, setcancelledStatus]
+    = useState({success:'', error:''});
   
-  const customPagination = () => {
-    
+  const handleCancellSales = async () => {
+    setcancelledStatus({error:'', success:''})
+    setCancelling(true)
+    await queryInstance.patch(`/sales`, selectedIds , { headers: { Authorization: `Bearer ${token}`, }, date: new Date() })
+      .then((res) => {
+        if (res?.status === 200) {
+          socket.emit(`notify_sale`)
+          console.log(res?.data);
+          setcancelledStatus({success:res?.data?.message, error:''})
+          setselectedIds([])
+          return
+        } else {
+        setcancelledStatus({error: GetError(res), success:''})
+        }
+      // console.log(res);
+      }).catch(err => {
+      // console.log(err);
+        setcancelledStatus({error: GetError(err), success:''})
+    }).finally(()=>setCancelling(false))
   }
+ 
 
   return (
     <Box 
-      className="w-fit bg-white 
+      className="w-fit bg-white mt-8
       dark:bg-slate-700 
       text-gray-500 dark:text-white
-     shadow shadow-white dark:shadow-slate-700
+     shadow 
      max-w-full overflow-scroll p-0"
       sx={{
         // eslint-disable-next-line no-useless-computed-key
@@ -40,24 +65,31 @@ const SalesTable = ({
       
     >
       {selectedIds?.length ? (
-        <IconButton
-          className="bg-slate-500 dark:bg-slate-100"
-            sx={{
-              cursor: "pointer",
-                      float: 'right',
-              mb:'-40px',
-                      color: "red",
-              zIndex:10,
-          }}
-          onClick={()=>alert('click')}
-          >
-            <Delete sx={{transform:'scale(1.2)', color:'red'}} />
-            {/* <AiFillDelete /> */}
-          </IconButton>
+        <div className="bg-gray-300 dark:bg-gray-800
+        mb-0">
+
+          <button className="bg-red-500 text-white px-3 py-2 float-right
+          rounded-md opacity-100 hover:opacity-95 "
+            onClick={handleCancellSales}>
+           {cancelling? 'cancelling...': 'Cancell'}
+          </button>
+        </div>
+
       ) : null}
+      {cancelledStatus?.error?.length ?
+        <div className="w-fit block mt-3">
+          <ErrorMessage error={cancelledStatus?.error}
+          handleReset={() => setcancelledStatus({ error: '' })} />
+        </div> : null}
+       {cancelledStatus?.success?.length ?
+        <div className="w-fit block mt-3">
+          <SuccessMessage error={cancelledStatus?.success}
+          handleReset={() => setcancelledStatus({ success: '' })} />
+        </div> : null}
+      
+
       <DataGrid className="text-gray-600 dark:text-white"
         autoHeight
-        
         rowCount={rowCount}
         rows={sales?.length ? sales : []}
         checkboxSelection
@@ -65,27 +97,29 @@ const SalesTable = ({
         getRowId={(row) => row?._id}
         page={page}
         pageSize={pageSize}
-        onPageChange={(newPage) => setpage(newPage)}
         paginationMode={"server"}
-        onPageSizeChange={(newSize) => {
-          setpageSize(newSize);
-          setpage(0);
-        }}
-      
         pagination={true}
       
-        onPaginationModelChange={({page, pageSize}) => {
+        onPaginationModelChange={({ page, pageSize }) => {
           setpage(page);
           setpageSize(pageSize)
         }}
         paginationModel={{ page: page, pageSize: pageSize }}
+
         keepNonExistentRowsSelected
+
         pageSizeOptions={[10, 20, 30, 40, 50, 100]}
         rowsPerPageOptions={[10, 20, 30, 40, 50]}
         loading={loading}
-        onSelectionModelChange={(ids) => {
-          setselectedIds(ids);
+        
+        // onSelectionModelChange={(ids) => {
+        //   console.log(ids)
+        //   setselectedIds(ids);
+        // }}
+        onRowSelectionModelChange={(details) => {
+          setselectedIds([...details])
         }}
+        
         columnBuffer={4}
         columnThreshold={2}
         components={{

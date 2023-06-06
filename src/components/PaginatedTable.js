@@ -194,7 +194,7 @@ const PaginatedTable = () => {
                                             spacing={2}>
                                             <Button size="small" color={"success"}
                                                 variant="contained" sx={{ }}
-                                                LinkComponent={'a'} href={`/stocks/${stock?._id}/page`}
+                                                LinkComponent={'a'} href={`/categories/${stock?._id}/page`}
                                             >
                                                 View
                                             </Button>

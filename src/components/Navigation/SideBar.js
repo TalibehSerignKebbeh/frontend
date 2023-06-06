@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimits'
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
 import PointOfSaleSharp from '@mui/icons-material/PointOfSaleSharp'
@@ -20,15 +20,77 @@ import { queryInstance } from "../../api";
 import {useContextHook} from '../../context/AuthContext'
 import CustomLink from "./Links/CustomLink";
 import DarkModeToggle from "../../hooks/DarkModeToggler";
+import { useEffect } from "react";
 
 
 
-const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
-  const navigate = useNavigate();
+const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
+  // const { isAdmin, isManager } = useAuth()
+  const { token, username, isAdmin, isManager } = useAuth();
+  const navigate = useNavigate()
+  
   const {clearAuthToken} = useContextHook()
   const [isLogingOut, setisLogingOut] = useState(false);
-  // &#9776;
-  const { token, username, isAdmin, isManager } = useAuth();
+  const location = useLocation()
+  const [indicatorMarginTop, setindicatorMarginTop] = useState(0);
+  const pathName = location.pathname?.slice(1, location.pathname.length);
+  // console.log(pathName);
+  useEffect(() => {
+    if (isAdmin || isManager) {
+      if (pathName?.endsWith('sales')) {
+        setindicatorMarginTop(47)
+        return;
+      }
+      if (pathName?.endsWith('categories')) {
+        setindicatorMarginTop(47*2)
+        return;
+      }
+       if (pathName?.endsWith('products')) {
+        setindicatorMarginTop(47*3)
+        return;
+      }
+       if (pathName?.endsWith('users')) {
+        setindicatorMarginTop(47*4)
+        return;
+      }
+       if (pathName?.endsWith('report')) {
+        setindicatorMarginTop(47*5)
+        return;
+      }
+       if (pathName?.endsWith('events')) {
+        setindicatorMarginTop(47*6)
+        return;
+      }
+       if (pathName?.indexOf('products')) {
+        setindicatorMarginTop(47*3)
+        return;
+      }
+      if(pathName.endsWith('dashboard')){setindicatorMarginTop(0)}
+    } else {
+      if (pathName?.endsWith('sales')) {
+        setindicatorMarginTop(47)
+        return;
+      }
+      if (pathName?.endsWith('categories')) {
+        setindicatorMarginTop(47*2)
+        return;
+      }
+       if (pathName?.endsWith('products')) {
+        setindicatorMarginTop(47*3)
+        return;
+      }
+       if (pathName?.indexOf('products')) {
+        setindicatorMarginTop(47*3)
+        return;
+      }
+      if(pathName.endsWith('dashboard')){setindicatorMarginTop(0)}
+  
+    }
+    return () => {
+      
+    };
+  }, [isAdmin, isManager, pathName]);
+
   const handleNavToggle = (e) => {
     setshowSideMenu((prev) => !prev);
   };
@@ -104,27 +166,30 @@ const SideBar = ({ socket,showSideMenu, setshowSideMenu  }) => {
         </Tooltip>
       </Box>
       <div
-        className={`"w-full h-full flex flex-col 
+        className={`"w-full h-full flex flex-col  relative
                          content-center items-start md:gap-y-3 gap-y-2 `}
         >
+          <span className={`w-[4px] ml-4 h-10 
+          rounded-md bg-blue-500 absolute left-0 
+          top-[${indicatorMarginTop}px]`}></span>
           <CustomLink href={'/dashboard'} 
             icon={<DashboardOutlined />}
-            title={"Dashboard"}
+            title={"dashboard"}
             showSideMenu={showSideMenu}
           />
            <CustomLink href={'/sales'} 
             icon={<PointOfSaleSharp />}
-            title={"Sales"}
+            title={"sales"}
             showSideMenu={showSideMenu}
           />
-          <CustomLink href={'/stocks'} 
+          <CustomLink href={'/categories'} 
             icon={<ProductionQuantityLimits />}
-            title={"Stocks"}
+            title={"categories"}
             showSideMenu={showSideMenu}
           />
        <CustomLink href={'/products'} 
             icon={<Inventory2Outlined />}
-            title={"Products"}
+            title={"products"}
             showSideMenu={showSideMenu}
           />
           {(isAdmin || isManager) ?

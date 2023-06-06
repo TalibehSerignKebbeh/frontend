@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SearchProducts from './Select/SearchProducts';
-// import { queryInstance } from '../../api';
 import useAuth from '../../hooks/useAuth';
-import AddCircle from '@mui/icons-material/AddCircle'
-import  Minimize from '@mui/icons-material/Minimize';
 import { queryInstance } from '../../api';
 import { GetError } from '../other/OtherFuctions';
 import SuccessMessage from '../StatusMessages/SuccessMessage';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
-// import { Progress } from 'antd';
-import {motion} from 'framer-motion'
 import  CircularProgress  from '@mui/material/CircularProgress';
+import ReceiptTable from './ReceiptTable';
+
 
 
 const RegisterSale = ({socket}) => {
@@ -19,8 +16,7 @@ const RegisterSale = ({socket}) => {
   const [products, setproducts] = useState([])
   const [postingSales, setpostingSales] = useState(false);
   const [postStatus, setpostStatus] = useState({error:``, success:``});
-  const [percent, setpercent] = useState(0);
-
+  // const [SaveReceipts, setSaveReceipts] = useState([])
 
   useEffect(() => {
     
@@ -38,7 +34,7 @@ const RegisterSale = ({socket}) => {
     await queryInstance.post(`/sales`, selected,
       {
         headers: { Authorization: `Bearer ${token}` }, onUploadProgress: (values) => {
-        setpercent(Math.ceil(values?.progress * 100))
+      
       }})
       .then((res) => {
         // console.log(res);
@@ -51,7 +47,7 @@ const RegisterSale = ({socket}) => {
           setpostStatus({ ...postStatus, error: GetError(res) })
         
       }).catch((err) => {
-        console.log(err);
+        // console.log(err);
           setpostStatus({ ...postStatus, error: GetError(err) })
       
     }).finally(()=>{setpostingSales(false)})
@@ -67,60 +63,23 @@ const RegisterSale = ({socket}) => {
   return (
     <div
       // style={{ backgroundColor: `gray`, paddingBlock: `2rem` }}
-      className='bg-slate-200 dark:bg-slate-700 
-      mb-5 mt-2 py-4 
-      shadow-zinc-300 shadow-md'
+      className='bg-text-4xl bg-slate-200 dark:bg-slate-700 
+      mb-5 mt-2 py-2 
+      shadow-gray-400 dark:shadow-zinc-600 
+      shadow-md max-h-fit h-auto'
     >
-      <div className='w-full md:mx-10 mx-2'>
+      <div className='w-full md:mx-10 mx-2 overflow-x-auto'>
 
         <h2 className='text-2xl mt-2 font-light 
        dark:text-slate-50 text-slate-700'
         >
         Add Sales Here
       </h2>
-        <motion.div style={{height: selected?.length? 'auto': '0px'}}
-      initial={{ scale: 0 }}
-      animate={{ scale: selected?.length? 1 : 0 }}
-      transition={{ duration: 0.8 }}
-      
-    >
-        <div style={{ maxHeight: `200px`, width: '600px', marginBlock: '30px',  }}
-            className='max-w-screen-sm mt-10 
-        bg-white shadow-sm shadow-white p-2 rounded-sm'>
-            <table cellPadding={1} cellSpacing={2}
-              className=' table table-fixed text-align'>
-          <thead>
-            <tr className=''>
-              <th align='center'>Name</th>
-              <th align='center'>Price</th>
-              <th align='center'>Qty</th>
-              <th align='center'>Total</th>
-              <th align='center' colSpan={2}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selected?.map((value, index) => (
-              <tr key={index}>
-                <td className='font-normal text-2xl py-2'>{value?.name }</td>
-                <td className='font-normal text-2xl py-2'>{value?.price }</td>
-                <td className='font-normal text-2xl py-2'>{value?.quantity }</td>
-                <td align='center' className='font-normal text-2xl py-2'>{value?.price * value?.quantity }</td>
-                <td align='center' className='font-normal py-2'><button onClick={e => handleIncrement(value)}>
-                  <AddCircle />
-                </button></td>
-                <td align='center' className='font-normal py-2'><button onClick={e => handleDecrement(value)} disabled={value?.quantity <= 1}>
-                  <Minimize />
-                </button></td>
-              </tr>
-            ))}
-            <tr>
-              <td className='font-normal py-2' colSpan={3} align='right'>Total</td>
-              <td className='font-normal py-2'  align='left'>{selected?.reduce((prev, current)=>{return  prev + (current?.quantity * current?.price)},0) }</td>
-            </tr>
-          </tbody>
-        </table>
-          </div>
-    </motion.div>
+  
+         {selected?.length? <ReceiptTable selected={selected}
+            handleDecrement={handleDecrement}
+            handleIncrement={handleIncrement}
+           /> : null}
    
       <div
         className="my-4  flex 
@@ -131,7 +90,7 @@ const RegisterSale = ({socket}) => {
           {postStatus?.success ? <SuccessMessage message={postStatus?.success}
             resetFunction={() => setpostStatus({ ...postStatus, success: `` })} />
             : null}
-          {postStatus?.error ? <ErrorMessage error={postStatus?.success}
+          {postStatus?.error ? <ErrorMessage error={postStatus?.error}
             handleReset={() => setpostStatus({ ...postStatus, error: `` })} />
             : null}
         </div>
@@ -152,9 +111,17 @@ const RegisterSale = ({socket}) => {
             "
           onClick={handleSubmit}
         >
-          {/* {postingSales? `adding....` : `Add`} */}
-          {postingSales? <CircularProgress size={`small`} /> : `Add`}
-        </button>
+          {postingSales? <CircularProgress sx={{color:'red'}} size={`small`} /> : `Upload`}
+          </button>
+          {/* <button
+            
+            className="relative 
+          ml-10 bg-blue-600 
+            text-white py-2 h-fit rounded-md 
+            px-5">
+
+            Local Save
+          </button> */}
       </div>
       </div>
     </div>

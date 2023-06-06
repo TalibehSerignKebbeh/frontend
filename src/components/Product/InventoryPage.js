@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { fetchProducts, queryInstance } from '../../api';
+import {  queryInstance } from '../../api';
 import SideModal from './SideModal';
 import { Box, Button } from '@mui/material';
 import ProductsDataGrid from './ProductsDataGrid';
-import { useQuery } from '@tanstack/react-query';
-import { GetError } from '../other/OtherFuctions';
+// import { useQuery } from '@tanstack/react-query';
+// import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 import ProductsUpdates from './updates/ProductsUpdates';
 import useAuth from '../../hooks/useAuth';
+import TopSellingSection from './TopSellingSection';
 
-const InventoryPage = ({ socket }) => {
+const InventoryPage = ({ socket,setactiveNavLink }) => {
   const {isAdmin, isManager, token} = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
   const [showUpdates, setshowUpdates] = useState(false);
@@ -18,19 +19,26 @@ const InventoryPage = ({ socket }) => {
   const [totalPages, settotalPages] = useState(0);
   const [loading, setloading] = useState(false);
   const [products, setproducts] = useState([]);
-
+  const [TopSelling, setTopSelling] = useState({
+   ByMoney:[],ByQuantity:[]
+ });
   // const [productUpdates, setproductUpdates] = useState([]);
   const [errorMessage, seterrorMessage] = useState('');
   
   useEffect(() => {
-   
+   setactiveNavLink('products')
     const fetchProducts = async () => {
-      console.log(page, pageSize, );
+      // console.log(page, pageSize, );
       setloading(true)
-      await queryInstance.get(`/products?page=${page}&pageSize=${pageSize}`, {headers:{Authorization:`Bearer ${token}`}})
+      await queryInstance.get(`/products?page=${page}&pageSize=${pageSize}`,
+        { headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
-          // console.log(res?.data);
+          console.log(res?.data);
           setproducts(res?.data?.products)
+          setTopSelling({
+            ByMoney: res?.data?.topSellingByMoney,
+            ByQuantity: res?.data?.topSellingByQuantity
+          })
           setpage(Number(res?.data?.page))
           setpageSize(Number(res?.data?.pageSize))
           settotalPages(Number(res?.data?.totalPages))
@@ -40,7 +48,7 @@ const InventoryPage = ({ socket }) => {
         }).finally(() => { setloading(false) })
     }
    fetchProducts()
-  }, [page, pageSize, token])
+  }, [page, pageSize, setactiveNavLink, token])
   // const startDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7);
   // const endDate=new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
 //   const productsRequest = useQuery({
@@ -49,26 +57,7 @@ const InventoryPage = ({ socket }) => {
 // revenueThreshold:10   })
 
 //   })
-  // console.log(productsRequest?.data);
-  // useEffect(() => {
-  //   console.log(productsRequest?.data);
-  //   if (productsRequest.isError) {
-  //     seterrorMessage(GetError(productsRequest?.error))
-  //   }
-  //   if (productsRequest?.failureReason) {
-  //     seterrorMessage(GetError(productsRequest?.failureReason))
-  //   }
-    
-  // }, [productsRequest.data, productsRequest?.error, productsRequest?.failureReason, productsRequest.isError, productsRequest.isSuccess])
 
-  // useEffect(() => {
-  //    if (productsRequest.isSuccess) {
-  //     setpage(Number(productsRequest?.data?.page))
-  //     setpageSize(Number(productsRequest?.data?.pageSize))
-  //     settotalPages(Number(productsRequest?.data?.totalPages))
-  //   }
-
-  // }, []);
   return (
     <div className=' w-full h-full md:mb-6 sm:mb-10 xl:my-0 mb-12'>
       
@@ -83,8 +72,11 @@ const InventoryPage = ({ socket }) => {
               shadow shadow-slate-200 text-white
               dark:text-slate-100'>
                 Add Product
-              </button>
-         
+        </button>
+        <div>
+
+         <TopSellingSection data={TopSelling}/>
+        </div>
         <ProductsDataGrid
           products={products}
           page={page}

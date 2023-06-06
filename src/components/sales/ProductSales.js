@@ -8,7 +8,7 @@ import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 
 
-const ProductSales = () => {
+const ProductSales = ({socket, setactiveNavLink}) => {
     const {token} = useAuth()
     const { id } = useParams()
     const [product, setproduct] = useState(null);
@@ -69,10 +69,12 @@ const ProductSales = () => {
     //     console.log(data);
     // }
     useEffect(() => {
+        setactiveNavLink('sales')
         const fetchSales = async () => {
         setloading(true)
         await queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,{headers:{Authorization: `Bearer ${token}`}})
             .then(res => {
+                console.log(res);
                 if (res.status === 200) {
                 setproduct(res?.data?.product)
                 setsales(res?.data?.sales)
@@ -89,7 +91,7 @@ const ProductSales = () => {
         return () => {
             
         };
-    }, [page, pageSize, id, token]);
+    }, [page, pageSize, id, token, setactiveNavLink]);
 
     useEffect(() => {
         setrowCount(prev => 

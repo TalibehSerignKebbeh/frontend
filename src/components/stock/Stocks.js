@@ -13,20 +13,22 @@ import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 import useAuth from '../../hooks/useAuth';
 
-const StocksPage = () => {
+const StocksPage = ({socket, setactiveNavLink}) => {
     const {token} = useAuth()
     const formRef = useRef()
     const [errorMessage, seterrorMessage] = useState('');
     const [pageSize, setpageSize] = useState(5);
-    const [page, setpage] = useState(1);
+    const [page, setpage] = useState(0);
     const [openEdit, setopenEdit] = useState(false);
      const [stock, setstock] = useState({
        _id:'', name: '', description: ''
     });
 
-    const {isLoading,isError,isSuccess, error, data} = useQuery({
-        queryKey: ['stocks'],
-        queryFn:()=>fetchStocks({token})
+    const {isLoading,isError, error, data} = useQuery({
+        queryKey: ['stocks', page, pageSize],
+        queryFn: () => fetchStocks({ token,page, pageSize  }),
+        refetchInterval: 15000,
+        
     })
     const handleOpenCloseCollapse = () => {
         if (openEdit) {
@@ -40,10 +42,12 @@ const StocksPage = () => {
     }
 
     useEffect(() => {
+        setactiveNavLink('categories')
+        // console.log(data);
         if (isError) {
            seterrorMessage(GetError(error))
         }
-    },[error, isError])
+    },[data, error, isError, setactiveNavLink])
     
 
     return (

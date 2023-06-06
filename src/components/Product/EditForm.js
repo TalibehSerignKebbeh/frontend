@@ -8,13 +8,20 @@ import ConfirmDelete from "../Modal/ConfirmDelete";
 import  format  from "date-fns/format";
 import  isValid  from "date-fns/isValid";
 import parseISO  from "date-fns/parseISO";
+import useAuth from "../../hooks/useAuth";
+import { GetError } from "../other/OtherFuctions";
+import ErrorMessage from "../StatusMessages/ErrorMessage";
+import SuccessMessage from "../StatusMessages/SuccessMessage";
 
-const EditForm = ({ product, setproduct, socket, stocks }) => {
+const EditForm = ({ product, setproduct, socket, categories }) => {
   const navigate = useNavigate();
+  const { token } = useAuth()
+  const deleteController = new AbortController()
   //   const [isLoading, setisLoading] = useState(false);
   //   const [isSuccess, setisSuccess] = useState(false);
-  const [updateError, setupdateError] = useState(false);
   const [deleting, setdeleting] = useState(false);
+  const [updateSuccessMsg, setupdateSuccessMsg] = useState('');
+  const [updateErrorMsg, setupdateErrorMsg] = useState('');
   const [openDelete, setopenDelete] = useState(false);
   const [deleteError, setdeleteError] = useState("");
   const [deleteSuccess, setdeleteSuccess] = useState("");
@@ -27,9 +34,9 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
     setdeleting(true);
     setdeleteError("");
     await queryInstance
-      .delete(`/products/${product?._id}`)
+      .delete(`/products/${product?._id}`, { headers: { Authorization: `Bearer ${token}` },signal:deleteController.signal() })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         socket.emit("notify_update_product");
         setdeleteSuccess(res?.data?.message);
         navigate(-1);
@@ -47,20 +54,22 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
     setupdateLoading(true);
     console.log(product);
     await queryInstance
-      .put(`/products/${product?._id}`, product)
+      .put(`/products/${product?._id}`, {...product,stockId:product?.stockId?._id}, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
         console.log(res);
         let status = res?.data?.status;
         if (status === "success") {
           socket.emit("notify_update_product");
-          alert("update successfull");
+          setupdateSuccessMsg(res?.data?.message)
+          
+          // alert("update successfull");
         } else {
-          alert("An error occured");
+         setupdateErrorMsg(GetError(res))
         }
       })
       .catch((err) => {
-        console.log(err);
-        setupdateError(true);
+        setupdateErrorMsg(GetError(err))
+        // setupdateError(true);
       })
       .finally(() => setupdateLoading(false));
   };
@@ -97,21 +106,13 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
         </div>
       </div>
       
-      {deleteError?.length ? (
-        <div
-          className=" w-fit h-auto flex flex-row gap-x-40 content-between 
-                items-center bg-slate-100 px-2 rounded"
-        >
-          <p className="text-red-700 text-lg">{deleteError}</p>
-          <span
-            className="text-base py-1 px-2 text-red-500 hover:bg-red-500 hover:text-white
-                cursor-pointer m-auto rounded-full"
-            onClick={() => setdeleteError("")}
-          >
-            X
-          </span>
-        </div>
+      {updateErrorMsg?.length ? (
+        <ErrorMessage error={updateErrorMsg}
+       handleReset={()=>setupdateErrorMsg('')} />
       ) : null}
+      {updateSuccessMsg?.length ?
+        <SuccessMessage message={updateSuccessMsg}
+      resetFunction={()=>setupdateSuccessMsg('')}  /> : null}
       <div className="w-full h-auto ">
         <div className="w-fit py-4 flex 
       flex-row flex-wrap gap-x-16 gap-y-3
@@ -151,6 +152,26 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           placeholder="product name"
         />
       </div>
+      <div className="md:w-72 sm:w-68 w-52 text-start">
+        <label
+          className=" font-semibold text-lg
+          w-full block"
+          htmlFor="name"
+        >
+          Name
+        </label>
+        <input
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3
+           px-2 border-2 border-gray-500
+           rounded-md w-full"
+          type={"text"}
+          value={product?.sub_name || ""}
+          onChange={(e) => setproduct({ ...product, sub_name: e.target.value })}
+          id="sub_name"
+          placeholder="product sub name"
+        />
+      </div>
       <div className="md:w-72 sm:w-68 w-52 text-start relative">
         <label
           className=" font-semibold text-lg
@@ -176,7 +197,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           placeholder={` quantity in stock `}
         />
       </div>
-      <div className="md:w-72 sm:w-68 w-52 text-start">
+      {/* <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
           className=" font-semibold text-lg
           w-full block"
@@ -195,7 +216,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           id="quantity"
           placeholder="product quantity"
         />
-      </div>
+      </div> */}
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
           className=" font-semibold text-lg
@@ -219,6 +240,26 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
           className=" font-semibold text-lg
+            w-full block"
+          htmlFor="price"
+        >
+          Cost Per Unit
+        </label>
+        <input
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3 px-2
+            border-2 border-gray-500
+           rounded-md w-full"
+          type={"text"}
+          value={product?.unit_cost || ""}
+          onChange={(e) => setproduct({ ...product, unit_cost: e.target.value })}
+          id="unit_cost"
+          placeholder="product per unit cost"
+        />
+      </div>
+      <div className="md:w-72 sm:w-68 w-52 text-start">
+        <label
+          className=" font-semibold text-lg
            w-full block"
           htmlFor="stockId"
         >
@@ -236,7 +277,7 @@ const EditForm = ({ product, setproduct, socket, stocks }) => {
           multiple={false}
         >
           {/* {!product?.s ? <option>None</option> : null} */}
-          {stocks?.map((stock, id) => (
+          {categories?.map((stock, id) => (
             <option
               key={id}
               value={stock?._id}

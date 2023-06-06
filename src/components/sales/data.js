@@ -9,6 +9,9 @@ export const customTime = '00:00:00.000'
         },
         {
             type: 'number', field: 'quantity', headerName: 'Quantity', width: 110,
+     },
+        {
+            type: 'number', field: 'unit_cost', headerName: 'Unit Cost', width: 110,
         },
         {
             type: 'number', field: 'price', headerName: 'Price', width: 120,

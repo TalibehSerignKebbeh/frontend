@@ -1,5 +1,4 @@
 // import  Table  from '@mui/material/Table';
-import  Button from '@mui/material/Button';
 import  format  from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import React, { useEffect, useRef, useState } from 'react';
@@ -9,8 +8,9 @@ import { queryInstance } from '../../api';
 
 
 const ProductNotification = ({ dataArray, socket, open, setopen }) => {
+  
   const ref = useRef(null)
-  // console.log(dataArray); 
+  console.log(dataArray); 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -36,7 +36,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
     queryInstance.patch(`notifications`, { ids })
       .then((res) => {
         if (res?.status === 200) {
-    socket.emit("read_all_product_notification", {});
+          socket.emit("read_all_product_notification", {});
         }
 
       // console.log(res);
@@ -52,7 +52,6 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       <div
         style={{
         ...style, display: 'block', flexDirection: 'column', rowGap: '-20px',
-        // backgroundColor: 'white',boxShadow:'2px 2px 4px 0px rgba(0,0,0,0.5)',
         height: 'auto', width: '100%', padding: '2px 5px',
           textAlign: 'center', justifyContent: 'center',
         }}
@@ -62,7 +61,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
         <small className="text-gray-700 dark:text-slate-100
          block font-normal capitalize">{val?.message}</small>
         <small className="text-gray-700 dark:text-slate-100
-         font-light text-xs capitalize">Name:
+         font-light text-xs capitalize">User:
           <small className="text-lg font-normal">{fullName} </small></small>
         <small className="text-gray-700 dark:text-slate-100
           block text-xs font-normal">{date}</small>
@@ -79,7 +78,8 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
   }, [ref, setopen]);
     return (
       <div ref={ref}
-        className='notification-wrapper bg-slate-200 dark:bg-slate-700'
+        className='notification-wrapper bg-slate-200 dark:bg-slate-700
+        text-center'
           style={{
             visibility: open ? "visible" : "hidden",
             position: 'absolute',
@@ -89,10 +89,12 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       >
-          <Button color="success"
+        <button  className='mx-auto p-2 px-8 mt-2 rounded  
+            bg-green-700 hover:bg-green-600
+            text-white hover:text-white  '
                 onClick={handleClickAuthNotification}>
             Read All
-          </Button>
+          </button>
               
           <FixedSizeList
             height={250}

@@ -64,8 +64,8 @@ const handleFetchYearReport = async (e) => {
           setmoney(res?.data?.money);
           setmonthLySale(res?.data?.monthSales);
           setquarterlySale(res?.data?.quarterSales);
-          setproductQuantity(res?.data?.quantityProduct);
-          setsaleCount(res?.data?.saleCount)
+          setproductQuantity(res?.data?.quantity);
+          setsaleCount(res?.data?.count)
           return
         }
 

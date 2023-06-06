@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Pagination from '@mui/material/Pagination';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
-import SpinnerLoader from '../../Loaders/SpinnerLoader';
+import SkelelonLoader from '../../Loaders/SkelelonLoader';
 import UserNotificationCard from '../UserNotificationCard';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
-const UserNotificationTable = () => {
+const UserNotificationTable = ({socket}) => {
     const { token, isAdmin, isManager } = useAuth()
     const [page, setpage] = useState(0);
     const [total, settotal] = useState(0);
@@ -26,13 +26,11 @@ const UserNotificationTable = () => {
             setloading(true)
             await queryInstance.get(`/notifications`, { params: filters, headers: { Authorization: `Bearer ${token}` } })
                 .then(res => {
-                    console.log(res?.data);
+                    console.log(res);
                     setUsersEvents(res?.data?.notifications)
                     settotalPages(res?.data?.totalPages)
                     settotal(res?.data?.total)
                     // settotal(res?.data?.total)
-                }).then(() => {
-
                 })
                 .catch(err => {
                     console.log(err);
@@ -44,13 +42,14 @@ const UserNotificationTable = () => {
         <div>
 
             {loading ?
-                <div className='w-52 h-52 bg-slate-400'>
-                    
-                <SpinnerLoader />
+                <div className='w-full h-full bg-inherit p-0 '>
+
+                    <SkelelonLoader />
                 </div>
                 :
                 <div className='text-slate-700 dark:text-slate-50
-                bg-slate-50 dark:bg-slate-700'>
+                bg-slate-50 dark:bg-slate-700
+                md:px-0 px-[3px]'>
                     <div>
                         <input className='py-4 px-2 border-2 
                         bg-white dark:bg-slate-400 
@@ -67,10 +66,11 @@ const UserNotificationTable = () => {
 
                     </div>
                     <div className='flex flex-row flex-wrap gap-2
-                    bg-inherit'>
+                    bg-inherit w-full'>
                         {userEvents?.map((value, index) => (
                             <UserNotificationCard key={index}
                                 notify={value}
+                                socket={socket}
                             />
                         ))}
                     </div>
@@ -78,6 +78,7 @@ const UserNotificationTable = () => {
                     text-slate-700 dark:text-white
                     bg-inherit'>
                         <Pagination
+                            hidden={page===0 || !userEvents?.length }
                             disabled={loading}
                             page={page + 1} siblingCount={3}
                             count={totalPages} showFirstButton showLastButton

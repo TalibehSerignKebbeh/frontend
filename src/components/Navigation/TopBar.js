@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 import Box from "@mui/material/Box";
+import  ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
+import  ShoppingBagSharp  from "@mui/icons-material/ShoppingBagSharp";
 import SaleNotificationPanel from "../Notifications/SaleNotificationPanel";
-import { ProductionQuantityLimitsOutlined, ShoppingBagSharp } from "@mui/icons-material";
 import ProductNotification from "../Notifications/ProductNotification";
 import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
 import { queryInstance } from "../../api";
-// import DarkModeToggle from "../../hooks/DarkModeToggler";
 
 const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
   const [openNotifyPanel, setopenNotifyPanel] = useState(false);
@@ -56,16 +56,16 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
 
   return (
-    <div className="w-full h-auto p-2 py-5 
-    bg-white dark:bg-slate-700 
-    shadow-md dark:shadow-slate-500 border-y-2
+    <div className="w-full h-28 p-2 py-5 
+    bg-gray-50 dark:bg-slate-700 
+    shadow-md dark:shadow-slate-600 border-y-2
     border-gray-200 dark:border-gray-700
     flex flex-row items-center justify-between
     ">
       <div className="h-full w-1 ">
 
       </div>
-      <div className="self-end justify-self-end 
+      <div className="
       flex flex-row gap-0 items-center">
 
         {/* <div className="p-0 ml-auto mr-4 ">
@@ -83,9 +83,10 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               alignContent: "center",
               justifyContent: "space-around",
               my: 'auto',
-              mt:'-1px', pt:'1px',
+              //  pt:'1px',
               // py: 3,
-              mr:'30px',
+              mr: '30px',
+              mb:'25px',
 
             }}
             className=""
@@ -109,18 +110,20 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               )}
               <h1
                 title="sales"
-                className="absolute -top-3 bottom-2 left-4 
+                className="z-20 absolute -top-3 bottom-2 left-4 
                 text-red-700 font-black  text-2xl align-middle "
               >
                 {sales_Notifications?.length || ''}
               </h1>
               <ShoppingBagSharp
+                
                 sx={{
-                  color: '#737373', opacity: .5,
+                  opacity: .7,
                   boxShadow: '0px 2px 2px 0px rgba(0,0,0,0.04)'
                 }}
                 title="sales"
-                className="absolute top-0 bottom-0 right-0 left-0 w-full h-full scale-150 "
+                className="absolute top-0 bottom-0 right-0 left-0 w-full h-full scale-150
+                text-black dark:text-white "
               />
 
             </div>
@@ -145,17 +148,18 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
               <h1
                 title="auth"
-                className="absolute -top-3 bottom-2 left-4 
+                className="z-20 absolute -top-3 bottom-2 left-4 
                 text-red-700 font-black  text-2xl align-middle "
               >
                 {authNotifications?.length || ''}
               </h1>
               <LockClockOutlined
                 sx={{
-                  color: '#737373', opacity: .5,
+                  opacity: .7,
                   boxShadow: '0px 2px 2px 0px rgba(0,0,0,0.04)'
                 }}
-                className="absolute w-uto h-auto scale-150 " />
+                className="absolute w-uto h-auto scale-150 
+                text-black dark:text-white" />
             </div>
 
 
@@ -178,18 +182,19 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               )}
               <h1
                 title="sales"
-                className="absolute -top-3 bottom-2 left-4 
+                className="z-20 absolute -top-3 bottom-2 left-4 
                 text-red-700 font-black  text-2xl align-middle "
               >
                 {productNotifications?.length || ''}
               </h1>
               <ProductionQuantityLimitsOutlined
                 sx={{
-                  color: '#737373', opacity: .5,
+                  opacity: .7,
                   boxShadow: '0px 2px 2px 0px rgba(0,0,0,0.04)'
                 }}
                 className="absolute top-0 bottom-0 right-0 
-              left-0 w-full h-full scale-150 " />
+              left-0 w-full h-full scale-150
+              text-black dark:text-white " />
 
             </div>
           </Box>

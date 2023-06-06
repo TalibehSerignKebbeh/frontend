@@ -1,42 +1,49 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 // import { useParams } from 'react-router-dom';
 import ProductsUpdates from '../../Product/updates/ProductsUpdates';
 import UserNotificationTable from '../Table/UserNotificationTable';
 import './index.css'
 import SalesEvents from '../Table/SalesEvents';
 
-const Events = ({ showSideMenu }) => {
+const Events = ({ showSideMenu, socket,setactiveNavLink }) => {
     
     const [tab, setTab] = useState("product")
+
+    useEffect(() => {
+        setactiveNavLink('events')
+        return () => {
+            
+        };
+    }, [setactiveNavLink]);
     
     return (
         <div className='relative '>
             {/* <h2>Events </h2> */}
             <div className={` 
-             py-2 ' bg-white dark:bg-slate-700
+             py-2  bg-white dark:bg-slate-700
              shadow-slate-500 shadow-md 
             flex flex-row md:gap-14 sm:gap-2 gap-1
-              w-full mt-3 md:mb-8 sm:mb-5 mb-3
+              w-fit m-3 md:mb-8 sm:mb-5 mb-3
               xl:mx-16
-              lg:mx-12 sm:mx-6 mx-[2px]'
+              lg:mx-12 sm:mx-6 mx-[2px]
               
               ${!showSideMenu ? 'lg:px-20 md:px-16' : 'lg:px-12 md:px-8 px-[4px]'}`}>
                 <button 
                 onClick={e=>setTab('product')} 
-                className={`${tab==='product'? 'tab active':'tab'}  
-                text-2xl font-light`}>
+                className={`${tab==='product'? 'bg-green-400':'bg-slate-400'}  
+                text-white text-2xl font-light rounded px-4 py-2 `}>
                 Product
                 </button>
                 <button 
                 onClick={e=>setTab('sale')} 
-                className={`${tab==='sale'? 'tab active':'tab'}  
-                text-2xl font-light`}>
+                className={`${tab==='sale'? 'bg-green-400':'bg-slate-400'}  
+                text-white text-2xl font-light rounded px-4 py-2 `}>
                 Sale
                 </button>
                 <button 
                 onClick={e=>setTab('user')} 
-                className={`${tab==='user'? 'tab active':'tab'}  
-                text-2xl font-light`}>
+                className={`${tab==='user'? 'bg-green-400':'bg-slate-400'}  
+                text-white text-2xl font-light rounded px-4 py-2 `}>
                 User
                 </button>
             </div>
@@ -46,7 +53,7 @@ const Events = ({ showSideMenu }) => {
             
              '>
                 {(tab==='product') && <ProductsUpdates />}
-                {(tab==='user') && <UserNotificationTable />}
+                {(tab==='user') && <UserNotificationTable socket={socket}/>}
                 {(tab === 'sale') && <SalesEvents showSideMenu/>}
             </div>
             {/* <div className='sticky top-0 p-1 py-2 bg-orange-200 h-72

@@ -23,7 +23,7 @@ const AddStock = ({ stock, setstock }) => {
         e.preventDefault()
         setloading(true)
         if (stock?._id?.length) {
-            await queryInstance.put(`/stocks/${stock?._id}`, { ...stock, lastUpdate: new Date() }, {headers:{Authorization: `Bearer ${token}`}}).then(res => {
+            await queryInstance.put(`/categories/${stock?._id}`, { ...stock, lastUpdate: new Date() }, {headers:{Authorization: `Bearer ${token}`}}).then(res => {
                 console.log(res);
                 if (res?.status === 200) {
                     queryClient.invalidateQueries({queryKey: ['stocks']})
@@ -39,7 +39,7 @@ const AddStock = ({ stock, setstock }) => {
 
             return;
         }
-        await queryInstance.post("/stocks", { ...stock, createdDate: new Date() },{headers:{Authorization: `Bearer ${token}`}}).then(res => {
+        await queryInstance.post("/categories", { ...stock, createdDate: new Date() },{headers:{Authorization: `Bearer ${token}`}}).then(res => {
             if (res?.status === 200) {
                     queryClient.invalidateQueries({queryKey: ['stocks']})
                 }

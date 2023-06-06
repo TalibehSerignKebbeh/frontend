@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import ProductsDataGrid from '../Product/ProductsDataGrid';
 
-const StockProducts = () => {
+const StockProducts = ({socket, setactiveNavLink}) => {
     const { id } = useParams()
     const {token} = useAuth()
     const [products, setproducts] = useState([]);
@@ -12,9 +12,10 @@ const StockProducts = () => {
     const [page, setpage] = useState(0);
     const [pageSize, setpageSize] = useState(10);
     useEffect(() => {
+        setactiveNavLink('products')
         const fetchStockProducts = async () => {
              setisLoading(true)
-        await queryInstance(`/stocks/${id}/products`, {params:{page,pageSize}, headers:{Authorization:`Bearer ${token}`}})
+        await queryInstance(`/categories/${id}/products`, {params:{page,pageSize}, headers:{Authorization:`Bearer ${token}`}})
             .then(res => {
                 // console.log(res);
                 setproducts(res?.data?.products)

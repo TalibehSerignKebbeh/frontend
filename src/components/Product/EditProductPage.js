@@ -8,20 +8,20 @@ import "./editProduct.css";
 import { GetError } from "../other/OtherFuctions";
 import SingleProductEvents from "../Notifications/SingleModel/SingleProductEvents";
 import SpinnerLoader from "../Loaders/SpinnerLoader";
-import CircularProgress from "@mui/material/CircularProgress";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 
-const EditProductPage = ({ socket }) => {
+const EditProductPage = ({ socket, setactiveNavLink }) => {
   const { id } = useParams();
   const {token, isAdmin, isManager } = useAuth();
   const [product, setproduct] = useState({});
-  const [stocks, setstocks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [isSuccess, setisSuccess] = useState(false);
   const [errorMessage, seterrorMessage] = useState('');
   const [showNotify, setShowNotify] = useState(false);
   
   useEffect(() => {
+    // setactiveNavLink('products')
     const fetchProduct = async () => {
       setisLoading(true);
       setisSuccess(false);
@@ -29,16 +29,16 @@ const EditProductPage = ({ socket }) => {
       await axios
         .all([
           queryInstance.get(`/products/${id}`, {headers:{Authorization: `Bearer ${token}`}}),
-          queryInstance.get(`/stocks`,{headers:{Authorization: `Bearer ${token}`}}),
+          queryInstance.get(`/categories`,{headers:{Authorization: `Bearer ${token}`}}),
         ])
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setproduct(res[0]?.data?.product);
-          setstocks(res[1]?.data?.stocks);
+          setCategories(res[1]?.data?.categories);
           setisSuccess(true);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           seterrorMessage(GetError(err))
         })
         .finally(() => setisLoading(false));
@@ -73,7 +73,7 @@ const EditProductPage = ({ socket }) => {
             product={product}
             setproduct={setproduct}
             socket={socket}
-            stocks={stocks}
+            categories={categories}
           />
           
             </div>
