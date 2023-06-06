@@ -29,7 +29,7 @@ import UnAuthorized from "./other/UnAuthorized";
 import SaleReport from "./components/Report/SaleReport";
 import 'antd/dist/reset.css';
 import Events from "./components/Notifications/Page/Events";
-import Test from "./Test";
+// import Test from "./Test";
 // import TypingAnimation from "./TextAnimation";
 // import BasicTable from './BasicTable'
 
@@ -93,7 +93,7 @@ function App() {
                 <Route
                   index
                   element={
-                    <Test  socket={socket} setactiveNavLink={setactiveNavLink}/>
+                    <Login  socket={socket} setactiveNavLink={setactiveNavLink}/>
                   }
                 />
                   <Route
