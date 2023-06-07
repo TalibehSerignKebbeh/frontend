@@ -5,7 +5,6 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  useNavigate,
 } from "react-router-dom";
 import InventoryPage from "./components/Product/InventoryPage";
 import SideBar from "./components/Navigation/SideBar";
@@ -20,7 +19,6 @@ import SalesPage from "./components/sales/SalesPage";
 import ProductSales from "./components/sales/ProductSales";
 import UserPage from "./components/user/UserPage";
 import Dashboard from "./components/Dashboard/Dashboard";
-// import SellLayout from "./components/Layouts/SellLayout";
 import { io } from "socket.io-client";
 import useAuth from "./hooks/useAuth";
 import {  serverUrl } from "./api";

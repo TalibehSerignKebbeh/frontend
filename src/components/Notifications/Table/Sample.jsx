@@ -64,7 +64,7 @@ const Sample = () => {
             width={300}
         >
             {Row}
-        </StickyList>,
+        </StickyList>
 );
 
 

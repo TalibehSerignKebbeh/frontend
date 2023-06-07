@@ -3,7 +3,6 @@ import React, { useState} from "react";
 import { queryInstance } from "../../api";
 import {  QueryClient, } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
-import  TablePagination  from "@mui/material/TablePagination";
 
 import ConfirmDelete from "../Modal/ConfirmDelete";
 import useAuth from "../../hooks/useAuth";
@@ -205,6 +204,9 @@ const UsersTable = ({loading,totalPages,
                 fontWeight: "300",
                 // color: "#3339",
               },
+              '& .MuiTablePagination-toolbar': {
+                color:'blue',
+              }
             }}
       />
       {/* <TablePagination

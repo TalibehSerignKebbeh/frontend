@@ -22,7 +22,7 @@ const UserPage = ({ socket,setactiveNavLink }) => {
   const [openAdd, setopenAdd] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  const [totalPages, settotalPages] = useState(0);
+  // const [totalPages, settotalPages] = useState(0);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
     password: "", confirmPassword: "", roles: [], active: false
@@ -57,10 +57,10 @@ const UserPage = ({ socket,setactiveNavLink }) => {
       console.log(UserFetch.data);
       setpage(Number(UserFetch?.data?.page))
       setPageSize(Number(UserFetch?.data?.pageSize))
-      settotalPages(Number(UserFetch?.data?.total))
+      // settotalPages(Number(UserFetch?.data?.total))
     }
     
-  }, [UserFetch?.isError, UserFetch?.data, UserFetch.isSuccess])
+  }, [UserFetch.isError, UserFetch.data, UserFetch.isSuccess, setactiveNavLink])
   useEffect(() => {
      if (UserFetch?.isError) {
       seterrorMessage(GetError(UserFetch?.error))

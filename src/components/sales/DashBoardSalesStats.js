@@ -7,9 +7,11 @@ const DashBoardSalesStats = ({ salesStatsQuery }) => {
 //    console.log(`sales query `, salesStatsQuery?.data?.thisMonthStats);
     return (
         <Box className={`w-full bg-white dark:bg-slate-700
+        shadow shadow-slate-200 dark:shadow-slate-500
+        drop-shadow-lg
         md:px-8 sm:p-4 px-1`}
             sx={{
-                bgcolor: "#fff", display: 'flex',
+                 display: 'flex',
                 flexDirection: 'row',flexWrap: 'wrap', gap: '12px',
                 width: 'auto', borderRadius: '6px',
                 }}>

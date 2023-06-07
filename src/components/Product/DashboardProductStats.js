@@ -9,8 +9,8 @@ const DashboardProductStats = (props) => {
         <Box className={`bg-white dark:bg-slate-700`}
                     sx={{
                 // bgcolor: "#fff",
-                p: 1, display: 'flex', flexDirection: 'row',
-                    flexWrap: 'wrap', gap: '.8rem',columnGap:'.6rem', borderRadius:'4px',
+                p: 3, display: 'flex', flexDirection: 'row',
+                    flexWrap: 'wrap', gap: '1rem',columnGap:'1rem', borderRadius:'4px',
                 width: "auto", textAlign: 'start',
             //   boxShadow:
             //     "0px 1px 1px 0px rgba(0,0,0,0.09), 0px 1px 1px 0px rgba(0,0,0,0.09)",

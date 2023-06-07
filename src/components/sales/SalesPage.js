@@ -30,7 +30,6 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
     date:'', product:'', user:''
   });
   useEffect(() => {
-    setactiveNavLink('sales')
     const fetchSales = async () => {
       setloading(true);
       seterrorMessage("");
@@ -59,7 +58,7 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
           seterrorMessage(GetError(res))
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           seterrorMessage(GetError(err))
         })
         .finally(() => {

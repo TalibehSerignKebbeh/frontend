@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
-import { DataGrid } from '@mui/x-data-grid';
+// import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
-import format from 'date-fns/format';
-import parseISO from 'date-fns/parseISO';
-import isValid from 'date-fns/isValid';
+// import format from 'date-fns/format';
+// import parseISO from 'date-fns/parseISO';
+// import isValid from 'date-fns/isValid';
 import { GetError } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
-
+import SaleTable from './SaleTable';
+import Paginate from '../../Pagination/Paginate';
+import SkeletonLoaders from '../../Loaders/SkelelonLoader';
+  
 const SalesEvents = ({ showSideMenu }) => {
   const { token, isAdmin, isManager } = useAuth()
   const [page, setpage] = useState(0);
   const [count, setCount] = useState(0);
   const [created_at, setCreated_at] = useState('');
-  const [totalPages, settotalPages] = useState(1);
+  // const [totalPages, settotalPages] = useState(1);
   const [pageSize, setpageSize] = useState(10);
   const [loading, setloading] = useState(false);
   const [saleNotifications, setSaleNotifications] = useState([]);
@@ -30,23 +33,27 @@ const SalesEvents = ({ showSideMenu }) => {
       setloading(true)
       await queryInstance.get(`/notifications`, { params: filters, headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
-          console.log(res?.data);
+          // console.log(res?.data);
           setSaleNotifications(res?.data?.notifications)
-          settotalPages(res?.data?.totalPages)
+          // settotalPages(res?.data?.totalPages)
           setCount(res?.data?.count)
           setpageSize(res?.data?.pageSize)
-          setpage(page)
+          // setpage(page)
           // setCount(res?.data?.count)
         })
         .catch(err => {
-          console.log(err);
-          GetError(err)
+          // console.log(err);
+          seterrorMessage(GetError(err))
         }).finally(() => { setloading(false) })
     }
     if (isAdmin || isManager) { fetchProductsNotify() }
   }, [created_at, isAdmin, isManager, page, pageSize, token])
   return (
-    <div>
+    <div>{
+      loading ?
+        <SkeletonLoaders />
+      : <>
+
       <div className='relative w-full 
         bg-slate-50 dark:bg-slate-600 '>
         <input className='py-4 px-2 border-2 
@@ -64,11 +71,22 @@ const SalesEvents = ({ showSideMenu }) => {
       {errorMessage?.length ?<ErrorMessage error={errorMessage}
         handleReset={() => seterrorMessage('')}
       /> : null}
-      <div className='w-full overflow-x-scroll
+      <div className='w-full 
       text-slate-700 dark:text-slate-50
            bg-slate-50 dark:bg-slate-700
-          shadow shadow-white dark:shadow-slate-500'>
-      <DataGrid
+          shadow shadow-white dark:shadow-slate-500
+          flex flex-col gap-2'>
+        <SaleTable data={saleNotifications} />
+        <Paginate 
+          page={page}
+          setPage={setpage}
+          pageSize={pageSize}
+          setPageSize={setpageSize}
+          options={[5, 10, 15, 20, 30, 40]}
+          total={count}
+
+        />
+        {/* <DataGrid
         className='text-slate-700 dark:text-slate-50
            bg-slate-50 dark:bg-slate-700
           shadow shadow-white dark:shadow-slate-500'
@@ -80,7 +98,7 @@ const SalesEvents = ({ showSideMenu }) => {
           width: { xl: '850px', lg: '850px', md: '850px', sm: '100vw', xs: '100vw' },
         }}
        
-        rows={saleNotifications?.length? saleNotifications :[]}
+        rows={saleNotifications}
         loading={loading}
         columns={[
           {
@@ -120,9 +138,12 @@ const SalesEvents = ({ showSideMenu }) => {
         hideFooterSelectedRowCount
         disableRowSelectionOnClick
 
-      />
+      /> */}
 </div>
-    </div>
+      </>
+    }
+   
+      </div>
   );
 }
 

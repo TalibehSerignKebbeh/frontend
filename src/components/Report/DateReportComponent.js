@@ -68,7 +68,9 @@ const DateReportComponent = () => {
     return format(new Date(`${value} ${customTime}`), 'EEEE do MMM yyyy')
   }
   return (
-    <div className=" w-auto bg-slate-300 dark:bg-slate-700
+    <div className=" w-auto bg-white dark:bg-slate-700
+        shadow shadow-slate-200 dark:shadow-slate-500
+        drop-shadow-lg
      p-2 py-4 block rounded text-slate-800 dark:text-white">
       <h2 className="text-lg font-normal font-sans italic opacity-90 pl-1">Date Report Section</h2>
       <div className="p-1 w-auto max-w-xs grid grid-cols-1 relative">
@@ -149,24 +151,7 @@ const DateReportComponent = () => {
             max-w-full overflow-auto">
                 <HourlyCharts hourlyData={hourlyData} />
             </div>
-            {/* <div className="py-3 shadow  bg-slate-50 dark:bg-gray-500 mt-8">
-
-           <LineChart
-                  width={600}
-                  height={300}
-                  data={chartData}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <XAxis dataKey="hour" />
-                  <YAxis />
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="money" stroke="#8884d8" activeDot={{ r: 8 }} />
-                  <Line type="monotone" dataKey="quantity" stroke="#8884d8" activeDot={{ r: 8 }} />
-                </LineChart>
-                </div> */}
-          </div>
+                      </div>
         )
       ) : null}
     </div>

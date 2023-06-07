@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Pagination from '@mui/material/Pagination';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
 import SkelelonLoader from '../../Loaders/SkelelonLoader';
 import UserNotificationCard from '../UserNotificationCard';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
-const UserNotificationTable = ({socket}) => {
+import Paginate from '../../Pagination/Paginate';
+import { GetError } from '../../other/OtherFuctions';
+import ErrorMessage from '../../StatusMessages/ErrorMessage';
+const UserNotificationTable = ({ socket }) => {
     const { token, isAdmin, isManager } = useAuth()
     const [page, setpage] = useState(0);
     const [total, settotal] = useState(0);
     const [created_at, setCreated_at] = useState('');
-    const [totalPages, settotalPages] = useState(1);
+    // const [totalPages, settotalPages] = useState(1);
     const [pageSize, setpageSize] = useState(10);
     const [loading, setloading] = useState(false);
     const [userEvents, setUsersEvents] = useState([]);
@@ -28,12 +30,13 @@ const UserNotificationTable = ({socket}) => {
                 .then(res => {
                     console.log(res);
                     setUsersEvents(res?.data?.notifications)
-                    settotalPages(res?.data?.totalPages)
-                    settotal(res?.data?.total)
+                    // settotalPages(res?.data?.totalPages)
+                    settotal(res?.data?.count)
                     // settotal(res?.data?.total)
                 })
                 .catch(err => {
-                    console.log(err);
+                    seterrorMessage(GetError(err))
+
                 }).finally(() => { setloading(false) })
         }
         if (isAdmin || isManager) { fetchProductsNotify() }
@@ -50,6 +53,11 @@ const UserNotificationTable = ({socket}) => {
                 <div className='text-slate-700 dark:text-slate-50
                 bg-slate-50 dark:bg-slate-700
                 md:px-0 px-[3px]'>
+                    {errorMessage?.length ?
+                        <ErrorMessage 
+                            error={errorMessage}
+                            handleReset={()=>seterrorMessage('')}
+                    /> : null}
                     <div>
                         <input className='py-4 px-2 border-2 
                         bg-white dark:bg-slate-400 
@@ -66,7 +74,7 @@ const UserNotificationTable = ({socket}) => {
 
                     </div>
                     <div className='flex flex-row flex-wrap gap-2
-                    bg-inherit w-full'>
+                    bg-inherit w-full my-7'>
                         {userEvents?.map((value, index) => (
                             <UserNotificationCard key={index}
                                 notify={value}
@@ -74,28 +82,12 @@ const UserNotificationTable = ({socket}) => {
                             />
                         ))}
                     </div>
-                    <div className='md:mx-10 mx-auto my-2 text-center
-                    text-slate-700 dark:text-white
-                    bg-inherit'>
-                        <Pagination
-                            hidden={page===0 || !userEvents?.length }
-                            disabled={loading}
-                            page={page + 1} siblingCount={3}
-                            count={totalPages} showFirstButton showLastButton
-                            onChange={(event, page) => {
-                                setpage(page - 1)
-                            }}
-                            sx={{ m: 'auto' }}
-                            shape='rounded'
-                            onLoadStart={() => {
-                                console.log("paginnation load start")
-                            }}
-                            onLoad={() => {
-                                console.log("paginnation loaded")
-
-                            }}
-                        />
-                    </div>
+                    <Paginate page={page}
+                        setPage={setpage} setPageSize={setpageSize}
+                        pageSize={pageSize}
+                        options={[5, 10, 20, 30, 40, 50]}
+                        total={total}
+                    />
                 </div>
             }
         </div>

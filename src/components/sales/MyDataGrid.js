@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 
 const MyDataGrid = ({ data, loading }) => {
   return (
-    <Box className={`bg-white dark:bg-slate-600
+    <Box className={`bg-slate-200 dark:bg-slate-600
     text-gray-600 dark:text-white w-fit`}
       sx={{
         // bgcolor: "#fff",

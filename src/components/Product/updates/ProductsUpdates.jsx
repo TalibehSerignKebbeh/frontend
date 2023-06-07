@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
 import ProductsTable from '../../Notifications/Table/ProductsTable';
-import Pagination from '@mui/material/Pagination';
 // import SpinnerLoader from '../../Loaders/SpinnerLoader';
 import IconButton from '@mui/material/IconButton';
 import Close from '@mui/icons-material/Close';
 import SkeletonLoaders from '../../Loaders/SkelelonLoader';
+import Paginate from '../../Pagination/Paginate';
+import { GetError } from '../../other/OtherFuctions';
+import ErrorMessage from '../../StatusMessages/ErrorMessage';
 
-const ProductsUpdates = () => {
+const ProductsUpdates = ({socket}) => {
   const { token, isAdmin, isManager } = useAuth()
   const [page, setpage] = useState(0);
   const [total, settotal] = useState(0);
-  const [totalPages, settotalPages] = useState(1);
+  // const [totalPages, settotalPages] = useState(1);
   const [created_at, setCreated_at] = useState('');
   const [pageSize, setpageSize] = useState(5);
   const [loading, setloading] = useState(false);
@@ -32,14 +34,12 @@ const ProductsUpdates = () => {
         .then(res => {
           // console.log(res?.data);
           setproductUpdates(res?.data?.notifications)
-          settotal(res?.data?.total)
-          settotalPages(res?.data?.totalPages)
-
-        }).then(() => {
-
+          settotal(res?.data?.count)
+          // settotalPages(res?.data?.totalPages)
+          setpageSize(res?.data?.pageSize)
         })
         .catch(err => {
-          console.log(err);
+          seterrorMessage(GetError(err))
         }).finally(() => { setloading(false) })
     }
     if (isAdmin || isManager) { fetchProductsNotify() }
@@ -53,6 +53,11 @@ const ProductsUpdates = () => {
         </div>
         :
         <div className='bg-inherit '>
+          {errorMessage?.length ?
+                        <ErrorMessage
+                            error={errorMessage}
+                            handleReset={()=>seterrorMessage('')}
+                    /> : null}
           <div>
             <input className='
               bg-white dark:bg-slate-400 
@@ -67,26 +72,16 @@ const ProductsUpdates = () => {
 
           </div>
 
-          <ProductsTable productUpdates={productUpdates} />
-
-          <div className='md:mx-10 mx-auto my-2 text-center
-            text-slate-700 dark:text-white'>
-            <Pagination hidden={page === 0}
-              className='
-          text-slate-700 dark:text-white'
-              variant='text'
-              page={page + 1} siblingCount={3}
-              count={totalPages}
-              showFirstButton
-              showLastButton
-              onChange={(event, page) => {
-                setpage(page - 1)
-              }}
-              sx={{ m: 'auto', }}
-              shape='rounded'
-            //  classes={{''}}
-            />
-          </div>
+          <ProductsTable productUpdates={productUpdates} 
+            socket={socket}
+          />
+          <Paginate page={page}
+            setPage={setpage} setPageSize={setpageSize}
+            pageSize={pageSize}
+            options={[5,10, 20, 30, 40, 50]}
+            total={total}
+          />
+         
         </div>}
 
     </div>
