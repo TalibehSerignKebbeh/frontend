@@ -1,11 +1,13 @@
 import axios from "axios";
 
 
-export const serverUrl = 'https://ims-app-backend.onrender.com';
+export const serverUrl = 'https://ims-app-backend2.onrender.com';
 // export const serverUrl = 'http://localhost:4500';
 
-export const queryInstance = axios.create({ baseURL: serverUrl, withCredentials: true, });
-queryInstance.defaults.debug = true;
+export const queryInstance
+  = 
+  axios.create({ baseURL: serverUrl});
+// export const queryInstance = axios.create({ baseURL: serverUrl, withCredentials: true, });
 
 // queryInstance.defaults.withCredentials = true;
 queryInstance.interceptors.request.use(
