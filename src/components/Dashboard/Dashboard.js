@@ -64,7 +64,8 @@ const Dashboard = ({socket, setactiveNavLink}) => {
                 handleReset={()=>seterrorMessage('')}
             />:null}
             <Header title={"Welcome, Your Dashboard "}
-                icon={<DashboardRounded sx={{ transform: 'scale(1.5)', mb: 1, zIndex: 0 }}
+                icon={<DashboardRounded
+                    sx={{ transform: 'scale(1.5)', mb: 1, zIndex: 0 }}
                     className='text-gray-800 dark:text-white' />} 
             />
          

@@ -19,6 +19,7 @@ const SalesTable = ({
   rowCount,
   loading,
   socket,
+  deletable,
 }) => {
   const [cancelling, setCancelling] = useState(false);
  const {token}= useAuth()
@@ -64,11 +65,12 @@ const SalesTable = ({
       }}
       
     >
-      {selectedIds?.length ? (
+      {(selectedIds?.length && deletable) ? (
         <div className="bg-gray-300 dark:bg-gray-800
         mb-0">
 
-          <button className="bg-red-500 text-white px-3 py-2 float-right
+          <button className="bg-red-500 text-white
+           px-3 py-2 float-right
           rounded-md opacity-100 hover:opacity-95 "
             onClick={handleCancellSales}>
            {cancelling? 'cancelling...': 'Cancell'}
@@ -79,12 +81,14 @@ const SalesTable = ({
       {cancelledStatus?.error?.length ?
         <div className="w-fit block mt-3">
           <ErrorMessage error={cancelledStatus?.error}
-          handleReset={() => setcancelledStatus({ error: '' })} />
+          handleReset={() => 
+          setcancelledStatus({...cancelledStatus, error: '' })} />
         </div> : null}
        {cancelledStatus?.success?.length ?
         <div className="w-fit block mt-3">
-          <SuccessMessage error={cancelledStatus?.success}
-          handleReset={() => setcancelledStatus({ success: '' })} />
+          <SuccessMessage message={cancelledStatus?.success}
+            resetFunction={() => 
+          setcancelledStatus({...cancelledStatus, success: '' })} />
         </div> : null}
       
 

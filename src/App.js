@@ -28,8 +28,9 @@ import SaleReport from "./components/Report/SaleReport";
 import 'antd/dist/reset.css';
 import Events from "./components/Notifications/Page/Events";
 // import Test from "./Test";
+import CancellSals from "./components/sales/CancellSales";
 // import TypingAnimation from "./TextAnimation";
-// import BasicTable from './BasicTable'
+
 
 function App() {
   const { username } = useAuth()
@@ -131,6 +132,7 @@ function App() {
                     </Route>
                     <Route path="/sales">
                       <Route index element={<SalesPage socket={socket} setactiveNavLink={setactiveNavLink}/>} />
+                      <Route path="cancelled" element={<CancellSals socket={socket} setactiveNavLink={setactiveNavLink}/>} />
                       {/* <Route path="add" element={<RegisterSale socket={socket} />} /> */}
                     </Route>
                     <Route

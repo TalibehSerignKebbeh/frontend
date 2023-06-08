@@ -14,7 +14,7 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
     // socket.emit("read_all_auth_notification", { ids });
     queryInstance.patch(`notifications`, { ids })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res?.status === 200) {
            socket.emit("read_all_auth_notification", {});
         }

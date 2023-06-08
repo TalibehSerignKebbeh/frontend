@@ -66,9 +66,17 @@ export const fetchSalesStats = ({token}) => {
       return Promise.reject(err);
     });
 };
-export const fetchProductsStats = ({token}) => {
+export const fetchProductsStats = ({ token }) => {
+  const year = new Date().getFullYear()
+  const month = new Date().getMonth()
+  const date = new Date().getDate()
   return queryInstance
-    .get(`/products/stats`,{headers:{Authorization:`Bearer ${token}`}} )
+    .get(`/products/stats`, {
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        lastSeven: new Date(year, month, date-7),
+      today: new Date(year, month, date)}
+    })
     .then((res) => {
       if (res?.data) return res?.data;
     })

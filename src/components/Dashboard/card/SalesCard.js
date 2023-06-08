@@ -21,8 +21,12 @@ text-gray-700 dark:text-white">
               {stats?.length? stats[stats?.length - 1]?.quantity || 0 : 0}
             </span></p>
             <p className="card-text text-gray-700 dark:text-white">
-            Revenue : D <span className="sales-num">
+            Money : D <span className="sales-num">
               {stats?.length? stats[stats?.length-1]?.money? formatNumber(stats[stats?.length - 1]?.money) : 0 : 0}
+              </span></p>
+            <p className="card-text text-gray-700 dark:text-white">
+            Revenue : D <span className="sales-num">
+              {stats?.length? stats[stats?.length-1]?.revenue? formatNumber(stats[stats?.length - 1]?.revenue) : 0 : 0}
             </span></p>
   </div>
 </div>

@@ -90,7 +90,7 @@ export default function TopSellingSection({ data }) {
           py-2 px-3 bg-slate-500 text-white mt-2 '>Top Selling By Money</h3>
       <div className='flex flex-wrap gap-1 justify-self-start py-3'>
         {ByMoney?.map((topInstance, index) => (
-          <TopSellingCard isMoney={true}
+          <TopSellingCard key={index} isMoney={true}
             name={topInstance?.name}
             money={topInstance?.money}
             quantity={topInstance?.quantity}
@@ -113,7 +113,7 @@ export default function TopSellingSection({ data }) {
 
       <div className='flex flex-wrap gap-1 justify-self-start py-3'>
         {ByQuantity?.map((topInstance, index) => (
-          <TopSellingCard isMoney={false}
+          <TopSellingCard key={index} isMoney={false}
             name={topInstance?.name}
             money={topInstance?.money}
             quantity={topInstance?.quantity}

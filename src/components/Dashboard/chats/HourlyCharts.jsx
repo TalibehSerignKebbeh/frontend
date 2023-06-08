@@ -14,18 +14,25 @@ export default function HourlyCharts({ hourlyData }) {
   }));
   return (
     <LineChart width={800} height={400} data={chartData}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
+      
                 className="text-gray-700 dark:text-white">
-                  <CartesianGrid strokeDasharray="3 3" 
-                    className="text-gray-700 dark:text-white"
+                  <CartesianGrid color='#3332' 
+        strokeWidth={5} 
                 />
-                <XAxis dataKey="hour" className="text-gray-700 dark:text-white"/>
-                <YAxis className="text-gray-700 dark:text-white"/>
+      <XAxis stroke='#333' widths={20} strokeWidth={2} color='#333'
+        dataKey="hour"  
+        
+        />
+      <YAxis stroke='#333' widths={20} color='#333' 
+        strokeWidth={2}
+                />
                 <Tooltip className="text-gray-700 dark:text-white"/>
                 <Legend className="text-gray-700 dark:text-white"/>
-                  <Line type="basisClosed" dataKey="quantity" stroke="#8884d8" activeDot={{ r: 8 }}
+      <Line type="basisClosed" color='#333'
+        dataKey="quantity" stroke="#8884d8" strokeWidth={5} activeDot={{ r: 8 }}
                 className="text-gray-700 dark:text-white"  />
-                  <Line type="monotone" dataKey="money" stroke="#82ca9d" 
+                  <Line type="monotone" dataKey="money" stroke="#333" 
                     className="text-gray-700 dark:text-white"
                 />
               </LineChart>

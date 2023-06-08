@@ -182,6 +182,11 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             title={"sales"}
             showSideMenu={showSideMenu}
           />
+          <CustomLink href={'/sales/cancelled'} 
+            icon={<PointOfSaleSharp />}
+            title={"cancelled"}
+            showSideMenu={showSideMenu}
+          />
           <CustomLink href={'/categories'} 
             icon={<ProductionQuantityLimits />}
             title={"categories"}
@@ -211,12 +216,12 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             showSideMenu={showSideMenu}
           />: null}
         </div>
-        <div className="mr-2 my-5 mt-10 text-center 
+        <div className="mr-2 my-5 mt-8 text-center 
          w-full h-auto flex justify-center items-center
         ">
           <DarkModeToggle />
         </div>
-        <div className="w-auto mx-auto lg:mt-10 md:mt-5 mt-2
+        <div className="w-auto mx-auto lg:mt-10 lg:mb-5 md:my-5 my-2
       ">
           <Tooltip title="logout">
 

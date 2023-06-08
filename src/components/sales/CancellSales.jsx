@@ -8,12 +8,10 @@ import useAuth from "../../hooks/useAuth";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import Clear from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
-import RegisterSale from "./RegisterSale";
-import { motion } from "framer-motion";
 import SingleProductSearch from "./Select/SingleProductSearch";
 import SearchUser from "../user/SearchUser";
 
-const SalesPage = ({ socket,setactiveNavLink }) => {
+const CancellSals = ({ socket,setactiveNavLink }) => {
   const { token } = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
@@ -22,7 +20,7 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
   const [date, setdate] = useState('');
   const [pageSize, setpageSize] = useState(20);
   const [page, setpage] = useState(0);
-  const [openRegisterSale, setOpenRegisterSale] = useState(true)
+//   const [openRegisterSale, setOpenRegisterSale] = useState(true)
   const [product, setproduct] = useState('');
   const [user, setuser] = useState('');
 
@@ -45,11 +43,11 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
       filters.pageSize = pageSize;
       await queryInstance
         .get(
-          `/sales`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
+          `/sales/cancelled`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
         )
         .then((res) => {
           if (res?.status === 200) {
-          // console.log(res?.data);
+          console.log(res?.data);
             setrowCount(res?.data?.totalSales);
             setsales(res?.data?.sales);
             return;
@@ -96,33 +94,9 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
     <div className="md:px-10 px-4 w-full" >
       <Header
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
-        title={"Manage Sales"}
+        title={"Manage Cancell Sales"}
       />
-      <button className="px-2 py-2 rounded-md 
-        shadow-md shadow-slate-50 dark:shadow-slate-700
-        bg-white dark:bg-slate-700
-      text-slate-700 dark:text-white font-bold mb-4"
-        onClick={() => setOpenRegisterSale(prev => !prev)}>
-        {openRegisterSale ? `Close` : `Open`}  Register Sales
-      </button>
-      <div>
-        
-      <motion.div
-        initial={{scale:0,height:0 }}
-          animate={{
-          transition:'.8s',
-          scale: openRegisterSale ? 1 : 0,
-          opacity: openRegisterSale ? 1 : 0,
-          height: openRegisterSale? 'auto':'0'
-        }}
-        className="h-auto w-auto relative block"
-        transition={{type:'tween', duration:'0.8',easings:['easeIn', 'easeOut']}}
-        
-      >
-         <RegisterSale socket={socket} />   
-      </motion.div>
-</div>
-
+      
 
       <div className="bg-white dark:bg-slate-700 
       shadow-xl shadow-gray-100 dark:shadow-slate-700
@@ -218,8 +192,8 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
           pageSize={pageSize}
           setpageSize={setpageSize}
           loading={loading}
-          socket={socket}
-          deletable={true}
+                  socket={socket}
+         deletable={false}
         />
       </div>
 
@@ -229,4 +203,4 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
   );
 };
 
-export default SalesPage;
+export default CancellSals;

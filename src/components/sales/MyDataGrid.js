@@ -15,13 +15,14 @@ const MyDataGrid = ({ data, loading }) => {
       }}
     >
       <DataGrid className="text-slate-700 dark:text-slate-50
-      w-fit"
+      w-full"
         columns={salesColumns}
-        autoHeight 
+         
         rows={data?.length ? data : []}
         columnBuffer={4}
         columnThreshold={4}
         hideFooterPagination={true}
+        hideFooter
         getRowId={(row) => row?._id}
         loading={loading}
         components={{
@@ -36,7 +37,7 @@ const MyDataGrid = ({ data, loading }) => {
           toolbarFiltersTooltipActive: 2,
         }}
         sx={{
-          maxHeight: "500px",
+           height:'500px',
           // width: { xl: "75%", lg: "80%", md: "95%", sm: "95%", xs: "98%" },
           p: 2,
           [`& .${gridClasses.columnHeader}`]: {

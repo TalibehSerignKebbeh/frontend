@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { queryInstance } from '../../api';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import ReportCard from "../Dashboard/card/ReportCard";
 import CircularProgress from "@mui/material/CircularProgress";
 import { formatNumber } from '../../other/format';
@@ -14,12 +14,18 @@ import useAuth from '../../hooks/useAuth';
 import { GetError } from '../other/OtherFuctions'
 import ErrorMessage from '../StatusMessages/ErrorMessage'
 import WeeklyChart from '../Dashboard/chats/WeeklyChart';
+import TopSellingTables from './TopSellingTables';
+import { MoneyOffOutlined } from '@mui/icons-material';
+import PieChart from '../Charts/PieChart';
 
 const WeeklySalesReport = () => {
   const { token } = useAuth()
   const [money, setmoney] = useState(0);
   const [saleCount, setsaleCount] = useState(0);
+  const [profit, setprofit] = useState(0);
   const [daysSale, setdaysSale] = useState([]);
+  const [topSellingByProfit, settopSellingByProfit] = useState([]);
+  const [topSellingByQuantity, settopSellingByQuantity] = useState([]);
   const [weekData, setweekData] = useState({ week: '', year: '' });
   const [isLoading, setisLoading] = useState(false);
   const [isDataFetch, setisDataFetch] = useState(false);
@@ -45,12 +51,15 @@ const WeeklySalesReport = () => {
         .then((res) => {
           // console.log(res);
           if (res?.status === 200) {
-
+              // console.log(res?.data);
             setdaysSale(res?.data?.daysSale)
             setmoney(res?.data?.money)
-            setsaleCount(res?.data?.saleCount)
+            setsaleCount(res?.data?.count)
+            setprofit(res?.data?.profit)
             setdaysSale(res?.data?.daysSale)
             setproductCount(res?.data?.productCount)
+            settopSellingByProfit(res?.data?.topSellingByProfit)
+            settopSellingByQuantity(res?.data?.topSellingByQuantity)
             setisDataFetch(true)
             return;
           }
@@ -123,6 +132,16 @@ const WeeklySalesReport = () => {
               <div className="flex flex-row flex-wrap 
                   md:justify-start justify-center
                   gap-x-2 gap-y-4  py-3 px-2">
+                 <ReportCard title={"Profit"} value={`D${formatNumber(profit)}`}
+                  icon={<MoneyOffOutlined
+                    sx={{
+                      transform: "scale(1.6)",
+                      color: "white",
+                      bgcolor: "blueviolet",
+                      borderRadius: "3px",
+                    }}
+                  />}
+                />
                 <ReportCard title={"Money"} value={`D${formatNumber(money)}`}
                   icon={<MoneyOffCsredOutlined
                     sx={{
@@ -157,12 +176,19 @@ const WeeklySalesReport = () => {
 
               </div>
               {daysSale?.length ?
-                <div className='w-fit md:mx-3 mx-auto
+                <div className='w-full md:mx-3 mx-auto
                 overflow-x-scroll scroll-smooth
                 bg-slate-300 py-5
-                '>
-                <WeeklyChart daysDate={daysSale} />
+                flex gap-2 flex-wrap px-1 text-center'>
+                  <WeeklyChart daysDate={daysSale} />
+                  <PieChart data={daysSale}
+                    xKey={'date'} yKey={'profit'}
+                  />
                 </div> : null}
+              
+              <TopSellingTables byProfit={topSellingByProfit}
+                byQuantity={topSellingByQuantity}
+              />
             </div>
 
       }

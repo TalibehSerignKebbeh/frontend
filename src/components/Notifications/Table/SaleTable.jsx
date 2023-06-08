@@ -6,7 +6,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-// import TableFooter from '@mui/material/TableFooter';
 import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 import isValid from 'date-fns/isValid';
@@ -26,7 +25,6 @@ export default function SaleTable({ data }) {
                 sx={{overflow:'auto'}}
             >
                 <Table sx={{ minWidth: 650, minHeight:'300px', maxHeight:'500px' }}
-                    // className='bg-slate-200 dark:bg-slate-700 text-white'
                     
                 >
                     <TableHead className='bg-slate-50 dark:bg-slate-700'>

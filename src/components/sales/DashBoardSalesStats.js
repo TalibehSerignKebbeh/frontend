@@ -16,7 +16,7 @@ const DashBoardSalesStats = ({ salesStatsQuery }) => {
                 width: 'auto', borderRadius: '6px',
                 }}>
             <h3 className='w-full px-1 text-start text-2xl 
-            font-light text-gray-700 dark:text-white '>
+            font-normal text-gray-700 dark:text-white '>
                 Sales Statistics</h3>
              <SalesCard stats={salesStatsQuery?.data?.thisWeekStats}
                       text={'This Weeks'}  />
