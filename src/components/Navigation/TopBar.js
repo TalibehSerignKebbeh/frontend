@@ -58,8 +58,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
   return (
     <div className="w-full h-28 p-2 py-5 
     bg-gray-50 dark:bg-slate-700 
-    shadow-md dark:shadow-slate-600 border-y-2
-    border-gray-200 dark:border-gray-700
+    shadow-md dark:shadow-slate-600 
     flex flex-row items-center justify-between
     ">
       <div className="h-full w-1 ">

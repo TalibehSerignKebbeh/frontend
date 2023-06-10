@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimits'
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
 import PointOfSaleSharp from '@mui/icons-material/PointOfSaleSharp'
+import  CancelOutlined  from "@mui/icons-material/CancelOutlined";
 import LogoutTwoTone from '@mui/icons-material/LogoutTwoTone'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import DashboardOutlined from '@mui/icons-material/DashboardOutlined'
@@ -183,7 +184,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             showSideMenu={showSideMenu}
           />
           <CustomLink href={'/sales/cancelled'} 
-            icon={<PointOfSaleSharp />}
+            icon={<CancelOutlined />}
             title={"cancelled"}
             showSideMenu={showSideMenu}
           />

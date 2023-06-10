@@ -16,8 +16,8 @@ import { isToday } from "date-fns";
 import HourlyCharts from "../Dashboard/chats/HourlyCharts";
 import parseISO from "date-fns/parseISO";
 import isYesterday from "date-fns/isYesterday";
-import PieChart from "../Charts/PieChart";
-import ProductsStatsTable from "../Product/ProductsStatsTable";
+// import PieChart from "../Charts/PieChart";
+// import ProductsStatsTable from "../Product/ProductsStatsTable";
 import TopSellingTables from "./TopSellingTables";
 
 
@@ -101,6 +101,7 @@ const DateReportComponent = () => {
             id="date"
             value={date}
             onChange={(e) => setdate(e.target.value)}
+             max={format(new Date(), 'yyyy-MM-dd')}
           />
           <button className="p-2 rounded-full
           bg-red-600 hover:bg-red-500

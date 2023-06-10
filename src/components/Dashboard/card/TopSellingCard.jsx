@@ -1,15 +1,10 @@
 import React from 'react'
-
+import { Dalasis, FormatQuantity } from '../../other/OtherFuctions'
 export default function TopSellingCard(
   { name, money, profit,
     quantity, isProfit }) {
   
-  let Dalasis = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'GMD',
-  });
-  let FormatQuantity = new Intl.NumberFormat('en-US')
-  
+
   return (
     <div className='bg-slate-50 dark:bg-slate-600 
       p-3  text-center w-fit max-w-full

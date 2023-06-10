@@ -28,3 +28,13 @@ export const GetError = (err) => {
     return err?.response?.data?.message
 
 }
+
+
+export const  Dalasis = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'GMD',
+});
+  
+
+ export const FormatQuantity = new Intl.NumberFormat('en-IN')
+

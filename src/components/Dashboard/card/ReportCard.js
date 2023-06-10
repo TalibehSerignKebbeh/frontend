@@ -9,10 +9,10 @@ const ReportCard = (props) => {
                 items-center justify-between place-content-center gap-1 "
               >
                 <div className="">
-                  <h3 className='text-slate-700 dark:text-white font-serif  italic text-lg'>
+                  <h3 className='text-slate-700 dark:text-white font-sans   text-lg'>
                   {title}
                   </h3>
-                  <h1 className="text-slate-700 dark:text-white px-1 font-serif italic text-lg">
+                  <h1 className="text-slate-700 dark:text-white px-1 font-sans  text-lg">
                   {value}
                   </h1>
                 </div>

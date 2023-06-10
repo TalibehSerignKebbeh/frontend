@@ -21,7 +21,7 @@ import UserPage from "./components/user/UserPage";
 import Dashboard from "./components/Dashboard/Dashboard";
 import { io } from "socket.io-client";
 import useAuth from "./hooks/useAuth";
-import {  serverUrl } from "./api";
+import { serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
 import SaleReport from "./components/Report/SaleReport";
@@ -45,11 +45,11 @@ function App() {
   //     host:serverUrl,
   //   }));
   const socket = io(serverUrl, {
-    withCredentials:true,
-      autoConnect: false,
-      reconnectionAttempts: 3,
-      secure: true,
-      host:serverUrl,
+    withCredentials: true,
+    autoConnect: false,
+    reconnectionAttempts: 3,
+    secure: true,
+    host: serverUrl,
   })
   const { token } = useAuth()
 
@@ -57,13 +57,13 @@ function App() {
   useEffect(() => {
     // console.dir(navigate);
     socket.connect()
-     
+
     return () => {
       socket.disconnect()
     }
   }, [socket, username]);
- 
- 
+
+
   return (
     <>
       <Router>
@@ -92,74 +92,74 @@ function App() {
                 <Route
                   index
                   element={
-                    <Login  socket={socket} setactiveNavLink={setactiveNavLink}/>
+                    <Login socket={socket} setactiveNavLink={setactiveNavLink} />
                   }
                 />
+                <Route
+                  element={
+                    <ProtectedRoutes
+                      allowedRoles={[...Object.values(allowedRoles)]}
+                    />
+                  }
+                >
+                  <Route
+                    path="/dashboard"
+                    element={<Dashboard socket={socket} setactiveNavLink={setactiveNavLink} />}
+                  />
+                  <Route path="/sales">
+                    <Route index element={<SalesPage socket={socket} setactiveNavLink={setactiveNavLink} />} />
+                    <Route path="cancelled" element={<CancellSals socket={socket} setactiveNavLink={setactiveNavLink} />} />
+                    {/* <Route path="add" element={<RegisterSale socket={socket} />} /> */}
+                  </Route>
+                  <Route path="products">
+                    <Route
+                      index
+                      element={<ProductPage socket={socket} setactiveNavLink={setactiveNavLink} />}
+                    />
+
+                    <Route
+                      path=":id"
+                      element={<EditProductPage socket={socket} setactiveNavLink={setactiveNavLink} />}
+                    />
+                    <Route
+                      path=":id/sales"
+                      element={<ProductSales socket={socket} setactiveNavLink={setactiveNavLink} />}
+                    />
+                  </Route>
+                  <Route path="categories">
+                    <Route index element={<CategoryPage socket={socket} setactiveNavLink={setactiveNavLink} />} />
+                    <Route
+                      path=":id/products"
+                      element={<StockProducts socket={socket} setactiveNavLink={setactiveNavLink} />}
+                    />
+
+                  </Route>
+
                   <Route
                     element={
                       <ProtectedRoutes
-                        allowedRoles={[...Object.values(allowedRoles)]}
+                        allowedRoles={[...adminRoles]}
                       />
                     }
                   >
                     <Route
-                      path="/dashboard"
-                      element={<Dashboard socket={socket} setactiveNavLink={setactiveNavLink}/>}
+                      path="/users"
+                      element={<UserPage socket={socket} setactiveNavLink={setactiveNavLink} />}
                     />
-
-                    <Route path="products">
-                      <Route
-                        index
-                        element={<ProductPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
-                      />
-                      
-                      <Route
-                        path=":id"
-                        element={<EditProductPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
-                      />
-                      <Route
-                        path=":id/sales"
-                        element={<ProductSales socket={socket} setactiveNavLink={setactiveNavLink}/>}
-                      />
-                    </Route>
-                    <Route path="categories">
-                      <Route index element={<CategoryPage socket={socket} setactiveNavLink={setactiveNavLink}/>} />
-                      <Route
-                        path=":id/products"
-                        element={<StockProducts socket={socket} setactiveNavLink={setactiveNavLink}/>}
-                      />
-                     
-                    </Route>
-                    <Route path="/sales">
-                      <Route index element={<SalesPage socket={socket} setactiveNavLink={setactiveNavLink}/>} />
-                      <Route path="cancelled" element={<CancellSals socket={socket} setactiveNavLink={setactiveNavLink}/>} />
-                      {/* <Route path="add" element={<RegisterSale socket={socket} />} /> */}
-                    </Route>
                     <Route
-                      element={
-                        <ProtectedRoutes
-                          allowedRoles={[...adminRoles]}
-                        />
-                      }
-                    >
-                      <Route
-                        path="/users"
-                        element={<UserPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
-                      />
-                      <Route
-                        path="/report"
-                        element={<SaleReport setactiveNavLink={setactiveNavLink}/>}
-                      />
-                      <Route
-                        
-                        path="/events"
+                      path="/report"
+                      element={<SaleReport setactiveNavLink={setactiveNavLink} />}
+                    />
+                    <Route
+
+                      path="/events"
                       element={<Events showSideMenu
-                          socket={socket}
-                        setactiveNavLink={setactiveNavLink}/>}
-                      />
-                    </Route>
-                    {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
+                        socket={socket}
+                        setactiveNavLink={setactiveNavLink} />}
+                    />
                   </Route>
+                  {/* <Route path='/profile' element={<UserProfile socket={socket}/>} /> */}
+                </Route>
 
                 <Route path="/unauthorized" element={<UnAuthorized />} />
                 <Route path="*" element={<PageNotFound />} />

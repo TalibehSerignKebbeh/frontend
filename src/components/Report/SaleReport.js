@@ -10,6 +10,7 @@ const SaleReport = ({socket, setactiveNavLink}) => {
     const [openAnnual, setopenAnnual] = useState(true);
     const [openMonth, setopenMonth] = useState(false);
     const [openWeek, setopenWeek] = useState(false);
+    // const [openDay, setopenDay] = useState(false);
     const annualRef = useRef(null)
     const monthRef = useRef(null)
     const weekRef = useRef(null)
@@ -32,8 +33,9 @@ const SaleReport = ({socket, setactiveNavLink}) => {
                         setopenMonth(false)
                         setopenWeek(false)
                     }}  
-                    classNa={`${openAnnual? 'bg-slate-200': 'bg-none'} text-gray-600 dark:text-white
-                    px-2 py-2 text-center rounded `}
+                    classNa={`px-3 py-1 ${openAnnual ? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white '} 
+                    text-gray-600 
+                     text-center rounded  text-xl`}
                 />
                                 <Button
                     text={`Month Report`}
@@ -42,8 +44,9 @@ const SaleReport = ({socket, setactiveNavLink}) => {
                         setopenMonth(true)
                         setopenWeek(false)
                     }}  
-                    classNa={`${openMonth? 'bg-slate-200': 'bg-none'} text-gray-600 dark:text-white
-                    px-2 py-2 text-center rounded `}
+                    classNa={`px-3 py-1 ${openMonth ? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white '} 
+                    text-gray-600 
+                     text-center rounded  text-xl`}
                 />
                                 <Button
                     text={`Week Report`}
@@ -52,8 +55,9 @@ const SaleReport = ({socket, setactiveNavLink}) => {
                         setopenMonth(false)
                         setopenWeek(true)
                     }}  
-                    classNa={`${openWeek? 'bg-slate-200': 'bg-none'} text-gray-600 dark:text-white
-                    px-2 py-2 text-center rounded `}
+                    classNa={`px-3 py-1 ${openWeek ? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white '} 
+                    text-gray-600 
+                     text-center rounded  text-xl`}
               />
             </div>
             <div ref={annualRef}>

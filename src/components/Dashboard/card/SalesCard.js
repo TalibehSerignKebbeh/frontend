@@ -7,7 +7,7 @@ const SalesCard = ({ stats, text, }) => {
    
     return (
         <>
-        <div className="card shadow bg-white dark:bg-slate-600 
+        <div className="card shadow-md bg-slate-100 dark:bg-slate-600 
 text-gray-700 dark:text-white">
   <div className="card-body">
             <h5 className="card-title text-gray-700 dark:text-white
@@ -25,8 +25,8 @@ text-gray-700 dark:text-white">
               {stats?.length? stats[stats?.length-1]?.money? formatNumber(stats[stats?.length - 1]?.money) : 0 : 0}
               </span></p>
             <p className="card-text text-gray-700 dark:text-white">
-            Revenue : D <span className="sales-num">
-              {stats?.length? stats[stats?.length-1]?.revenue? formatNumber(stats[stats?.length - 1]?.revenue) : 0 : 0}
+            Profit : D <span className="sales-num">
+              {stats?.length? stats[stats?.length-1]?.profit? formatNumber(stats[stats?.length - 1]?.profit) : 0 : 0}
             </span></p>
   </div>
 </div>
