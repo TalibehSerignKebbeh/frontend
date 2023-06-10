@@ -13,6 +13,7 @@ import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
 import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import { formatNumber } from '../../other/format';
+import { monthNames } from '../../other/format';
 
 
 
@@ -97,6 +98,10 @@ const MonthlyReport = () => {
         isLoading ? <CircularProgress sx={{ margin: 'auto' }} /> :
           loadSuccess ?
             <div>
+                            <h2 className="p-2 mt-2 text-3xl font-sans 
+              font-bold text-teal-700 dark:text-white">
+                {`${monthNames[monthDate?.month]} ${monthDate?.year} report`}
+              </h2>
               <div className="flex flex-row flex-wrap py-3 gap-2 px-2">
                 <ReportCard title={"Profit"} value={`D${formatNumber(profit)}`}
                 icon={<MoneyOffCsredOutlined

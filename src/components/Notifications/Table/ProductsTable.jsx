@@ -42,6 +42,9 @@ const ProductsTable = ({ productUpdates,socket}) => {
                     </th>
                     <th className=" text-xs font-serif font-medium">
                     price
+              </th>
+                   <th className=" text-xs font-serif font-medium">
+                    Unit cost
                     </th>
                     <th className=" text-xs font-serif font-medium">
                     Category
@@ -60,6 +63,9 @@ const ProductsTable = ({ productUpdates,socket}) => {
                     </th>
                     <th className=" text-xs font-serif font-medium">
                     price
+              </th>
+              <th className=" text-xs font-serif font-medium">
+                    Unit cost
                     </th>
                     <th className=" text-xs font-serif font-medium">
                     Category

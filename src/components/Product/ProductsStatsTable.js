@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-export default function ProductsStatsTable({ data }) {
+export default function ProductsStatsTable({ data, type }) {
 
   
 
@@ -27,19 +27,21 @@ export default function ProductsStatsTable({ data }) {
                         <TableRow className='bg-slate-50 dark:bg-slate-700
                         border border-gray-600 '>
                             <TableCell className=''>
-                                <span className='text-xs    text-slate-100
-                                bg-slate-500 rounded p-3'>
+                                <span className={`text-xs text-slate-100
+                                 rounded p-3 bg-slate-500`}>
                                     Name
                                 </span>
                             </TableCell>
                             <TableCell className=''>
-                                <span className='text-xs    text-slate-100
-                                bg-slate-500 rounded p-3'>
+                                <span className={`text-xs    text-slate-100
+                                 rounded p-3
+                                ${type==='quantity'? 'bg-teal-400': 'bg-slate-500'}`}>
                                     Quantity
                                 </span>
                             </TableCell>
                             <TableCell className=''>
-                                <span className='text-xs text-slate-100 p-2 rounded bg-teal-400'>
+                                <span className={`text-xs text-slate-100 p-2 rounded 
+                                ${type==='profit'? 'bg-teal-400': 'bg-slate-500'}`}>
                                     Profit
                                 </span>
                             </TableCell>

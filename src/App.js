@@ -6,15 +6,15 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import InventoryPage from "./components/Product/InventoryPage";
+import ProductPage from "./components/Product/ProductPage";
 import SideBar from "./components/Navigation/SideBar";
 import TopBar from "./components/Navigation/TopBar";
-import Stocks from "./components/stock/Stocks";
+import CategoryPage from "./components/Category/CategoryPage";
 import Login from "./components/Auth/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { adminRoles, allowedRoles } from "./config/allowedRoles";
 import EditProductPage from "./components/Product/EditProductPage";
-import StockProducts from "./components/stock/StockProducts";
+import StockProducts from "./components/Category/StockProducts";
 import SalesPage from "./components/sales/SalesPage";
 import ProductSales from "./components/sales/ProductSales";
 import UserPage from "./components/user/UserPage";
@@ -110,7 +110,7 @@ function App() {
                     <Route path="products">
                       <Route
                         index
-                        element={<InventoryPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
+                        element={<ProductPage socket={socket} setactiveNavLink={setactiveNavLink}/>}
                       />
                       
                       <Route
@@ -123,7 +123,7 @@ function App() {
                       />
                     </Route>
                     <Route path="categories">
-                      <Route index element={<Stocks socket={socket} setactiveNavLink={setactiveNavLink}/>} />
+                      <Route index element={<CategoryPage socket={socket} setactiveNavLink={setactiveNavLink}/>} />
                       <Route
                         path=":id/products"
                         element={<StockProducts socket={socket} setactiveNavLink={setactiveNavLink}/>}

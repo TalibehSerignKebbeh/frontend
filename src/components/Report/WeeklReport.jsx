@@ -17,7 +17,19 @@ import WeeklyChart from '../Dashboard/chats/WeeklyChart';
 import TopSellingTables from './TopSellingTables';
 import { MoneyOffOutlined } from '@mui/icons-material';
 import PieChart from '../Charts/PieChart';
+function getCurrentWeekNumber() {
+  const today = new Date();
+  const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+  const millisecondsPerWeek = 7 * 24 * 60 * 60 * 1000;
 
+  // Calculate the time difference between today and the first day of the year
+  const timeDiff = today.getTime() - firstDayOfYear.getTime();
+
+  // Calculate the number of weeks elapsed
+  const weekNumber = Math.ceil(timeDiff / millisecondsPerWeek);
+
+  return weekNumber;
+}
 const WeeklySalesReport = () => {
   const { token } = useAuth()
   const [money, setmoney] = useState(0);
@@ -26,7 +38,7 @@ const WeeklySalesReport = () => {
   const [daysSale, setdaysSale] = useState([]);
   const [topSellingByProfit, settopSellingByProfit] = useState([]);
   const [topSellingByQuantity, settopSellingByQuantity] = useState([]);
-  const [weekData, setweekData] = useState({ week: '', year: '' });
+  const [weekData, setweekData] = useState({ week:getCurrentWeekNumber(), year: new Date().getFullYear() });
   const [isLoading, setisLoading] = useState(false);
   const [isDataFetch, setisDataFetch] = useState(false);
   const [error, seterror] = useState('');
@@ -39,8 +51,9 @@ const WeeklySalesReport = () => {
 
   }
 
+
   useEffect(() => {
-    if (!weekData?.week?.length && !weekData?.year?.length) {
+    if (!weekData>0 && !weekData>0) {
       resetData()
       return
     }
@@ -77,11 +90,12 @@ const WeeklySalesReport = () => {
     return () => {
 
     };
-  }, [token, weekData?.week, weekData?.year]);
+  }, [token, weekData, weekData?.week, weekData?.year]);
 
   const handleChangeWeek = (e) => {
     const { value } = e.target;
     const resultsArray = value?.split('-W')
+    console.log(value);
     setweekData({ week: resultsArray[1], year: resultsArray[0] })
   }
   return (
@@ -92,12 +106,15 @@ const WeeklySalesReport = () => {
         className='flex gap-1 justify-between 
       px-2 w-56 items-center my-6'
       >
-
+         
         <input style={{ marginLeft: '9px' }}
           className='w-auto  p-4 bg-white 
         dark:bg-slate-300 
         text-slate-800 dark:text-white'
-          type='week' onChange={handleChangeWeek}
+          type='week'
+          defaultValue={`${weekData?.year}-W${weekData?.week}`}
+          max={`${weekData?.year}-W${weekData?.week}`}
+          onChange={handleChangeWeek}
 
         />
         <IconButton className='bg-slate-600 dark:bg-slate-100

@@ -11,7 +11,7 @@ export default function TopSellingTables({byProfit, byQuantity}) {
                   >
                     Top Selling By Profit
                   </h3>
-                  <ProductsStatsTable data={byProfit} />
+                  <ProductsStatsTable data={byProfit} type={'profit'} />
                 </div>
                 <div className='w-fit h-auto'>
                   <h3 className='text-lg text-slate-700
@@ -19,7 +19,7 @@ export default function TopSellingTables({byProfit, byQuantity}) {
                   >
                     Top Selling By Quantity
                   </h3>
-                  <ProductsStatsTable data={byQuantity} />
+                  <ProductsStatsTable data={byQuantity} type={'quantity'} />
                 </div>
               </div>
   )

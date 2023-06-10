@@ -6,14 +6,15 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchStocks } from '../../api/index'
 import   Store  from '@mui/icons-material/Store';
 import  Collapse  from '@mui/material/Collapse';
-import  Button from '@mui/material/Button';
+// import  Button from '@mui/material/Button';
 import AddStock from './AddStock';
 import CategoryDataGrid from './CategoryDataGrid';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 import useAuth from '../../hooks/useAuth';
+import Button from '../Buttons/Button';
 
-const StocksPage = ({socket, setactiveNavLink}) => {
+const CategoryPage = ({socket, setactiveNavLink}) => {
     const {token} = useAuth()
     const formRef = useRef()
     const [errorMessage, seterrorMessage] = useState('');
@@ -63,10 +64,10 @@ const StocksPage = ({socket, setactiveNavLink}) => {
                 <ErrorMessage error={errorMessage} 
                     handleReset={()=>seterrorMessage('')}
             />: null}
-            <Header title={"Manage Stocks"}
+            <Header title={"Manage Categories"}
                 icon={<Store className='text-black dark:text-white' sx={{ scale: 2 }} />} />
 
-            <Button 
+            {/* <Button 
                 className='bg-white dark:bg-slate-700
                 hover:bg-slate-50 dark:hover:bg-slate-500
                 text-slate-800 dark:text-white
@@ -77,7 +78,14 @@ const StocksPage = ({socket, setactiveNavLink}) => {
             }} 
                 onClick={handleOpenCloseCollapse}>
                {openEdit? "Close":"Open"} Add
-            </Button>
+            </Button> */}
+            <Button 
+                clickEvent={handleOpenCloseCollapse}
+                text={openEdit ? "Close Add" : "Open Add"} 
+                classNa={`bg-white text-slate-700 dark:bg-slate-700
+                dark:text-white shadow-md rounded-sm p-2
+                text-lg mb-4 `}
+            />
             <Collapse sx={{mb:2}} ref={formRef} in={openEdit} unmountOnExit timeout={'auto'} >
                 <AddStock stock={stock} setstock={setstock} />
             </Collapse>
@@ -92,4 +100,4 @@ const StocksPage = ({socket, setactiveNavLink}) => {
 
 
 
-export default StocksPage;
+export default CategoryPage;

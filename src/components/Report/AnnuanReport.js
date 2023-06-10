@@ -113,7 +113,7 @@ const handleFetchYearReport = async (e) => {
               animate={{ scale: 1 }}
             transition={{duration:0.7, delay:0.2}}>
               <h2 className="p-2 mt-2 text-3xl font-sans 
-              font-bold text-teal-700">
+              font-bold text-teal-700 dark:text-white">
                 {`${year} report`}
               </h2>
               <div className="flex flex-row flex-wrap py-3 gap-2 px-2">

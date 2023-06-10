@@ -107,9 +107,9 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
     <>
 
       <DataGrid
-        className='bg-slate-200 dark:bg-slate-700
+        className='bg-slate-50 dark:bg-slate-700
         text-gray-700 dark:text-white 
-        shadow-md '
+        shadow-md  '
         rows={data?.categories?.length ? data?.categories : []}
         columns={columns}
         pageSize={pageSize}

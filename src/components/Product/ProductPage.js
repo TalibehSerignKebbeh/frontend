@@ -10,7 +10,7 @@ import ProductsUpdates from './updates/ProductsUpdates';
 import useAuth from '../../hooks/useAuth';
 import TopSellingSection from './TopSellingSection';
 
-const InventoryPage = ({ socket,setactiveNavLink }) => {
+const ProductPage = ({ socket,setactiveNavLink }) => {
   const {isAdmin, isManager, token} = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
   const [showUpdates, setshowUpdates] = useState(false);
@@ -19,8 +19,9 @@ const InventoryPage = ({ socket,setactiveNavLink }) => {
   const [totalPages, settotalPages] = useState(0);
   const [loading, setloading] = useState(false);
   const [products, setproducts] = useState([]);
+  
   const [TopSelling, setTopSelling] = useState({
-   ByMoney:[],ByQuantity:[]
+   ByProfit:[],ByQuantity:[]
  });
   // const [productUpdates, setproductUpdates] = useState([]);
   const [errorMessage, seterrorMessage] = useState('');
@@ -29,14 +30,24 @@ const InventoryPage = ({ socket,setactiveNavLink }) => {
    setactiveNavLink('products')
     const fetchProducts = async () => {
       // console.log(page, pageSize, );
+      let filters = {};
+      filters.page = page;
+      filters.pageSize = pageSize;
+      const date = new Date()
+      date.setDate(date.getDate() - 7)
+      filters.startDate = date;
+      filters.endDate = new Date();
       setloading(true)
-      await queryInstance.get(`/products?page=${page}&pageSize=${pageSize}`,
-        { headers: { Authorization: `Bearer ${token}` } })
+      await queryInstance.get(`/products`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params:{...filters}
+        })
         .then(res => {
           console.log(res?.data);
           setproducts(res?.data?.products)
           setTopSelling({
-            ByMoney: res?.data?.topSellingByMoney,
+            ByProfit: res?.data?.topSellingByProfit,
             ByQuantity: res?.data?.topSellingByQuantity
           })
           setpage(Number(res?.data?.page))
@@ -118,4 +129,4 @@ const InventoryPage = ({ socket,setactiveNavLink }) => {
   );
 }
 
-export default InventoryPage;
+export default ProductPage;

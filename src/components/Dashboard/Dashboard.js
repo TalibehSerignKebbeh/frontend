@@ -13,6 +13,7 @@ import ErrorMessage from '../StatusMessages/ErrorMessage';
 import useAuth from '../../hooks/useAuth';
 // import SalesTodayStats from './TodayStats/SalesTodayStats';
 import SkeletonLoaders from '../Loaders/SkelelonLoader';
+import IntervalReport from '../Report/IntervalReport';
 
 const Dashboard = ({socket, setactiveNavLink}) => {
     const { token } = useAuth()
@@ -81,6 +82,7 @@ const Dashboard = ({socket, setactiveNavLink}) => {
 
            {/* <SalesTodayStats /> */}
             <DateReportComponent />
+            {/* <IntervalReport /> */}
         </Box>
     );
 }

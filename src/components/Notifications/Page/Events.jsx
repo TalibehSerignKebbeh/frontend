@@ -4,6 +4,7 @@ import ProductsUpdates from '../../Product/updates/ProductsUpdates';
 import UserNotificationTable from '../Table/UserNotificationTable';
 import './index.css'
 import SalesEvents from '../Table/SalesEvents';
+import Button from '../../Buttons/Button';
 
 const Events = ({ showSideMenu, socket,setactiveNavLink }) => {
     
@@ -20,15 +21,11 @@ const Events = ({ showSideMenu, socket,setactiveNavLink }) => {
         };
     }, [tab?.length]);
 
-    const ChangeTab = ( tab) => {
-        localStorage.setItem('tab', tab)
-        setTab(tab)
-    }
     
     return (
         <div className='relative '>
             {/* <h2>Events </h2> */}
-            <div className={` 
+            {/* <div className={` 
              py-2  bg-white dark:bg-slate-700
              shadow-slate-500 shadow-md 
             flex flex-row md:gap-14 sm:gap-2 gap-1
@@ -53,6 +50,37 @@ const Events = ({ showSideMenu, socket,setactiveNavLink }) => {
                 text-white text-2xl font-light rounded px-4 py-2 `}>
                 User
                 </button>
+            </div> */}
+            <div className='bg-slate-500 dark:bg-slate-600
+            md:w-1/3 sm:w-10/12 w-full px-3 py-3 flex gap-2 rounded-lg
+            my-5 '>
+                <Button
+                    text={`Product`}
+                    clickEvent={() => {
+                        setTab('product')
+                    }}  
+                    classNa={`${tab === 'product' ? 'bg-slate-200 text-black' : 'bg-none text-white '} 
+                    text-gray-600 dark:text-white
+                    px-2 py-1 text-center rounded  text-lg`}
+                />
+                                <Button
+                    text={`Sale`}
+                   clickEvent={() => {
+                        setTab('sale')
+                    }}  
+                    classNa={`${tab === 'sale' ? 'bg-slate-200 text-black' : 'bg-none text-white '}
+                     text-gray-600 dark:text-white
+                    px-2 py-1 text-center rounded text-lg `}
+                />
+                                <Button
+                    text={`User`}
+                   clickEvent={() => {
+                        setTab('user')
+                    }}  
+                    classNa={`${tab === 'user' ? 'bg-slate-200 text-black' : 'bg-none text-white '}
+                     text-gray-600 dark:text-white
+                    px-2 py-1 text-center rounded  text-lg `}
+              />
             </div>
             <div className=' bg-slate-100
              dark:bg-slate-950 
