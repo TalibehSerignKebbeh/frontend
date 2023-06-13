@@ -1,5 +1,4 @@
 import React, { useState} from "react";
-// import  Box  from "@mui/system/Box";
 import { queryInstance } from "../../api";
 import {  QueryClient, } from "@tanstack/react-query";
 import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
@@ -102,11 +101,8 @@ const UsersTable = ({loading,totalPages,
   }
   const handleInitialiseEdit = (user) => {
     window.scrollTo({top:collapseRef?.current?.offSetTop, behavior:'smooth'})
-  //  setUserData(initialUser)
     setUserData({...UserData, ...user, password: "", confirmNewPassword: ""})
-    // setopenEdit(true);
     setopenAdd(true)
-    // setUserToEdit({ ...user, password: "", confirmNewPassword: "" });
   };
 
 
@@ -152,15 +148,13 @@ const UsersTable = ({loading,totalPages,
   };
 
   return (
-    <div className="w-full h-auto md:my-6 my-3
+    <div className="md:w-9/12 sm:w-full w-full h-auto md:my-6 my-3
     overflow-x-scroll ">
 
-        {/* <Box className={ `w-fit overflow-x-scroll`} height={"500px"}> */}
       <DataGrid
         autoHeight loading={loading}
           className="text-gray-700 dark:text-slate-100
           bg-slate-50 dark:bg-slate-700"
-            // loading={}
           columns={[
             ...userColumns,
         ]}
@@ -188,42 +182,22 @@ const UsersTable = ({loading,totalPages,
               toolbarFiltersTooltipActive: 2,
             }}
             sx={{
-              // maxWidth: "800px",
-              // minWidth:'500px',
-              // width:'100%',
           width: { xl: "70%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
 
               p: 2,
-          // width: { xl: "700px", lg: "700px", md: "100%", sm: "100%", xs: "100%" },
-
               ml: {xl:2,lg:2,md:1, sm:'0', xs:'0' },mr:'auto',
               boxShadow:
                 "0px 0px 7px 0px rgba(0,0,0,0.1), 0px 0px 7px 0px rgba(0,0,0,0.09)",
               [`& .${gridClasses.columnHeader}`]: {
                 fontSize: "1rem",
                 fontWeight: "300",
-                // color: "#3339",
               },
               '& .MuiTablePagination-toolbar': {
                 color:'blue',
               }
             }}
       />
-      {/* <TablePagination
-        count={totalPages}
-        rowsPerPage={pageSize}
-        rowsPerPageOptions={[5,10, 15, 25, 50, 100]}
-        onRowsPerPageChange={({ target: { value } }) => {
-          setPageSize(value)
-        }}
-        page={page}
-        onPageChange={({ event, page }) => {
-          console.log(page)
-         setpage(page)
-        }} 
-         className="bg-slate-100 dark:bg-slate-700
-      text-slate-800 dark:text-white" 
-      /> */}
+     
         
           <ConfirmDelete
             open={openDelete}

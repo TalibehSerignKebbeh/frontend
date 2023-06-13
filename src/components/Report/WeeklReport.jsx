@@ -1,15 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { queryInstance } from '../../api';
-// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import ReportCard from "../Dashboard/card/ReportCard";
 import CircularProgress from "@mui/material/CircularProgress";
 import { formatNumber } from '../../other/format';
 import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
 import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
-import IconButton from '@mui/material/IconButton';
-import Cancel from '@mui/icons-material/Cancel';
 import useAuth from '../../hooks/useAuth';
 import { GetError } from '../other/OtherFuctions'
 import ErrorMessage from '../StatusMessages/ErrorMessage'
@@ -17,6 +14,7 @@ import WeeklyChart from '../Dashboard/chats/WeeklyChart';
 import TopSellingTables from './TopSellingTables';
 import { MoneyOffOutlined } from '@mui/icons-material';
 import PieChart from '../Charts/PieChart';
+import MyDataGrid from '../sales/MyDataGrid';
 function getCurrentWeekNumber() {
   const today = new Date();
   const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
@@ -38,7 +36,9 @@ const WeeklySalesReport = () => {
   const [daysSale, setdaysSale] = useState([]);
   const [topSellingByProfit, settopSellingByProfit] = useState([]);
   const [topSellingByQuantity, settopSellingByQuantity] = useState([]);
-  const [weekData, setweekData] = useState({ week:getCurrentWeekNumber(), year: new Date().getFullYear() });
+  const [weekData, setweekData] = useState({ week: getCurrentWeekNumber(), year: new Date().getFullYear() });
+  const [sales, setsales] = useState([]);
+
   const [isLoading, setisLoading] = useState(false);
   const [isDataFetch, setisDataFetch] = useState(false);
   const [error, seterror] = useState('');
@@ -73,6 +73,7 @@ const WeeklySalesReport = () => {
             setproductCount(res?.data?.productCount)
             settopSellingByProfit(res?.data?.topSellingByProfit)
             settopSellingByQuantity(res?.data?.topSellingByQuantity)
+            setsales(res?.data?.sales)
             setisDataFetch(true)
             return;
           }
@@ -108,22 +109,18 @@ const WeeklySalesReport = () => {
       >
          
         <input style={{ marginLeft: '9px' }}
-          className='w-auto  p-4 bg-white 
+          className='w-auto  p-4 px-8 bg-white
+          shadow-sm shadow-slate-50 
         dark:bg-slate-300 
-        text-slate-800 dark:text-white'
+        text-slate-800 dark:text-white 
+        rounded-md'
           type='week'
           defaultValue={`${weekData?.year}-W${weekData?.week}`}
           max={`${weekData?.year}-W${weekData?.week}`}
           onChange={handleChangeWeek}
 
         />
-        <IconButton className='bg-slate-600 dark:bg-slate-100
-        text-white dark:text-slate-700
-        hover:bg-slate-500
-        dark:hover:bg-slate-200'
-          onClick={(e) => {
-            setweekData({ week: '', year: '' })
-          }}><Cancel /></IconButton>
+        
       </div>
       {isLoading ?
         <div>
@@ -206,6 +203,11 @@ const WeeklySalesReport = () => {
               <TopSellingTables byProfit={topSellingByProfit}
                 byQuantity={topSellingByQuantity}
               />
+              <div className='my-6 lg:mx-6 md:mx-3 mx-0'>
+                
+              <MyDataGrid data={sales}
+              loading={isLoading}/>
+            </div>
             </div>
 
       }

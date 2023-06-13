@@ -16,7 +16,8 @@ pageSize, setPageSize, options, total}) {
                 pageSize={pageSize}
                 responsive={true}
                 showSizeChanger
-                show
+        show
+        hideOnSinglePage={true}
                 onShowSizeChange={(page, size) => {
                     setPageSize(size);
                     setPage(0)

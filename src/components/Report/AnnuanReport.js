@@ -5,12 +5,13 @@ import ReportCard from "../Dashboard/card/ReportCard";
 import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
 import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
-// import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { DatePicker } from "antd";
 import useAuth from "../../hooks/useAuth";
 import {motion} from 'framer-motion'
 import SkeletonLoaders from "../Loaders/SkelelonLoader";
-import MyBarChart from '.././Charts/BarChart'
+import CustomBarChart from "../Dashboard/chats/CustomBarChart";
+import MyDataGrid from "../sales/MyDataGrid";
 
 const AnnuanReport = () => {
   const {token} = useAuth()
@@ -21,7 +22,7 @@ const AnnuanReport = () => {
   const [salesInstances, setsaleCount] = useState(0);
   const [monthLySale, setmonthLySale] = useState([]);
   const [quarterlySale, setquarterlySale] = useState([]);
-  // const [sales, setsales] = useState([]);
+  const [sales, setsales] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [loadSuccess, setloadSuccess] = useState(false);
   const resetData = () => {
@@ -69,6 +70,7 @@ const handleFetchYearReport = async (e) => {
           setquarterlySale(res?.data?.quarterSales);
           setproductQuantity(res?.data?.quantity);
           setsaleCount(res?.data?.count)
+          setsales(res?.data?.sales)
           return
         }
 
@@ -167,13 +169,13 @@ const handleFetchYearReport = async (e) => {
               {monthLySale?.length>0 ?
                   <div className="text-center 
                   text-slate-700 dark:text-white 
-                  bg-slate-200 w-full flex flex-wrap
+                  bg-slate-200 w-full flex flex-col
                   gap-y-6 gap-x-2">
                     <h2 className="mt-8 lg:mx-10 md:mx-4 mx-1
                     text-lg font-normal text-slate-500
-                  w-full ">
+                  w-auto ">
                       Annual monthly sales</h2>
-                    {/* <BarChart
+                    <BarChart
                       className="min-w-[300px] w-fit min-h-[300px] h-auto "
                       width={monthLySale?.length * 100} height={400}
                       style={{color:'inherit'}}
@@ -187,41 +189,29 @@ const handleFetchYearReport = async (e) => {
                       <XAxis dataKey="month"
                         spacing={1} 
                     />
-                      <YAxis dataKey={'money'}
-                    />
+                      <YAxis        />
                     <Tooltip />
-                    <Legend />
+                    <Legend color="green" />
                       <Bar dataKey="money"
-                      maxBarSize={20} fill="#8884d8" 
+                      maxBarSize={20} fill="blue" 
+                        spacing={3}
+                      />
+                      <Bar dataKey="profit"
+                      maxBarSize={20} fill="red" 
                         spacing={3}
                       />
                       
-                    </BarChart> */}
-                    <div className="h-[400px] md:w-[600px] w-[400px]">
-                    <MyBarChart data={monthLySale}
-                keys={"profit"}
-                index={"month"}
-                bottomLegend={'months'}
-                leftLegend={'profit'}
-                      />
-                    </div>
-                    <div className="h-[400px] md:w-[600px] w-[400px]">
-                    <MyBarChart data={monthLySale}
-                keys={"money"}
-                index={"month"}
-                bottomLegend={'months'}
-                leftLegend={'money'}
-                      />
-                    </div>
+                    </BarChart>
+                    
                     
                     </div> : null}
               {quarterlySale?.length>0 ?
                 <div className="text-center 
                 text-slate-700 dark:text-white 
-                bg-slate-200 flex flex-wrap gap-3 
+                bg-slate-200 flex flex-col gap-3 
                 md:px-6 sm:px-2 px-[2px]"
                   >
-                    <div className="w-full h-auto text-start">
+                    <div className="w-auto h-auto text-start">
                     <h2 className="mt-8 lg:mx-10 md:mx-4 mx-1
                      text-lg font-normal
                      text-teal-600">
@@ -229,34 +219,17 @@ const handleFetchYearReport = async (e) => {
                       </h2>
                       </div>
                   
-                    <div className={`w-[320px] h-[340px] `}>
-                    <MyBarChart data={quarterlySale}
-                      bottomLegend={'Quarters'}
-                      leftLegend={'profit'}
-                      index={"quarter"} keys={'profit'}
-                      />
-                      </div>
-                    <div className={`w-[320px] h-[340px] `}>
-                    <MyBarChart data={quarterlySale}
-                      bottomLegend={'Quarters'}
-                      leftLegend={'money'}
-                      index={"quarter"} keys={'money'}
-                      />
-                      </div>
-                    {/* <BarChart width={quarterlySale?.length * 150}
-                      height={400} data={quarterlySale}
-                      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                     style={{color:'inherit'}}
-                    >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="quarter" spacing={1} />
-                    <YAxis dataKey={'money'} />
-                    <Tooltip />
-                    <Legend />
-                      <Bar dataKey="money" maxBarSize={20} fill="#82ca9d" 
+                    <CustomBarChart data={quarterlySale}
+                      xDataKey={'quarter'}
+                      bar1Key={'money'}
+                      bar2Key={'profit'}
                     />
-                  </BarChart> */}
-                </div> : null}
+                  </div> : null}
+                
+                <MyDataGrid 
+                  data={sales}
+                  loading={isLoading}
+                />
             </div>
           </motion.div>
         ) : null

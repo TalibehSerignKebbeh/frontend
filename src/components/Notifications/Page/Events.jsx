@@ -31,7 +31,7 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
 
 
     return (
-        <div className='relative '>
+        <div className='relative md:px-3 sm:px-3 px-4'>
 
 
             <div className='bg-slate-300 dark:bg-slate-600

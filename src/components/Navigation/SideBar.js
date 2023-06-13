@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import useAuth from "../../hooks/useAuth";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimits'
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
 import PointOfSaleSharp from '@mui/icons-material/PointOfSaleSharp'
@@ -14,84 +14,22 @@ import  CancelOutlined  from "@mui/icons-material/CancelOutlined";
 import LogoutTwoTone from '@mui/icons-material/LogoutTwoTone'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import DashboardOutlined from '@mui/icons-material/DashboardOutlined'
-import ReportOffOutlined from '@mui/icons-material/ReportOffOutlined'
 import {  AiOutlineUserSwitch, AiFillNotification } from "react-icons/ai";
 import Box from "@mui/system/Box";
 import { queryInstance } from "../../api";
 import {useContextHook} from '../../context/AuthContext'
 import CustomLink from "./Links/CustomLink";
 import DarkModeToggle from "../../hooks/DarkModeToggler";
-import { useEffect } from "react";
-
-
+import { message } from "antd";
 
 const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
-  // const { isAdmin, isManager } = useAuth()
+
   const { token, username, isAdmin, isManager } = useAuth();
   const navigate = useNavigate()
   
   const {clearAuthToken} = useContextHook()
   const [isLogingOut, setisLogingOut] = useState(false);
-  const location = useLocation()
-  const [indicatorMarginTop, setindicatorMarginTop] = useState(0);
-  const pathName = location.pathname?.slice(1, location.pathname.length);
-  // console.log(pathName);
-  useEffect(() => {
-    if (isAdmin || isManager) {
-      if (pathName?.endsWith('sales')) {
-        setindicatorMarginTop(47)
-        return;
-      }
-      if (pathName?.endsWith('categories')) {
-        setindicatorMarginTop(47*2)
-        return;
-      }
-       if (pathName?.endsWith('products')) {
-        setindicatorMarginTop(47*3)
-        return;
-      }
-       if (pathName?.endsWith('users')) {
-        setindicatorMarginTop(47*4)
-        return;
-      }
-       if (pathName?.endsWith('report')) {
-        setindicatorMarginTop(47*5)
-        return;
-      }
-       if (pathName?.endsWith('events')) {
-        setindicatorMarginTop(47*6)
-        return;
-      }
-       if (pathName?.indexOf('products')) {
-        setindicatorMarginTop(47*3)
-        return;
-      }
-      if(pathName.endsWith('dashboard')){setindicatorMarginTop(0)}
-    } else {
-      if (pathName?.endsWith('sales')) {
-        setindicatorMarginTop(47)
-        return;
-      }
-      if (pathName?.endsWith('categories')) {
-        setindicatorMarginTop(47*2)
-        return;
-      }
-       if (pathName?.endsWith('products')) {
-        setindicatorMarginTop(47*3)
-        return;
-      }
-       if (pathName?.indexOf('products')) {
-        setindicatorMarginTop(47*3)
-        return;
-      }
-      if(pathName.endsWith('dashboard')){setindicatorMarginTop(0)}
-  
-    }
-    return () => {
-      
-    };
-  }, [isAdmin, isManager, pathName]);
-
+ 
   const handleNavToggle = (e) => {
     setshowSideMenu((prev) => !prev);
   };
@@ -103,11 +41,18 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
         socket.emit("notify_logout", { username, date:new Date() });
         // console.log(res);
         clearAuthToken()
-    setisLogingOut(false)
+    
         navigate("/");
       }).catch(() => {
-        
-      })
+        message.error({
+          className:'p-0 m-0',
+          content: <div className=" ">
+            <h3>Opps something went wrong</h3>
+           <p> Sorry, Logout request  failed</p>
+          </div> ,
+          duration:2,
+    });
+      }).finally(()=>setisLogingOut(false))
       
   };
   if (!token) return null;
@@ -170,14 +115,21 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
         className={`"w-full h-full flex flex-col  relative
                          content-center items-start md:gap-y-3 gap-y-2 `}
         >
-          <span className={`w-[4px] ml-4 h-10 
+          {/* <span className={`w-[4px] ml-4 h-10 
           rounded-md bg-blue-500 absolute left-0 
-          top-[${indicatorMarginTop}px]`}></span>
+          top-[${indicatorMarginTop}px]`}></span> */}
           <CustomLink href={'/dashboard'} 
             icon={<DashboardOutlined />}
             title={"dashboard"}
             showSideMenu={showSideMenu}
           />
+          <CustomLink href={'/categories'} 
+            icon={<ProductionQuantityLimits />}
+            title={"categories"}
+            showSideMenu={showSideMenu}
+          />
+          <span className="text-lg font-normal font-sans
+           pl-7 mt-2">Sales</span>
            <CustomLink href={'/sales'} 
             icon={<PointOfSaleSharp />}
             title={"sales"}
@@ -188,28 +140,30 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             title={"cancelled"}
             showSideMenu={showSideMenu}
           />
-          <CustomLink href={'/categories'} 
-            icon={<ProductionQuantityLimits />}
-            title={"categories"}
-            showSideMenu={showSideMenu}
-          />
+          <span
+          className="text-lg font-normal font-sans
+           pl-7 mt-2">Product</span>
+
        <CustomLink href={'/products'} 
             icon={<Inventory2Outlined />}
             title={"products"}
             showSideMenu={showSideMenu}
           />
+           <CustomLink href={'/products/expired'} 
+            icon={<Inventory2Outlined />}
+            title={"Expired"}
+            showSideMenu={showSideMenu}
+          />
+
+          {(isAdmin || isManager) ?
+            <br /> : null}
           {(isAdmin || isManager) ?
             <CustomLink href={'/users'} 
             icon={<AiOutlineUserSwitch />}
             title={"users"}
             showSideMenu={showSideMenu}
           /> : null}
-           {(isAdmin || isManager) ?
-           <CustomLink href={'/report'} 
-            icon={<ReportOffOutlined />}
-            title={"report"}
-            showSideMenu={showSideMenu}
-            /> : null}
+          
           {(isAdmin || isManager) ?
            <CustomLink href={'/events'} 
             icon={<AiFillNotification />}

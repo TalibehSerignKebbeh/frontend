@@ -133,7 +133,8 @@ const ProductSales = ({socket, setactiveNavLink}) => {
                 }
             </div>
                     <SalesTable sales={sales} 
-                        loading={loading}
+                loading={loading}
+                deletable={false}
                         rowCount={rowCount}
                         setpage={setpage} page={page}
                         columns={columns} totalRowsSize={rowCount}

@@ -6,19 +6,18 @@ import useAuth from "../../hooks/useAuth";
 import EditForm from "./EditForm";
 import "./editProduct.css";
 import { GetError } from "../other/OtherFuctions";
-import SingleProductEvents from "../Notifications/SingleModel/SingleProductEvents";
 import SpinnerLoader from "../Loaders/SpinnerLoader";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
+import SkeletonLoaders from "../Loaders/SkelelonLoader";
 
 const EditProductPage = ({ socket, setactiveNavLink }) => {
   const { id } = useParams();
   const {token, isAdmin, isManager } = useAuth();
-  const [product, setproduct] = useState({});
+  const [product, setproduct] = useState(null);
   const [categories, setCategories] = useState([]);
   const [isLoading, setisLoading] = useState(false);
   const [isSuccess, setisSuccess] = useState(false);
   const [errorMessage, seterrorMessage] = useState('');
-  const [showNotify, setShowNotify] = useState(false);
   
   useEffect(() => {
     // setactiveNavLink('products')
@@ -61,10 +60,8 @@ const EditProductPage = ({ socket, setactiveNavLink }) => {
        product ? (
           <div className="flex flex-col gap-8">
            { isLoading &&
-              <div className="absolute top-0 bottom-0 right-0 left-0 
-          opacity-40 bg-gray-500 m-auto">
-            <SpinnerLoader />
-          </div>}
+              <SkeletonLoaders />}
+            
             {errorMessage?.length?
               (<ErrorMessage error={errorMessage}
               handleReset={() => { seterrorMessage('') }} />) : null}
@@ -77,18 +74,16 @@ const EditProductPage = ({ socket, setactiveNavLink }) => {
           />
           
             </div>
-            <button className="text-white rounded-md md:mx-10 mx-4 
-            my-3 w-fit p-2 text-lg text-center
-             bg-orange-600 shadow-md shadow-zinc-100"
-              onClick={() => setShowNotify(!showNotify)}>
-              Show Updates
-            </button>
-            {showNotify && <SingleProductEvents />}
-            </div>
+                      </div>
       ) : (
-            <div className="p-6 text-center my-5">
-              <h3>{errorMessage }</h3>
-          <p>Product no found</p>
+            <div className="p-6 text-center my-5
+            md:w-1/2 sm:w-11/12 w-full bg-white dark:bg-slate-700
+            ">
+              <h3 className="my-3 text-red-500">{errorMessage }</h3>
+              <p className="text-slate-700 dark:text-white
+               text-lg">
+                Product no found
+              </p>
         </div>
       )}
     </div>

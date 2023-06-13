@@ -20,10 +20,11 @@ const CancellSals = ({ socket,setactiveNavLink }) => {
 //   const [openRegisterSale, setOpenRegisterSale] = useState(true)
   const [product, setproduct] = useState('');
   const [user, setuser] = useState('');
+  const [deletedBy, setDeletedBy] = useState('');
   // const [type, setType] = useState('');
 
   const [searchFilters, setsearchFilters] = useState({
-    date:'',type:'', product:'', user:''
+    date:'',type:'', product:'', user:'',deletedBy:''
   });
   useEffect(() => {
     const fetchSales = async () => {
@@ -45,7 +46,7 @@ const CancellSals = ({ socket,setactiveNavLink }) => {
         )
         .then((res) => {
           if (res?.status === 200) {
-          console.log(res?.data);
+          // console.log(res?.data);
             setrowCount(res?.data?.totalSales);
             setsales(res?.data?.sales);
             return;
@@ -90,8 +91,10 @@ const CancellSals = ({ socket,setactiveNavLink }) => {
           product={product} setproduct={setproduct}
           searchFilters={searchFilters}
           setsearchFilters={setsearchFilters}
-showProduct={true}
+          deletedBy={deletedBy} setDeletedBy={setDeletedBy}
+          showProduct={true} showDeletedUserInput={true}
         />
+       
 
         {errorMessage?.length ? <div className="w-fit block mt-3">
           <ErrorMessage error={errorMessage}
@@ -101,6 +104,7 @@ showProduct={true}
         <SalesTable
           sales={sales}
           rowCount={rowCount}
+          
           page={page}
           setpage={setpage}
           pageSize={pageSize}

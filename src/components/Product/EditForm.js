@@ -34,7 +34,7 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
     setdeleting(true);
     setdeleteError("");
     await queryInstance
-      .delete(`/products/${product?._id}`, { headers: { Authorization: `Bearer ${token}` },signal:deleteController.signal() })
+      .delete(`/products/${product?._id}`, { headers: { Authorization: `Bearer ${token}` },signal:deleteController.signal })
       .then((res) => {
         // console.log(res);
         socket.emit("notify_update_product");

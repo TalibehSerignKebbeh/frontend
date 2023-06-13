@@ -18,7 +18,7 @@ export default function SingleProductSearch({ product, setproduct, onClear, onSe
         // console.log(string);
         setsearching(true)
         setSearchTerm(string);
-        await queryInstance.get(`/products/sale`, {params: {searchKey: string}, headers:{Authorization:`Bearer ${token}`}})
+        await queryInstance.get(`/products/sale`, {params: {searchKey: searchTerm}, headers:{Authorization:`Bearer ${token}`}})
             .then((res) => {
             setproducts(res?.data?.products)
             }).catch((err) => {
@@ -28,7 +28,7 @@ export default function SingleProductSearch({ product, setproduct, onClear, onSe
     }
     
     return (
-      <Select className='w-40 bg-white dark:bg-slate-500
+      <Select className='w-48 bg-white dark:bg-slate-500
         text-gray-700 dark:text-white rounded'
             showSearch
             placeholder={'search a product'}

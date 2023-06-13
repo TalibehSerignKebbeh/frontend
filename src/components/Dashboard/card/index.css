@@ -38,10 +38,9 @@
 
 .sales-num {
   font-weight: bold;
-  color: #ff8800;
   color: #04fb4a;
   /* background: linear-gradient(to right, #ff8800, #ffcc33); */
-  background: linear-gradient(to right, #135d1f, #299705);
+  background: linear-gradient(to right, #18892b, #40d70d);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

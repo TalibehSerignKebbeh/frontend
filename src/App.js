@@ -24,26 +24,16 @@ import useAuth from "./hooks/useAuth";
 import { serverUrl } from "./api";
 import PageNotFound from "./other/PageNotFound";
 import UnAuthorized from "./other/UnAuthorized";
-import SaleReport from "./components/Report/SaleReport";
 import 'antd/dist/reset.css';
 import Events from "./components/Notifications/Page/Events";
-// import Test from "./Test";
 import CancellSals from "./components/sales/CancellSales";
-// import TypingAnimation from "./TextAnimation";
+import Page from "./components/Product/Expired/Page";
 
 
 function App() {
   const { username } = useAuth()
   const [activeNavLink, setactiveNavLink] = useState('');
-  // const navigate = useNavigate()
-  // const [socket, setsocket] =
-  //   useState(io(serverUrl, {
-  //     withCredentials:true,
-  //     autoConnect: false,
-  //     reconnectionAttempts: 3,
-  //     secure: true,
-  //     host:serverUrl,
-  //   }));
+
   const socket = io(serverUrl, {
     withCredentials: true,
     autoConnect: false,
@@ -75,7 +65,7 @@ function App() {
             setshowSideMenu={setshowSideMenu}
           />
           {/* other content */}
-          <div className="content relative w-screen h-screen 
+          <div className=" relative w-screen h-screen 
           flex flex-col items-stretch
           bg-inherit overflow-x-hidden">
             <TopBar
@@ -95,6 +85,10 @@ function App() {
                     <Login socket={socket} setactiveNavLink={setactiveNavLink} />
                   }
                 />
+                <Route
+                      path="expired"
+                      element={<Page socket={socket} setactiveNavLink={setactiveNavLink} />}
+                    />
                 <Route
                   element={
                     <ProtectedRoutes
@@ -116,6 +110,10 @@ function App() {
                       index
                       element={<ProductPage socket={socket} setactiveNavLink={setactiveNavLink} />}
                     />
+                     <Route
+                      path="expired"
+                      element={<Page socket={socket}  />}
+                    />
 
                     <Route
                       path=":id"
@@ -125,6 +123,7 @@ function App() {
                       path=":id/sales"
                       element={<ProductSales socket={socket} setactiveNavLink={setactiveNavLink} />}
                     />
+                     
                   </Route>
                   <Route path="categories">
                     <Route index element={<CategoryPage socket={socket} setactiveNavLink={setactiveNavLink} />} />
@@ -146,10 +145,10 @@ function App() {
                       path="/users"
                       element={<UserPage socket={socket} setactiveNavLink={setactiveNavLink} />}
                     />
-                    <Route
+                    {/* <Route
                       path="/report"
                       element={<SaleReport setactiveNavLink={setactiveNavLink} />}
-                    />
+                    /> */}
                     <Route
 
                       path="/events"
@@ -166,19 +165,19 @@ function App() {
                 {/* <Route path='' */}
               </Routes>
             </div>
-            {token && (
+            {/* {token && (
               <div className="card-shadow p-4 
               bg-white  dark:bg-slate-700
-              shadow-sm shadow-orange-50 self-end 
+              shadow-sm shadow-orange-50  
               justify-end text-center py-4
               text-gray-700 dark:text-white
-              w-full">
+              w-full justify-self-end self-end">
                 <h3>
                   &#169; My Mini Market Inventory Management System{" "}
                   {new Date().getFullYear()}
                 </h3>
               </div>
-            )}
+            )} */}
           </div>
 
         </div>

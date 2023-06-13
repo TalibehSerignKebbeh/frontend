@@ -14,6 +14,7 @@ import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import { formatNumber } from '../../other/format';
 import { monthNames } from '../../other/format';
+import MyDataGrid from '../sales/MyDataGrid';
 
 
 
@@ -34,6 +35,7 @@ const MonthlyReport = () => {
   const [weekData, setweekData] = useState([]);
   const [topSellingByProfit, settopSellingByProfit] = useState([]);
   const [topSellingByQuantity, settopSellingByQuantity] = useState([]);
+  const [sales, setsales] = useState([]);
   // const COLORS =   ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FFA15C', '#666666'];
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const MonthlyReport = () => {
             setcount(res?.data?.count)
             setprofit(res?.data?.profit)
             setproductCount(res?.data?.quantity)
+            setsales(res?.data?.sales)
           }
         })
         .catch((err) => {
@@ -199,17 +202,23 @@ const MonthlyReport = () => {
                     md:px-7 px-2'>
                   Top Selling by Profit
                   </h3>
-                <ProductsStatsTable data={topSellingByProfit} />
+                      <ProductsStatsTable data={topSellingByProfit} 
+                        type={'profit'}
+                />
                   </div>
                   <div>
                   <h3 className='text-teal-600 text-lg
                   md:px-7 px-2'>
                   Top Selling by quantity
                   </h3>
-                    <ProductsStatsTable data={topSellingByQuantity} />
+                      <ProductsStatsTable data={topSellingByQuantity} 
+                        type={'quantity'}
+                    />
                   </div>
                     
-                </div>
+                  </div>
+                  <MyDataGrid data={sales}
+                  loading={isLoading}/>
               </div>
               : null}
           </div> : null

@@ -25,7 +25,7 @@ const CategoryPage = ({socket, setactiveNavLink}) => {
        _id:'', name: '', description: ''
     });
 
-    const {isLoading,isError, error, data} = useQuery({
+    const {isLoading,isError, error,failureReason, data} = useQuery({
         queryKey: ['stocks', page, pageSize],
         queryFn: () => fetchStocks({ token,page, pageSize  }),
         refetchInterval: 15000,
@@ -43,12 +43,14 @@ const CategoryPage = ({socket, setactiveNavLink}) => {
     }
 
     useEffect(() => {
-        setactiveNavLink('categories')
         // console.log(data);
-        if (isError) {
+        if (error) {
            seterrorMessage(GetError(error))
         }
-    },[data, error, isError, setactiveNavLink])
+         if (failureReason) {
+           seterrorMessage(GetError(failureReason))
+        }
+    },[data, error, failureReason, isError])
     
 
     return (

@@ -16,8 +16,6 @@ import { isToday } from "date-fns";
 import HourlyCharts from "../Dashboard/chats/HourlyCharts";
 import parseISO from "date-fns/parseISO";
 import isYesterday from "date-fns/isYesterday";
-// import PieChart from "../Charts/PieChart";
-// import ProductsStatsTable from "../Product/ProductsStatsTable";
 import TopSellingTables from "./TopSellingTables";
 
 
@@ -80,7 +78,7 @@ const DateReportComponent = () => {
         shadow shadow-slate-200 dark:shadow-slate-500
         drop-shadow-lg relative
      md:p-8 sm:p-2 p-0 py-4 block rounded text-slate-800 dark:text-white">
-      <h2 className="text-4xl text-teal-600 font-normal 
+      <h2 className="text-2xl text-teal-600 font-normal 
       font-sans italic opacity-90 pl-1
       ">
         Date Report Section
@@ -157,11 +155,6 @@ const DateReportComponent = () => {
 
 
             </div>
-            <div className="bg-inherit p-0 mt-4 overflow-auto h-auto max-w-full">
-
-              <MyDataGrid data={sales} loading={isLoading} />
-            </div>
-            {/* <HourChat hourlyData={hourlyData} /> */}
             <div>
 
             </div>
@@ -179,30 +172,11 @@ const DateReportComponent = () => {
                 <TopSellingTables byProfit={topSellingByProfit}
                   byQuantity={topSellingByQuantity}
                 />
-              {/* <div className=" h-[500px] min-h-[400px] max-h-[800px] w-full
-                flex flex-col gap-y-3 py-3 my-3 justify-center items-stretch
-                bg-slate-300 shadow-md ">
+                <div className="bg-inherit p-0 mt-4 overflow-auto h-auto max-w-full">
 
-                <h4 className="font-normal
-                  text-gray-700 font-sans text-center
-                  text-2xl">
-                  Top 5 best selling product by profit
-                </h4>
-                <PieChart data={topSellingByProfit}
-                  xKey={'name'} yKey={'profit'} />
-              </div>
-              <div className=" h-[500px] min-h-[400px] max-h-[800px] w-full
-                flex flex-col gap-y-3 py-3 my-3 justify-center items-stretch
-                bg-slate-300 shadow-md ">
-
-                <h4 className="font-normal
-                  text-gray-700 font-sans text-center
-                  text-2xl">
-                  Top 5 best selling product by quantity
-                </h4>
-                <PieChart data={topSellingByQuantity}
-                  xKey={'name'} yKey={'quantity'} />
-              </div> */}
+              <MyDataGrid data={sales} loading={isLoading} />
+            </div>
+              
               
             </div>
           </div>

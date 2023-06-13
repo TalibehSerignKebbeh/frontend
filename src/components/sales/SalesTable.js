@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import  {DataGrid,gridClasses,GridToolbar}  from "@mui/x-data-grid";
 import Box from "@mui/system/Box";
 // import  Delete  from "@mui/icons-material/Delete";
-import { salesColumns } from "./data";
+import { salesColumns, cancelledSalesColumns } from "./data";
 import { queryInstance } from "../../api";
 import useAuth from "../../hooks/useAuth";
 import { GetError } from "../other/OtherFuctions";
@@ -20,6 +20,7 @@ const SalesTable = ({
   loading,
   socket,
   deletable,
+
 }) => {
   const [cancelling, setCancelling] = useState(false);
  const {token}= useAuth()
@@ -96,8 +97,8 @@ const SalesTable = ({
         autoHeight
         rowCount={rowCount}
         rows={sales?.length ? sales : []}
-        checkboxSelection
-        columns={salesColumns}
+        checkboxSelection={deletable}
+        columns={deletable? salesColumns : cancelledSalesColumns}
         getRowId={(row) => row?._id}
         page={page}
         pageSize={pageSize}

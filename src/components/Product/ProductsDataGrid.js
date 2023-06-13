@@ -5,11 +5,7 @@ import {
   GridToolbar,
   gridClasses,
 } from "@mui/x-data-grid";
-import  TablePagination  from "@mui/material/TablePagination";
-// import  IconButton  from "@mui/material/IconButton";
 import  format  from "date-fns/format";
-// import { Inventory2 } from "@mui/icons-material";
-// import { AiOutlineEdit } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const ProductsDataGrid = ({ products, pageSize,

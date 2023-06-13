@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 import DailyChart from '../Dashboard/chats/DailyChart';
 
 const DashBoardSalesStats = ({ salesStatsQuery }) => {
-    console.log(salesStatsQuery?.data);
     return (
         <Box className={`w-full bg-white dark:bg-slate-700
         shadow shadow-slate-200 dark:shadow-slate-500
@@ -24,11 +23,13 @@ const DashBoardSalesStats = ({ salesStatsQuery }) => {
                 text={'This Month'} />
             <SalesCard stats={salesStatsQuery?.data?.thisYearStats}
                 text={'This Year'} />
-            <div className='h-auto overflow-auto my-7 max-w-full'>
+            <div className='h-auto overflow-auto my-7 max-w-full
+            bg-slate-100'>
                 <h2 className='text-center text-lg font-normal
                 text-slate-700 dark:text-slate-100
-                bg-slate-100'
+                '
                 >This Weeks Daily Sales Analysis</h2>
+
                 <DailyChart chartData={salesStatsQuery?.data?.thisWeekStats} />
             </div>
         </Box>

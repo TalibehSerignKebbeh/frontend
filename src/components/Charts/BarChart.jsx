@@ -18,23 +18,23 @@ export default function BarChart({ data, keys,
         labels: { text: { color: '#fff', fontSize: '1.1rem' } },
         markers:{textColor:'#333', fontSize:'.6rem', }
       }}
+    
           data={data}
-      keys={[keys?.split(' ')]}
+      keys={[...keys]}
+      groupMode='grouped'
                 indexBy={index}
-      // valueFormat={}
       margin={{ top: 50, right: 20, bottom: 100, left: 60 }}
       padding={0.4}
-      valueScale={{ type: "linear",clamp:true }}
-      colors={{ scheme: 'red_blue',size:6}}
+      valueScale={{ type: "linear", nice:true, }}
+      indexScale={{type:'band', round:true}}
+      colors={{ scheme: 'nivo',size:6}}
       
       animate={true}
-      // enableLabel={true}
       axisTop={null}
       axisRight={null}
       labelSkipWidth={12}
       labelSkipHeight={12}
       role='application'
-      // motionConfig={{bounce:10,velocity:3}}
       axisLeft={{
         tickSize: 5,
         tickPadding: 5,

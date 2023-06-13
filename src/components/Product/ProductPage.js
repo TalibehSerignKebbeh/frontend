@@ -3,14 +3,13 @@ import {  queryInstance } from '../../api';
 import SideModal from './SideModal';
 import { Box, Button } from '@mui/material';
 import ProductsDataGrid from './ProductsDataGrid';
-// import { useQuery } from '@tanstack/react-query';
-// import { GetError } from '../other/OtherFuctions';
+import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 import ProductsUpdates from './updates/ProductsUpdates';
 import useAuth from '../../hooks/useAuth';
 import TopSellingSection from './TopSellingSection';
 
-const ProductPage = ({ socket,setactiveNavLink }) => {
+const ProductPage = ({ socket }) => {
   const {isAdmin, isManager, token} = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
   const [showUpdates, setshowUpdates] = useState(false);
@@ -27,7 +26,6 @@ const ProductPage = ({ socket,setactiveNavLink }) => {
   const [errorMessage, seterrorMessage] = useState('');
   
   useEffect(() => {
-   setactiveNavLink('products')
     const fetchProducts = async () => {
       // console.log(page, pageSize, );
       let filters = {};
@@ -56,18 +54,12 @@ const ProductPage = ({ socket,setactiveNavLink }) => {
         })
         .catch(err => {
           console.log(err);
+          seterrorMessage(GetError(err))
         }).finally(() => { setloading(false) })
     }
    fetchProducts()
-  }, [page, pageSize, setactiveNavLink, token])
-  // const startDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 7);
-  // const endDate=new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-//   const productsRequest = useQuery({
-//     queryKey: ['products', page, pageSize],
-//     queryFn: () => fetchProducts({token, startDate, endDate,quantityThreshold:6,
-// revenueThreshold:10   })
-
-//   })
+  }, [page, pageSize, token])
+ 
 
   return (
     <div className=' w-full h-full md:mb-6 sm:mb-10 xl:my-0 mb-12'>
@@ -105,7 +97,6 @@ const ProductPage = ({ socket,setactiveNavLink }) => {
       />
       {(isAdmin || isManager) ?
         <>
-
           <Button
             className='text-lg text-slate-700 dark:text-slate-50
              shadow-md bg-slate-50 dark:bg-slate-700 '

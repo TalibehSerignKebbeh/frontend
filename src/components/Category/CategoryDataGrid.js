@@ -16,7 +16,7 @@ import useAuth from '../../hooks/useAuth';
 const CategoryDataGrid = ({ data, setopenEdit, setstock,
   page, setpage, setpageSize, pageSize, isLoading,
 }) => {
-  const {token} = useAuth()
+  const {token, isAdmin, isManager} = useAuth()
   const [openDelete, setopenDelete] = useState(false);
   const [stockToDelete, setstockToDelete] = useState(null);
   const [deletLoading, setdeletLoading] = useState(false);
@@ -71,7 +71,7 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
       width: 190,
       getActions: (params) => [
 
-        <GridActionsCellItem
+        <GridActionsCellItem 
           className='text-slate-800 dark:text-white
            text-xs' 
           sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
@@ -86,14 +86,14 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
 
           label="Products"
         />,
-        <GridActionsCellItem
+        <GridActionsCellItem hidden={!(isAdmin || isManager)}
         className='text-slate-800 dark:text-white' 
         sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           onClick={() => { setopenEdit(true); setstock(params?.row) }}
           icon={<EditRounded />}
           label="Edit"
         />,
-        <GridActionsCellItem
+        <GridActionsCellItem hidden={!(isAdmin || isManager)}
         className='text-slate-800 dark:text-white' 
         sx={{ p: 1, py: '4px', color: 'darkred', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           onClick={() => handleStartDelete(params?.row)}
@@ -128,9 +128,9 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
         columnThreshold={2}
         pageSizeOptions={[5, 10, 20, 30, 50, 70, 100]}
         // onPageSizeChange={newSize => setpageSize(newSize)}
-        components={{
-          Toolbar: GridToolbar,
-        }}
+        // components={{
+        //   Toolbar: GridToolbar,
+        // }}
 
         localeText={{
           toolbarDensity: 'Size',

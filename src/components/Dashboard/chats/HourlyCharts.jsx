@@ -2,7 +2,7 @@ import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export default function HourlyCharts({ hourlyData }) {
-  console.log(hourlyData);
+  // console.log(hourlyData);
     const chartData = hourlyData.map(sale =>
   ({
     x: `${sale.hour}:00 - ${sale?.hour===23? '00' : sale.hour + 1}:00`,

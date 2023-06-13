@@ -16,7 +16,7 @@ const SearchProducts = ({ selected, setselected, products, setproducts }) => {
         // console.log(string);
         setsearching(true)
         setSearchTerm(string);
-        await queryInstance.get(`/products/sale`, {params: {searchKey: string}, headers:{Authorization:`Bearer ${token}`}})
+        await queryInstance.get(`/products/sale`, {params: {searchKey: searchTerm}, headers:{Authorization:`Bearer ${token}`}})
             .then((res) => {
             setproducts(res?.data?.products)
             }).catch((err) => {
@@ -31,7 +31,8 @@ const SearchProducts = ({ selected, setselected, products, setproducts }) => {
   const productKeysToDelete = ['addedBy','expiryDate','producedDate','updatedAt','quantity']
     return (
         <div className=''>
-            <Select className='md:w-96 sm:w-80 w-40 max-w-full min-h-max'
+        <Select className='md:w-[600px] sm:w-[500px]
+       min-w-[14rem] max-w-[20rem]'
       showSearch
       size='large'
       mode='multiple'

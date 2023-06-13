@@ -6,13 +6,8 @@ import Header from "../other/Header";
 import { GetError } from "../other/OtherFuctions";
 import useAuth from "../../hooks/useAuth";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
-// import Clear from "@mui/icons-material/Clear";
-// import IconButton from "@mui/material/IconButton";
 import RegisterSale from "./RegisterSale";
 import { motion } from "framer-motion";
-// import SingleProductSearch from "./Select/SingleProductSearch";
-// import SearchUser from "../user/SearchUser";
-// import format from "date-fns/format";
 import SalesFilters from "./SalesFilters";
 
 const SalesPage = ({ socket,setactiveNavLink }) => {
@@ -122,6 +117,7 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
           searchFilters={searchFilters}
           setsearchFilters={setsearchFilters}
           showProduct={true}
+          showDeletedUserInput={false}
         />
 
         {errorMessage?.length ? <div className="w-fit block mt-3">

@@ -8,10 +8,10 @@ const MyDataGrid = ({ data, loading }) => {
     <Box className={`bg-slate-200 dark:bg-slate-600
     text-gray-600 dark:text-white w-fit`}
       sx={{
-        // bgcolor: "#fff",
         boxShadow:
           "2px 1px 13px 0px rgba(0,0,0,0.09), 0px 1px 13px 2px rgba(0,0,0,0.09)",
         height: "auto",
+        width:'100%'
       }}
     >
       <DataGrid className="text-slate-700 dark:text-slate-50
@@ -19,10 +19,12 @@ const MyDataGrid = ({ data, loading }) => {
         columns={salesColumns}
          
         rows={data?.length ? data : []}
-        columnBuffer={4}
-        columnThreshold={4}
-        hideFooterPagination={true}
-        hideFooter
+        columnBuffer={8}
+        columnThreshold={8}
+        // hideFooterPagination={true}
+        // hideFooter
+        rowSelection={false}
+        paginationMode="client"
         getRowId={(row) => row?._id}
         loading={loading}
         components={{
@@ -37,7 +39,8 @@ const MyDataGrid = ({ data, loading }) => {
           toolbarFiltersTooltipActive: 2,
         }}
         sx={{
-           height:'500px',
+          height: '600px',
+          width:'100%',
           // width: { xl: "75%", lg: "80%", md: "95%", sm: "95%", xs: "98%" },
           p: 2,
           [`& .${gridClasses.columnHeader}`]: {

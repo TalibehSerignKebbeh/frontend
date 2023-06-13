@@ -6,6 +6,8 @@ import UserNotificationCard from '../UserNotificationCard';
 import Paginate from '../../Pagination/Paginate';
 import { GetError } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
+
+
 const UserNotificationTable = ({ socket, date, user }) => {
     const { token, isAdmin, isManager } = useAuth()
     const [page, setpage] = useState(0);

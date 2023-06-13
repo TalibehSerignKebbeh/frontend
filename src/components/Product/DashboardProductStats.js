@@ -2,12 +2,11 @@ import React from 'react';
 import QuantityCard from '../Dashboard/card/QuantityCard';
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import ProductsStatsTable from './ProductsStatsTable';
 
 const DashboardProductStats = ({productsStatesQuery}) => {
     // const { productsStatesQuery } = props;
     const { data } = productsStatesQuery;
-    console.log(data);
+    // console.log(data);
 
     return (
         <Box className={`bg-white dark:bg-slate-700`}
