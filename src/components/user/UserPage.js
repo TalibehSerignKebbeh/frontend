@@ -7,8 +7,6 @@ import  Add  from "@mui/icons-material/Add";
 import  Box  from "@mui/system/Box";
 import useAuth from "../../hooks/useAuth";
 import {  useQuery } from "@tanstack/react-query";
-// import { useFormik } from "formik";
-// import { registerRoles } from "../../config/allowedRoles";
 import UserForm from "./UserForm";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
@@ -22,7 +20,6 @@ const UserPage = ({ socket,setactiveNavLink }) => {
   const [openAdd, setopenAdd] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
-  // const [totalPages, settotalPages] = useState(0);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
     password: "", confirmPassword: "", roles: [], active: false

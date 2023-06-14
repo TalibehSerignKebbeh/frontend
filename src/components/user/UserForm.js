@@ -3,13 +3,11 @@ import React, { useState } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import {  useFormik } from "formik";
 import { queryInstance } from "../../api";
-import {
-  CircularProgress,
-  FormControl,
-  MenuItem,
-  Select,
-  useTheme,
-} from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress'
+import FormControl from '@mui/material/FormControl'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import {useTheme} from '@mui/material'
 import { registerRoles } from "../../config/allowedRoles";
 import { getStyles } from "../../other/format";
 import { GetError } from "../other/OtherFuctions";

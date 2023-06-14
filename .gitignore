@@ -4,6 +4,7 @@ tempcodes.js
 TestComponent.js
 setupTests.jsx
 Test.jsx
+SanitizeForm.jsx
 BasicTable.jsx
 SampleSelect.jsx
 PercentChart.jsx

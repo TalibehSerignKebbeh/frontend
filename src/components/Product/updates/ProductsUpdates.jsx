@@ -34,7 +34,7 @@ const ProductsUpdates = ({socket, date, user}) => {
       // await queryInstance.get(`/notifications/products/alldata?page=${page}&pagesize=${pageSize}`)
       await queryInstance.get(`/notifications`, { params: filters, headers: { Authorization: `Bearer ${token}` } })
         .then(res => {
-          // console.log(res?.data);
+          console.log(res?.data?.notifications);
           setproductUpdates(res?.data?.notifications)
           settotal(res?.data?.count)
           // settotalPages(res?.data?.totalPages)
@@ -62,9 +62,16 @@ const ProductsUpdates = ({socket, date, user}) => {
                     /> : null}
           
 
-          <ProductsTable productUpdates={productUpdates} 
+          {/* <ProductsTable productUpdates={productUpdates} 
             socket={socket}
-          />
+          /> */}
+          <div>
+            {productUpdates?.map((notify, ind) => (
+              <div key={ind}>
+                <p>{notify?.message }</p>
+              </div>
+            ))}
+          </div>
           <Paginate page={page}
             setPage={setpage} setPageSize={setpageSize}
             pageSize={pageSize}

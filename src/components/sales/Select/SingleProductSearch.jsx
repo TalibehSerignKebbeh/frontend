@@ -28,7 +28,7 @@ export default function SingleProductSearch({ product, setproduct, onClear, onSe
     }
     
     return (
-      <Select className='w-48 bg-white dark:bg-slate-500
+      <Select className='w-32 bg-white dark:bg-slate-500
         text-gray-700 dark:text-white rounded'
             showSearch
             placeholder={'search a product'}

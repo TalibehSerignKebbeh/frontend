@@ -20,6 +20,7 @@ const TableContainerComponent = ({socket}) => {
      const [errorMsg, seterrorMsg] = useState('');
     const [data, setdata] = useState([]);
     const [loading, setloading] = useState(false);
+    const [cancelled, setcancelled] = useState(false);
 
     
     useEffect(() => {
@@ -33,7 +34,6 @@ const TableContainerComponent = ({socket}) => {
             if (type?.length) filters.type = type;
             if (data?.length && isStringValidDate(data))
                 filters.date = date;
-            
             await queryInstance.get(`/expires`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -65,7 +65,9 @@ const TableContainerComponent = ({socket}) => {
             if (type?.length) filters.type = type;
             if (data?.length && isStringValidDate(data))
                 filters.date = date;
-            
+            if (typeof cancelled === 'boolean') {
+                filters.cancelled = cancelled;
+            }
             await queryInstance.get(`/expires`,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -82,13 +84,14 @@ const TableContainerComponent = ({socket}) => {
             }).finally(()=>setloading(false))
    }
     return (
-        <div className='md:px-8 sm:px-6 px-4'>
+        <div className='md:px-8 sm:px-6 px-4  mt-8'>
             <FilterInputs 
                 date={date} setdate={setdate}
                 product={product} setproduct={setproduct}
                 user={user} setuser={setuser}
                 type={type} setType={setType}
-            
+                setcancelled={setcancelled}
+                cancelled={cancelled}
             />
 
             <div>
@@ -98,12 +101,15 @@ const TableContainerComponent = ({socket}) => {
                             handleReset={()=>seterrorMsg('')}
                         /> : null}
                   
-                <button
+                {!loading ?
+                    <button
                             onClick={refetchData}
                             className='float-right
-                        px-2 py-3 bg-orange-600 text-white
-                        rounded-lg mt-7 mb-4 lg:mr-44 md:mr-36 sm:mr-24'
-                        >Refetch</button>
+                        px-4 py-2 bg-orange-600 text-white
+                        rounded-lg mt-7 mb-4 
+                         lg:mr-[50%] md:mr-[30%] sm:mr-24 mr-16'
+                    >Refetch</button>
+                        : null}
 
                 {loading?
                     <SkeletonLoaders /> :
@@ -117,6 +123,7 @@ const TableContainerComponent = ({socket}) => {
                         pageSize={pageSize}
                             total={total}
                             socket={socket}
+                            hideDelete={false}
                     /> 
                 </div>}
                 

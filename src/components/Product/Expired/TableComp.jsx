@@ -7,12 +7,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableRowComp from './TableRowComp';
-import { TableFooter } from '@mui/material';
+import  TableFooter  from '@mui/material/TableFooter';
 import Paginate from '../../Pagination/Paginate';
 
 const TableComp = ({ data, page, setpage,
     pageSize, setPageSize, total,
-socket}) => {
+    hideDelete,socket}) => {
     return (
            <TableContainer>
             <Table
@@ -62,19 +62,21 @@ socket}) => {
                                 Cancelled
                             </span>
                         </TableCell>
-                        <TableCell className='' colSpan={2}>
+                        {(hideDelete===false) ?
+                            <TableCell className='' colSpan={2}>
                             <span className={`text-xs text-slate-100
                                  rounded p-3 bg-slate-500
                                 `}>
                                 Actions
                             </span>
-                        </TableCell>
+                        </TableCell> : null}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data?.map((obj, ind) => (
                         <TableRowComp obj={obj} key={ind}
                             socket={socket}
+                            hideDelete={hideDelete}
                         />
                     ))}
                 </TableBody>

@@ -10,7 +10,7 @@ import parseISO from 'date-fns/parseISO';
 import {message} from 'antd'
 import  CircularProgress  from '@mui/material/CircularProgress';
 
-const TableRowComp = ({ obj, socket }) => {
+const TableRowComp = ({ obj, hideDelete, socket }) => {
     const { token } = useAuth()
     const [cancelling, setcancelling] = useState(false);
 //    console.log(obj);
@@ -94,15 +94,16 @@ const TableRowComp = ({ obj, socket }) => {
                 </span>
              </TableCell>
            
-            <TableCell>
-                <button
+            {(hideDelete===false) ?
+                <TableCell>
+                <button disabled={obj?.cancelled}
                     onClick={handleDelete}
                     className='w-10 h-10 rounded-full
                 bg-slate-300 hover:bg-slate-400
                 text-red-600'>
                    {cancelling? <CircularProgress /> : <DeleteOutline />}
                 </button>
-            </TableCell>
+            </TableCell> : null}
             {/* <TableCell></TableCell> */}
         </TableRow>
     );
