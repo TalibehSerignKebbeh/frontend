@@ -1,16 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { setCredentials } from '../../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
-import {queryInstance} from '../../api'
+import { queryInstance } from '../../api'
 // import { useLoginMutation } from '../../features/auth/authApiSlice'
 import './login.css'
 import LoginIcon from '../../imgs/newIncon.png'
 import { GetError } from '../other/OtherFuctions';
 import { useContextHook } from '../../context/AuthContext';
+import jwtDecode from 'jwt-decode'
+import { allowedRoles } from '../../config/allowedRoles';
+
 
 
 const Login = ({ socket }) => {
-    const {storeAuthToken }  = useContextHook()
+    const { storeAuthToken } = useContextHook()
     const navigate = useNavigate();
     const usernameRef = useRef()
     const [user, setuser] = useState({ username: '', password: '' });
@@ -23,7 +26,7 @@ const Login = ({ socket }) => {
     const [usernameTouch, setusernameTouch] = useState(false);
     const [passwordTouch, setpasswordTouch] = useState(false);
     const [isLoading, setisLoading] = useState(false);
-    
+
     useEffect(() => {
         usernameRef.current.focus();
         return () => { };
@@ -35,12 +38,12 @@ const Login = ({ socket }) => {
     useEffect(() => {
         setusernameError(!user?.username?.length ? 'username is required'
             : (user?.username?.length <= 3 && user?.username.split(' ') > 1) ?
-            "username cannot contain spaces, must exceed 4 characters"
-            : user?.username?.length <= 3 ? "username must exceed 4 characters"
-                : user?.username?.split(' ') > 1 ? "username cannot contain spaces" : '')
+                "username cannot contain spaces, must exceed 4 characters"
+                : user?.username?.length <= 3 ? "username must exceed 4 characters"
+                    : user?.username?.split(' ') > 1 ? "username cannot contain spaces" : '')
     }, [user?.username])
 
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (usernameError?.length || passwordError?.length) {
@@ -50,26 +53,32 @@ const Login = ({ socket }) => {
         }
         seterrorMsg('')
         setisLoading(true)
-        await queryInstance.post(`/auth`, {...user, date:new Date()})
-            .then( async(res) => {
+        await queryInstance.post(`/auth`, { ...user, date: new Date() })
+            .then(async (res) => {
                 storeAuthToken(res?.data?.token)
+                const decoded = jwtDecode(res?.data?.token)
+                socket.emit('notify_login')
+
+                const { roles } = decoded?.UserData
+                if (roles?.includes(allowedRoles?.admin)) {
+                   return navigate("dashboard")
+                }
                 // localStorage.setItem('token', res?.data?.token)
-               setsuccessMsg(res?.data?.message)
-            // console.log(res);
-            socket.emit('notify_login')
-            navigate("dashboard")
-        }).catch(err => {
-            // console.log(err?.toString())
-            console.log(err);
-            seterrorMsg(GetError(err))
-            // console.log(err?.data?.message);
-        }).finally(() => {
-        setisLoading(false)
-        })
+                setsuccessMsg(res?.data?.message)
+                // console.log(res);
+                navigate("sales")
+            }).catch(err => {
+                // console.log(err?.toString())
+                // console.log(err);
+                seterrorMsg(GetError(err))
+                // console.log(err?.data?.message);
+            }).finally(() => {
+                setisLoading(false)
+            })
 
 
     }
-    
+
     return (
         <div className='form-container '>
             {/* <canvas style={{backgroundColor:'red'}}
@@ -82,7 +91,7 @@ const Login = ({ socket }) => {
                  items-center justify-center rounded-md
                  
                 '>
-                <img src={LoginIcon} alt="Login Icon" 
+                <img src={LoginIcon} alt="Login Icon"
                     className='w-16 h-16 mt-2 bg-white text-green-500'
                 />
                 {/* <h1 className='text-lg text-center font-bold w-full md:py-2 '>
@@ -166,7 +175,7 @@ const Login = ({ socket }) => {
 
             {/* background components */}
             {/* <div></div> */}
-            
+
         </div>
 
     );

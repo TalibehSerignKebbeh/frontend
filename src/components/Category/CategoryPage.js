@@ -69,24 +69,12 @@ const CategoryPage = ({socket, setactiveNavLink}) => {
             <Header title={"Manage Categories"}
                 icon={<Store className='text-black dark:text-white' sx={{ scale: 2 }} />} />
 
-            {/* <Button 
-                className='bg-white dark:bg-slate-700
-                hover:bg-slate-50 dark:hover:bg-slate-500
-                text-slate-800 dark:text-white
-                shadow shadow-slate-100 dark:shadow-slate-500'
-            sx={{
-                mb: openEdit ? 0 : 2,
-                 px: 3, py: '6px',
-            }} 
-                onClick={handleOpenCloseCollapse}>
-               {openEdit? "Close":"Open"} Add
-            </Button> */}
             <Button 
                 clickEvent={handleOpenCloseCollapse}
                 text={openEdit ? "Close Add" : "Open Add"} 
                 classNa={`bg-white text-slate-700 dark:bg-slate-700
-                dark:text-white shadow-md rounded-sm p-2
-                text-lg mb-4 `}
+                dark:text-white shadow-md rounded-sm p-2 px-5
+                text-lg mb-4 rounded-md `}
             />
             <Collapse sx={{mb:2}} ref={formRef} in={openEdit} unmountOnExit timeout={'auto'} >
                 <AddStock stock={stock} setstock={setstock} />

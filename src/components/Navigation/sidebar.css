@@ -16,7 +16,9 @@
 
 .sidebar-main-active{
   width: 270px !important;
+  /* margin-left: 0px; */
 }
+
 .sidebar-main>*{
   display: none !important;
 }
@@ -30,7 +32,9 @@
 }
 .sidebar-main-active{
   width: 170px !important;
+  /* margin-left: 0px; */
 }
+
 }
 
 

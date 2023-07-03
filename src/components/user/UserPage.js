@@ -22,7 +22,8 @@ const UserPage = ({ socket,setactiveNavLink }) => {
   const [pageSize, setPageSize] = useState(5);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
-    password: "", confirmPassword: "", roles: [], active: false
+    password: "", confirmPassword: "", roles: [], active: false,
+    salary:0,
   });
   
   const UserFetch = useQuery({

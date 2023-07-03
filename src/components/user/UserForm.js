@@ -68,6 +68,9 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
     if (!typeof values?.active === 'boolean') {
       errors.roles = "active status undefined";
     }
+    if (values?.salary <= 0) {
+      errors.salary = "salary is required";
+    }
     return errors;
   };
   const handleCloseAdd = () => {
@@ -101,7 +104,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
         })
         .catch((err) => {
           console.log(err);
-          updateStatusMessage({
+          setupdateStatusMessage({
             ...updateStatusMessage,
             error: GetError(err),
           });
@@ -305,6 +308,33 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
             {formik.touched && formik.errors.username ? (
               <p className=" text-start text-red-700">
                 {formik.errors.username}
+              </p>
+            ) : null}
+          </div>
+          <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
+            <label
+              className=" text-start text-slate-700 dark:text-slate-50
+               font-normal text-lg"
+              htmlFor="salary"
+            >
+              salary
+            </label>
+            <input
+              className={`w-full py-1 px-2 rounded-lg text-lg h-12 
+              bg-white dark:bg-slate-400 
+                text-slate-700 dark:text-slate-100
+                 border-2 border-black`}
+              type="number"
+              name="salary"
+              id="salary"
+              placeholder="salary"
+              onBlur={formik.handleBlur}
+              value={formik.values.salary}
+              onChange={formik.handleChange}
+            />
+            {formik.touched && formik.errors.salary ? (
+              <p className=" text-start text-red-700">
+                {formik.errors.salary}
               </p>
             ) : null}
           </div>

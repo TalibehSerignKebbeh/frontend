@@ -32,21 +32,28 @@ const UsersTable = ({loading,totalPages,
       field: "firstName",
       headerName: "FirstName",
       minWidth: 110,
-      editable: true,
+      editable: false,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       field: "lastName",
       headerName: "LastName",
       minWidth: 110,
-      editable: true,
+      editable: false,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
       field: "username",
       headerName: "Username",
       minWidth: 110,
-      editable: true,
+      editable: false,
+      valueGetter: ({ value }) => (value ? value : ""),
+    },
+    {
+      field: "salary",
+      headerName: "Salary",
+      minWidth: 110,
+      editable: false,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
@@ -55,7 +62,7 @@ const UsersTable = ({loading,totalPages,
       headerName: "Roles",
       valueOptions:['admin', 'manager', 'seller'],
       width: 120,
-      editable: true,
+      editable: false,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
@@ -63,7 +70,7 @@ const UsersTable = ({loading,totalPages,
       field: "active",
       headerName: "status",
       minWidth: 110,
-      editable: true,
+      editable: false,
       valueGetter: ({ value }) => (value ? value : ""),
     },
     {
@@ -148,7 +155,7 @@ const UsersTable = ({loading,totalPages,
   };
 
   return (
-    <div className="md:w-9/12 sm:w-full w-full h-auto md:my-6 my-3
+    <div className=" xl:w-4/5 lg:w-11/12 md:w-full sm:w-full w-full h-auto md:my-6 my-3
     overflow-x-scroll ">
 
       <DataGrid
@@ -185,7 +192,8 @@ const UsersTable = ({loading,totalPages,
           width: { xl: "70%", lg: "100%", md: "100%", sm: "100%", xs: "100%" },
 
               p: 2,
-              ml: {xl:2,lg:2,md:1, sm:'0', xs:'0' },mr:'auto',
+              // ml: { xl: 2, lg: 2, md: 1, sm: '0', xs: '0' },
+              mr: 'auto',
               boxShadow:
                 "0px 0px 7px 0px rgba(0,0,0,0.1), 0px 0px 7px 0px rgba(0,0,0,0.09)",
               [`& .${gridClasses.columnHeader}`]: {

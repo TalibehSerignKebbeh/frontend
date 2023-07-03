@@ -9,10 +9,10 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
 
   const ref = useRef(null)
 
-  const handleClickAuthNotification = () => {
+  const handleClickAuthNotification = async () => {
     const ids = data?.map(notify => { return notify?._id })
     // socket.emit("read_all_auth_notification", { ids });
-    queryInstance.patch(`notifications`, { ids })
+  await  queryInstance.patch(`notifications`, { ids })
       .then((res) => {
         // console.log(res);
         if (res?.status === 200) {

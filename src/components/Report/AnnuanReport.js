@@ -13,6 +13,7 @@ import SkeletonLoaders from "../Loaders/SkelelonLoader";
 import CustomBarChart from "../Dashboard/chats/CustomBarChart";
 import MyDataGrid from "../sales/MyDataGrid";
 
+
 const AnnuanReport = () => {
   const {token} = useAuth()
   const [year, setyear] = useState(new Date().getFullYear());
@@ -48,12 +49,10 @@ const AnnuanReport = () => {
       setisLoading(false)
       return;
     }
-const handleFetchYearReport = async (e) => {
-    //  e.preventDefault();
+const handleFetchYearReport = async () => {
   resetData()
     setisLoading(true);
     setloadSuccess(false)
-    // const year = year?.slice(0, 4);
 
     await queryInstance
       .get(`/sales/stats/year?year=${Number(year)}`, {

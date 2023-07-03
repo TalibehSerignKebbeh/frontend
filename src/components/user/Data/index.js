@@ -3,6 +3,7 @@ export const initialUser = {
   firstName: "",
   lastName: "",
   username: "",
+  salary:0,
   password: "",
   confirmPassword: "",
   roles: [],

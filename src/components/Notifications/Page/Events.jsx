@@ -17,15 +17,18 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
     const [searchFilters, setsearchFilters] = useState({
         date: '', product: '', user: ''
     });
-
+    const handleTabChange = (value) => {
+        localStorage.setItem('tab', value)
+        setTab(value)
+   }
     useEffect(() => {
-        if (!tab?.length) {
+       
             const saved = localStorage.getItem('tab')
             setTab(saved?.length ? saved : 'product')
-        }
+        
         // setactiveNavLink('events')
         return () => {
-            localStorage.removeItem('tab')
+            // localStorage.removeItem('tab')
         };
     }, [tab?.length]);
 
@@ -39,27 +42,21 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
             my-5 '>
                 <Button
                     text={`Product`}
-                    clickEvent={() => {
-                        setTab('product')
-                    }}
+                    clickEvent={() => handleTabChange('product')}
                     classNa={`px-3 py-1 ${tab === 'product' ? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white '} 
                     text-gray-600 
                      text-center rounded  text-xl`}
                 />
                 <Button
                     text={`Sale`}
-                    clickEvent={() => {
-                        setTab('sale')
-                    }}
+                    clickEvent={() => handleTabChange('sale')}
                     classNa={`px-3 py-1 ${tab === 'sale' ? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white'}
                      text-gray-600 
                      text-center rounded text-xl `}
                 />
                 <Button
                     text={`User`}
-                    clickEvent={() => {
-                        setTab('user')
-                    }}
+                    clickEvent={() => handleTabChange('user')}
                     classNa={`px-3 py-1 ${tab === 'user' ? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white'}
                      text-gray-600 
                      text-center rounded  text-xl `}

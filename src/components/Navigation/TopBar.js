@@ -9,6 +9,8 @@ import ProductNotification from "../Notifications/ProductNotification";
 import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
 import { queryInstance } from "../../api";
 
+
+
 const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
   const [openNotifyPanel, setopenNotifyPanel] = useState(false);
   const [openSaleNotify, setopenSaleNotify] = useState(false);
@@ -67,9 +69,6 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       <div className="
       flex flex-row gap-0 items-center">
 
-        {/* <div className="p-0 ml-auto mr-4 ">
-          <DarkModeToggle />
-        </div> */}
         {(isAdmin || isManager) ?
           <Box
             sx={{

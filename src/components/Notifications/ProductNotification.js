@@ -30,10 +30,10 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
     setDragging(false);
   };
  
-   const handleClickAuthNotification = () => {
+   const handleClickAuthNotification = async() => {
     const ids = dataArray?.map(notify => { return notify?._id })
     // socket.emit("read_all_auth_notification", { ids });
-    queryInstance.patch(`notifications`, { ids })
+    await queryInstance.patch(`notifications`, { ids })
       .then((res) => {
         if (res?.status === 200) {
           socket.emit("read_all_product_notification", {});
