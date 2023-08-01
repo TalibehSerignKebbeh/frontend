@@ -29,18 +29,21 @@ const Login = ({ socket }) => {
 
     useEffect(() => {
         usernameRef.current.focus();
-        return () => { };
     }, []);
     useEffect(() => {
-        setpasswordError(!user?.password?.length ? 'password is required' :
-            user?.password?.length < 5 ? "password must exceed 4 characters" : '')
+        // setpasswordError(!user?.password?.length ? 'password is required' :
+        //     user?.password?.length < 5 ? "password must exceed 4 characters" : ''
+        // )
+        setpasswordError(!user?.password?.length? 'password is required':'')
     }, [user?.password])
     useEffect(() => {
-        setusernameError(!user?.username?.length ? 'username is required'
-            : (user?.username?.length <= 3 && user?.username.split(' ') > 1) ?
-                "username cannot contain spaces, must exceed 4 characters"
-                : user?.username?.length <= 3 ? "username must exceed 4 characters"
-                    : user?.username?.split(' ') > 1 ? "username cannot contain spaces" : '')
+        // setusernameError(!user?.username?.length ? 'username is required'
+        //     : (user?.username?.length <= 3 && user?.username.split(' ') > 1) ?
+        //         "username cannot contain spaces, must exceed 4 characters"
+        //         : user?.username?.length <= 3 ? "username must exceed 4 characters"
+        //             : user?.username?.split(' ') > 1 ? "username cannot contain spaces" : ''
+        // )
+        setusernameError(!user?.username?.length? 'username is required' : '')
     }, [user?.username])
 
 
@@ -75,8 +78,6 @@ const Login = ({ socket }) => {
             }).finally(() => {
                 setisLoading(false)
             })
-
-
     }
 
     return (

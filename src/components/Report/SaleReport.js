@@ -19,7 +19,11 @@ const SaleReport = ({ socket, setactiveNavLink }) => {
 
     useEffect(() => {
         setReportTab(localStorage.getItem(tabName) || 'day')
-    },[])
+        return () => {
+           localStorage.removeItem(tabName)
+       }
+    }, [tabName])
+   
     const handleChangeReportTab = (tabValue) => {
         localStorage.setItem(tabName, tabValue)
         setReportTab(tabValue)
@@ -37,7 +41,7 @@ const SaleReport = ({ socket, setactiveNavLink }) => {
                  <Button
                     text={`Day`}
                     clickEvent={() => handleChangeReportTab('day')}
-                    classNa={`px-3 py-1 ${reportTab==='annual'? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white '} 
+                    classNa={`px-3 py-1 ${reportTab==='day'? 'bg-slate-100 text-black' : 'bg-none text-white dark:text-white '} 
                     text-gray-600 
                      text-center rounded  text-xl`}
                 />

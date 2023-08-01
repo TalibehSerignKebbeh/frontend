@@ -10,7 +10,7 @@ import useAuth from '../../hooks/useAuth';
 import TopSellingSection from './TopSellingSection';
 
 const ProductPage = ({ socket }) => {
-  const {isAdmin, isManager, token} = useAuth()
+  const {isAdmin,  token} = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
   const [showUpdates, setshowUpdates] = useState(false);
   const [page, setpage] = useState(0);
@@ -95,7 +95,7 @@ const ProductPage = ({ socket }) => {
         setShowSideModal={setopenAddModal} 
         socket={socket}
       />
-      {(isAdmin || isManager) ?
+      {(isAdmin) ?
         <>
           <Button
             className='text-lg text-slate-700 dark:text-slate-50

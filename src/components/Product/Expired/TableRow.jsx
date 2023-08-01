@@ -1,11 +1,11 @@
 import React from 'react';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import { DeleteOutline } from '@mui/icons-material';
+import  DeleteOutline  from '@mui/icons-material/DeleteOutline';
 
                 
 const ExpiredTableRow = ({ data, expiredProducts, setexpiredProducts }) => {
-    console.log(expiredProducts?.length);
+
     const handleChange = (e) => {
         const { target: { value } } = e;
         if (isNaN(value) || Number(value) <= 0) {

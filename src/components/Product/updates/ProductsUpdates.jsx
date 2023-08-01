@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
-// import ProductsTable from '../../Notifications/Table/ProductsTable';
-// import SpinnerLoader from '../../Loaders/SpinnerLoader';
-// import IconButton from '@mui/material/IconButton';
-// import Close from '@mui/icons-material/Close';
 import SkeletonLoaders from '../../Loaders/SkelelonLoader';
 import Paginate from '../../Pagination/Paginate';
 import { GetError, isStringValidDate } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
 import ProductDetail from './ProductDetail';
+
 
 const ProductsUpdates = ({socket, date, user}) => {
   const { token, isAdmin, isManager } = useAuth()
@@ -45,7 +42,7 @@ const ProductsUpdates = ({socket, date, user}) => {
           seterrorMessage(GetError(err))
         }).finally(() => { setloading(false) })
     }
-    if (isAdmin || isManager) { fetchProductsNotify() }
+    if (isAdmin) { fetchProductsNotify() }
   }, [date, isAdmin, isManager, page, pageSize, token, user])
   return (
     <div className='bg-white dark:bg-slate-700 

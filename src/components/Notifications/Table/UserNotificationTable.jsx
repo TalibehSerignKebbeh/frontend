@@ -9,7 +9,7 @@ import ErrorMessage from '../../StatusMessages/ErrorMessage';
 
 
 const UserNotificationTable = ({ socket, date, user }) => {
-    const { token, isAdmin, isManager } = useAuth()
+    const { token, isAdmin } = useAuth()
     const [page, setpage] = useState(0);
     const [total, settotal] = useState(0);
     // const [totalPages, settotalPages] = useState(1);
@@ -41,8 +41,8 @@ const UserNotificationTable = ({ socket, date, user }) => {
 
                 }).finally(() => { setloading(false) })
         }
-        if (isAdmin || isManager) { fetchProductsNotify() }
-    }, [date, isAdmin, isManager, page, pageSize, token, user, user?.length])
+        if (isAdmin) { fetchProductsNotify() }
+    }, [date, isAdmin, page, pageSize, token, user, user?.length])
     return (
         <div>
 

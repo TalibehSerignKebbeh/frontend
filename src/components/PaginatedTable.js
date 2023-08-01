@@ -118,7 +118,7 @@ const PaginatedTable = () => {
                                 <TableCell>Username</TableCell>
                                 <TableCell>Roles</TableCell>
                                 <TableCell>Status</TableCell>
-                                {isAdmin || isManager ? (
+                                {isAdmin ? (
                                     <TableCell align="justify" colSpan={2}>
                                         Actions
                                     </TableCell>
@@ -142,7 +142,7 @@ const PaginatedTable = () => {
                                         </span>
                                     </TableCell>
 
-                                    {isAdmin || isManager ? (
+                                    {isAdmin ? (
                                         <TableCell>
                                             <Button
                                                 size="small"

@@ -8,7 +8,7 @@
   /* box-shadow: 3px 0px 2px 0px rgba(0, 0, 0, 0.2);
   background-color: white !important; */
   align-self: stretch;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .sidebar-main-active::-webkit-scrollbar-track{
   display: none;
@@ -29,6 +29,7 @@
 @media (max-width: 768px) {
 .sidebar-main-active, .sidebar-main{
   position: fixed !important;
+  min-height: 100vh;
 }
 .sidebar-main-active{
   width: 170px !important;

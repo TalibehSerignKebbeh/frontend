@@ -41,7 +41,6 @@ function App() {
     secure: true,
     host: serverUrl,
   })
-  const { token } = useAuth()
 
   const [showSideMenu, setshowSideMenu] = useState(true);
   useEffect(() => {

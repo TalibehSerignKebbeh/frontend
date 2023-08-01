@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { CancelOutlined } from '@mui/icons-material';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import Table from '@mui/material/Table';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+
+import CancelOutlined from '@mui/icons-material/CancelOutlined';
+
 import './style.css'
+
 const SellTable = ({ products, setproducts,  }) => {
   const [total, settotal] = useState(0);
     const handleCancell = (product) => {

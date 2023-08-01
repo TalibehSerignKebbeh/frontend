@@ -55,7 +55,9 @@ const RegisterSale = ({socket}) => {
   const handleIncrement = (value) => {
       setselected(selected?.map((prod)=>(prod?._id===value?._id?  {...prod, quantity:prod?.quantity+1}: prod)))
   }
-   const handleDecrement = (value) => {
+  const handleDecrement = (value) => {
+    const product = selected?.find((prod) => prod?._id === value?._id)
+    if (product && product?.quantity <= 1) return;
       setselected(selected?.map((prod)=>(prod?._id===value?._id?  {...prod, quantity:prod?.quantity-1}: prod)))
   }
 
@@ -70,13 +72,15 @@ const RegisterSale = ({socket}) => {
     >
       <div className='w-full md:mx-10 mx-2 overflow-x-auto'>
 
-        <h2 className='text-2xl mt-2 font-light 
-       dark:text-slate-50 text-slate-700'
+        <h2 className='text-2xl my-2 font-light 
+       dark:text-slate-50 text-slate-800'
         >
         Add Sales Here
       </h2>
   
-         {selected?.length? <ReceiptTable selected={selected}
+        {selected?.length ?
+          <ReceiptTable selected={selected}
+            setselected={setselected}
             handleDecrement={handleDecrement}
             handleIncrement={handleIncrement}
            /> : null}
@@ -108,10 +112,12 @@ const RegisterSale = ({socket}) => {
             }}
           className="ml-10 bg-green-900 
             text-white py-2 h-fit rounded-md 
-            "
+            justify-self-end"
           onClick={handleSubmit}
         >
-          {postingSales? <CircularProgress sx={{color:'red'}} size={`small`} /> : `Upload`}
+            {postingSales ?
+              <CircularProgress sx={{ color: 'red' }} size={`small`} />
+              : `Upload`}
           </button>
           {/* <button
             

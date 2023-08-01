@@ -28,7 +28,8 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
   useEffect(() => {
     window.addEventListener('mousedown', (e) => {
       // console.log(ref?.current?.contains(e.target));
-          if (!ref?.current?.contains(e.target)) {
+      const isChild = ref?.current?.contains(e.target)
+          if (!isChild) {
               setopen(false)
             }
         })
@@ -48,7 +49,7 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
         height: 'auto', width: '100%', padding: '2px 5px',
           textAlign: 'center', justifyContent: 'center',
         }}
-        className='bg-inherite'
+        className='bg-inherit mb-1'
       >
         <div className="bg-white dark:bg-gray-600 
              shadow-md shadow-slate-100 dark:shadow-slate-400">
@@ -85,7 +86,8 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
             className='mx-auto p-2 px-8 mt-2 rounded  
             bg-green-700 hover:bg-green-600
             text-white hover:text-white  '
-                onClick={handleClickAuthNotification}>
+            onClick={handleClickAuthNotification}
+          >
             Read All
           </button>
        </div>
@@ -99,6 +101,7 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
                 style={{
                   marginTop:'60px', 
                   marginBlock: '10px',
+                  paddingBottom:'30px'
                   }}
           >
             {Row}

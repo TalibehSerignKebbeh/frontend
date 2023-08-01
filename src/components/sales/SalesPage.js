@@ -10,7 +10,8 @@ import RegisterSale from "./RegisterSale";
 import { motion } from "framer-motion";
 import SalesFilters from "./SalesFilters";
 
-const SalesPage = ({ socket,setactiveNavLink }) => {
+const SalesPage = ({ socket, setactiveNavLink }) => {
+  
   const { token } = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
@@ -80,10 +81,10 @@ const SalesPage = ({ socket,setactiveNavLink }) => {
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
         title={"Manage Sales"}
       />
-      <button className="px-2 py-2 rounded-md 
+      <button className="md:px-4 px-2 py-2 rounded-md 
         shadow-md shadow-slate-50 dark:shadow-slate-700
         bg-white dark:bg-slate-700
-      text-slate-700 dark:text-white font-bold mb-4"
+      text-slate-500 dark:text-white font-bold mb-4"
         onClick={() => setOpenRegisterSale(prev => !prev)}>
         {openRegisterSale ? `Close` : `Open`}  Register Sales
       </button>

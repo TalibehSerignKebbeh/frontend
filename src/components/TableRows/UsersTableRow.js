@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import {} from '@fortawesome/free-solid-svg-icons'
 
 const UsersTableRow = ({ user }) => {
-    const { isAdmin, isManager } = useAuth()
+    const { isAdmin } = useAuth()
     const [UserToEdit, setUserToEdit] = useState(null);
     const [openEdit, setopenEdit] = useState(false);
    const [EditStatus, setEditStatus] = useState({deleting:false, updating: false});
@@ -35,7 +35,7 @@ const UsersTableRow = ({ user }) => {
                 </span>
             </TableCell>
 
-            {(isAdmin || isManager) ?
+            {(isAdmin) ?
                 <TableCell>
                     <Button size='small' variant='contained'
                         color={`success`}

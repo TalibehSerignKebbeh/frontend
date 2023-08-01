@@ -1,79 +1,131 @@
 import React from 'react'
-import AddCircle from '@mui/icons-material/AddCircle'
-import  Minimize from '@mui/icons-material/Minimize';
+import AddCircle from '@mui/icons-material/AddCircleOutlineOutlined'
+import Minimize from '@mui/icons-material/MinimizeRounded';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableFooter from '@mui/material/TableFooter';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
-export default function ReceiptTable({selected, handleDecrement, handleIncrement}) {
+
+
+export default function ReceiptTable({ selected, handleDecrement, handleIncrement }) {
   return (
-     <table 
-              className=' relative w-fit table table-auto text-align
-              md:text-2xl text-lg
-              bg-white dark:bg-slate-400 text-slate-700
-              '>
-          <thead className=''>
-            <tr className={``} >
-              <th className='w-auto text-xs 
-              text-slate-800 dark:text-white
-              border border-slate-300 px-4 py-2'>Name</th>
-              <th className='w-auto text-xs 
-              text-slate-800 dark:text-white
-              border border-slate-300 px-4 py-2'>Price</th>
-              <th className='w-auto text-xs 
-              text-slate-800 dark:text-white
-              border border-slate-300 px-4 py-2'>Qty</th>
-              <th className='w-auto text-xs 
-              text-slate-800 dark:text-white
-              border border-slate-300 px-4 py-2'>Total</th>
-              <th className='w-auto text-xs 
-              text-slate-800 dark:text-white
-              border border-slate-300 px-4 py-2' colSpan={2}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {selected?.map((value, index) => (
-              <tr className={``} key={index}>
-                <td className='w-auto  font-normal text-6xl text-center 
-                text-slate-800 dark:text-white
-                border border-slate-300 px-2 py-2'>{value?.name }</td>
-                <td className='w-auto  font-normal text-6xl text-center 
-                text-slate-800 dark:text-white
-                border border-slate-300 px-2 py-2'>{value?.price }</td>
-                <td className='w-auto  font-normal text-6xl text-center 
-                text-slate-800 dark:text-white
-                border border-slate-300 px-2 py-2'>{value?.quantity }</td>
-                <td  className='w-auto font-normal  text-6xl text-center 
-                text-slate-800 dark:text-white
-                border border-slate-300 px-2 py-2'>{value?.price * value?.quantity }</td>
-                    <td className='w-auto  font-normal text-6xl text-center 
-                    text-slate-800 dark:text-white
-                    border border-slate-300  px-2 py-2'>
-                        <button onClick={e => handleIncrement(value)}>
-                  <AddCircle />
-                </button></td>
-                <td className='w-auto font-normal  text-6xl text-center 
-                    text-slate-800 dark:text-white
-                    border border-slate-300 px-2 py-2
-                    flex items-center justify-center'>
-                  <button className='m-auto'
-                    onClick={e => handleDecrement(value)}
-                    disabled={value?.quantity <= 1}>
-                  <Minimize />
-                </button></td>
-              </tr>
-            ))}
-          
-              </tbody>
-              <tfoot>
-              <tr className={``}>
-                <td colSpan={3} className='text-center text-6xl font-medium
-                 text-slate-800 dark:text-white
-                 border border-slate-300 px-4 py-2'  align='right'>Total</td>
-                <td colSpan={3} className='text-center text-6xl  font-medium
-                 text-slate-800 dark:text-white
-                border border-slate-300 px-4 py-2' align='left'>
-                  {selected?.reduce((prev, current) => { return prev + (current?.quantity * current?.price) }, 0)}
-                </td>
-              </tr>
-              </tfoot>
-        </table>
-  )
+    <div>
+       
+          <Table sx={{
+            minWidth: '200px',maxWidth:"600px",
+            maxHeight: '500px',overflowY:"auto"
+
+          }}
+
+          >
+            <TableHead className='bg-slate-100 dark:bg-gray-800'>
+              <TableRow className=''>
+                <TableCell className=''>
+                  <span className='text-slate-600 dark:text-slate-100'>
+                    Name
+                  </span>
+                </TableCell>
+                <TableCell className=''>
+                  <span className='text-slate-600 dark:text-slate-100'>
+                    Quantity
+                  </span>
+                </TableCell>
+                <TableCell className='' align="center">
+                  <span className='text-slate-600 dark:text-slate-100'>
+                    Price
+                  </span>
+                </TableCell>
+                <TableCell className='' align="right">
+                  <span className='text-slate-700 dark:text-slate-100'>
+                    Total
+                  </span>
+                </TableCell>
+
+                <TableCell className='' align="center"
+                  colSpan={2}>
+                  <span className='text-slate-700 dark:text-slate-100'>
+                    Actions
+                  </span>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {selected?.map((value, index) => (
+                <TableRow className='bg-slate-50 dark:bg-slate-700'
+                  key={index}
+                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell className='text-red-500' align="left">
+
+                    <span className='text-slate-600 dark:text-white text-base'>
+                      {value?.name}
+                    </span>
+                  </TableCell>
+
+                 
+                  <TableCell className='text-red-500' align="left">
+                    <span className='text-slate-600 dark:text-white text-base'>
+                      {value?.quantity}
+                    </span>
+                  </TableCell>
+                   <TableCell className='text-red-500' align="left">
+                    <span className='text-slate-600 dark:text-white text-base'>
+                      {value?.price}
+                    </span>
+                  </TableCell>
+                  <TableCell className='text-red-500' align="right">
+
+                    <span className='text-slate-600 dark:text-white text-base'>
+                      {value?.quantity * value?.price}
+                    </span>
+
+                  </TableCell>
+                  <TableCell className='text-red-500' align="right">
+                     <button onClick={e=>handleIncrement(value)}
+                     className='text-slate-600 dark:text-slate-100
+                    '>
+                     <AddCircle />
+                </button>
+                  
+
+                  </TableCell>
+                  <TableCell>
+                    <button onClick={e=>handleDecrement(value)}
+                    className='text-slate-600 dark:text-slate-100
+                    inline-flex items-stretch justify-stretch'>
+                      <Minimize
+                        sx={{
+                          transform: 'scale(2)', margin: 'auto',
+                        mt:'-17px'}} />
+                </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+             <TableFooter>
+              <TableRow
+              className='bg-slate-50 dark:bg-slate-700'>
+                <TableCell colSpan={3}>
+              <span className='text-slate-700 dark:text-slate-100
+                  text-base'>
+                    Grand Total
+                  </span>
+            </TableCell>
+                <TableCell align='right'>
+              <span className='text-slate-700 dark:text-slate-100
+                  text-base'>
+                    {selected?.reduce((prev, current) =>
+                    { return prev + (current?.quantity * current?.price) }, 0)}
+                  </span>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+
+      </Table>
+      </div>
+        
+    )
 }

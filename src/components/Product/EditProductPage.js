@@ -12,7 +12,7 @@ import SkeletonLoaders from "../Loaders/SkelelonLoader";
 
 const EditProductPage = ({ socket, setactiveNavLink }) => {
   const { id } = useParams();
-  const {token, isAdmin, isManager } = useAuth();
+  const {token, isAdmin } = useAuth();
   const [product, setproduct] = useState(null);
   const [categories, setCategories] = useState([]);
   const [isLoading, setisLoading] = useState(false);
@@ -45,7 +45,7 @@ const EditProductPage = ({ socket, setactiveNavLink }) => {
     fetchProduct();
 
     return () => {};
-  }, [id, isAdmin, isManager, socket, token]);
+  }, [id, isAdmin,  socket, token]);
 
   return (
     <div

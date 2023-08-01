@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
-// import { DataGrid } from '@mui/x-data-grid';
-// import IconButton from '@mui/material/IconButton';
-// import Close from '@mui/icons-material/Close';
-// import format from 'date-fns/format';
-// import parseISO from 'date-fns/parseISO';
-// import isValid from 'date-fns/isValid';
+
 import { GetError } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
 import SaleTable from './SaleTable';
@@ -14,7 +9,7 @@ import Paginate from '../../Pagination/Paginate';
 import SkeletonLoaders from '../../Loaders/SkelelonLoader';
   
 const SalesEvents = ({ showSideMenu, user, date }) => {
-  const { token, isAdmin, isManager } = useAuth()
+  const { token, isAdmin } = useAuth()
   const [page, setpage] = useState(0);
   const [count, setCount] = useState(0);
   // const [totalPages, settotalPages] = useState(1);
@@ -48,8 +43,8 @@ const SalesEvents = ({ showSideMenu, user, date }) => {
           seterrorMessage(GetError(err))
         }).finally(() => { setloading(false) })
     }
-    if (isAdmin || isManager) { fetchProductsNotify() }
-  }, [date, isAdmin, isManager, page, pageSize, token, user])
+    if (isAdmin) { fetchProductsNotify() }
+  }, [date, isAdmin,  page, pageSize, token, user])
   return (
     <div>{
       loading ?

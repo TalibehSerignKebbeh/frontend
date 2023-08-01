@@ -18,7 +18,7 @@ import LogoutSection from "./LogoutSection";
 
 const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
 
-  const { token, username, isAdmin, isManager } = useAuth();
+  const { token, username, isAdmin } = useAuth();
  
   
 
@@ -32,33 +32,39 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
       height={'100vh'}
       className={`bg-gray-50 dark:bg-slate-700
       text-gray-700 dark:text-slate-50 overflow-x-hidden
+      overflow-y-auto
       ${showSideMenu
           ? "sidebar-main-active "
           : " sidebar-main "
-        }  bg-white  flex flex-col overflow-y-scrol clear-both mt-0 text-start
-             transition-all fixed z-10 `}
+        }  
+        bg-white  flex flex-col overflow-y-auto 
+        clear-both mt-0 text-start
+             transition-all fixed z-10
+             pb-8`}
     >
       <Button
         onClick={handleNavToggle}
         disableTouchRipple={true}
         disableFocusRipple
         sx={{
-          fontSize: "1.4rem",
-          ml: "3px", mt: '2px', position: 'fixed', p: '6px',
-
+          fontSize: "1.7rem",
+          ml: "3px", mt: '2px', position: 'fixed', p: '2px',
+          flexShrink:0,
         }}
         className={`bg-orange-400 dark:bg-orange-400
          dark:hover:bg-orange-400
-         text-gray-800 dark:text-white
+         text-gray-800 dark:text-white 
          z-50 menu-toggle-btn 
             ${showSideMenu ? "ml-auto" : " -m-1 ml-1"} 
              w-auto ml-auto -mr-8 text-2xl pointer p-0 
                    `}
       >
-        <MenuOutlined sx={{ scale: 1.3, color:'inherit' }} />
+        <MenuOutlined sx={{ color: 'inherit' }} />
+        
       </Button>
       <Box sx={{
         mt: 4, textAlign: 'center',
+        mb:4
       }}>
 
         <Box className="md:py-3 my-2" sx={{ textAlign: "center" }}>
@@ -83,7 +89,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
           className={`"w-full h-full flex flex-col  relative
                          content-center items-start md:gap-y-3 gap-y-2 `}
         >
- {(isAdmin || isManager) ?
+ {(isAdmin) ?
 
             <CustomLink href={'/dashboard'}
               icon={<DashboardOutlined />}
@@ -118,15 +124,15 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             showSideMenu={showSideMenu}
           />
 
-          {(isAdmin || isManager) ?
+          {(isAdmin) ?
             <br /> : null}
-          {(isAdmin || isManager) ?
+          {(isAdmin) ?
             <CustomLink href={'/users'}
               icon={<AiOutlineUserSwitch />}
               title={"users"}
               showSideMenu={showSideMenu}
             /> : null}
-          {(isAdmin || isManager) ?
+          {(isAdmin) ?
 
             <CustomLink href={'/categories'}
               icon={<ProductionQuantityLimits />}
@@ -136,7 +142,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             : null}
          
 
-          {(isAdmin || isManager) ?
+          {(isAdmin) ?
             <CustomLink href={'/events'}
               icon={<AiFillNotification />}
               title={"events"}

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-// import SearchProducts from '../../sales/Select/SearchProducts';
 import Button from '../../Buttons/Button';
-// import ExpiredTable from './ExpiredTable';
 import { queryInstance } from '../../../api';
 import SingleProductSearch from '../../sales/Select/SingleProductSearch';
 import { GetError } from '../../other/OtherFuctions';
@@ -10,11 +8,11 @@ import SuccessMessage from '../../StatusMessages/SuccessMessage';
 import useAuth from '../../../hooks/useAuth';
 import TableContainerComponent from './TableContainerComponent';
 import CancelledTable from './CancelledTable';
-// import RegisterSale from '../../sales/RegisterSale';
 const OptionsValues = ['expire', 'spoil']
 
-const Page = ({socket}) => {
-    const {token} = useAuth()
+
+const Page = ({ socket }) => {
+    const { token } = useAuth()
     // const [product, setproduct] = useState(null);
     const [product, setproduct] = useState('');
     const [type, setType] = useState('');
@@ -22,15 +20,12 @@ const Page = ({socket}) => {
     const [uploading, setuploading] = useState(false);
     const [errorMsg, seterrorMsg] = useState('');
     const [successMsg, setsuccessMsg] = useState('');
-     const [tab, setTab] = useState("live")
-    // const [products, setproducts] = useState([]);
-    // const [expiredProducts, setexpiredProducts] = useState([]);
-    // const [selectedProducts, setselectedProducts] = useState([]);
+    const [tab, setTab] = useState("live")
 
     const SubmitExpiredData = async () => {
         if (!product?.length || !(quantity > 0)) {
             const msg = (!product?.length && !(quantity > 0)) ? 'Product are quantity are required'
-                : !product?.length? 'product is required' : 'quantity most be greater than zero(0)'
+                : !product?.length ? 'product is required' : 'quantity most be greater than zero(0)'
             seterrorMsg(msg)
             return
         }
@@ -40,20 +35,20 @@ const Page = ({socket}) => {
         setuploading(true)
         seterrorMsg('')
         setsuccessMsg('')
-        await queryInstance.post(`/expires`, { product, quantity,type, date: new Date() }
+        await queryInstance.post(`/expires`, { product, quantity, type, date: new Date() }
             , { headers: { Authorization: `Bearer ${token}` } })
             .then((res) => {
                 // console.log(res);
                 if (res?.status === 200) {
-                    
-                socket.emit('notify_update_product')
+
+                    socket.emit('notify_update_product')
                     setsuccessMsg(res?.data?.message)
                     return;
                 }
                 seterrorMsg(GetError(res))
             }).catch((err) => {
                 seterrorMsg(GetError(err))
-              
+
                 console.log(err);
             }).finally(() => setuploading(false))
     }
@@ -69,51 +64,6 @@ const Page = ({socket}) => {
 
     return (
         <div className='w-full  h-full self-stretch'>
-            {/* <div className='md:px-0 sm:px-0 px-2'>
-                <h3 className='text-lg font-normal
-                font-sans md:mx-20 sm:mx-10 mx-auto'>Register Expired Products</h3>
-                <div  className='flex flex-col justify-start  
-                items-start md:w-1/2 sm:w-11/12 w-full'>
-                    <SearchProducts
-                        products={products}
-                        setproducts={setproducts}
-                        selected={selectedProducts}
-                        setselected={setselectedProducts}
-                    />
-                   <Button 
-                            clickEvent={e=>setexpiredProducts([...expiredProducts, ...selectedProducts])}
-                            classNa={`text-lg bg-green-700 
-                            px-3 py-2 text-center
-                            rounded-md text-white
-                            justify-self-end
-                            self-end md:mr-[310px] sm:mr-[156px] mr-[10px]
-                            md:my-6 sm:my-3 my-3`}
-                            text={`add`}
-                        />
-                </div>
-               
-            </div>
-             <div className='my-3
-                lg:w-1/2 md:w-3/4 sm:w-full '>
-                    <ExpiredTable
-                        expiredProducts={expiredProducts}
-                        setexpiredProducts={setexpiredProducts}
-                    />
-                    <div className='flex items-center justify-end
-                    w-full'>
-
-                        <Button 
-                            clickEvent={()=>{}}
-                            classNa={`text-lg bg-green-700 
-                            px-3 py-2 text-center
-                            rounded-md text-white
-                            justify-self-end
-                            self-end mr-[156px]
-                            mt-6 ml-auto mr-4`}
-                            text={`Register`}
-                        />
-                    </div>
-                </div> */}
             <div className='w-full flex flex-wrap 
             bg-slate-300 dark:bg-slate-700
             items-stretch md:justify-center md:gap-x-[200px] justify-evenly 
@@ -128,12 +78,12 @@ const Page = ({socket}) => {
                     <div className=''>
                         <h3 className='text-start justify-self-start
                     font-sans text-lg'>
-                        Register Expired/Spoilt Products
-                    </h3>
-                    <p
-                        className='text-start justify-self-start
+                            Register Expired/Spoilt Products
+                        </h3>
+                        <p
+                            className='text-start justify-self-start
                         max-w-sm'>
-                        Search for a product, enter the quantity expired or spoilt
+                            Search for a product, enter the quantity expired or spoilt
                             and click the register button
                         </p>
                     </div>
@@ -145,14 +95,14 @@ const Page = ({socket}) => {
             w-[200px]
              '>
                     {errorMsg?.length ?
-                        <ErrorMessage 
+                        <ErrorMessage
                             error={errorMsg}
-                            handleReset={()=>seterrorMsg('')}
+                            handleReset={() => seterrorMsg('')}
                         /> : null}
                     {successMsg?.length ?
                         <SuccessMessage
                             message={successMsg}
-                            resetFunction={()=>setsuccessMsg('')}
+                            resetFunction={() => setsuccessMsg('')}
                         /> : null}
                     <div className='flex flex-col'>
                         <span className='text-lg font-sans  
@@ -183,7 +133,7 @@ const Page = ({socket}) => {
                     text-black dark:text-white '
                         />
                     </div>
-                     <div className='flex flex-col'>
+                    <div className='flex flex-col'>
                         <label className='text-lg font-sans capitalize 
                         text-black dark:text-white'
                             htmlFor='type'>
@@ -191,19 +141,19 @@ const Page = ({socket}) => {
                         </label>
                         <select value={type}
                             onChange={e => setType(e.target.value)}
-                        className='px-2 py-3 w-32
+                            className='px-2 py-3 w-32
                     border border-orange-200
                     rounded-md bg-white
                     dark:bg-slate-400 
                     text-black dark:text-white   '>
                             {type?.length ? <option value="">None</option>
-                            : null}
+                                : null}
                             {OptionsValues?.map((opt, ind) => (
                                 <option value={opt}
-                                key={ind}>{opt}</option>
-                         ))}
+                                    key={ind}>{opt}</option>
+                            ))}
                         </select>
-                        </div>
+                    </div>
                     <Button
                         clickEvent={SubmitExpiredData}
                         classNa={`text-lg bg-green-700 
@@ -223,7 +173,7 @@ const Page = ({socket}) => {
             md:w-[400px] sm:w-[400px] w-full px-1 py-2 
             flex gap-0 rounded-lg
             my-5 md:mx-8 sm:mx-5 mx-3'>
-            <Button
+                <Button
                     text={`Live`}
                     clickEvent={() => {
                         setTab('live')

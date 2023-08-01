@@ -18,10 +18,10 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
   const [productNotifications, setproductNotifications] = useState([]);
   const [authNotifications, setauthNotifications] = useState([]);
   const [sales_Notifications, setsales_Notifications] = useState([]);
-  const { token, isAdmin, isManager } = useAuth();
+  const { token, isAdmin } = useAuth();
 
   useEffect(() => {
-    if (isAdmin || isManager) {
+    if (isAdmin) {
       socket.emit("get_notifications");
       socket.on("auth_notifications", async () => {
         // setauthNotifications([...authNotifications]);
@@ -52,7 +52,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       });
     }
     return () => { };
-  }, [isAdmin, isManager, socket]);
+  }, [isAdmin, socket]);
 
   if (!token) return null;
 
@@ -69,7 +69,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       <div className="
       flex flex-row gap-0 items-center">
 
-        {(isAdmin || isManager) ?
+        {(isAdmin) ?
           <Box
             sx={{
               display: "flex",
