@@ -1,8 +1,9 @@
 import axios from "axios";
 
 
-export const serverUrl = 'https://ims-app-backend2.onrender.com';
+export const serverUrl = 'https://custom-ims-api.onrender.com';
 // export const serverUrl = 'http://localhost:4500';
+// export const serverUrl = 'https://ims-app-backend.onrender.com'
 
 export const queryInstance
   = 
