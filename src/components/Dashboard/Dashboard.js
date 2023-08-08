@@ -12,7 +12,7 @@ import useAuth from '../../hooks/useAuth';
 import SkeletonLoaders from '../Loaders/SkelelonLoader';
 import SaleReport from '../Report/SaleReport';
 import GeneralStats from './card/GeneralStats';
-import MoneyStats from './MoneyStats';
+// import MoneyStats from './MoneyStats';
 // import AdUnitsOutlined from '@mui/icons-material/AccountTreeOutlined'
 // import { PoolRounded } from '@mui/icons-material';
 
@@ -70,7 +70,7 @@ const Dashboard = ({socket}) => {
             items-start w-full
                gap-8 bg-inherit'>
                 
-                <MoneyStats data={fetches[0]?.data} />
+                {/* <MoneyStats data={fetches[0]?.data} /> */}
                 <GeneralStats data={fetches[0]?.data} /> 
                  <DashBoardSalesStats salesStatsQuery={fetches[0]} />
             </div>
