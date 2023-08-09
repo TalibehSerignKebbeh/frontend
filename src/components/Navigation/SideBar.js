@@ -52,25 +52,21 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
         disableFocusRipple
         sx={{
           fontSize: "1.7rem",
-          ml: "3px", mt: '2px', position: 'fixed', p: '2px',
-          flexShrink: 0, flexGrow: 0, bgcolor: '#002db3',
-          width: '30px', height: '30px',
-          overflow:'hidden',
+          ml: "3px", mt: '2px', position: 'fixed', p: '2px',py:'5px',
+          flexShrink: 0, flexGrow: 0, bgcolor: '#fff',
+          overflow:'hidden',boxShadow: 'inset 0px 43px 65px -53px rgba(0,0,0,0.1)',
           ':hover': {
-            bgcolor:'#002db3'
-          }, display: 'grid',
-          gridTemplateColumns: '1fr',
-          gridTemplateRows: '1fr', alignItems: 'center',
-          justifyItems:'center'
-        }}
+            bgcolor:'#fff'
+          },
+                }}
         className={`
-         text-gray-800 dark:text-white 
          z-50 menu-toggle-btn 
             ${showSideMenu ? "ml-auto" : " -m-1 ml-1"} 
              ml-auto -mr-8 text-2xl pointer p-0 
                    `}
       >
-        <AiOutlineMenu className="text-center mx-auto"/>
+        <AiOutlineMenu className="text-center mx-auto
+        text-gray-900"/>
         
       </Button>
       <Box sx={{

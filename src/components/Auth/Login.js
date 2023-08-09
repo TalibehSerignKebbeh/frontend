@@ -32,7 +32,7 @@ const Login = ({ socket }) => {
 
    
     useEffect(() => {
-        usernameRef.current.focus();
+        usernameRef?.current?.focus();
     }, []);
     useEffect(() => {
         // setpasswordError(!user?.password?.length ? 'password is required' :

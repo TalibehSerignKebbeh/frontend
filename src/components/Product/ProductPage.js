@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { queryInstance } from '../../api';
 import SideModal from './SideModal';
-import { Box, Button } from '@mui/material';
+import  Box  from '@mui/material/Box';
 import ProductsDataGrid from './ProductsDataGrid';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
-import ProductsUpdates from './updates/ProductsUpdates';
 import useAuth from '../../hooks/useAuth';
 import TopSellingSection from './TopSellingSection';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +14,6 @@ const ProductPage = ({ socket }) => {
 
   const { isAdmin, token } = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
-  const [showUpdates, setshowUpdates] = useState(false);
   const [page, setpage] = useState(0);
   const [pageSize, setpageSize] = useState(20);
   const [TopSelling, setTopSelling] = useState({
@@ -132,23 +130,7 @@ const ProductPage = ({ socket }) => {
         setShowSideModal={setopenAddModal}
         socket={socket}
       />
-      {(isAdmin) ?
-        <>
-          <Button
-            className='text-lg text-slate-700 dark:text-slate-50
-             shadow-md bg-slate-50 dark:bg-slate-700 '
-            color='success'
-            sx={{
-              mx: { xl: 3, lg: 3, md: 3, sm: 2, xs: 'auto' },
-              mb: 3, mt: 1
-            }}
-            onClick={() => setshowUpdates(prev => !prev)}>
-            {showUpdates ? 'hide ' : 'Show '}Updates
-          </Button>
-          {showUpdates && <ProductsUpdates />}
-        </> : null
-      }
-
+    
       {/* <Button color='success'
         onClick={() => setshowAdds(prev => !prev)}>
         {showAdds? 'hide ': 'Show ' }Adds

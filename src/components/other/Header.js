@@ -6,11 +6,12 @@ const Header = ({ title, icon }) => {
       shadow shadow-white dark:shadow-slate-500`}
               sx={{
               width: {
-            xs: "90vw",
             lg: "300px",
             xl: "300px",
             md: "280px",
-            sm: "150px",
+                  sm: "300px",
+            xs: "90vw",
+
               },
         py: 3, my: 2, textAlign: 'center',
               // bgcolor: "white",
