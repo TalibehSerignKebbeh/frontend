@@ -52,7 +52,7 @@ const UserPage = ({ socket,setactiveNavLink }) => {
   useEffect(() => {
    setactiveNavLink('users')
     if (UserFetch.isSuccess) {
-      console.log(UserFetch.data);
+      // console.log(UserFetch.data);
       setpage(Number(UserFetch?.data?.page))
       setPageSize(Number(UserFetch?.data?.pageSize))
       // settotalPages(Number(UserFetch?.data?.total))
@@ -63,8 +63,14 @@ const UserPage = ({ socket,setactiveNavLink }) => {
      if (UserFetch?.isError) {
       seterrorMessage(GetError(UserFetch?.error))
     }
+    if (UserFetch.error) {
+      seterrorMessage(GetError(UserFetch?.error))
+    }
+    if (UserFetch.failureReason) {
+      seterrorMessage(GetError(UserFetch?.failureReason))
+    }
 
-  }, [UserFetch?.error, UserFetch?.isError]);
+  }, [UserFetch.error, UserFetch.failureReason, UserFetch?.isError]);
   return (
     <Box
       sx={{ mx: {lg:3, md:2, sm:'3px', xs:'0px', py:2} }}

@@ -86,7 +86,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
       setupdating(true);
       const id = values?._id;
       await queryInstance
-        .put(`/users/${id}`, values,{headers:{Authorization:`Bearer ${token}`}})
+        .put(`/users/${id}/profile`, values,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
