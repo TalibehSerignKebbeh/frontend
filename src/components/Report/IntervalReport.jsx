@@ -54,7 +54,7 @@ export default function IntervalReport() {
         .then((res) => {
           // console.log(res);
           if (res?.status === 200) {
-            console.log(res?.data);
+            // console.log(res?.data);
             setsales(res?.data?.sales)
             setstats(res?.data?.stats[0])
             return;

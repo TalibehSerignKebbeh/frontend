@@ -88,7 +88,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
       await queryInstance
         .put(`/users/${id}/profile`, values,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === 200) {
             setupdateStatusMessage({
               ...updateStatusMessage,
@@ -122,13 +122,14 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
         .then((res) => {
           console.log(res);
           setaddMessages({ ...addMessages, success: res?.data?.message });
-          console.log(res);
+          // console.log(res);
           socket.emit("notify_add_user");
           queryClient.invalidateQueries({ queryKey: ["users"] });
         })
         .catch((err) => {
-          setaddMessages({ ...addMessages, error: err?.data?.message });
-          console.log(err?.response?.data?.message);
+          setaddMessages({
+            ...addMessages, error: GetError(err) });
+          // console.log(err?.response?.data?.message);
           console.log(err);
         })
         .finally(() => {

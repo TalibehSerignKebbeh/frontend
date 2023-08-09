@@ -35,7 +35,7 @@ const SalesTable = ({
       .then((res) => {
         if (res?.status === 200) {
           socket.emit(`notify_sale`)
-          console.log(res?.data);
+          // console.log(res?.data);
           setcancelledStatus({success:res?.data?.message, error:''})
           setselectedIds([])
           return
@@ -44,7 +44,7 @@ const SalesTable = ({
         }
       // console.log(res);
       }).catch(err => {
-      // console.log(err);
+      console.log(err);
         setcancelledStatus({error: GetError(err), success:''})
     }).finally(()=>setCancelling(false))
   }

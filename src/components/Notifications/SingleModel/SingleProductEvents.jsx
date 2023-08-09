@@ -25,7 +25,7 @@ const SingleProductEvents = () => {
             setloading(true)
          await queryInstance.get(`/notifications`, {params:filters})
            .then((res) => {
-             console.log(res);
+            //  console.log(res);
                if (res?.status === 200) {
                    setevents(res?.data?.notifications)
                    setpage(res?.data?.page)

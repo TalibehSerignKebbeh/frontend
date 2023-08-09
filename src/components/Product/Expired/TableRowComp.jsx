@@ -15,7 +15,7 @@ const TableRowComp = ({ obj, hideDelete, socket }) => {
     const [cancelling, setcancelling] = useState(false);
     //    console.log(obj);
     const handleDelete = async () => {
-        console.log(`clicked button`);
+        // console.log(`clicked button`);
         if (obj?.cancelled) {
             return;
         }
@@ -26,7 +26,7 @@ const TableRowComp = ({ obj, hideDelete, socket }) => {
                 headers: { Authorization: `Bearer ${token}` },
             })
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 const msg = res?.data?.message;
                 message.success({
                     content: <div className='md:w-96 sm:w-96 w-[180px]'>

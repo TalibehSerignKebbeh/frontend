@@ -64,7 +64,7 @@ productsTosell }) => {
             <SearchableProductSelect selected={selected}
                 setselected={setselected}
                 products={products} handleSelect={(obj) => {
-                console.log(obj)
+                // console.log(obj)
             }} />
 
                             <div className=" w-auto h-auto ">

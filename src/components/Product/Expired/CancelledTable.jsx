@@ -44,12 +44,12 @@ const CancelledTable = ({ socket }) => {
                     params: { ...filters }
                 })
                 .then((res) => {
-                    console.log(res?.data);
+                    // console.log(res?.data);
                     setdata(res?.data?.array)
                     settotal(Number(res?.data?.total))
 
                 }).catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                     seterrorMsg(GetError(err))
                 }).finally(() => setloading(false))
         }
@@ -78,12 +78,12 @@ const CancelledTable = ({ socket }) => {
                 params: { ...filters }
             })
             .then((res) => {
-                console.log(res?.data);
+                // console.log(res?.data);
                 setdata(res?.data?.array)
                 settotal(Number(res?.data?.total))
 
             }).catch((err) => {
-                console.log(err);
+                // console.log(err);
                 seterrorMsg(GetError(err))
             }).finally(() => setrefetching(false))
     }

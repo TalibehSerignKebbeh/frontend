@@ -4,7 +4,6 @@ import { queryInstance } from "../../api";
 import ExpiredComponent from "../../components/Auth/ExpiredComponent";
 
 const RequireAuth = ({ alloweRoles }) => {
-    console.log("require auth");
     const location = useLocation()
     const { roles } = useAuth()
     const [expiredToken, setexpiredToken] = useState(false);

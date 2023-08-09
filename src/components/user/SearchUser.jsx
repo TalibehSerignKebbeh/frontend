@@ -7,7 +7,6 @@ import React, { useState } from 'react'
 export default function SearchUser({ user, setuser,
   onClear, onSelect, users }) {
     // const {token}= useAuth()
-console.log(users);
   const [usersArray, setUserArray] =
     useState(users?.length ? [...users?.map((person) => {
       return {

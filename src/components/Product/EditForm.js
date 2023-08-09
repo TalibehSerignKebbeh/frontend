@@ -42,8 +42,11 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
         navigate(-1);
       })
       .catch((err) => {
-        console.log(err);
-        setdeleteError(err?.data?.message);
+        // console.log(err);
+        const message = !err?.response ? 'no server response' :
+          err?.response?.status === 500 ? 'internal server error' :
+            err?.data?.message
+        setdeleteError(message);
       })
       .finally(() => setdeleting(false));
   };

@@ -121,7 +121,7 @@ const UsersTable = ({loading,totalPages,
       .delete(`/users/${id}`,{headers:{Authorization:`Bearer ${token}`}})
       .then((res) => {
         if (res.status === 200) {
-          console.log(res);
+          // console.log(res);
           setstatusMessage({
             ...statusMessage,
             deleteSuccess: res?.data?.message,
@@ -142,7 +142,7 @@ const UsersTable = ({loading,totalPages,
       })
       .catch((err) => {
         // alert(err?.response?.data?.message)
-        console.log(err?.response?.data?.message);
+        // console.log(err?.response?.data?.message);
         console.log(err);
         seterrorMessages({
           ...errorMessages,

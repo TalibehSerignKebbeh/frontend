@@ -27,7 +27,7 @@ const UserProfile = () => {
       await queryInstance
         .get(`/users/profile`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
             setuser(res?.data?.user);
             setprofileData({...res?.data?.user})
         })
@@ -55,7 +55,7 @@ const UserProfile = () => {
     setupdateStatus({msg:'', status:''})
         await queryInstance.put(`/users/${user?._id}/profile`, profileData)
             .then(res => {
-                console.log(res?.data?.message);
+                // console.log(res?.data?.message);
                 setupdateStatus({...updateStatus, status:'success', msg:res?.data?.message})
             }).catch(err => {
                 console.log(err);

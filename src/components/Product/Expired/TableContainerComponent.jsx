@@ -44,7 +44,7 @@ const TableContainerComponent = ({ socket }) => {
           params:{...filters}, signal: fetchSignal?.signal,
                 })
                 .then((res) => {
-                    console.log(res?.data);
+                    // console.log(res?.data);
                     setdata(res?.data?.array)
                     settotal(Number(res?.data?.total))
                  
@@ -79,7 +79,7 @@ const TableContainerComponent = ({ socket }) => {
           params:{...filters},signal: fetchSignal?.signal,
                 })
                 .then((res) => {
-                    console.log(res?.data);
+                    // console.log(res?.data);
                     setdata(res?.data?.array)
                     settotal(Number(res?.data?.total))
                  

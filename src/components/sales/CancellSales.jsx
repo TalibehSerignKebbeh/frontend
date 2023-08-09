@@ -46,7 +46,7 @@ const CancellSals = ({ socket,setactiveNavLink }) => {
         )
         .then((res) => {
           if (res?.status === 200) {
-          console.log(res?.data);
+          // console.log(res?.data);
             setrowCount(res?.data?.totalSales);
             setsales(res?.data?.sales);
             return;
@@ -55,7 +55,7 @@ const CancellSals = ({ socket,setactiveNavLink }) => {
           seterrorMessage(GetError(res))
         })
         .catch((err) => {
-          // console.log(err);
+          console.log(err);
           seterrorMessage(GetError(err))
         })
         .finally(() => {

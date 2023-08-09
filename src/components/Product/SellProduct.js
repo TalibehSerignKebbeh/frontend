@@ -33,7 +33,7 @@ const SellProductPopper = ({ showSellModal, setshowSellModal, products, setprodu
         setuploadStatus({ ...uploadStatus, success: false, loading: true, error: false })
         await queryInstance.post(`/sales`, productsTosell, {headers:{Authorization:`Bearer `}})
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 let status = res?.status;
                 if (status === 200) {
                     socket.emit('notify_sale')

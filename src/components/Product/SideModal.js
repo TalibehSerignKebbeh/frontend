@@ -68,7 +68,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                 if (axios.isCancel(err)) {
                     setError(`requst cancelled`, err?.message)
                 }
-                console.log(err);
+                // console.log(err);
                 setError(GetError(err))
             }).finally(() => setuploading(false))
 

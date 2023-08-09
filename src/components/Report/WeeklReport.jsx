@@ -96,7 +96,8 @@ const WeeklySalesReport = () => {
   const handleChangeWeek = (e) => {
     const { value } = e.target;
     const resultsArray = value?.split('-W')
-    console.log(value);
+    // console.log(value);
+    
     setweekData({ week: resultsArray[1], year: resultsArray[0] })
   }
   return (

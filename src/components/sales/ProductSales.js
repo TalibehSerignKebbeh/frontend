@@ -74,7 +74,7 @@ const ProductSales = ({socket, setactiveNavLink}) => {
         setloading(true)
         await queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,{headers:{Authorization: `Bearer ${token}`}})
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.status === 200) {
                 setproduct(res?.data?.product)
                 setsales(res?.data?.sales)
@@ -84,7 +84,7 @@ const ProductSales = ({socket, setactiveNavLink}) => {
                seterror(GetError(res))
             }).catch(err => {
                seterror(GetError(err))
-                // console.log(err);
+                console.log(err);
             }).finally(() => { setloading(false) })
     }
         fetchSales()
