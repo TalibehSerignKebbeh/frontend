@@ -19,7 +19,7 @@ const UserPage = ({ socket,setactiveNavLink }) => {
   const [errorMessage, seterrorMessage] = useState('');
   const [openAdd, setopenAdd] = useState(false);
   const [page, setpage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [UserData, setUserData] = useState({
     _id:'', firstName: "", lastName: "", username: "",
     password: "", confirmPassword: "", roles: [], active: false,
