@@ -6,13 +6,28 @@ import './index.css'
 import SalesEvents from '../Table/SalesEvents';
 import Button from '../../Buttons/Button';
 import SalesFilters from '../../sales/SalesFilters';
+import { useQuery } from '@tanstack/react-query';
+import { fetchUsers } from '../../../api';
+import useAuth from '../../../hooks/useAuth';
 
 
 const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
-
+   const {token} = useAuth()
     const [tab, setTab] = useState("")
     const [date, setdate] = useState('');
     const [user, setuser] = useState('');
+
+     const {data, isLoading} = useQuery({
+    queryKey: ["users"],
+    queryFn: () => fetchUsers({ token }),
+    // suspense: true, 
+    getNextPageParam: () => { },
+    getPreviousPageParam: () => {
+      
+    },
+    
+  
+  });
 
     const [searchFilters, setsearchFilters] = useState({
         date: '', product: '', user: ''
@@ -34,7 +49,7 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
 
 
     return (
-        <div className='relative md:px-3 sm:px-3 px-4'>
+        <div className='relative md:px-3 sm:px-3 px-4 pb-6'>
 
 
             <div className='bg-slate-300 dark:bg-slate-600
@@ -67,6 +82,7 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
               mx-0
              '>
                 <SalesFilters
+                users={data?.users} 
                     user={user} setuser={setuser}
                     date={date} setdate={setdate}
                       product={''} setproduct={()=>{}}
@@ -74,15 +90,19 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
                     setsearchFilters={setsearchFilters}
                     showProduct={false}
                 />
-                {(tab === 'product') && <ProductsUpdates socket={socket}
+                {(tab === 'product') &&
+                    <ProductsUpdates
+                    users={data?.users}  socket={socket}
                     user={user}
                     date={date}
                 />}
-                {(tab === 'user') && <UserNotificationTable socket={socket}
+                {(tab === 'user') && <UserNotificationTable 
+                users={data?.users} socket={socket}
                     user={user}
                     date={date}
                 />}
-                {(tab === 'sale') && <SalesEvents socket={socket}
+                {(tab === 'sale') && <SalesEvents 
+                users={data?.users} socket={socket}
                     showSideMenu
                     user={user}
                     date={date}

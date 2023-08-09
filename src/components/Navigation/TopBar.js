@@ -25,7 +25,9 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       socket.emit("get_notifications");
       socket.on("auth_notifications", async () => {
         // setauthNotifications([...authNotifications]);
-        await queryInstance.get(`/notifications/auths`).then((res) => {
+        await queryInstance.get(`/notifications/auths`, {
+          headers:{Authorization:`Bearer ${token}`}
+        }).then((res) => {
           if (res?.status === 200) {
             setauthNotifications(res?.data?.notifications)
           }
@@ -34,7 +36,9 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
       socket.on("sales_notifications", async () => {
         // setsales_Notifications([...salesNotifications])
-        await queryInstance.get(`/notifications/sales`).then((res) => {
+        await queryInstance.get(`/notifications/sales`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        ).then((res) => {
           if (res?.status === 200) {
             // console.log(res?.data);
             setsales_Notifications(res?.data?.notifications)
@@ -43,7 +47,9 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       });
       socket.on("get_product_notify", async () => {
         // setproductNotifications([...productNotifies])
-        await queryInstance.get(`/notifications/products`).then((res) => {
+        await queryInstance.get(`/notifications/products`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        ).then((res) => {
           if (res?.status === 200) {
             // console.log(res?.data);
             setproductNotifications(res?.data?.notifications)
@@ -52,7 +58,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       });
     }
     return () => { };
-  }, [isAdmin, socket]);
+  }, [isAdmin, socket, token]);
 
   if (!token) return null;
 

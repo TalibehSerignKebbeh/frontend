@@ -119,12 +119,13 @@ const ProductsUpdates = ({socket, date, user}) => {
               </div>
             ))}
           </div>
-          <Paginate page={page}
+          {productUpdates?.length ?
+            <Paginate page={page}
             setPage={setpage} setPageSize={setpageSize}
             pageSize={pageSize}
             options={[5,10, 20, 30, 40, 50]}
             total={total}
-          />
+          /> : null}
          
         </div>}
 

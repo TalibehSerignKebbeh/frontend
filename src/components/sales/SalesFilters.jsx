@@ -9,6 +9,7 @@ import Button from '../Buttons/Button';
 
 export default function SalesFilters(
     { date, setdate, user, setuser,
+        users,
         deletedBy,setDeletedBy,
         searchFilters, setsearchFilters,
         product, setproduct,
@@ -63,7 +64,8 @@ export default function SalesFilters(
             </div> : null}
             <div className="flex flex-col">
                 <span className='text-lg font-normal '>Search User</span>
-                <SearchUser user={user}
+                <SearchUser
+                   users={users} user={user}
                     setuser={setuser}
                     onSelect={(value) => {
                         setuser(value)

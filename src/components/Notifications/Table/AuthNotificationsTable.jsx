@@ -4,15 +4,19 @@ import  format  from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import '../notification.css'
 import { queryInstance } from "../../../api";
+import useAuth from "../../../hooks/useAuth";
 
 const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
 
   const ref = useRef(null)
+  const {token}= useAuth()
 
   const handleClickAuthNotification = async () => {
     const ids = data?.map(notify => { return notify?._id })
     // socket.emit("read_all_auth_notification", { ids });
-  await  queryInstance.patch(`notifications`, { ids })
+    await queryInstance.patch(`notifications`, { ids },
+          { headers: { Authorization: `Bearer ${token}` } }
+    )
       .then((res) => {
         // console.log(res);
         if (res?.status === 200) {

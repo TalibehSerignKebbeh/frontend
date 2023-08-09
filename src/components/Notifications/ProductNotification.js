@@ -5,11 +5,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import './notification.css'
 import { FixedSizeList } from "react-window";
 import { queryInstance } from '../../api';
+import useAuth from "../../hooks/useAuth";
 
 
 const ProductNotification = ({ dataArray, socket, open, setopen }) => {
   
   const ref = useRef(null)
+  const {token} = useAuth()
   console.log(dataArray); 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -33,7 +35,9 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
    const handleClickAuthNotification = async() => {
     const ids = dataArray?.map(notify => { return notify?._id })
     // socket.emit("read_all_auth_notification", { ids });
-    await queryInstance.patch(`notifications`, { ids })
+     await queryInstance.patch(`notifications`, { ids },
+          { headers: { Authorization: `Bearer ${token}` } }
+     )
       .then((res) => {
         if (res?.status === 200) {
           socket.emit("read_all_product_notification", {});

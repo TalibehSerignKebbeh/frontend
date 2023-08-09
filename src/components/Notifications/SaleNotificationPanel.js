@@ -4,17 +4,22 @@ import  format  from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import './notification.css'
 import { queryInstance } from '../../api';
+import useAuth from '../../hooks/useAuth';
+
 // import { DataGrid } from '@mui/x-data-grid';
 
 const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   const ref = useRef(null)
+  const {token} = useAuth()
   // console.log(dataArray);
 
   const handleReadSaleNotification = async () => {
        const ids =dataArray?.map(notify=>{return notify?._id})
     // socket.emit("read_all_sale_notification", {ids});
     
-    await queryInstance.patch(`notifications`, { ids })
+    await queryInstance.patch(`notifications`, { ids },
+          { headers: { Authorization: `Bearer ${token}` } }
+    )
       .then((res) => {
    if (res?.status === 200) {
     socket.emit("read_all_sale_notification", {});
