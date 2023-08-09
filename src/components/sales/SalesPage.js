@@ -9,9 +9,10 @@ import ErrorMessage from "../StatusMessages/ErrorMessage";
 import RegisterSale from "./RegisterSale";
 import { motion } from "framer-motion";
 import SalesFilters from "./SalesFilters";
+import { useQuery } from "@tanstack/react-query";
 
 const SalesPage = ({ socket, setactiveNavLink }) => {
-  
+
   const { token } = useAuth()
   const [rowCount, setrowCount] = useState(0);
   const [loading, setloading] = useState(false);
@@ -23,10 +24,27 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
   const [openRegisterSale, setOpenRegisterSale] = useState(true)
   const [product, setproduct] = useState('');
   const [user, setuser] = useState('');
+  const [products, setproducts] = useState([]);
 
   const [searchFilters, setsearchFilters] = useState({
-    date:'', product:'', user:''
+    date: '', product: '', user: ''
   });
+
+  const { isLoading, isError, error, failureReason, data,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => queryInstance.get(`/products/sale`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+
+      }).then(res => res?.data)
+      .catch(err => Promise.reject(err)),
+    refetchInterval: 15000,
+    keepPreviousData: true,
+  })
+
+
   useEffect(() => {
     const fetchSales = async () => {
       setloading(true);
@@ -35,10 +53,10 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
 
       Object.keys(searchFilters).forEach((key) => {
         if (searchFilters[key]?.length) {
-            filters[key]= searchFilters[key]
-         }
+          filters[key] = searchFilters[key]
+        }
       })
-      
+
       filters.page = page;
       filters.pageSize = pageSize;
       await queryInstance
@@ -47,7 +65,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         )
         .then((res) => {
           if (res?.status === 200) {
-          // console.log(res?.data);
+            // console.log(res?.data);
             setrowCount(res?.data?.totalSales);
             setsales(res?.data?.sales);
             return;
@@ -66,15 +84,23 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
     fetchSales();
     return () => { };
   }, [page, pageSize, searchFilters, token]);
-    
-  
+
+
   useEffect(() => {
     setrowCount((prevValue) => (loading ? rowCount : prevValue));
   }, [rowCount, loading]);
 
- 
- 
-  
+  useEffect(() => {
+    console.log(data);
+    setproducts(data?.products)
+  }, [isSuccess]);
+
+  useEffect(() => {
+    // console.log(error);
+  }, [error]);
+
+
+
   return (
     <div className="md:px-10 px-4 w-full" >
       <Header
@@ -89,29 +115,32 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         {openRegisterSale ? `Close` : `Open`}  Register Sales
       </button>
       <div>
-        
-      <motion.div
-        initial={{scale:0,height:0 }}
+
+        <motion.div
+          initial={{ scale: 0, height: 0 }}
           animate={{
-          transition:'.8s',
-          scale: openRegisterSale ? 1 : 0,
-          opacity: openRegisterSale ? 1 : 0,
-          height: openRegisterSale? 'auto':'0'
-        }}
-        className="h-auto w-auto relative block"
-        transition={{type:'tween', duration:'0.8',easings:['easeIn', 'easeOut']}}
-        
-      >
-         <RegisterSale socket={socket} />   
-      </motion.div>
-</div>
+            transition: '.8s',
+            scale: openRegisterSale ? 1 : 0,
+            opacity: openRegisterSale ? 1 : 0,
+            height: openRegisterSale ? 'auto' : '0'
+          }}
+          className="h-auto w-auto relative block"
+          transition={{ type: 'tween', duration: '0.8', easings: ['easeIn', 'easeOut'] }}
+
+        >
+          <RegisterSale socket={socket}
+            products={products}
+            setproducts={setproducts}
+          />
+        </motion.div>
+      </div>
 
 
       <div className="bg-white dark:bg-slate-700 
       shadow-xl shadow-gray-100 dark:shadow-slate-700
       flex flex-col flex-wrap gap-3 "
       >
-        <SalesFilters 
+        <SalesFilters
           user={user} setuser={setuser}
           date={date} setdate={setdate}
           product={product} setproduct={setproduct}
@@ -125,7 +154,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
           <ErrorMessage error={errorMessage}
             handleReset={() => seterrorMessage('')} />
         </div> : null}
-       
+
         <SalesTable
           sales={sales}
           rowCount={rowCount}

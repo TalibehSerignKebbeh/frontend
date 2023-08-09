@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 // import { setCredentials } from '../../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { queryInstance } from '../../api'
 // import { useLoginMutation } from '../../features/auth/authApiSlice'
 import './login.css'
@@ -9,11 +9,14 @@ import { GetError } from '../other/OtherFuctions';
 import { useContextHook } from '../../context/AuthContext';
 import jwtDecode from 'jwt-decode'
 import { allowedRoles } from '../../config/allowedRoles';
+import useAuth from '../../hooks/useAuth';
+
 
 
 
 const Login = ({ socket }) => {
-    const { storeAuthToken } = useContextHook()
+    const { storeAuthToken, authToken } = useContextHook()
+    const {roles} = useAuth()
     const navigate = useNavigate();
     const usernameRef = useRef()
     const [user, setuser] = useState({ username: '', password: '' });
@@ -27,6 +30,7 @@ const Login = ({ socket }) => {
     const [passwordTouch, setpasswordTouch] = useState(false);
     const [isLoading, setisLoading] = useState(false);
 
+   
     useEffect(() => {
         usernameRef.current.focus();
     }, []);
@@ -78,6 +82,15 @@ const Login = ({ socket }) => {
             }).finally(() => {
                 setisLoading(false)
             })
+    }
+
+
+     if (authToken && roles?.includes('admin')) {
+        return <Navigate to={'/dashboard'} />
+    }
+    if (authToken) {
+        return <Navigate to={'/sales'} />
+        
     }
 
     return (

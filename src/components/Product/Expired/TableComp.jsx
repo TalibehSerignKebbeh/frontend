@@ -12,7 +12,8 @@ import Paginate from '../../Pagination/Paginate';
 
 const TableComp = ({ data, page, setpage,
     pageSize, setPageSize, total,
-    hideDelete,socket}) => {
+    hideDelete, socket }) => {
+    
     return (
            <TableContainer>
             <Table
@@ -81,15 +82,14 @@ const TableComp = ({ data, page, setpage,
                     ))}
                 </TableBody>
             </Table>
-            <TableFooter>
-                <Paginate page={page}
+            
+            <Paginate page={page}
                     pageSize={pageSize}
                     setPage={setpage}
                     setPageSize={setPageSize}
                     total={total}
                     options={[5,10,15,20,25,35,50]}
                 />
-            </TableFooter>
             </TableContainer>
     );
 }

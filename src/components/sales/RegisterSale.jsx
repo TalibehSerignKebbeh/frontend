@@ -7,24 +7,19 @@ import SuccessMessage from '../StatusMessages/SuccessMessage';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
 import  CircularProgress  from '@mui/material/CircularProgress';
 import ReceiptTable from './ReceiptTable';
+import {QueryClient} from '@tanstack/react-query'
 
 
-
-const RegisterSale = ({socket}) => {
+const RegisterSale = ({ socket, products, setproducts }) => {
+  const  client = new QueryClient()
   const { token } = useAuth()
   const [selected, setselected] = useState([])
-  const [products, setproducts] = useState([])
+  // const [products, setproducts] = useState([])
   const [postingSales, setpostingSales] = useState(false);
   const [postStatus, setpostStatus] = useState({error:``, success:``});
   // const [SaveReceipts, setSaveReceipts] = useState([])
 
-  useEffect(() => {
-    
-
-    return () => {
-
-    };
-  }, [selected, token]);
+  
 
   const handleSubmit = async () => {
     if (!selected?.length || !token) return;
@@ -36,12 +31,14 @@ const RegisterSale = ({socket}) => {
         headers: { Authorization: `Bearer ${token}` }, onUploadProgress: (values) => {
       
       }})
-      .then((res) => {
+      .then(async(res) => {
         // console.log(res);
         if (res?.status === 200) {
           socket.emit('notify_sale')
+          
           // socket.emit()
           setpostStatus({ ...postStatus, success: res?.data?.message })
+          client.invalidateQueries({queryKey:['products']})
           return;
         }
           setpostStatus({ ...postStatus, error: GetError(res) })

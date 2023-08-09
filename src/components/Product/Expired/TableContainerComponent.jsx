@@ -11,6 +11,7 @@ import { AiOutlineReload } from 'react-icons/ai';
 
 
 const TableContainerComponent = ({ socket }) => {
+    
     const {token} = useAuth()
     const [date, setdate] = useState('');
     const [product, setproduct] = useState('');

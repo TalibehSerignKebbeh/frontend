@@ -53,12 +53,12 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
         setError('')
         setsuccessMessage('')
         axios.post(`${serverUrl}/products`, product, {headers:{Authorization: `Bearer ${token}`}, signal:postController.signal})
-            .then(res => {
+            .then(async(res) => {
                 if (res?.status === 200) {
-                    queryClient.invalidateQueries({queryKey: ["products"]})
                 setsuccessMessage(res?.data?.message)
                     socket.emit("notify_add_product")
                     setError('')
+                    await queryClient.invalidateQueries({queryKey: ["products"]})
                     return
                 }
                 setError(GetError(res))

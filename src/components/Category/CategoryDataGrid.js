@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-  DataGrid, GridToolbar, gridClasses,
+  DataGrid, gridClasses,
   GridActionsCellItem,
 } from '@mui/x-data-grid';
 import EditRounded from '@mui/icons-material/EditRounded';
 import DeleteSweep from '@mui/icons-material/DeleteSweep';
 import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
+import  format  from 'date-fns/format';
 import ConfirmDelete from '../Modal/ConfirmDelete';
 import { queryInstance } from '../../api';
 import { QueryClient } from '@tanstack/react-query';
@@ -16,7 +16,8 @@ import useAuth from '../../hooks/useAuth';
 const CategoryDataGrid = ({ data, setopenEdit, setstock,
   page, setpage, setpageSize, pageSize, isLoading,
 }) => {
-  const {token, isAdmin, isManager} = useAuth()
+
+  const {token, isAdmin} = useAuth()
   const [openDelete, setopenDelete] = useState(false);
   const [stockToDelete, setstockToDelete] = useState(null);
   const [deletLoading, setdeletLoading] = useState(false);
@@ -30,7 +31,7 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
       .then((res) => {
         if (res?.status === 200) {
           setdeleteSuccessMessage(res?.data?.message)
-          queryClient.invalidateQueries({ queryKey: ['stocks', page, pageSize] })
+          queryClient.invalidateQueries({ queryKey: ['categories', page, pageSize] })
           return;
         }
        setdeleteErrorMessage(GetError(res))
@@ -110,10 +111,9 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
         className='bg-slate-50 dark:bg-slate-700
         text-gray-700 dark:text-white 
         shadow-md  '
-        rows={data?.categories?.length ? data?.categories : []}
+        rows={data?.categories?.length ?
+          data?.categories : []}
         columns={columns}
-        pageSize={pageSize}
-        page={page}
         rowCount={data?.count}
         
         // onPageChange={newPage => setpage(newPage)}
@@ -127,10 +127,7 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
         columnBuffer={4}
         columnThreshold={2}
         pageSizeOptions={[5, 10, 20, 30, 50, 70, 100]}
-        // onPageSizeChange={newSize => setpageSize(newSize)}
-        // components={{
-        //   Toolbar: GridToolbar,
-        // }}
+        
 
         localeText={{
           toolbarDensity: 'Size',

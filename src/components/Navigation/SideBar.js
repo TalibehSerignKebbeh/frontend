@@ -8,13 +8,17 @@ import ProductionQuantityLimits from '@mui/icons-material/ProductionQuantityLimi
 import Inventory2Outlined from '@mui/icons-material/Inventory2Outlined'
 import PointOfSaleSharp from '@mui/icons-material/PointOfSaleSharp'
 import CancelOutlined from "@mui/icons-material/CancelOutlined";
-import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import DashboardOutlined from '@mui/icons-material/DashboardOutlined'
-import { AiOutlineUserSwitch, AiFillNotification } from "react-icons/ai";
+import {
+  AiOutlineUserSwitch, AiFillNotification,
+  AiOutlineMenu
+} from "react-icons/ai";
 import Box from "@mui/system/Box";
 import CustomLink from "./Links/CustomLink";
 import DarkModeToggle from "../../hooks/DarkModeToggler";
 import LogoutSection from "./LogoutSection";
+
+
 
 const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
 
@@ -49,17 +53,24 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
         sx={{
           fontSize: "1.7rem",
           ml: "3px", mt: '2px', position: 'fixed', p: '2px',
-          flexShrink:0,
+          flexShrink: 0, flexGrow: 0, bgcolor: '#002db3',
+          width: '30px', height: '30px',
+          overflow:'hidden',
+          ':hover': {
+            bgcolor:'#002db3'
+          }, display: 'grid',
+          gridTemplateColumns: '1fr',
+          gridTemplateRows: '1fr', alignItems: 'center',
+          justifyItems:'center'
         }}
-        className={`bg-orange-400 dark:bg-orange-400
-         dark:hover:bg-orange-400
+        className={`
          text-gray-800 dark:text-white 
          z-50 menu-toggle-btn 
             ${showSideMenu ? "ml-auto" : " -m-1 ml-1"} 
-             w-auto ml-auto -mr-8 text-2xl pointer p-0 
+             ml-auto -mr-8 text-2xl pointer p-0 
                    `}
       >
-        <MenuOutlined sx={{ color: 'inherit' }} />
+        <AiOutlineMenu className="text-center mx-auto"/>
         
       </Button>
       <Box sx={{

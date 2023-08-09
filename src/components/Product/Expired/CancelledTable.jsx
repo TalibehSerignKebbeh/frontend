@@ -3,7 +3,6 @@ import { queryInstance } from '../../../api';
 import useAuth from '../../../hooks/useAuth';
 import { GetError, isStringValidDate } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
-// import {DataGrid} from '@mui/x-data-grid'
 import TableComp from './TableComp';
 import SkeletonLoaders from '../../Loaders/SkelelonLoader';
 import FilterInputs from './FilterInputs';
@@ -12,6 +11,7 @@ import  CircularProgress  from '@mui/material/CircularProgress';
 
 
 const CancelledTable = ({ socket }) => {
+
     const { token } = useAuth()
     const [date, setdate] = useState('');
     const [product, setproduct] = useState('');

@@ -6,8 +6,11 @@ import Button from '../Buttons/Button';
 // import AcUnitOutlined from '@mui/icons-material/AcUnitOutlined';
 
 export default function TopSellingSection({ data }) {
+
+
+  
   const { ByProfit, ByQuantity } = data;
-  const [show, setshow] = useState(true); 
+  const [show, setshow] = useState(false); 
   const [openByProfit, setopenByProfit] = useState(true);
 
   

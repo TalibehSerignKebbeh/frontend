@@ -14,22 +14,24 @@ import ErrorMessage from '../StatusMessages/ErrorMessage';
 import useAuth from '../../hooks/useAuth';
 import Button from '../Buttons/Button';
 
-const CategoryPage = ({socket, setactiveNavLink}) => {
+const CategoryPage = ({ socket, setactiveNavLink }) => {
+    
     const {token} = useAuth()
     const formRef = useRef()
     const [errorMessage, seterrorMessage] = useState('');
-    const [pageSize, setpageSize] = useState(5);
+    const [pageSize, setpageSize] = useState(10);
     const [page, setpage] = useState(0);
     const [openEdit, setopenEdit] = useState(false);
      const [stock, setstock] = useState({
        _id:'', name: '', description: ''
     });
 
-    const {isLoading,isError, error,failureReason, data} = useQuery({
-        queryKey: ['stocks', page, pageSize],
+    const { isLoading, isError, error, failureReason, data,
+} = useQuery({
+        queryKey: ['categories', page, pageSize],
         queryFn: () => fetchStocks({ token,page, pageSize  }),
         refetchInterval: 15000,
-        
+        keepPreviousData:true,
     })
     const handleOpenCloseCollapse = () => {
         if (openEdit) {

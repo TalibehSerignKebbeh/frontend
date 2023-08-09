@@ -12,8 +12,9 @@ const OptionsValues = ['expire', 'spoil']
 
 
 const Page = ({ socket }) => {
+
     const { token } = useAuth()
-    // const [product, setproduct] = useState(null);
+
     const [product, setproduct] = useState('');
     const [type, setType] = useState('');
     const [quantity, setquantity] = useState(1);
@@ -77,12 +78,12 @@ const Page = ({ socket }) => {
                 rounded-lg h-fit py-14 px-8 my-auto' >
                     <div className=''>
                         <h3 className='text-start justify-self-start
-                    font-sans text-lg'>
+                    font-sans text-lg font-normal'>
                             Register Expired/Spoilt Products
                         </h3>
                         <p
                             className='text-start justify-self-start
-                        max-w-sm'>
+                        max-w-sm pt-4'>
                             Search for a product, enter the quantity expired or spoilt
                             and click the register button
                         </p>
