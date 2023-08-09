@@ -6,9 +6,7 @@ import  CategoryOutlined  from '@mui/icons-material/CategoryOutlined'
 
 
 export default function GeneralStats({ data }) {
-  const { cancellSalesCount, categoriesCount,
-    salesCount, productCount,
-    productOutOfStockCount } = data;
+
   return (
     <div  className='
                 w-full p-2 py-5 pt-10 rounded-md
@@ -29,7 +27,7 @@ export default function GeneralStats({ data }) {
         <p className='text-base font-medium mt-2
                          text-white'>Total Sales</p>
         <h3 className='mb-4 -mt-2 text-white'>
-          {salesCount}
+          {data?.salesCount}
         </h3>
       </div>
       <div
@@ -48,7 +46,7 @@ export default function GeneralStats({ data }) {
         <p className='text-base font-medium mt-2
                          text-white'>Cancelled Sales</p>
         <h3 className='mb-4 -mt-2 text-white'>
-          {cancellSalesCount}
+          {data?.cancellSalesCount}
         </h3>
       </div>
 
@@ -66,7 +64,7 @@ export default function GeneralStats({ data }) {
         </button>
         <p className='text-base font-medium mt-2
                          text-white'>Total Products</p>
-        <h3 className='mb-4 -mt-2 text-white'>{productCount}</h3>
+        <h3 className='mb-4 -mt-2 text-white'>{data?.productCount}</h3>
       </div>
       <div
         style={{ background: "linear-gradient(#899ab0, #205493)" }}
@@ -83,7 +81,7 @@ export default function GeneralStats({ data }) {
         </button>
         <p className='text-base font-medium mt-2
                          text-white'>Products Out Of stock</p>
-        <h3 className='mb-4 -mt-2 text-white'>{productOutOfStockCount}</h3>
+        <h3 className='mb-4 -mt-2 text-white'>{data?.productOutOfStockCount}</h3>
       </div>
       <div style={{background:'linear-gradient(#ff9395, #970808)'}}
         
@@ -101,7 +99,7 @@ export default function GeneralStats({ data }) {
         <p className='text-base font-medium mt-2
                          text-white'>Total Categories</p>
         <h3 className='mb-4 -mt-2 text-white'>
-          {categoriesCount}
+          {data?.categoriesCount}
         </h3>
       </div>
 

@@ -3,7 +3,6 @@ import {formatNumber} from '../../../other/format'
 import './index.css'
 
 const SalesCard = ({ stats, text, }) => {
-  // console.log(`single starts`, stats);
    
     return (
         <>
