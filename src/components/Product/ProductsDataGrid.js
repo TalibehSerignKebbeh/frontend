@@ -7,11 +7,14 @@ import {
 } from "@mui/x-data-grid";
 import  format  from "date-fns/format";
 import { Link } from "react-router-dom";
-
+import useAuth from "../../hooks/useAuth";
+import AddIcon from '@mui/icons-material/AddBoxOutlined'
+import parseISO from "date-fns/parseISO";
 const ProductsDataGrid = ({ products, pageSize,
   setpageSize, page,  setpage,  loading,totalPages,
 }) => {
  
+  const { isSeller} = useAuth()
  
   const columns = [
     {
@@ -46,14 +49,14 @@ const ProductsDataGrid = ({ products, pageSize,
       headerName: "MFD",
       width: 120,
       valueGetter: ({ value }) =>
-        value ? format(new Date(value), "do MMM yyyy") : "missing",
+        value ? format(parseISO(value), "do MMM yyyy") : "missing",
     },
     {
       field: "expiryDate",
       headerName: "Exp",headerClassName:'header',
       width: 120,
       valueGetter: ({ value }) =>
-        value ? format(new Date(value), "do MMM yyyy") : "missing",
+        value ? format(parseISO(value), "do MMM yyyy") : "missing",
     },
     //  {
     //   field: "createdAt",
@@ -77,11 +80,12 @@ const ProductsDataGrid = ({ products, pageSize,
     },
     {
       field: "actions",
-      headerName: "Actions",headerClassName:'header',
+      headerName: "Actions", headerClassName: 'header',
       type: "actions",
       width: 140,
       getActions: (params) => [
-        <GridActionsCellItem sx={{p:1, py:'4px', borderRadius:0, boxShadow:'0px 0px 2px 0px rgba(0,0,0,0.6)'}}
+        <GridActionsCellItem
+          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           icon={
             <Link
               className="font-normal text-zinc-700
@@ -92,21 +96,36 @@ const ProductsDataGrid = ({ products, pageSize,
               Sales
             </Link>
           }
-          label="Sales"
+          showInMenu  
         />,
-        <GridActionsCellItem sx={{p:1, py:'4px', borderRadius:0, boxShadow:'0px 0px 2px 0px rgba(0,0,0,0.6)'}}
+        <GridActionsCellItem  hidden={isSeller}
+          onClick={() => {
+            alert('action btn click')
+          }}
+          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+          showInMenu
           icon={
-            <Link
+            <AddIcon 
+              sx={{fontSize:'3rem'}}
+            />
+          } 
+          label="Add Stock"
+        />,
+      
+          <GridActionsCellItem hidden={isSeller}
+          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+          icon={
+            <Link 
               className="font-normal 
               text-blue-600 dark:text-blue-300
-               p-1"
+               p-1 px-3"
               to={`/products/${params.id}`}
             >
               {/* <AiOutlineEdit className='p-3 ' color='secondary' /> */}
               Edit
             </Link>
           }
-          label="Edit"
+          showInMenu  
         />,
       ],
     },

@@ -46,7 +46,7 @@ const ExpiredTableRow = ({ data, expiredProducts, setexpiredProducts }) => {
                     onChange={handleChange}
                 />
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
                 <button className='text-red-800
                 cursor-pointer p-2'
                     onClick={handleRemove}
@@ -56,7 +56,7 @@ const ExpiredTableRow = ({ data, expiredProducts, setexpiredProducts }) => {
                         transform: 'scale(1.4)',
                     cursor:'pointer'}} />
                 </button>
-            </TableCell>
+            </TableCell> */}
         </TableRow>
     );
 }

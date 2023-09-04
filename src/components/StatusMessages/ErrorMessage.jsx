@@ -4,7 +4,7 @@ const ErrorMessage = ({ error, handleReset }) => {
     return (
         <div  className='bg-red-800 md:w-96 w-11/12
         h-auto flex flex-row justify-between
-        items-center px-1 py-2 mx-auto rounded-md'>
+        items-center px-1 py-3 mx-auto rounded-md'>
             <p className='text-white text-base my-auto'>{error}</p>
             <button className=' text-base  text-white  
              px-2 w-7 h-7

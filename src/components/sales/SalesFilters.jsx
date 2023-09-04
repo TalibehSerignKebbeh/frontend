@@ -18,7 +18,7 @@ export default function SalesFilters(
     return (
         <div className="flex flex-row flex-wrap items-center
         lg:gap-4 md:gap-3 gap-2 
-        my-3 mt-12 bg-white  dark:bg-slate-700
+        my-3 mt-12 bg-white  dark:bg-slate-800
         shadow-sm
         w-fit p-2 pb-3 text-gray-600 dark:text-slate-50"
         >
@@ -41,7 +41,7 @@ export default function SalesFilters(
             shadow-md hover:bg-current ml-2"
                     onClick={() => {
                         setdate('')
-                        setsearchFilters({ ...searchFilters, date: '' })
+                        // setsearchFilters({ ...searchFilters, date: '' })
                     }} >
                     <Clear />
                 </IconButton>
@@ -54,10 +54,10 @@ export default function SalesFilters(
                     setproduct={setproduct}
                     onClear={() => {
                         setproduct('')
-                        setsearchFilters({ ...searchFilters, product: '' })
+                        // setsearchFilters({ ...searchFilters, product: '' })
                     }}
                     onSelect={(value) => {
-                        setsearchFilters({ ...searchFilters, product: value })
+                        // setsearchFilters({ ...searchFilters, product: value })
                         setproduct(value)
                     }}
                 />
@@ -69,10 +69,10 @@ export default function SalesFilters(
                     setuser={setuser}
                     onSelect={(value) => {
                         setuser(value)
-                        setsearchFilters({ ...searchFilters, user: value })
+                        // setsearchFilters({ ...searchFilters, user: value })
                     }}
                     onClear={() => {
-                        setsearchFilters({ ...searchFilters, user: '' })
+                        // setsearchFilters({ ...searchFilters, user: '' })
                         setuser('')
 
                     }}
@@ -85,16 +85,28 @@ export default function SalesFilters(
                         setuser={setuser}
                         onSelect={(value) => {
                         
-                            setsearchFilters({ ...searchFilters, deletedBy: value })
+                            // setsearchFilters({ ...searchFilters, deletedBy: value })
+                            setuser(value)
                         }}
                         onClear={() => {
-                            setsearchFilters({ ...searchFilters, deletedBy: '' })
+                            // setsearchFilters({ ...searchFilters, deletedBy: '' })
+                            setuser('')
             
 
                         }}
                     />
                 </div>
                 : null}
+            {(user?.length || date?.length || product?.length || deletedBy?.length) ?
+                <Button text={`Apply filters`}
+                clickEvent={() => {
+                    setsearchFilters({ date: date, product: product, user: user })
+                   
+                }}
+                classNa={`text-white bg-blue-500 px-2 py-[10px]
+                 rounded-md shadow-lg -mb-5`}
+                /> : null}
+            
             {(user?.length || date?.length || product?.length || deletedBy?.length) ?
                 <Button text={`Clear filters`}
                 clickEvent={() => {

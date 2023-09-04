@@ -2,6 +2,7 @@ import format from 'date-fns/format';
 import parseISO from 'date-fns/parseISO';
 
 export const customTime = '00:00:00.000'
+
  export const salesColumns =  [
         {
             field: 'productId', headerName: 'Product', minWidth: 110,
@@ -32,6 +33,8 @@ export const customTime = '00:00:00.000'
             valueGetter: ({ value }) => value? format(parseISO(value), ' do MMM yyyy HH:mm b' ): ''
         },
 ]
+
+
  export const cancelledSalesColumns =  [
         {
             field: 'productId', headerName: 'Product', minWidth: 110,
@@ -67,6 +70,7 @@ export const customTime = '00:00:00.000'
             valueGetter: ({ value }) => value? format(parseISO(value), ' do MMM yyyy HH:mm b' ): ''
         },
 ]
+
  export const userColumns =  [
         {
             field: 'firstName', headerName: 'FirstName', minWidth: 110,

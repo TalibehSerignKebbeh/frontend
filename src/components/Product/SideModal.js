@@ -83,7 +83,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
         <div
             className={` side-modal ${showSideModal ? 'active' : ''} 
             rounded-md bg-white dark:bg-slate-600 shadow-md
-            shadow-white dark:shadow-gray-600  pb-4 `}>
+            shadow-white dark:shadow-gray-600 `}>
             <div className="close-div mt-1 text-2xl mr-2  mb-3 py-4">
                 <span id="close" title='Close'
                     className='text-slate-800 dark:text-white'

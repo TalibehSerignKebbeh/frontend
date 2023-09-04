@@ -88,14 +88,14 @@ const TableRowComp = ({ obj, hideDelete, socket }) => {
                 </span>
 
             </TableCell>
-            <TableCell>
+            {/* <TableCell>
                 <span className='text-xs text-slate-600
                  dark:text-white '>
                     {obj?.cancelled?.toString()}
                 </span>
-            </TableCell>
+            </TableCell> */}
 
-            {(hideDelete === false) ?
+            {/* {(hideDelete === false) ?
                 <TableCell>
                     <button disabled={obj?.cancelled}
                         onClick={handleDelete}
@@ -104,8 +104,11 @@ const TableRowComp = ({ obj, hideDelete, socket }) => {
                 text-red-600'>
                         {cancelling ? <CircularProgress /> : <DeleteOutline />}
                     </button>
-                </TableCell> : null}
-            {/* <TableCell></TableCell> */}
+                </TableCell>
+                :
+                null
+            } */}
+            
         </TableRow>
     );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // import { useParams } from 'react-router-dom';
 import ProductsUpdates from '../../Product/updates/ProductsUpdates';
 import UserNotificationTable from '../Table/UserNotificationTable';
@@ -12,8 +12,8 @@ import useAuth from '../../../hooks/useAuth';
 
 
 const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
-   const {token} = useAuth()
-    const [tab, setTab] = useState("")
+    const { token } = useAuth()
+    const [tab, setTab] = useState("product")
     const [date, setdate] = useState('');
     const [user, setuser] = useState('');
 
@@ -33,20 +33,10 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
         date: '', product: '', user: ''
     });
     const handleTabChange = (value) => {
-        localStorage.setItem('tab', value)
+        // localStorage.setItem('tab', value)
         setTab(value)
    }
-    useEffect(() => {
-       
-            const saved = localStorage.getItem('tab')
-            setTab(saved?.length ? saved : 'product')
-        
-        // setactiveNavLink('events')
-        return () => {
-            // localStorage.removeItem('tab')
-        };
-    }, [tab?.length]);
-
+  
 
     return (
         <div className='relative md:px-3 sm:px-3 px-4 pb-6'>

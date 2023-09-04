@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import SearchProducts from './Select/SearchProducts';
+import React, { useState } from 'react';
+// import SearchProducts from './Select/SearchProducts';
 import useAuth from '../../hooks/useAuth';
 import { queryInstance } from '../../api';
 import { GetError } from '../other/OtherFuctions';
@@ -8,18 +8,15 @@ import ErrorMessage from '../StatusMessages/ErrorMessage';
 import  CircularProgress  from '@mui/material/CircularProgress';
 import ReceiptTable from './ReceiptTable';
 import {QueryClient} from '@tanstack/react-query'
+import ProductsSearch from './Select/ProductsSearch';
 
 
-const RegisterSale = ({ socket, products, setproducts }) => {
+const RegisterSale = ({ socket, products, setproducts,loadingProducts }) => {
   const  client = new QueryClient()
   const { token } = useAuth()
   const [selected, setselected] = useState([])
-  // const [products, setproducts] = useState([])
   const [postingSales, setpostingSales] = useState(false);
-  const [postStatus, setpostStatus] = useState({error:``, success:``});
-  // const [SaveReceipts, setSaveReceipts] = useState([])
-
-  
+  const [postStatus, setpostStatus] = useState({error:``, success:``})
 
   const handleSubmit = async () => {
     if (!selected?.length || !token) return;
@@ -53,18 +50,21 @@ const RegisterSale = ({ socket, products, setproducts }) => {
       setselected(selected?.map((prod)=>(prod?._id===value?._id?  {...prod, quantity:prod?.quantity+1}: prod)))
   }
   const handleDecrement = (value) => {
-    const product = selected?.find((prod) => prod?._id === value?._id)
-    if (product && product?.quantity <= 1) return;
+    const selectedProduct = selected?.find((prod) => prod?._id === value?._id)
+    if (selectedProduct && selectedProduct?.quantity <= 1) {
+      const newSelectedProducts = selected?.filter(prod => prod?._id !== selectedProduct?._id)
+      setselected(newSelectedProducts)
+      return
+    };
       setselected(selected?.map((prod)=>(prod?._id===value?._id?  {...prod, quantity:prod?.quantity-1}: prod)))
   }
 
-  
   return (
     <div
       // style={{ backgroundColor: `gray`, paddingBlock: `2rem` }}
       className='bg-text-4xl bg-slate-200 dark:bg-slate-700 
       mb-5 mt-2 py-2 
-      shadow-gray-400 dark:shadow-zinc-600 
+      shadow-gray-400 dark:shadow-slate-800 
       shadow-md max-h-fit h-auto'
     >
       <div className='w-full md:mx-10 mx-2 overflow-x-auto'>
@@ -95,8 +95,10 @@ const RegisterSale = ({ socket, products, setproducts }) => {
             handleReset={() => setpostStatus({ ...postStatus, error: `` })} />
             : null}
         </div>
-        </div>
-        <SearchProducts
+          </div>
+          {loadingProducts ?
+            <span>loading..</span> : null}
+        <ProductsSearch
           selected={selected}
           setselected={setselected}
           products={products}

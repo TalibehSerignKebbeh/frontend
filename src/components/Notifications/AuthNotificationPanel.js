@@ -1,4 +1,5 @@
-import { format, parseISO } from 'date-fns';
+import format  from 'date-fns/format';
+import parseISO  from 'date-fns/parseISO';
 import React, { useEffect, useRef } from 'react';
 import './notification.css'
 import { queryInstance } from '../../api';

@@ -1,7 +1,7 @@
 // import  Table  from '@mui/material/Table';
 import  format  from "date-fns/format";
 import parseISO from "date-fns/parseISO";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, } from 'react';
 import './notification.css'
 import { FixedSizeList } from "react-window";
 import { queryInstance } from '../../api';
@@ -12,25 +12,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
   
   const ref = useRef(null)
   const {token} = useAuth()
-  console.log(dataArray); 
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  const handleMouseDown = (e) => {
-    setDragging(true);
-    setOffset({ x: e.clientX - position.x, y: e.clientY - position.y });
-  };
-
-  const handleMouseMove = (e) => {
-    if (dragging) {
-      setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setDragging(false);
-  };
  
    const handleClickAuthNotification = async() => {
     const ids = dataArray?.map(notify => { return notify?._id })
@@ -55,15 +37,25 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
     return (
       <div
         style={{
-        ...style, display: 'block', flexDirection: 'column', rowGap: '-20px',
-        height: 'auto', width: '100%', padding: '2px 5px',
-          textAlign: 'center', justifyContent: 'center',
+        ...style, 
+          width: '100%', padding: '2px',paddingBlock:'10px',
+          top: style?.top,
+          left: style?.left,
+          display: "block",
+          minHeight:'200px',
+          height:'max-content'
         }}
-        className='bg-white dark:bg-slate-600 shadow-md 
-        shadow-slate-100 dark:shadow-slate-400
+        className='bg-white dark:bg-gray-700 
+             shadow shadow-white dark:shadow-slate-800
+              block py-2 px-[3px]
       '>
-        <small className="text-gray-700 dark:text-slate-100
-         block font-normal capitalize">{val?.message}</small>
+         <small className="absolute right-2
+          bg-blue-600 text-white px-2 rounded-full text-xl  ">
+            {index + 1}
+          </small>
+        <p className="text-gray-700 dark:text-slate-100
+         block font-normal capitalize">{val?.message}
+         </p>
         <small className="text-gray-700 dark:text-slate-100
          font-light text-xs capitalize">User:
           <small className="text-lg font-normal">{fullName} </small></small>
@@ -84,26 +76,25 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       <div ref={ref}
         className='notification-wrapper bg-slate-200 dark:bg-slate-700
         text-center'
-          style={{
-            visibility: open ? "visible" : "hidden",
-            position: 'absolute',
-             right:0, left:'auto',
-        }}
-        onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      >
-        <button  className='mx-auto p-2 px-8 mt-2 rounded  
+        style={{
+        visibility: open ? "visible" : "hidden",
+        position: 'absolute',  right: 0, left: 'auto',
+      }}
+    >
+      <button 
+        className='mx-auto p-2 px-2 py-1 mt-2 rounded  
             bg-green-700 hover:bg-green-600
-            text-white hover:text-white  '
-                onClick={handleClickAuthNotification}>
-            Read All
+            text-white hover:text-white 
+            self-center justify-self-center '
+        onClick={handleClickAuthNotification}
+      >
+            Mark all as read
           </button>
               
           <FixedSizeList
             height={250}
             itemCount={dataArray?.length}
-            itemSize={65}
+            itemSize={130}
                 width={"100%"}
                 style={{
                   marginTop:'60px', 

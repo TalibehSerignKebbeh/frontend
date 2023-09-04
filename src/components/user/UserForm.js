@@ -16,6 +16,7 @@ import ErrorMessage from "../StatusMessages/ErrorMessage";
 import useAuth from "../../hooks/useAuth";
 
 const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
+
   const {token } = useAuth()
   const queryClient = new QueryClient();
   const [adding, setadding] = useState(false);
@@ -86,7 +87,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
       setupdating(true);
       const id = values?._id;
       await queryInstance
-        .put(`/users/${id}/profile`, values,{headers:{Authorization:`Bearer ${token}`}})
+        .put(`/users/${id}`, values,{headers:{Authorization:`Bearer ${token}`}})
         .then((res) => {
           // console.log(res);
           if (res.status === 200) {

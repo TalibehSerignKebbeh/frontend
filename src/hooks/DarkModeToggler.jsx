@@ -1,5 +1,6 @@
 import  LightMode from '@mui/icons-material/LightMode';
 import  ModeNightOutlined from '@mui/icons-material/ModeNightOutlined';
+import  Tooltip  from '@mui/material/Tooltip';
 import { useEffect, useState } from 'react';
 
 const DarkModeToggle = () => {
@@ -28,11 +29,14 @@ const DarkModeToggle = () => {
 
 
   return (
+    <Tooltip title={'Toggle Dark Mode'}>
+
       <label htmlFor='toggle'
       className={`mx-auto  w-20 h-fit p-1  
         flex items-center justify-start
-    cursor-pointer border rounded bg-gray-300
-    ${darkMode ? ' border-slate-300' : ' border-slate-800'}
+    cursor-pointer border rounded 
+    ${darkMode? 'bg-slate-800':'bg-gray-200'}
+    ${darkMode ? ' border-slate-600' : ' border-slate-300'}
       
     cursor-pointer`}>
       <input type="checkbox" name="toggle" id="toggle"
@@ -58,6 +62,8 @@ const DarkModeToggle = () => {
           sx={{ transform: 'scale(1.3)', p:'2px' }} />}
        </span>
       </label>
+    </Tooltip>
+
   );
 };
 

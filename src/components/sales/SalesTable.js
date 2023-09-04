@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import  IconButton  from "@mui/material/IconButton";
-import  {DataGrid,gridClasses,GridToolbar}  from "@mui/x-data-grid";
+import  {DataGrid,gridClasses}  from "@mui/x-data-grid";
 import Box from "@mui/system/Box";
 // import  Delete  from "@mui/icons-material/Delete";
 import { salesColumns, cancelledSalesColumns } from "./data";
@@ -9,6 +9,8 @@ import useAuth from "../../hooks/useAuth";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import SuccessMessage from "../StatusMessages/SuccessMessage";
+// import isToday from "date-fns/isToday";
+// import parseISO from "date-fns/parseISO";
 
 const SalesTable = ({
   sales,
@@ -48,21 +50,22 @@ const SalesTable = ({
         setcancelledStatus({error: GetError(err), success:''})
     }).finally(()=>setCancelling(false))
   }
+
+
+  // console.log(sales[sales?.length-1]?.saleDate);
+  // console.log(isToday(parseISO('2023-08-24T13:19:23.000Z')));
  
 
   return (
     <Box 
-      className="w-fit bg-white mt-8
-      dark:bg-slate-700 
+      className=" bg-white mt-8
+      dark:bg-slate-800 
       text-gray-500 dark:text-white
      shadow 
      max-w-full overflow-scroll p-0"
       sx={{
-        // eslint-disable-next-line no-useless-computed-key
-        ['& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar']: {
-          color: 'inherit',
-          bgcolor:'inherit'
-           }
+        width: '100%',
+        // minWidth: 'max-content', maxWidth: '1000px',
       }}
       
     >
@@ -94,17 +97,25 @@ const SalesTable = ({
       
 
       <DataGrid className="text-gray-600 dark:text-white"
-        autoHeight
+        // autoHeight
         rowCount={rowCount}
         rows={sales?.length ? sales : []}
         checkboxSelection={deletable}
-        columns={deletable? salesColumns : cancelledSalesColumns}
+        columns={!deletable? salesColumns : cancelledSalesColumns}
         getRowId={(row) => row?._id}
         page={page}
         pageSize={pageSize}
         paginationMode={"server"}
         pagination={true}
-      
+        // filterModel={{}}
+        // filterMode="server"
+        // onFilterModelChange={({ items, logicOperator, quickFilterLogicOperator, quickFilterValues }) => {
+        //   console.log(items)
+        //   console.log(logicOperator)
+        //   console.log(quickFilterLogicOperator)
+        //   console.log(quickFilterValues)
+          
+        // }}
         onPaginationModelChange={({ page, pageSize }) => {
           setpage(page);
           setpageSize(pageSize)
@@ -127,10 +138,7 @@ const SalesTable = ({
         
         columnBuffer={4}
         columnThreshold={2}
-        components={{
-          Toolbar: GridToolbar,
-          // Pagination: Paginnation({page, pageSize, rowCount, setpage, setpageSize}),
-        }}
+        scrollbarSize={1}
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",
@@ -149,6 +157,8 @@ const SalesTable = ({
         sx={{
           height: "100%",
           width: "100%",
+          // minWidth:'max-content',maxWidth:'2000px',
+          minHeight:'800px', maxHeight: '1000px',
           mx: "auto",
           mb: 8,
           [`& .${gridClasses.row}`]: {
@@ -161,12 +171,6 @@ const SalesTable = ({
           [`& .${gridClasses.actionsCell}`]: {
             fontSize: "1.1rem",
           },
-          // eslint-disable-next-line no-template-curly-in-string
-          '& .${gridClass.mui-datagrid-footer-pagination}': {
-          color: 'inherit',
-          bgcolor:'inherit'
-           },
-          // ['& .{$gridClasses}']
           py: 3,
           px: 2,
         }}

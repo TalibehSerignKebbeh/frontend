@@ -36,13 +36,13 @@ const ExpiredTable = ({ expiredProducts, setexpiredProducts }) => {
                                 Quantity
                             </span>
                         </TableCell>
-                        <TableCell className='' colSpan={2}>
+                        {/* <TableCell className='' colSpan={2}>
                             <span className={`text-xs text-slate-100
                                  rounded p-3 bg-slate-500
                                 `}>
                                 Actions
                             </span>
-                        </TableCell>
+                        </TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>

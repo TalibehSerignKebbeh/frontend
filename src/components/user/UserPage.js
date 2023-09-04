@@ -71,6 +71,7 @@ const UserPage = ({ socket,setactiveNavLink }) => {
     }
 
   }, [UserFetch.error, UserFetch.failureReason, UserFetch?.isError]);
+  
   return (
     <Box
       sx={{ mx: {lg:3, md:2, sm:'3px', xs:'0px', py:2} }}

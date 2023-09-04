@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
-import Box from "@mui/material/Box";
-import  ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
-import  ShoppingBagSharp  from "@mui/icons-material/ShoppingBagSharp";
+import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
+import ShoppingBagSharp from "@mui/icons-material/ShoppingBagSharp";
 import SaleNotificationPanel from "../Notifications/SaleNotificationPanel";
 import ProductNotification from "../Notifications/ProductNotification";
 import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
 import { queryInstance } from "../../api";
+import Tooltip from '@mui/material/Tooltip'
 
 
 
 const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
-  const [openNotifyPanel, setopenNotifyPanel] = useState(false);
+  const [openAuthNotify, setOpenAuthNotify] = useState(false);
   const [openSaleNotify, setopenSaleNotify] = useState(false);
   const [openProductNotify, setopenProductNotify] = useState(false);
   const [productNotifications, setproductNotifications] = useState([]);
@@ -26,7 +26,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
       socket.on("auth_notifications", async () => {
         // setauthNotifications([...authNotifications]);
         await queryInstance.get(`/notifications/auths`, {
-          headers:{Authorization:`Bearer ${token}`}
+          headers: { Authorization: `Bearer ${token}` }
         }).then((res) => {
           if (res?.status === 200) {
             setauthNotifications(res?.data?.notifications)
@@ -64,43 +64,118 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
 
   return (
-    <div className="w-full h-28 p-2 py-5 
+    <div className="
+     self-start justify-self-stretch
+     w-full h-40 p-2 py-5 
     bg-gray-50 dark:bg-slate-700 
-    shadow-md dark:shadow-slate-600 
-    flex flex-row items-center justify-between
-    ">
-      <div className="h-full w-1 ">
+    shadow-md dark:shadow-slate-800 
+    flex flex-row items-center justify-end
+    
+    "
+      style={{ minHeight: '70px', }}
+    >
 
-      </div>
-      <div className="
-      flex flex-row gap-0 items-center">
+      {(isAdmin) ?
+        <div
+          className="flex flex-row items-center justify-between relative
+            gap-14 justify-self-center h-full w-max md:mr-12 sm:mr-7 mr-3"
 
-        {(isAdmin) ?
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: 'center',
-              gap: "60px",
-              height: "100%",
-              position: "relative",
-              alignContent: "center",
-              justifyContent: "space-around",
-              my: 'auto',
-              //  pt:'1px',
-              // py: 3,
-              mr: '30px',
-              mb:'25px',
-
+        >
+        
+          <button className="relative"
+            onClick={e => {
+              setOpenAuthNotify(false)
+              setopenSaleNotify(prev => !prev)
+              setopenProductNotify(false)
             }}
-            className=""
-
           >
-            <div
+            <ShoppingBagSharp
+              sx={{ transform: 'scale(1.7)' }}
+              className="text-black dark:text-slate-50"
+            />
+            {sales_Notifications?.length ?
+              <h2 className="bg-red-600 text-white
+            py-[1px] px-[4px] rounded-[50%] -right-3 -top-3 absolute
+            text-lg">{sales_Notifications?.length}</h2>
+              : null}
+          </button>
+
+          <button
+            className="relative"
+            onClick={e => {
+              setOpenAuthNotify(prev => !prev)
+              setopenSaleNotify(false)
+              setopenProductNotify(false)
+            }}
+          >
+            <LockClockOutlined
+              sx={{ transform: 'scale(1.7)' }}
+              className="text-black dark:text-slate-50"
+            />
+            {authNotifications?.length ?
+              <h2 className="bg-red-600 text-white
+              py-[1px] px-[4px] rounded-[50%] 
+              -right-3 -top-3 absolute
+              text-lg 
+            ">{authNotifications?.length}</h2>
+            : null}
+          </button>
+
+          <button className="relative"
+            onClick={e => {
+              setOpenAuthNotify(false)
+              setopenSaleNotify(false)
+              setopenProductNotify(prev => !prev)
+            }}
+          >
+            <ProductionQuantityLimitsOutlined
+              sx={{ transform: 'scale(1.7)' }}
+              className="text-black dark:text-slate-50"
+            />
+            {productNotifications?.length ?
+              <h2 className="bg-red-600 text-white
+            py-[1px] px-[4px] rounded-[50%] -right-3 -top-3 absolute
+            text-lg">{productNotifications?.length}</h2>
+              : null}
+          </button>
+
+          {/* auth notification dialog */}
+          {authNotifications?.length > 0 && (
+                <AuthNotificationsTable
+                  socket={socket}
+                  data={authNotifications}
+                  open={openAuthNotify}
+                  setopen={setOpenAuthNotify}
+                />
+          )}
+
+
+          {/* sales notifications dialog */}
+          {sales_Notifications?.length > 0 && (
+                <SaleNotificationPanel
+                  socket={socket}
+                  dataArray={sales_Notifications}
+                  open={openSaleNotify}
+                  setopen={setopenSaleNotify}
+                />
+              )}
+
+          {/* products notification dialog */}
+           {productNotifications?.length > 0 && (
+                <ProductNotification
+                  socket={socket}
+                  dataArray={productNotifications}
+                  open={openProductNotify}
+                  setopen={setopenProductNotify}
+                />
+              )}
+
+          
+          {/* <div
               onClick={(e) => {
                 setopenSaleNotify((prev) => !prev);
                 setopenProductNotify(false);
-                setopenNotifyPanel(false);
+                setOpenAuthNotify(false);
               }}
               className=" relative cursor-pointer flex flex-col my-auto"
             >
@@ -112,13 +187,14 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
                   setopen={setopenSaleNotify}
                 />
               )}
-              <h1
+              {sales_Notifications?.length ?
+                <h1
                 title="sales"
-                className="z-20 absolute -top-3 bottom-2 left-4 
-                text-red-700 font-black  text-2xl align-middle "
+                className="z-20 absolute -top-5  left-4 
+                bg-red-600 p-2 py-1 rounded-full text-white font-black  text-xl"
               >
                 {sales_Notifications?.length || ''}
-              </h1>
+              </h1> : null}
               <ShoppingBagSharp
                 
                 sx={{
@@ -131,11 +207,13 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               />
 
             </div>
+
+
             <div
               className=" relative cursor-pointer my-auto"
               title="auth"
               onClick={(e) => {
-                setopenNotifyPanel((prev) => !prev);
+                setOpenAuthNotify((prev) => !prev);
                 setopenSaleNotify(false);
                 setopenProductNotify(false);
               }}
@@ -144,19 +222,20 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
                 <AuthNotificationsTable
                   socket={socket}
                   data={authNotifications}
-                  open={openNotifyPanel}
-                  setopen={setopenNotifyPanel}
+                  open={openAuthNotify}
+                  setopen={setOpenAuthNotify}
                 />
               )}
 
 
-              <h1
+              {authNotifications?.length ?
+                <h1
                 title="auth"
-                className="z-20 absolute -top-3 bottom-2 left-4 
-                text-red-700 font-black  text-2xl align-middle "
+                className="z-20 absolute -top-5  left-4 
+                bg-red-600 p-2 py-1 rounded-full text-white font-black  text-xl"
               >
                 {authNotifications?.length || ''}
-              </h1>
+              </h1> : null}
               <LockClockOutlined
                 sx={{
                   opacity: .7,
@@ -171,7 +250,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               title="products"
               onClick={(e) => {
                 setopenSaleNotify(false);
-                setopenNotifyPanel(false);
+                setOpenAuthNotify(false);
                 setopenProductNotify((prev) => !prev);
               }}
               className=" relative cursor-pointer flex flex-col my-auto"
@@ -184,13 +263,14 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
                   setopen={setopenProductNotify}
                 />
               )}
-              <h1
-                title="sales"
-                className="z-20 absolute -top-3 bottom-2 left-4 
-                text-red-700 font-black  text-2xl align-middle "
+              {productNotifications?.length ?
+                <h1
+                title="auth"
+                className="z-20 absolute -top-5  left-4 
+                bg-red-600 p-2 py-1 rounded-full text-white font-black  text-xl"
               >
                 {productNotifications?.length || ''}
-              </h1>
+              </h1> : null}
               <ProductionQuantityLimitsOutlined
                 sx={{
                   opacity: .7,
@@ -200,10 +280,11 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               left-0 w-full h-full scale-150
               text-black dark:text-white " />
 
-            </div>
-          </Box>
-          : null}
-      </div>
+          </div> */}
+
+        </div>
+        : null
+      }
 
     </div>
   );

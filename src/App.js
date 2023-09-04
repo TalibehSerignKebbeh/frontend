@@ -28,7 +28,7 @@ import 'antd/dist/reset.css';
 import Events from "./components/Notifications/Page/Events";
 import CancellSals from "./components/sales/CancellSales";
 import Page from "./components/Product/Expired/Page";
-
+import MyNewTopBar from "./components/Navigation/MyNewTopBar";
 
 function App() {
   const { username } = useAuth()
@@ -72,7 +72,7 @@ function App() {
               showSideMenu={showSideMenu}
               setshowSideMenu={setshowSideMenu}
             />
-
+             {/* <MyNewTopBar /> */}
             <div
               className={`' w-full  md:mx-2 mx-auto flex flex-1
           items-stretch justify-stretch  my-auto bg-inherit'  '`}

@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableRowComp from './TableRowComp';
-import  TableFooter  from '@mui/material/TableFooter';
+// import  TableFooter  from '@mui/material/TableFooter';
 import Paginate from '../../Pagination/Paginate';
 
 const TableComp = ({ data, page, setpage,
@@ -56,7 +56,7 @@ const TableComp = ({ data, page, setpage,
                                 Date
                             </span>
                         </TableCell>
-                         <TableCell className=''>
+                         {/* <TableCell className=''>
                             <span className={`text-xs text-slate-100
                                  rounded p-3 bg-slate-500
                                 `}>
@@ -70,7 +70,7 @@ const TableComp = ({ data, page, setpage,
                                 `}>
                                 Actions
                             </span>
-                        </TableCell> : null}
+                        </TableCell> : null} */}
                     </TableRow>
                 </TableHead>
                 <TableBody>

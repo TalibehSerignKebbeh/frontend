@@ -13,10 +13,10 @@ import { useQuery } from "@tanstack/react-query";
 
 const SalesPage = ({ socket, setactiveNavLink }) => {
 
-  const { token } = useAuth()
+  const { token, isSeller } = useAuth()
   const [rowCount, setrowCount] = useState(0);
-  const [loading, setloading] = useState(false);
-  const [sales, setsales] = useState([]);
+  // const [loading, setloading] = useState(false);
+  // const [sales, setsales] = useState([]);
   const [errorMessage, seterrorMessage] = useState("");
   const [date, setdate] = useState('');
   const [pageSize, setpageSize] = useState(20);
@@ -30,7 +30,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
     date: '', product: '', user: ''
   });
 
-  const { isLoading, isError, error, failureReason, data,
+  const { isLoading,data,
     isSuccess,
   } = useQuery({
     queryKey: ['products'],
@@ -40,15 +40,17 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
 
       }).then(res => res?.data)
       .catch(err => Promise.reject(err)),
-    refetchInterval: 15000,
+    refetchInterval: 2500,
     keepPreviousData: true,
   })
 
-
-  useEffect(() => {
-    const fetchSales = async () => {
-      setloading(true);
-      seterrorMessage("");
+  const { isLoading: salesLoading,
+    isError: isSaleLoadError, error: saleLoadError,
+    failureReason: saleLoadFailureReason, data: saleLoadData,
+    isSuccess: isSalesLoadSuccess,
+  } = useQuery({
+    queryKey: ['sales',page, pageSize, searchFilters?.date, searchFilters?.product, searchFilters?.user ],
+    queryFn: async function() {
       let filters = {}
 
       Object.keys(searchFilters).forEach((key) => {
@@ -59,46 +61,74 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
 
       filters.page = page;
       filters.pageSize = pageSize;
-      await queryInstance
-        .get(
-          `/sales`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
-        )
-        .then((res) => {
-          if (res?.status === 200) {
-            // console.log(res?.data);
-            setrowCount(res?.data?.totalSales);
-            setsales(res?.data?.sales);
-            return;
-          }
+      return queryInstance.get(`/sales`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          params:{...filters}
 
-          seterrorMessage(GetError(res))
-        })
-        .catch((err) => {
-          // console.log(err);
-          seterrorMessage(GetError(err))
-        })
-        .finally(() => {
-          setloading(false);
-        });
-    };
-    fetchSales();
-    return () => { };
-  }, [page, pageSize, searchFilters, token]);
+        }).then(res => res?.data)
+        .catch(err => Promise.reject(err))
+    },
+    refetchInterval: 15000,
+    keepPreviousData: true,
+  })
 
+  // useEffect(() => {
+  //   const fetchSales = async () => {
+  //     setloading(true);
+  //     seterrorMessage("");
+  //     let filters = {}
+
+  //     Object.keys(searchFilters).forEach((key) => {
+  //       if (searchFilters[key]?.length) {
+  //         filters[key] = searchFilters[key]
+  //       }
+  //     })
+
+  //     filters.page = page;
+  //     filters.pageSize = pageSize;
+  //     await queryInstance
+  //       .get(
+  //         `/sales`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
+  //       )
+  //       .then((res) => {
+  //         if (res?.status === 200) {
+  //           // console.log(res?.data);
+  //           setrowCount(res?.data?.totalSales);
+  //           setsales(res?.data?.sales);
+  //           return;
+  //         }
+
+  //         seterrorMessage(GetError(res))
+  //       })
+  //       .catch((err) => {
+  //         // console.log(err);
+  //         seterrorMessage(GetError(err))
+  //       })
+  //       .finally(() => {
+  //         setloading(false);
+  //       });
+  //   };
+  //   fetchSales();
+  //   return () => { };
+  // }, [page, pageSize, searchFilters, token]);
+
+ 
+  useEffect(() => {
+    setrowCount((prevValue) => (salesLoading ? rowCount : saleLoadData?.totalSales));
+  }, [ saleLoadData?.totalSales, salesLoading]);
 
   useEffect(() => {
-    setrowCount((prevValue) => (loading ? rowCount : prevValue));
-  }, [rowCount, loading]);
+    if (isSuccess || data?.products?.length) {
+       setproducts([...data?.products])
+    }
+  }, [data?.products, isSuccess]);
 
   useEffect(() => {
-    console.log(data);
-    setproducts(data?.products)
-  }, [isSuccess]);
-
-  useEffect(() => {
-    // console.log(error);
-  }, [error]);
-
+    if (saleLoadError || isSaleLoadError || saleLoadFailureReason) {
+      seterrorMessage(GetError(saleLoadError || saleLoadFailureReason))
+    }
+  }, [saleLoadError, isSaleLoadError, saleLoadFailureReason]);
 
 
   return (
@@ -107,8 +137,10 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         icon={<Inventory2 sx={{ transform: "scale(1.5)", mb: 1, zIndex: 0 }} />}
         title={"Manage Sales"}
       />
+      {isSeller ?
+        <>
       <button className="md:px-4 px-2 py-2 rounded-md 
-        shadow-md shadow-slate-50 dark:shadow-slate-700
+        shadow-md shadow-slate-50 dark:shadow-slate-800
         bg-white dark:bg-slate-700
       text-slate-500 dark:text-white font-bold mb-4"
         onClick={() => setOpenRegisterSale(prev => !prev)}>
@@ -130,10 +162,12 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         >
           <RegisterSale socket={socket}
             products={products}
-            setproducts={setproducts}
+                setproducts={setproducts}
+                loadingProducts={isLoading}
           />
         </motion.div>
       </div>
+      </> : null}
 
 
       <div className="bg-white dark:bg-slate-700 
@@ -156,15 +190,15 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         </div> : null}
 
         <SalesTable
-          sales={sales}
+          sales={saleLoadData?.sales}
           rowCount={rowCount}
           page={page}
           setpage={setpage}
           pageSize={pageSize}
           setpageSize={setpageSize}
-          loading={loading}
+          loading={salesLoading}
           socket={socket}
-          deletable={true}
+          deletable={false}
         />
       </div>
 

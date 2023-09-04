@@ -34,11 +34,11 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
   return (
     <Box
       height={'100vh'}
-      className={`bg-gray-50 dark:bg-slate-700
-      text-gray-700 dark:text-slate-50 overflow-x-hidden
+      className={`bg-white dark:bg-slate-700
+      shadow shadow-white dark:shadow-slate-800 overflow-x-hidden
       overflow-y-auto
       ${showSideMenu
-          ? "sidebar-main-active "
+          ? "sidebar-main active"
           : " sidebar-main "
         }  
         bg-white  flex flex-col overflow-y-auto 
@@ -53,20 +53,21 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
         sx={{
           fontSize: "1.7rem",
           ml: "3px", mt: '2px', position: 'fixed', p: '2px',py:'5px',
-          flexShrink: 0, flexGrow: 0, bgcolor: '#fff',
+          flexShrink: 0, flexGrow: 0,
           overflow:'hidden',boxShadow: 'inset 0px 43px 65px -53px rgba(0,0,0,0.1)',
-          ':hover': {
-            bgcolor:'#fff'
-          },
+          bgcolor: '#083e6c',
+          ":hover": {
+           bgcolor: '#083e6c',
+         }
                 }}
         className={`
          z-50 menu-toggle-btn 
-            ${showSideMenu ? "ml-auto" : " -m-1 ml-1"} 
-             ml-auto -mr-8 text-2xl pointer p-0 
-                   `}
+        ${showSideMenu ? "ml-auto" : " -m-1 ml-1"} 
+        ml-auto -mr-8 text-2xl pointer p-0 
+        `}
       >
         <AiOutlineMenu className="text-center mx-auto
-        text-gray-900"/>
+       text-white  bg-inherit"/>
         
       </Button>
       <Box sx={{
@@ -105,7 +106,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
             />
             : null}
           <span className="text-lg font-normal font-sans
-           pl-7 mt-2">Sales</span>
+           pl-7 mt-2 text-slate-600 dark:text-slate-100">Sales</span>
           <CustomLink href={'/sales'}
             icon={<PointOfSaleSharp />}
             title={"sales"}
@@ -118,7 +119,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
           />
           <span
             className="text-lg font-normal font-sans
-           pl-7 mt-2">Product</span>
+           pl-7 mt-2 text-slate-600 dark:text-slate-100">Product</span>
 
           <CustomLink href={'/products'}
             icon={<Inventory2Outlined />}

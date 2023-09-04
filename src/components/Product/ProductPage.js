@@ -90,10 +90,6 @@ const ProductPage = ({ socket }) => {
     if (isError || error || failureReason) {
       seterrorMessage(GetError(error ? error : failureReason))
     }
-
-    return () => {
-
-    };
   }, [error, failureReason, isError]);
 
   return (

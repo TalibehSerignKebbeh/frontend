@@ -1,6 +1,6 @@
-import React, { useEffect,useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { FixedSizeList } from "react-window";
-import  format  from "date-fns/format";
+import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
 import '../notification.css'
 import { queryInstance } from "../../../api";
@@ -9,111 +9,143 @@ import useAuth from "../../../hooks/useAuth";
 const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
 
   const ref = useRef(null)
-  const {token}= useAuth()
+  const { token } = useAuth()
 
   const handleClickAuthNotification = async () => {
     const ids = data?.map(notify => { return notify?._id })
     // socket.emit("read_all_auth_notification", { ids });
     await queryInstance.patch(`notifications`, { ids },
-          { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } }
     )
       .then((res) => {
         // console.log(res);
         if (res?.status === 200) {
-           socket.emit("read_all_auth_notification", {});
+          socket.emit("read_all_auth_notification", {});
         }
 
-      // console.log(res);
+        // console.log(res);
       }).catch((err) => {
-      // console.log(err);
+        // console.log(err);
         alert('some error occurred')
-    })
+      })
   };
   useEffect(() => {
+    if (open) {
+      
     window.addEventListener('mousedown', (e) => {
       // console.log(ref?.current?.contains(e.target));
       const isChild = ref?.current?.contains(e.target)
-          if (!isChild) {
-              setopen(false)
-            }
-        })
-    return () => {
+      // console.log(`is child of modal `, isChild);
+      if (ref?.current && !isChild) {
+        // console.log(isChild);
+        setopen(false)
+      } else {
+        setopen(true)
+      }
+    })
+    }
       
+    return () => {
+
     };
-  }, [setopen]);
+  }, [setopen, open]);
 
   const Row = ({ index, style }) => {
     const val = data[index];
+  
     const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
     const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
+
     return (
       <div
         style={{
-        ...style, display: 'block', flexDirection: 'column', rowGap: '-20px',
-        height: 'auto', width: '100%', padding: '2px 5px',
-          textAlign: 'center', justifyContent: 'center',
-        }}
-        className='bg-inherit mb-1'
-      >
-        <div className="bg-white dark:bg-gray-600 
-             shadow-md shadow-slate-100 dark:shadow-slate-400">
+          ...style, 
+          width: '100%', padding: '2px',paddingBlock:'10px',
+          top: style?.top,
+          left: style?.left,
+          display: "block",
+          minHeight:'200px',
+          height:'max-content'
           
-        <small className="text-gray-700 dark:text-gray-50 
-        block font-normal capitaliz
-        e
-        ">{val?.message}</small>
-        <small className="text-gray-700 dark:text-gray-50 
-        font-light text-xs capitalize"
+        }}
+        
+      >
+       
+        <div className="bg-white dark:bg-gray-700 
+             shadow shadow-white dark:shadow-slate-800
+              block py-2 px-[3px] "
         >
-        Name: <small className="text-lg font-normal">{ fullName} </small></small>
-        <small className="text-gray-700 dark:text-gray-50 
-         block text-xs font-normal"
-         >
-         {date}</small>
-      
-      </div>
+          <small className="absolute right-2
+          bg-blue-600 text-white px-2 rounded-full text-xl  ">
+            {index + 1}
+          </small>
+          <p className="text-gray-700 dark:text-gray-50 
+                           block font-normal capitalize
+                           "
+          >{val?.message}
+          </p>
+          <p className="text-gray-700 dark:text-gray-50 
+                       font-light text-xs capitalize"
+          >
+            Name: <small className="text-lg font-normal
+                        text-gray-700 dark:text-gray-50 ">
+              {fullName}
+            </small>
+          </p>
+
+          <p className="text-gray-700 dark:text-gray-50 
+                          block text-xs font-normal"
+          >
+            {date}
+          </p>
+
         </div>
+      </div>
     );
   };
 
-    return (
-       <div  ref={ref}
-        className='notification-wrapper
-        bg-slate-100 dark:bg-slate-800'
-            style={{
+  return (
+    <div ref={ref}
+      className='notification-wrapper
+        bg-slate-100 dark:bg-slate-800
+        overflow-y-auto flex flex-col '
+      style={{
         visibility: open ? "visible" : "hidden",
-              position: 'fixed', right:0, left:'auto',
+        position: 'absolute', right: 0, left: 'auto',
+      }}
+    >
+      <button 
+        className='mx-auto p-2 px-2 py-1 mt-2 rounded  
+            bg-green-700 hover:bg-green-600
+            text-white hover:text-white 
+            self-center justify-self-center '
+        onClick={handleClickAuthNotification}
+      >
+         Mark all as read
+      </button>
+
+
+      <FixedSizeList
+        height={500}
+        itemCount={data?.length}
+        itemSize={126}
+        width={"100%"}
+        style={{
+          marginTop: '40px',
+          marginBlock: '10px',
+          paddingBottom: '10px',
+          display: 'flex', flexDirection: 'column',
+          borderTop: '2px solid yellow',
+          height:'100%'
+          
         }}
       >
-        <div className="w-full text-center">
-          <button
-            className='mx-auto p-2 px-8 mt-2 rounded  
-            bg-green-700 hover:bg-green-600
-            text-white hover:text-white  '
-            onClick={handleClickAuthNotification}
-          >
-            Read All
-          </button>
-       </div>
+        {Row}
+      </FixedSizeList>
 
-              
-          <FixedSizeList
-            height={250}
-            itemCount={data?.length}
-            itemSize={65}
-                width={"100%"}
-                style={{
-                  marginTop:'60px', 
-                  marginBlock: '10px',
-                  paddingBottom:'30px'
-                  }}
-          >
-            {Row}
-                  </FixedSizeList>
-           
-         
-        </div>
-            
+
+    </div>
+
   );
 };
 

@@ -5,7 +5,7 @@ const CustomLink = ({showSideMenu, icon, title, href}) => {
     return (
         <Link  
           to={href}
-          className={`ml-6 mr-auto
+          className={`ml-6 mr-auto text-slate-800 dark:text-white
                  m-auto text-start justify-start flex flex-row 
                  lg:gap-7 xl:gap-10 md:gap-x-5 gap-x-3 items-center 
                  hover:text-blue-400 transition-all relative

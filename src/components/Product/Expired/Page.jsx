@@ -21,7 +21,7 @@ const Page = ({ socket }) => {
     const [uploading, setuploading] = useState(false);
     const [errorMsg, seterrorMsg] = useState('');
     const [successMsg, setsuccessMsg] = useState('');
-    const [tab, setTab] = useState("live")
+    // const [tab, setTab] = useState("live")
 
     const SubmitExpiredData = async () => {
         if (!product?.length || !(quantity > 0)) {
@@ -64,10 +64,10 @@ const Page = ({ socket }) => {
     }
 
     return (
-        <div className='w-full  h-full self-stretch'>
+        <div className='w-full  h-full self-stretch rounded-2xl'>
             <div className='w-full flex flex-wrap 
             bg-slate-300 dark:bg-slate-700
-            items-stretch md:justify-center md:gap-x-[200px] justify-evenly 
+            items-stretch md:justify-center md:gap-x-[50px] justify-evenly 
             my-6   py-5
             md:px-0 sm:px-5 px-3 gap-y-7
             '>
@@ -147,7 +147,7 @@ const Page = ({ socket }) => {
                     rounded-md bg-white
                     dark:bg-slate-400 
                     text-black dark:text-white   '>
-                            {type?.length ? <option value="">None</option>
+                            {!type?.length ? <option value="">None</option>
                                 : null}
                             {OptionsValues?.map((opt, ind) => (
                                 <option value={opt}
@@ -170,7 +170,7 @@ const Page = ({ socket }) => {
                      */}
                 </div>
             </div>
-            <div className='bg-slate-300 dark:bg-slate-600
+            {/* <div className='bg-slate-300 dark:bg-slate-600
             md:w-[400px] sm:w-[400px] w-full px-1 py-2 
             flex gap-0 rounded-lg
             my-5 md:mx-8 sm:mx-5 mx-3'>
@@ -192,17 +192,17 @@ const Page = ({ socket }) => {
                     text-gray-600 
                      text-center rounded  text-xl`}
                 />
-            </div>
-            {tab === 'live' &&
+            </div> */}
+            {/* {tab === 'live' && */}
                 <TableContainerComponent
                     socket={socket}
                 />
-            }
-            {tab === 'cancelled' &&
+            {/* } */}
+            {/* {tab === 'cancelled' &&
                 <CancelledTable
                     socket={socket}
                 />
-            }
+            } */}
 
 
         </div>

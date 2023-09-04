@@ -1,5 +1,6 @@
-import { Button } from "@mui/material";
-import { format, parseISO } from "date-fns";
+import Button from "@mui/material/Button";
+import format  from 'date-fns/format';
+import parseISO  from 'date-fns/parseISO';
 import React from "react";
 
 const NotificationPanel = ({ dataArray, model, open, socket }) => {

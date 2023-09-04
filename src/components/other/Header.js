@@ -3,7 +3,7 @@ import React from 'react'
 const Header = ({ title, icon }) => {
   return (
     <Box className={`bg-white dark:bg-slate-700
-      shadow shadow-white dark:shadow-slate-500`}
+      shadow shadow-white dark:shadow-slate-800`}
               sx={{
               width: {
             lg: "300px",

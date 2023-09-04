@@ -12,8 +12,7 @@ const FilterInputs = ({
     date, setdate, user, setuser,
     product, setproduct,
     type, setType,
-    
-
+    searchFilters,setsearchFilters
 }) => {
     return (
         <div className="flex flex-row flex-wrap items-center
@@ -132,6 +131,18 @@ const FilterInputs = ({
             "></span>
                 </label>
             </div> */}
+            {(user?.length || date?.length || product?.length || type?.length) ?
+                <Button text={`Apply filters`}
+                clickEvent={() => {
+                    setsearchFilters
+                        ({
+                            date: date, product: product, user: user,
+                        type:type})
+                   
+                }}
+                classNa={`text-white bg-blue-500 px-2 py-[10px]
+                 rounded-md shadow-lg -mb-5`}
+                /> : null}
             {(user?.length || date?.length || product?.length || type?.length
            ) ?
                 <Button text={`Clear filters`}
@@ -140,6 +151,7 @@ const FilterInputs = ({
                         setType('')
                         setdate('')
                         setuser('')
+                        setsearchFilters({product:'', user:'', type:'', date:''})
                     }}
                     classNa={`text-white bg-red-500 px-2 py-[10px]
                  rounded-md shadow-lg -mb-5`}
