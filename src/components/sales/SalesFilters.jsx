@@ -107,7 +107,7 @@ export default function SalesFilters(
                  rounded-md shadow-lg -mb-5`}
                 /> : null}
             
-            {(user?.length || date?.length || product?.length || deletedBy?.length) ?
+            {(searchFilters?.user?.length || searchFilters?.date?.length || searchFilters?.product?.length || searchFilters?.deletedBy?.length) ?
                 <Button text={`Clear filters`}
                 clickEvent={() => {
                     setsearchFilters({ date: '', product: '', user: '' })

@@ -38,6 +38,7 @@ const EditProductPage = ({ socket, setactiveNavLink }) => {
         })
         .catch((err) => {
           // console.log(err);
+          setisSuccess(false)
           seterrorMessage(GetError(err))
         })
         .finally(() => setisLoading(false));

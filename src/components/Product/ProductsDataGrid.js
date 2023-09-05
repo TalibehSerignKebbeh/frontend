@@ -11,7 +11,8 @@ import useAuth from "../../hooks/useAuth";
 import AddIcon from '@mui/icons-material/AddBoxOutlined'
 import parseISO from "date-fns/parseISO";
 const ProductsDataGrid = ({ products, pageSize,
-  setpageSize, page,  setpage,  loading,totalPages,
+  setpageSize, page, setpage, loading, totalPages,
+  handleStartStockAdd=()=>{}, 
 }) => {
  
   const { isSeller} = useAuth()
@@ -99,9 +100,7 @@ const ProductsDataGrid = ({ products, pageSize,
           showInMenu  
         />,
         <GridActionsCellItem  hidden={isSeller}
-          onClick={() => {
-            alert('action btn click')
-          }}
+          onClick={()=>handleStartStockAdd(params?.row)}
           sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           showInMenu
           icon={

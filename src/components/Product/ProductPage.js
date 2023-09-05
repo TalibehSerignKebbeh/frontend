@@ -8,12 +8,15 @@ import ErrorMessage from '../StatusMessages/ErrorMessage';
 import useAuth from '../../hooks/useAuth';
 import TopSellingSection from './TopSellingSection';
 import { useQuery } from '@tanstack/react-query';
+import AddQuantityDialog from './Dialog/AddQuantityDialog';
 
 
 const ProductPage = ({ socket }) => {
 
   const { isAdmin, token } = useAuth()
   const [openAddModal, setopenAddModal] = useState(false);
+  const [openAddQuantityDialog, setopenAddQuantityDialog] = useState(false);
+  const [productToAddStock, setproductToAddStock] = useState(null);
   const [page, setpage] = useState(0);
   const [pageSize, setpageSize] = useState(20);
   const [TopSelling, setTopSelling] = useState({
@@ -41,40 +44,17 @@ const ProductPage = ({ socket }) => {
     refetchInterval: 15000,
     keepPreviousData: true,
   })
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     // console.log(page, pageSize, );
-  //     let filters = {};
-  //     filters.page = page;
-  //     filters.pageSize = pageSize;
-  //     const date = new Date()
-  //     date.setDate(date.getDate() - 7)
-  //     filters.startDate = date;
-  //     filters.endDate = new Date();
-  //     setloading(true)
-  //     await queryInstance.get(`/products`,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //         params:{...filters}
-  //       })
-  //       .then(res => {
-  //         console.log(res?.data);
-  //         setproducts(res?.data?.products)
-  //         setTopSelling({
-  //           ByProfit: res?.data?.topSellingByProfit,
-  //           ByQuantity: res?.data?.topSellingByQuantity
-  //         })
-  //         setpage(Number(res?.data?.page))
-  //         setpageSize(Number(res?.data?.pageSize))
-  //         settotalPages(Number(res?.data?.totalPages))
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //         seterrorMessage(GetError(err))
-  //       }).finally(() => { setloading(false) })
-  //   }
-  //  fetchProducts()
-  // }, [page, pageSize, token])
+  const handleCloseDialog = () => {
+    setopenAddQuantityDialog(false)
+    setproductToAddStock(null)
+    
+  }
+  
+  const handleStartStockAdd = (row) => {
+    // console.log(row);
+    setproductToAddStock(row)
+    setopenAddQuantityDialog(true)
+  }
   useEffect(() => {
 
     return () => {
@@ -103,7 +83,8 @@ const ProductPage = ({ socket }) => {
             handleReset={() => seterrorMessage('')} /> : null}
        {isAdmin? <button onClick={() => setopenAddModal(true)}
           className='float-right mx-1 mr-5 px-4 py-2 mb-3 rounded bg-green-600
-              shadow shadow-slate-200 text-white
+              shadow shadow-slate-200 
+              dark:shadow-slate-700 text-white
               dark:text-slate-100'>
           Add Product
         </button> : null}
@@ -118,6 +99,7 @@ const ProductPage = ({ socket }) => {
           setpageSize={setpageSize}
           totalPages={data?.totalPages}
           loading={isLoading}
+          handleStartStockAdd={handleStartStockAdd}
         />
       </Box>
 
@@ -126,12 +108,14 @@ const ProductPage = ({ socket }) => {
         setShowSideModal={setopenAddModal}
         socket={socket}
       />
-    
-      {/* <Button color='success'
-        onClick={() => setshowAdds(prev => !prev)}>
-        {showAdds? 'hide ': 'Show ' }Adds
-      </Button>
-      {showAdds && <ProductsUpdates />} */}
+      <AddQuantityDialog 
+        message={<p className='text-xl text-green-400 mt-2'>
+          {`Add Stock to `} <strong className='underline'>{productToAddStock?.name} </strong></p>}
+        open={openAddQuantityDialog}
+        handleClose={handleCloseDialog}
+        loading={false}
+        productId={productToAddStock?._id}
+      />
     </div>
   );
 }

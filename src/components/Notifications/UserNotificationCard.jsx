@@ -29,7 +29,7 @@ const UserNotificationCard = ({ notify, socket }) => {
             <br />
             {isValid(parseISO(notify?.created_at)) ?
                 <p>{
-                    format(parseISO(notify?.created_at), " EEE MMM dd yyyy, HH:mm b")
+                    format(parseISO(notify?.created_at), " EEE MMM do yyyy, HH:mm b")
 
                 }</p> : null}
             <div className='mt-2 flex flex-col gap-x-0'>

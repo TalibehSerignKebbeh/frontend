@@ -12,7 +12,7 @@ import TopBar from "./components/Navigation/TopBar";
 import CategoryPage from "./components/Category/CategoryPage";
 import Login from "./components/Auth/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
-import { adminRoles, allowedRoles } from "./config/allowedRoles";
+import { adminRoles, definedRoles } from "./config/allowedRoles";
 import EditProductPage from "./components/Product/EditProductPage";
 import StockProducts from "./components/Category/StockProducts";
 import SalesPage from "./components/sales/SalesPage";
@@ -28,7 +28,7 @@ import 'antd/dist/reset.css';
 import Events from "./components/Notifications/Page/Events";
 import CancellSals from "./components/sales/CancellSales";
 import Page from "./components/Product/Expired/Page";
-import MyNewTopBar from "./components/Navigation/MyNewTopBar";
+
 
 function App() {
   const { username } = useAuth()
@@ -91,14 +91,20 @@ function App() {
                 <Route
                   element={
                     <ProtectedRoutes
-                      allowedRoles={[...Object.values(allowedRoles)]}
+                      allowedRoles={[...Object.values(definedRoles)]}
                     />
                   }
                 >
+                  <Route element={<ProtectedRoutes 
+                    allowedRoles={[definedRoles.admin]}
+                  />}>
+
                   <Route
                     path="/dashboard"
                     element={<Dashboard socket={socket} setactiveNavLink={setactiveNavLink} />}
-                  />
+                    />
+                  </Route>
+                    
                   <Route path="/sales">
                     <Route index element={<SalesPage socket={socket} setactiveNavLink={setactiveNavLink} />} />
                     <Route path="cancelled" element={<CancellSals socket={socket} setactiveNavLink={setactiveNavLink} />} />

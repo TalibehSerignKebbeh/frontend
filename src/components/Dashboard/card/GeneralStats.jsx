@@ -1,5 +1,4 @@
 import React from 'react'
-import AcUnit from '@mui/icons-material/AcUnit'
 import BallotOutlined from '@mui/icons-material/BallotOutlined'
 import Minimize from '@mui/icons-material/CountertopsOutlined'
 import  CategoryOutlined  from '@mui/icons-material/CategoryOutlined'
@@ -10,9 +9,10 @@ export default function GeneralStats({ data }) {
   return (
     <div  className='
                 w-full p-2 py-5 pt-10 rounded-md
-                flex flex-row lg:py-9 md:py-7 md:gap-x-5 gap-2 flex-wrap gap-y-10 bg-slate-200'
+                flex flex-row lg:py-9 md:py-7 md:gap-x-5 gap-2 flex-wrap gap-y-10
+                 bg-slate-200 dark:bg-slate-700'
     >
-      <div style={{background:'linear-gradient(#96d1f9, #00cded)'}}
+      {/* <div style={{background:'linear-gradient(#96d1f9, #00cded)'}}
         className='md:p-2 p-[2px] w-fit md:min-w-[160px] sm:min-w-[110px]
       min-w-[100px] h-auto flex flex-col gap-1
               text-center
@@ -48,9 +48,9 @@ export default function GeneralStats({ data }) {
         <h3 className='mb-4 -mt-2 text-white'>
           {data?.cancellSalesCount}
         </h3>
-      </div>
+      </div> */}
 
-      <div style={{background:'linear-gradient(#ffd57f, #ffb601)'}}
+      <div style={{background:'linear-gradient(#96d1f9, #00cded)'}}
         className='md:p-2 p-[2px] w-fit md:min-w-[160px] sm:min-w-[110px]
       min-w-[100px] h-auto flex flex-col gap-1
                  text-center

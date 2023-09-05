@@ -27,6 +27,7 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
   const [deleteSuccess, setdeleteSuccess] = useState("");
   const [updateLoading, setupdateLoading] = useState(false);
   const handleStartDelete = () => {
+    // const startDelete = window.confirm(`are you sure to delete this product`)
     setopenDelete(true);
   };
   const handleDeleteProduct = async () => {
@@ -59,9 +60,9 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
     await queryInstance
       .put(`/products/${product?._id}`, {...product,stockId:product?.stockId?._id}, { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
-        console.log(res);
         let status = res?.data?.status;
-        if (status === "success") {
+        console.log(res?.status);
+        if (status === "success" || res?.status===200) {
           socket.emit("notify_update_product");
           setupdateSuccessMsg(res?.data?.message)
           
@@ -125,16 +126,17 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
         dark:divide-slate-50">
           <span className="text-xs font-normal ">Added At</span>
           <h2 className="text-gray-600 dark:text-white">
-          {isValid(parseISO(product?.createdAt))? format(new Date(product?.createdAt), 'EEE MM dd yyyy, HH:mm b') : 'invalid or not date'}</h2>
+          {isValid(parseISO(product?.createdAt))? format(parseISO(product?.createdAt), 'EEE MMM do yyyy, HH:mm b') : 'invalid or not date'}</h2>
         </div>
         <div className="divide-y-2 divide-gray-800
         dark:divide-slate-50">
           <span className="text-xs font-normal ">Updated At</span>
           <h2 className="text-gray-600 dark:text-white">
-          {isValid(parseISO(product?.updatedAt))? format(new Date(product?.updatedAt), 'EEE MM dd yyyy, HH:mm b') : 'invalid or not date'}</h2>
+          {isValid(parseISO(product?.updatedAt))? format(parseISO(product?.updatedAt), 'EEE MMM do yyyy, HH:mm b') : 'invalid or not date'}</h2>
         </div>
       </div>
-        </div>
+      </div>
+      
       <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
           className=" font-semibold text-lg
@@ -159,9 +161,9 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
         <label
           className=" font-semibold text-lg
           w-full block"
-          htmlFor="name"
+          htmlFor="sub_name"
         >
-          Name
+          Sub Name
         </label>
         <input
           className="bg-white dark:bg-slate-500
@@ -175,7 +177,7 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
           placeholder="product sub name"
         />
       </div>
-      <div className="md:w-72 sm:w-68 w-52 text-start relative">
+      {/* <div className="md:w-72 sm:w-68 w-52 text-start relative">
         <label
           className=" font-semibold text-lg
           w-full block"
@@ -199,7 +201,7 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
           id="quantity-instock"
           placeholder={` quantity in stock `}
         />
-      </div>
+      </div> */}
       {/* <div className="md:w-72 sm:w-68 w-52 text-start">
         <label
           className=" font-semibold text-lg

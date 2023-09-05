@@ -3,17 +3,18 @@ import React, { useState } from 'react'
 // import useAuth from '../../hooks/useAuth';
 // import { queryInstance } from '../../api';
 
-// const {Option } = Select
+const {Option } = Select
 export default function SearchUser({ user, setuser,
   onClear, onSelect, users }) {
-    // const {token}= useAuth()
+  // const {token}= useAuth()
   const [usersArray, setUserArray] =
-    useState(users?.length ? [...users?.map((person) => {
+    useState(users?.users?.map((person) => {
       return {
         ...person, fullName: person?.firstName + " " + person?.lastName,
-        value:person?._id,label:person?.firstName + " " + person?.lastName,
+        value: person?._id, label: person?.firstName + " " + person?.lastName,
       }
-    })] : []);
+    }
+    ));
 
     // const [searchTerm, setSearchTerm] = useState('');
     // const [filteredProducts, setFilteredProducts] = useState([]);
@@ -54,13 +55,13 @@ export default function SearchUser({ user, setuser,
           onDeselect={() => setuser('')}
             onSelect={(value)=>onSelect(value)}
       >
-          {/* {users?.map((user) => (
+          {users?.map((user) => (
               <Option key={user?._id}
                   value={user?._id}
               >
                   {user?.firstName +" "+user?.lastName}
               </Option>
-      ))} */}
+      ))}
     </Select>
   )
 }

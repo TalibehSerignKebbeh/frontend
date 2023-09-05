@@ -8,15 +8,15 @@ import LoginIcon from '../../imgs/newIncon.png'
 import { GetError } from '../other/OtherFuctions';
 import { useContextHook } from '../../context/AuthContext';
 import jwtDecode from 'jwt-decode'
-import { allowedRoles } from '../../config/allowedRoles';
+import {  definedRoles } from '../../config/allowedRoles';
 import useAuth from '../../hooks/useAuth';
 
 
 
 
 const Login = ({ socket }) => {
-    const { storeAuthToken, authToken } = useContextHook()
-    const {roles} = useAuth()
+    const { storeAuthToken } = useContextHook()
+    const {roles, token} = useAuth()
     const navigate = useNavigate();
     const usernameRef = useRef()
     const [user, setuser] = useState({ username: '', password: '' });
@@ -67,7 +67,7 @@ const Login = ({ socket }) => {
                 socket.emit('notify_login')
 
                 const { roles } = decoded?.UserData
-                if (roles?.includes(allowedRoles?.admin)) {
+                if (roles?.includes(definedRoles?.admin)) {
                    return navigate("dashboard")
                 }
                 // localStorage.setItem('token', res?.data?.token)
@@ -85,16 +85,16 @@ const Login = ({ socket }) => {
     }
 
 
-     if (authToken && roles?.includes('admin')) {
+     if (token && roles?.includes(definedRoles?.admin)) {
         return <Navigate to={'/dashboard'} />
     }
-    if (authToken) {
+    if (token) {
         return <Navigate to={'/sales'} />
         
     }
 
     return (
-        <div className='form-container '>
+        <div className='form-container overflow-y-auto overflow-x-hidden'>
             {/* <canvas style={{backgroundColor:'red'}}
             width={200} height={100}>Your browser does not support canvas</canvas> */}
             <form onSubmit={handleSubmit}
@@ -108,9 +108,7 @@ const Login = ({ socket }) => {
                 <img src={LoginIcon} alt="Login Icon"
                     className='w-16 h-16 mt-2 bg-white text-green-500'
                 />
-                {/* <h1 className='text-lg text-center font-bold w-full md:py-2 '>
-                    Login
-                </h1> */}
+               
                 {successMsg ? <p className='text-green-500 text-lg font-medium p-1'>
                     {successMsg}
                 </p> : null}
@@ -119,6 +117,7 @@ const Login = ({ socket }) => {
                     rounded-sm mt-2 text-lg font-medium px-1'>
                         {errorMsg}
                     </p> : null}
+                
                 <div className='md:w-60  sm:w-56 w-44 m-auto text-start mb-2'>
                     <label className='-ml-1 text-lg text-start  font-normal font-serif 
                     px-1 float-left -mb-1 py-2 opacity-75' htmlFor='username'>Username
@@ -174,7 +173,7 @@ const Login = ({ socket }) => {
                     </p>
                 </div> */}
                 <button type='submit' disabled={isLoading}
-                    className='md:text-xl text-sm md:w-60 w-48 md:h-14 h-10 
+                    className='md:text-xl text-sm md:w-60 w-48 py-2 
                     m-auto my-8 bg-orange-400 text-white
                     shadow-xl opacity-80 hover:opacity-100 rounded-md'>
                     {isLoading ? "Loading......" : 'Submit'}

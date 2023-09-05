@@ -5,7 +5,7 @@
     height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: center !important;
+    justify-content: start !important;
     align-items: center !important;
     position: relative;
     /* background-color: blueviolet; */
@@ -13,6 +13,7 @@
     background-image: url('../../assets/images/minimarket.jpg');
     background-size: cover;
     background-clip: border-box;
+    overflow-y: auto;
     /* background: transparent ; */
     /* background-blend-mode: multiply; */
 }
@@ -38,6 +39,7 @@ z-index: -1;
     background-color: rgb(255, 255, 255);
     /* background: transparent; */
     display: flex;
+    height: max-content;
     
 }
 .login-form>.register-link{

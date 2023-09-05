@@ -6,9 +6,9 @@ export function isStringValidDate(dateString) {
   const parsedDate = parseISO(dateString);
   return isValid(parsedDate);
 }
-export function formatDayDateWithTime(dateString) {
+export function formatDayDateWithTime(dateString, formatStr="EEE MMM do yyyy, HH:mm b") {
   const parsedDate = parseISO(dateString);
-  return format(parsedDate, '');
+  return format(parsedDate, formatStr);
 }
 
 export const GetError = (err) => {
@@ -20,7 +20,10 @@ export const GetError = (err) => {
     }
     if (err?.response?.status === 500) {
         return "An internal server error occurred";
-    }
+  }
+  if (err?.response?.status === 404) {
+    return 'The route you specify does not exist!'
+  }
   if (err?.response?.status === 403) {
        
         return err?.response?.data?.message || "Your authentication state has expired please login again";

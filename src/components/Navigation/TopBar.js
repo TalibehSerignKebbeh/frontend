@@ -12,6 +12,7 @@ import Tooltip from '@mui/material/Tooltip'
 
 
 const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
+
   const [openAuthNotify, setOpenAuthNotify] = useState(false);
   const [openSaleNotify, setopenSaleNotify] = useState(false);
   const [openProductNotify, setopenProductNotify] = useState(false);
@@ -65,12 +66,11 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
   return (
     <div className="
-     self-start justify-self-stretch
-     w-full h-40 p-2 py-5 
+     self-start justify-self-start
+     w-full h-40  max-h-44 p-2 py-5 
     bg-gray-50 dark:bg-slate-700 
     shadow-md dark:shadow-slate-800 
     flex flex-row items-center justify-end
-    
     "
       style={{ minHeight: '70px', }}
     >
@@ -140,7 +140,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
           </button>
 
           {/* auth notification dialog */}
-          {authNotifications?.length > 0 && (
+          {(openAuthNotify) && (
                 <AuthNotificationsTable
                   socket={socket}
                   data={authNotifications}
@@ -151,7 +151,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
 
           {/* sales notifications dialog */}
-          {sales_Notifications?.length > 0 && (
+          {(openSaleNotify) > 0 && (
                 <SaleNotificationPanel
                   socket={socket}
                   dataArray={sales_Notifications}
@@ -161,7 +161,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               )}
 
           {/* products notification dialog */}
-           {productNotifications?.length > 0 && (
+           {(openProductNotify) && (
                 <ProductNotification
                   socket={socket}
                   dataArray={productNotifications}

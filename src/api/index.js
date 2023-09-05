@@ -1,8 +1,8 @@
 import axios from "axios";
 
 
-// export const serverUrl = 'https://ims-app-backend2.onrender.com';
-export const serverUrl = 'http://localhost:4500';
+export const serverUrl = 'https://ims-app-backend2.onrender.com';
+// export const serverUrl = 'http://localhost:4500';
 
 export const queryInstance
   = 
@@ -56,7 +56,7 @@ export const fetchSales = ({ page, pageSize, selectedDate,token }) => {
 export const fetchSalesStats = ({token}) => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth();
-  const date = new Date().getDate()-3;
+  const date = new Date().getDate();
   return queryInstance
     .get(`/sales/stats?year=${year}&month=${month}&date=${date}`,{headers:{Authorization:`Bearer ${token}`}})
     .then((res) => {

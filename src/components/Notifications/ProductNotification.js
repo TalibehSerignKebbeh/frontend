@@ -65,13 +65,25 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
     );
   };
    useEffect(() => {
-        window.addEventListener('mousedown', (e) => {
-          if (ref?.current && !ref.current?.contains(e.target)) {
-              setopen(false)
-            }
-        })
+       if (open) {
       
-  }, [ref, setopen]);
+    window.addEventListener('mousedown', (e) => {
+      // console.log(ref?.current?.contains(e.target));
+      const isChild = ref?.current?.contains(e.target)
+      // console.log(`is child of modal `, isChild);
+      if (ref?.current && !isChild) {
+        // console.log(isChild);
+        setopen(false)
+      } else {
+        setopen(true)
+      }
+    })
+    }
+      
+   }, [open, setopen]);
+  
+  if (!dataArray?.length)
+    return null
     return (
       <div ref={ref}
         className='notification-wrapper bg-slate-200 dark:bg-slate-700
@@ -94,7 +106,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           <FixedSizeList
             height={250}
             itemCount={dataArray?.length}
-            itemSize={130}
+            itemSize={110}
                 width={"100%"}
                 style={{
                   marginTop:'60px', 

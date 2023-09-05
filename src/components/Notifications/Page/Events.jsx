@@ -17,17 +17,17 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
     const [date, setdate] = useState('');
     const [user, setuser] = useState('');
 
-     const {data, isLoading} = useQuery({
-    queryKey: ["users"],
-    queryFn: () => fetchUsers({ token }),
-    // suspense: true, 
-    getNextPageParam: () => { },
-    getPreviousPageParam: () => {
-      
-    },
-    
-  
-  });
+    const { data, isLoading } = useQuery({
+        queryKey: ["users"],
+        queryFn: () => fetchUsers({ token }),
+        // suspense: true, 
+        getNextPageParam: () => { },
+        getPreviousPageParam: () => {
+
+        },
+
+
+    });
 
     const [searchFilters, setsearchFilters] = useState({
         date: '', product: '', user: ''
@@ -35,8 +35,8 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
     const handleTabChange = (value) => {
         // localStorage.setItem('tab', value)
         setTab(value)
-   }
-  
+    }
+
 
     return (
         <div className='relative md:px-3 sm:px-3 px-4 pb-6'>
@@ -72,30 +72,34 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
               mx-0
              '>
                 <SalesFilters
-                users={data?.users} 
+                    users={data?.users}
                     user={user} setuser={setuser}
                     date={date} setdate={setdate}
-                      product={''} setproduct={()=>{}}
+                    product={''} setproduct={() => { }}
                     searchFilters={searchFilters}
                     setsearchFilters={setsearchFilters}
                     showProduct={false}
                 />
                 {(tab === 'product') &&
                     <ProductsUpdates
-                    users={data?.users}  socket={socket}
+                        users={data?.users} socket={socket}
+                        user={user}
+                        date={date}
+                        searchFilters={searchFilters}
+                        setsearchFilters={setsearchFilters}
+                    />}
+                {(tab === 'user') && <UserNotificationTable
+                    users={data?.users} socket={socket}
                     user={user}
                     date={date}
+                    searchFilters={searchFilters}
                 />}
-                {(tab === 'user') && <UserNotificationTable 
-                users={data?.users} socket={socket}
-                    user={user}
-                    date={date}
-                />}
-                {(tab === 'sale') && <SalesEvents 
-                users={data?.users} socket={socket}
+                {(tab === 'sale') && <SalesEvents
+                    users={data?.users} socket={socket}
                     showSideMenu
                     user={user}
                     date={date}
+                    setsearchFilters={setsearchFilters}
                 />}
             </div>
         </div>

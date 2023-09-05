@@ -14,7 +14,7 @@ export default function SaleTable({ data }) {
 
     const FormatDate = (date) => {
         return isValid(parseISO(date)) ?
-            format(parseISO(date), " EEE MMM dd yyyy, HH:mm b")
+            format(parseISO(date), " EEE MMM do yyyy, HH:mm b")
             : 'invalid date'
     }
 

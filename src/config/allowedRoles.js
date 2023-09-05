@@ -1,5 +1,5 @@
 
-export const allowedRoles
+export const definedRoles
     =
     { seller: 'seller', manager: 'manager', admin: 'admin' }
 

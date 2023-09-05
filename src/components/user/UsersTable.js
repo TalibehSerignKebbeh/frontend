@@ -5,7 +5,7 @@ import { DataGrid, GridActionsCellItem, gridClasses } from "@mui/x-data-grid";
 
 import ConfirmDelete from "../Modal/ConfirmDelete";
 import useAuth from "../../hooks/useAuth";
-import { allowedRoles } from "../../config/allowedRoles";
+import { definedRoles } from "../../config/allowedRoles";
 
 const UsersTable = ({loading,totalPages,
   users, page, setpage, pageSize, setPageSize,
@@ -99,7 +99,7 @@ const UsersTable = ({loading,totalPages,
   ];
 
   const handleStartDelete = (user) => {
-    if (!roles?.includes(allowedRoles.admin) && !roles?.includes(allowedRoles.manager)) {
+    if (!roles?.includes(definedRoles.admin) && !roles?.includes(definedRoles.manager)) {
       return;
     }
     setopenDelete(true)

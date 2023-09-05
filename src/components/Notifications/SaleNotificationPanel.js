@@ -33,13 +33,22 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   }
 
   useEffect(() => {
+   if (open) {
+      
     window.addEventListener('mousedown', (e) => {
-      if (ref?.current && !ref.current?.contains(e.target)) {
+      // console.log(ref?.current?.contains(e.target));
+      const isChild = ref?.current?.contains(e.target)
+      // console.log(`is child of modal `, isChild);
+      if (ref?.current && !isChild) {
+        // console.log(isChild);
         setopen(false)
+      } else {
+        setopen(true)
       }
     })
+    }
 
-  }, [ref, setopen]);
+  }, [open, setopen]);
 
   const Row = ({ index, style }) => {
     const val = dataArray[index];
@@ -82,6 +91,8 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
     );
   };
 
+if (!dataArray?.length)
+    return null
 
   return (
     <div ref={ref} className='notification-wrapper

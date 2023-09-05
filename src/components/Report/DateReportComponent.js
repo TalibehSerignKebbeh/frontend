@@ -40,7 +40,6 @@ const DateReportComponent = () => {
         .then((res) => {
           // console.log(res);
           if (res?.status === 200) {
-            console.log(res?.data);
             setsales(res?.data?.sales);
             setmoney(res?.data?.money);
             sethourlyData(res?.data?.hourlySales);

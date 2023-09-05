@@ -4,6 +4,9 @@ import Box from '@mui/material/Box'
 import DailyChart from '../Dashboard/chats/DailyChart';
 
 const DashBoardSalesStats = ({ salesStatsQuery }) => {
+
+
+    console.log(salesStatsQuery?.data);
     return (
         <Box className={`w-full bg-white dark:bg-slate-700
         shadow shadow-slate-200 dark:shadow-slate-500

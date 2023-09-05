@@ -104,6 +104,8 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
     );
   };
 
+  if (!data?.length)
+    return null
   return (
     <div ref={ref}
       className='notification-wrapper

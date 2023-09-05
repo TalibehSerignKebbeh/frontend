@@ -39,6 +39,7 @@ const Dashboard = ({socket}) => {
             }
         ],
     })
+   
     useEffect(() => {
         if (fetches[0]?.isError) {
             seterrorMessage(GetError(fetches[0]?.error))
