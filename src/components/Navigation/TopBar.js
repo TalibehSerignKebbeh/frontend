@@ -67,7 +67,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
   return (
     <div className="
      self-start justify-self-start
-     w-full h-40  max-h-44 p-2 py-5 
+     w-full h-fit max-h-44 p-2 md:py-10 sm:py-7 py-5 
     bg-gray-50 dark:bg-slate-700 
     shadow-md dark:shadow-slate-800 
     flex flex-row items-center justify-end

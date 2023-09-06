@@ -16,7 +16,7 @@ import useAuth from '../../hooks/useAuth';
 
 const Login = ({ socket }) => {
     const { storeAuthToken } = useContextHook()
-    const {roles, token} = useAuth()
+    const {roles,isAdmin, isSeller, token} = useAuth()
     const navigate = useNavigate();
     const usernameRef = useRef()
     const [user, setuser] = useState({ username: '', password: '' });
@@ -30,6 +30,18 @@ const Login = ({ socket }) => {
     const [passwordTouch, setpasswordTouch] = useState(false);
     const [isLoading, setisLoading] = useState(false);
 
+    useEffect(() => {
+        
+        if (isAdmin) {
+           navigate('/dashboard', {replace:true,}) 
+        } else if (isSeller) {
+           navigate('/sales', {replace:true,}) 
+            
+        } 
+        return () => {
+            
+        };
+    }, [isAdmin, isSeller]);
    
     useEffect(() => {
         usernameRef?.current?.focus();

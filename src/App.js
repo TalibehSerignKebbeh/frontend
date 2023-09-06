@@ -84,10 +84,7 @@ function App() {
                     <Login socket={socket} setactiveNavLink={setactiveNavLink} />
                   }
                 />
-                <Route
-                      path="expired"
-                      element={<Page socket={socket} setactiveNavLink={setactiveNavLink} />}
-                    />
+                
                 <Route
                   element={
                     <ProtectedRoutes
@@ -95,6 +92,7 @@ function App() {
                     />
                   }
                 >
+                  
                   <Route element={<ProtectedRoutes 
                     allowedRoles={[definedRoles.admin]}
                   />}>
