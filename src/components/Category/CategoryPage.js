@@ -7,7 +7,7 @@ import { fetchStocks } from '../../api/index'
 import   Store  from '@mui/icons-material/Store';
 import  Collapse  from '@mui/material/Collapse';
 // import  Button from '@mui/material/Button';
-import AddStock from './AddStock';
+import AddCategory from './AddCategory';
 import CategoryDataGrid from './CategoryDataGrid';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
@@ -22,7 +22,7 @@ const CategoryPage = ({ socket, setactiveNavLink }) => {
     const [pageSize, setpageSize] = useState(10);
     const [page, setpage] = useState(0);
     const [openEdit, setopenEdit] = useState(false);
-     const [stock, setstock] = useState({
+     const [category, setstock] = useState({
        _id:'', name: '', description: ''
     });
 
@@ -79,7 +79,7 @@ const CategoryPage = ({ socket, setactiveNavLink }) => {
                 text-lg mb-4 rounded-md `}
             />
             <Collapse sx={{mb:2}} ref={formRef} in={openEdit} unmountOnExit timeout={'auto'} >
-                <AddStock stock={stock} setstock={setstock} />
+                <AddCategory category={category} setstock={setstock} />
             </Collapse>
             <CategoryDataGrid data={data} setopenEdit={setopenEdit}
                 setstock={setstock} page={page} setpage={setpage}

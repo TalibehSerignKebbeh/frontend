@@ -1,11 +1,12 @@
 .notification-wrapper{
    width: auto;
    min-width: 60%;
-        height: auto;
+        /* height: auto; */
         padding: "30px 10px";
         position: relative;
-      
-             max-height: max-content;
+         height: max-content;
+             max-height: 100vh;
+             overflow-y: auto;
              border: 1px solid #161111;
           min-width: 380px;
          z-index:50;

@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { queryInstance } from '../../api';
 import { QueryClient } from '@tanstack/react-query';
 import useAuth from '../../hooks/useAuth';
-import SuccessMessage from '../StatusMessages/SuccessMessage';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
+import SuccessStatusComponent from '../StatusMessages/SuccessStatusComponent';
 
 const initialStatus= { uploading: false, error: false, success: false}
-const AddStock = ({ stock, setstock }) => {
+const AddCategory = ({ category, setstock }) => {
     const {token} = useAuth()
     const nameRef = useRef()
     const queryClient = new QueryClient()
@@ -22,8 +22,8 @@ const AddStock = ({ stock, setstock }) => {
     const handleSubmitForm = async (e) => {
         e.preventDefault()
         setloading(true)
-        if (stock?._id?.length) {
-            await queryInstance.put(`/categories/${stock?._id}`, { ...stock, lastUpdate: new Date() }, {headers:{Authorization: `Bearer ${token}`}}).then(res => {
+        if (category?._id?.length) {
+            await queryInstance.put(`/categories/${category?._id}`, { ...category, lastUpdate: new Date() }, {headers:{Authorization: `Bearer ${token}`}}).then(res => {
                 console.log(res);
                 if (res?.status === 200) {
                     queryClient.invalidateQueries({queryKey: ['stocks']})
@@ -39,7 +39,7 @@ const AddStock = ({ stock, setstock }) => {
 
             return;
         }
-        await queryInstance.post("/categories", { ...stock, createdDate: new Date() },{headers:{Authorization: `Bearer ${token}`}}).then(res => {
+        await queryInstance.post("/categories", { ...category, createdDate: new Date() },{headers:{Authorization: `Bearer ${token}`}}).then(res => {
             if (res?.status === 200) {
                     queryClient.invalidateQueries({queryKey: ['stocks']})
                 }
@@ -62,19 +62,34 @@ const AddStock = ({ stock, setstock }) => {
               shadow shadow-white my-3
              apply-form-boxshadow
              text-gray-700 dark:text-white'>
-                <h3 className='text-lg text-center mt-2 '
-                >{stock?._id?.length? "Edit": "Add"} Category</h3>
+                
+                
                 {/* add status messages */}
-                {addstatusMessages?.success?.length ?
-                    <SuccessMessage message={addstatusMessages?.success} 
-                        resetFunction={() => {
-                            setaddstatusMessages({
-                                ...addstatusMessages,
-                                success: ''
-                            })
-                        }}
-                    /> : null}
-                {addstatusMessages?.error?.length ?
+                {(addstatusMessages?.success?.length || 
+                updateStatusMessages?.success?.length) ?
+                    addstatusMessages?.success?.length ?
+                        <SuccessStatusComponent 
+                            successMessage={addstatusMessages?.success}
+                            handleReset={() => {
+                               setaddstatusMessages({...addstatusMessages, success:''})
+                            }}
+                        />
+                        :
+                          <SuccessStatusComponent 
+                            successMessage={updateStatusMessages?.success}
+                            handleReset={() => {
+                               updateStatusMessages({...updateStatusMessages, success:''})
+                            }}
+                        />
+                        
+                        :
+
+                <>
+                {/* form fields */}
+                    <h3 className='text-lg text-center mt-2 '
+                    >{category?._id?.length ? "Edit" : "Add"} Category
+                    </h3>
+                     {addstatusMessages?.error?.length ?
                     <ErrorMessage
                         error={addstatusMessages?.error}
                         handleReset={() => {
@@ -84,18 +99,7 @@ const AddStock = ({ stock, setstock }) => {
                             })
                         }}
                     /> : null}
-                
-                {/* update status messages */}
-                {updateStatusMessages?.success?.length ?
-                    <SuccessMessage message={updateStatusMessages?.success} 
-                        resetFunction={() => {
-                            setupdateStatusMessages({
-                                ...updateStatusMessages,
-                                success: ''
-                            })
-                        }}
-                    /> : null} 
-                {updateStatusMessages?.error?.length ?
+                     {updateStatusMessages?.error?.length ?
                     <ErrorMessage
                         error={updateStatusMessages?.error}
                         handleReset={() => {
@@ -105,18 +109,16 @@ const AddStock = ({ stock, setstock }) => {
                             })
                         }}
                     />: null}
-
-                {/* form fields */}
                 <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
                     <label className='block py-1 ' htmlFor='name' >Name</label>
                     <input type={'text'} id="name" 
                     className="bg-white dark:bg-slate-400 
                     text-slate-700 dark:text-white
                     text-xl w-full p-2 border-2 border-slate-900 rounded-md"
-                        value={stock.name}
+                        value={category.name}
                         name="name"
                         ref={nameRef}
-                        onChange={e => setstock({ ...stock, name: e.target.value })}
+                        onChange={e => setstock({ ...category, name: e.target.value })}
                     />
                 </div>
                 <div className='md:w-96 sm:w-52 text-start mb-2 p-1'>
@@ -125,8 +127,8 @@ const AddStock = ({ stock, setstock }) => {
                     className="bg-white dark:bg-slate-400 
                     text-slate-700 dark:text-white
                     text-xl w-full p-2 border-2 border-slate-900 rounded-md"
-                        value={stock.description}
-                        onChange={e => setstock({ ...stock, description: e.target.value })}
+                        value={category.description}
+                        onChange={e => setstock({ ...category, description: e.target.value })}
                     />
                 </div>
                 <div className='md:w-96 sm:w-52 text-start mt-6 p-1'>
@@ -134,8 +136,10 @@ const AddStock = ({ stock, setstock }) => {
                     bg-blue-500 shadow shadow-blue-600
                     text-white text-xl"
                         disabled={loading}
-                    >{loading ? 'Posting...' : stock?._id?.length ? "Update" : "Submit"}</button>
-                </div>
+                    >{loading ? 'Posting...' : category?._id?.length ? "Update" : "Submit"}</button>
+                    </div>
+            </>
+            }
 
             </form>
 
@@ -143,4 +147,4 @@ const AddStock = ({ stock, setstock }) => {
     );
 }
 
-export default AddStock;
+export default AddCategory;

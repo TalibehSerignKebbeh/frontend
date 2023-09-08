@@ -43,11 +43,11 @@ const CategoryDataGrid = ({ data, setopenEdit, setstock,
       })
   }
 
-  const handleStartDelete = (stock) => {
+  const handleStartDelete = (category) => {
     setopenDelete(true)
-    setstockToDelete(stock)
+    setstockToDelete(category)
   }
-  const handleCloseDelete = (stock) => {
+  const handleCloseDelete = (category) => {
     setstockToDelete(null)
     setdeleteSuccessMessage('')
     setdeleteErrorMessage('')

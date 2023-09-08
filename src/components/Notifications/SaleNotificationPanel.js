@@ -33,20 +33,21 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
   }
 
   useEffect(() => {
-   if (open) {
-      
-    window.addEventListener('mousedown', (e) => {
-      // console.log(ref?.current?.contains(e.target));
-      const isChild = ref?.current?.contains(e.target)
-      // console.log(`is child of modal `, isChild);
-      if (ref?.current && !isChild) {
-        // console.log(isChild);
-        setopen(false)
-      } else {
-        setopen(true)
-      }
+    window.addEventListener('mousedown', e => {
+      if (!open) { return };
+            const refRect = ref?.current?.getBoundingClientRect();
+            if (e.clientX < refRect?.left || e.clientX > refRect?.right
+                || e.clientY < refRect?.top || e.clientY > refRect?.bottom
+            ) {
+                if (open === true) {
+                    setTimeout(() => {
+                        
+                        setopen(false)
+                    }, 20);
+                    return;
+                }
+            }
     })
-    }
 
   }, [open, setopen]);
 
@@ -57,17 +58,17 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
     return (
       <div
         style={{
-          ...style,
-          width: '100%', padding: '2px', paddingBlock: '10px',
+           ...style, 
+          width: '100%', padding: '2px',paddingBlock:'10px',
           top: style?.top,
           left: style?.left,
           display: "block",
-          minHeight: '200px',
-          height: 'max-content'
+          minHeight:'200px',
+          height:'max-content'
         }}>
-        <div className='bg-white dark:bg-gray-700 
+        <div className="bg-white dark:bg-gray-700 
              shadow shadow-white dark:shadow-slate-800
-              block py-2 px-[3px]'
+              block py-2 px-[3px] "
         >
            <small className="absolute right-2
           bg-blue-600 text-white px-2 rounded-full text-xl  ">
@@ -82,7 +83,7 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
             sold by {fullName}
           </span>
           <small className="text-gray-700 dark:text-gray-50 
-        block  capitaliz font-serif font-light">
+        block  capitaliz font-serif font-semibold">
             {date}
           </small>
         </div>
@@ -96,7 +97,8 @@ if (!dataArray?.length)
 
   return (
     <div ref={ref} className='notification-wrapper
-        bg-slate-400 dark:bg-slate-800 text-center'
+        bg-slate-100 dark:bg-slate-800
+        overflow-y-auto flex flex-col '
       style={{
         visibility: open ? "visible" : "hidden",
         position: 'absolute', left: 'auto',
@@ -113,20 +115,19 @@ if (!dataArray?.length)
         Mark all as read
       </button>
       <FixedSizeList
-        height={500}
+        height={900}
         itemSize={100}
 
         itemCount={dataArray?.length}
 
         width={"100%"}
         style={{
-          marginTop: '40px',
+         marginTop: '40px',
           marginBlock: '10px',
           paddingBottom: '10px',
           display: 'flex', flexDirection: 'column',
           borderTop: '2px solid yellow',
           height:'100%'
-          
         }}
         className=''
 

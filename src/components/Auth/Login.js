@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-// import { setCredentials } from '../../features/auth/authSlice';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { queryInstance } from '../../api'
-// import { useLoginMutation } from '../../features/auth/authApiSlice'
 import './login.css'
 import LoginIcon from '../../imgs/newIncon.png'
 import { GetError } from '../other/OtherFuctions';
@@ -16,11 +14,10 @@ import useAuth from '../../hooks/useAuth';
 
 const Login = ({ socket }) => {
     const { storeAuthToken } = useContextHook()
-    const {roles,isAdmin, isSeller, token} = useAuth()
+    const {isAdmin, isSeller} = useAuth()
     const navigate = useNavigate();
     const usernameRef = useRef()
     const [user, setuser] = useState({ username: '', password: '' });
-    // const [LoginRequest, { isLoading, error }] = useLoginMutation()
 
     const [errorMsg, seterrorMsg] = useState('');
     const [successMsg, setsuccessMsg] = useState('');
@@ -41,7 +38,7 @@ const Login = ({ socket }) => {
         return () => {
             
         };
-    }, [isAdmin, isSeller]);
+    }, [isAdmin, isSeller, navigate]);
    
     useEffect(() => {
         usernameRef?.current?.focus();
@@ -97,22 +94,15 @@ const Login = ({ socket }) => {
     }
 
 
-     if (token && roles?.includes(definedRoles?.admin)) {
-        return <Navigate to={'/dashboard'} />
-    }
-    if (token) {
-        return <Navigate to={'/sales'} />
-        
-    }
-
     return (
-        <div className='form-container overflow-y-auto overflow-x-hidden'>
+        <div className='form-container min-h-screen overflow-y-auto overflow-x-hidden'>
             {/* <canvas style={{backgroundColor:'red'}}
             width={200} height={100}>Your browser does not support canvas</canvas> */}
             <form onSubmit={handleSubmit}
                 className='login-form  border-2 shadow
-                 shadow-white md:px-10 px-6 m-auto overflow-x-hidden 
-                 h-auto w-96 justify-self-center 
+                 shadow-white md:px-10 sm:px-4 px-2 m-auto overflow-x-hidden 
+                 min-h-max bg-white 
+                 w-96 justify-self-center 
                  place-items-center mb-auto flex flex-col 
                  items-center justify-center rounded-md
                  
@@ -130,7 +120,7 @@ const Login = ({ socket }) => {
                         {errorMsg}
                     </p> : null}
                 
-                <div className='md:w-60  sm:w-56 w-44 m-auto text-start mb-2'>
+                <div className='md:w-72  sm:w-64 w-10/12 m-auto text-start mb-2'>
                     <label className='-ml-1 text-lg text-start  font-normal font-serif 
                     px-1 float-left -mb-1 py-2 opacity-75' htmlFor='username'>Username
                     </label>
@@ -153,7 +143,7 @@ const Login = ({ socket }) => {
                         :
                         null}
                 </div>
-                <div className='md:w-60 sm:w-56 w-44 m-auto  text-start'>
+                <div className='md:w-72 sm:w-64 w-10/12 m-auto  text-start'>
                     <label className='-ml-1 text-lg text-start font-normal 
                     px-1 float-left -mb-1 py-2 opacity-75' htmlFor='password'>Password</label>
                     <input autoComplete='off' className={`${(passwordError && passwordTouch) ? 'border-red-600' : 'border-slate-500 focus:shadow-md'}
@@ -174,16 +164,7 @@ const Login = ({ socket }) => {
                         null}
 
                 </div>
-                {/* <div className='my-2 mt-4 text-start
-                md:w-60 w-56 m-auto  '>
-                    <p className='text-xs font-semibold '>
-                        Don't have an account
-                        <Link to={'/register'}
-                            className=" px-1 underline" >
-                            Register
-                        </Link> here
-                    </p>
-                </div> */}
+               
                 <button type='submit' disabled={isLoading}
                     className='md:text-xl text-sm md:w-60 w-48 py-2 
                     m-auto my-8 bg-orange-400 text-white

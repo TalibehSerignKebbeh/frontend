@@ -1,22 +1,20 @@
 
 .form-container{
    width: 100vw !important;
-    min-height: 100% !important;
-    height: 100vh !important;
+    /* height: 100vh !important; */
+    min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: start !important;
     align-items: center !important;
     position: relative;
-    /* background-color: blueviolet; */
     align-self: stretch !important;
     background-image: url('../../assets/images/minimarket.jpg');
     background-size: cover;
     background-clip: border-box;
     overflow-y: auto;
-    /* background: transparent ; */
-    /* background-blend-mode: multiply; */
 }
+
 .bg{
   height: 97%;
   width: 200px;
@@ -32,16 +30,14 @@ z-index: -1;
 }
 
 .login-form{
-    /* background-color: rgba(255, 255, 255, 0.383) !important; */
-    padding: 20px 40x;
+    /* padding: 20px 40x;
     border-radius: 10px;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.04);
     background-color: rgb(255, 255, 255);
-    /* background: transparent; */
     display: flex;
-    height: max-content;
-    
+    height: max-content; */
 }
+
 .login-form>.register-link{
     text-decoration: underline !important;
 }
@@ -53,7 +49,8 @@ z-index: -1;
 
 .login-form{
   margin-top: 90px;
-    padding: 8px 10x;
+  margin-bottom: 40px;
+    /* padding: 8px 10x; */
 }
 }
 

@@ -54,19 +54,22 @@ function App() {
 
 
   return (
-    <>
       <Router>
-        <div className="flex flex-row w-screen h-screen  overflow-x-hidden 
-        bg-slate-100 dark:bg-gray-800">
+      <div className="flex flex-row w-screen h-screen  
+        overflow-hidden 
+        bg-slate-100 dark:bg-gray-800
+        ">
           <SideBar activeNavLink={activeNavLink}
             socket={socket}
             showSideMenu={showSideMenu}
             setshowSideMenu={setshowSideMenu}
           />
           {/* other content */}
-          <div className=" relative w-screen h-screen 
+          <div className=" relative w-screen h-full 
           flex flex-col items-stretch
-          bg-inherit overflow-x-hidden">
+          bg-inherit overflow-x-hidden overflow-y-auto
+          scroll-auto hover:scroll-smooth
+          main_container">
             <TopBar
               socket={socket}
               showSideMenu={showSideMenu}
@@ -74,8 +77,8 @@ function App() {
             />
              {/* <MyNewTopBar /> */}
             <div
-              className={`' w-full  md:mx-2 mx-auto flex flex-1
-          items-stretch justify-stretch  my-auto bg-inherit'  '`}
+              className={` w-full  md:mx-2 mx-auto flex flex-1
+          items-stretch justify-stretch  my-auto bg-inherit overflow-y-visible`}
             >
               <Routes>
                 <Route
@@ -185,7 +188,6 @@ function App() {
 
         </div>
       </Router>
-    </>
 
   );
 }

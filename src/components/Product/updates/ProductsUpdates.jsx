@@ -3,51 +3,66 @@ import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
 import SkeletonLoaders from '../../Loaders/SkelelonLoader';
 import Paginate from '../../Pagination/Paginate';
-import { GetError, isStringValidDate } from '../../other/OtherFuctions';
+import { GetError, formatDayDateWithTime, isStringValidDate } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
 import ProductDetail from './ProductDetail';
+import { useQuery } from '@tanstack/react-query';
 
 
-const ProductsUpdates = ({socket, date, user}) => {
-  const { token, isAdmin, isManager } = useAuth()
+const ProductsUpdates = ({ socket,
+                    searchFilters,date, user,
+  setsearchFilters }) => {
+  const model = 'product'
+  const { token} = useAuth()
   const [page, setpage] = useState(0);
   const [total, settotal] = useState(0);
-  // const [totalPages, settotalPages] = useState(1);
-  // const [created_at, setCreated_at] = useState('');
   const [pageSize, setpageSize] = useState(5);
-  const [loading, setloading] = useState(false);
   const [productUpdates, setproductUpdates] = useState([]);
   const [errorMessage, seterrorMessage] = useState('');
 
+      const { isLoading, isError, error, failureReason, data,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['products_notifications', model, page, pageSize,date=searchFilters?.date, user=searchFilters?.user],
+    queryFn: () => queryInstance.get(`/notifications`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          model,
+          page: page, pagesize: pageSize,
+      created_at:searchFilters?.date?.length? searchFilters?.date?.length: null,
+          userId:searchFilters?.user? searchFilters?.user: null,
+        }
+      }).then(res => res?.data)
+      .catch((err) => Promise.reject(err)),
+    refetchInterval: 30000,
+  })
+
   useEffect(() => {
-    const fetchProductsNotify = async () => {
-      let filters = { model: 'product', page: page >= 0 ? page : 0, pagesize: +pageSize };
-      if (date?.length) {
-        filters = { ...filters, created_at: date }
-      }
-      if (user?.length) {
-        filters = { ...filters, userId: user }
-      }
-      setloading(true)
-      // await queryInstance.get(`/notifications/products/alldata?page=${page}&pagesize=${pageSize}`)
-      await queryInstance.get(`/notifications`, { params: filters, headers: { Authorization: `Bearer ${token}` } })
-        .then(res => {
-          console.log(res?.data?.notifications);
-          setproductUpdates(res?.data?.notifications)
-          settotal(res?.data?.count)
-          // settotalPages(res?.data?.totalPages)
-          setpageSize(res?.data?.pageSize)
-        })
-        .catch(err => {
-          seterrorMessage(GetError(err))
-        }).finally(() => { setloading(false) })
+    if (isSuccess) {
+      setproductUpdates(data?.notifications)
+      settotal(data?.count)
+        // settotal(res?.data?.count)
     }
-    if (isAdmin) { fetchProductsNotify() }
-  }, [date, isAdmin, isManager, page, pageSize, token, user])
+    return () => {
+      
+    };
+  }, [isSuccess]);
+
+   useEffect(() => {
+    if (isError || error || failureReason) {
+        seterrorMessage(GetError( error ? error : failureReason))
+    }
+    return () => {
+      
+    };
+  }, [isError,failureReason, error]);
+
+
   return (
     <div className='bg-white dark:bg-slate-700 
         shadow-md py-3 flex flex-col justify-center'>
-      {loading ?
+      {isLoading ?
         <div className='w-full h-full bg-inherit p-0 '>
           <SkeletonLoaders />
         </div>
@@ -73,7 +88,9 @@ const ProductsUpdates = ({socket, date, user}) => {
                     dark:bg-slate-700 dark:text-white md:py-3 py-2 rounded-md
                     border border-black dark:border-white'>
                     <div>
-                      <small>{isStringValidDate(notify?.created_at) ? 'correct' : 'incorrect'}</small>
+                      <small>{isStringValidDate(notify?.created_at) ?
+                       formatDayDateWithTime(notify?.created_at) :
+                        ''}</small>
                     </div>
                      <p className='text-lg capitalize'>
                         {notify?.message}
@@ -95,27 +112,48 @@ const ProductsUpdates = ({socket, date, user}) => {
                         </p>
                      </div>
                      </div>
+                  <p className='text-lg text-start mt-1'>By <small className='text-xl text-green-700'>
+                  {notify?.userId?.firstName + " " + notify?.userId?.lastName}
+                  </small>
+                  </p>
                   </div> : 
                   notify?.action==='add'?
                   <div className='md:px-4 px-2 bg-slate-50 md:my-4 my-2 text-slate-800
                   dark:bg-slate-700 dark:text-white md:py-3 py-2 rounded-md
                   border border-black dark:border-white'>
+                       <small>{isStringValidDate(notify?.created_at) ?
+                       formatDayDateWithTime(notify?.created_at) :
+                        ''}</small>
                       <p className='text-lg capitalize'>
                         {notify?.message}
                       </p>
                        <ProductDetail data={notify?.data}/>
+                  <p className='text-lg text-start mt-1'>By <small className='text-xl text-green-700'>
+                  {notify?.userId?.firstName + " " + notify?.userId?.lastName}
+                  </small>
+                  </p>
+                    
                     </div>
                     :
                     <div className='md:px-4 px-2 bg-slate-50 md:my-4 my-2 text-slate-800
                     dark:bg-slate-700 dark:text-white md:py-3 py-2 rounded-md
                     border border-black dark:border-white'>
+                       <small>{isStringValidDate(notify?.created_at) ?
+                       formatDayDateWithTime(notify?.created_at) :
+                        ''}</small>
                       <p className='text-lg capitalize
                       '>
                         {notify?.message}</p>
                       <ProductDetail data={notify?.data?.from}/>
                       <ProductDetail data={notify?.data?.to}/>
+                  <p className='text-lg text-start mt-1'>By <small className='text-xl text-green-700'>
+                  {notify?.userId?.firstName + " " + notify?.userId?.lastName}
+                  </small>
+                  </p>
+                    
                     </div>
                 }
+                
               </div>
             ))}
           </div>

@@ -9,9 +9,7 @@
   width: 0px;
   transition: width 0.4s all ease-in-out;
 }
-.sidebar-main.active::-webkit-scrollbar-track{
-  display: none;
-}
+
 
 .sidebar-main.active{
   width: 270px !important;

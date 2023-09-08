@@ -80,7 +80,7 @@ export default function GeneralStats({ data }) {
           }} />
         </button>
         <p className='text-base font-medium mt-2
-                         text-white'>Products Out Of stock</p>
+                         text-white'>Products Out Of category</p>
         <h3 className='mb-4 -mt-2 text-white'>{data?.productOutOfStockCount}</h3>
       </div>
       <div style={{background:'linear-gradient(#ff9395, #970808)'}}

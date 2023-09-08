@@ -1,20 +1,3 @@
-.App {
- 
-
-}
-
-.maincontainer{
-  display: flex;
-  height: 100vh;
-  width: 100%;
-  width: 100vw;
-}
-
-.content{
-  height: 100vh;
-  overflow-y: scroll;
-}
-
 .fifty-percent-radius{
   border-radius: 50% !important;
 }

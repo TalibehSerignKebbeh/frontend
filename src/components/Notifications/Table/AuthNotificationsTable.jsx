@@ -30,20 +30,24 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
       })
   };
   useEffect(() => {
-    if (open) {
-      
-    window.addEventListener('mousedown', (e) => {
-      // console.log(ref?.current?.contains(e.target));
-      const isChild = ref?.current?.contains(e.target)
-      // console.log(`is child of modal `, isChild);
-      if (ref?.current && !isChild) {
-        // console.log(isChild);
-        setopen(false)
-      } else {
-        setopen(true)
-      }
+
+
+    window.addEventListener('mousedown', e => {
+      if (!open) { return };
+            const refRect = ref?.current?.getBoundingClientRect();
+            if (e.clientX < refRect?.left || e.clientX > refRect?.right
+                || e.clientY < refRect?.top || e.clientY > refRect?.bottom
+            ) {
+                if (open === true) {
+                    setTimeout(() => {
+                        
+                        setopen(false)
+                    }, 20);
+                    return;
+                }
+            }
     })
-    }
+    
       
     return () => {
 
@@ -94,7 +98,7 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
           </p>
 
           <p className="text-gray-700 dark:text-gray-50 
-                          block text-xs font-normal"
+                          block text-xs font-semibold"
           >
             {date}
           </p>
@@ -128,7 +132,7 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
 
 
       <FixedSizeList
-        height={500}
+        height={900}
         itemCount={data?.length}
         itemSize={126}
         width={"100%"}

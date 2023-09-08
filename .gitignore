@@ -10,6 +10,7 @@ SampleSelect.jsx
 PercentChart.jsx
 App.test.js
 /build
+./src/components/AddProduct.js
 
 # dependencies
 /node_modules

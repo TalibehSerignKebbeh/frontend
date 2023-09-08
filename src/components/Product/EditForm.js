@@ -199,7 +199,7 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
             })
           }
           id="quantity-instock"
-          placeholder={` quantity in stock `}
+          placeholder={` quantity in category `}
         />
       </div> */}
       {/* <div className="md:w-72 sm:w-68 w-52 text-start">
@@ -282,14 +282,14 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
           multiple={false}
         >
           {/* {!product?.s ? <option>None</option> : null} */}
-          {categories?.map((stock, id) => (
+          {categories?.map((category, id) => (
             <option
               key={id}
-              value={stock?._id}
+              value={category?._id}
               className={`first-letter:uppercase 
               text-gray-700 dark:text-white `}
             >
-              {`${stock?.name},  ${stock?.description || ""}`}
+              {`${category?.name},  ${category?.description || ""}`}
             </option>
           ))}
         </select>

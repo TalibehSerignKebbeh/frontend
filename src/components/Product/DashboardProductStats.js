@@ -28,7 +28,7 @@ const DashboardProductStats = ({productsStatesQuery}) => {
                         quantityText={data?.productsCount}
                         linkTo={'/products'}
                     />
-                    <QuantityCard header={"#out of stock"}
+                    <QuantityCard header={"#out of category"}
                         quantityText={data?.outOfStockCount}
                         linkTo={'/products'}
                     />

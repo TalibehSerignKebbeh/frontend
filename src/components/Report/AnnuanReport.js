@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { queryInstance } from "../../api";
-import { formatNumber } from "../../other/format";
-import ReportCard from "../Dashboard/card/ReportCard";
-import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
-import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
-import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { DatePicker } from "antd";
 import useAuth from "../../hooks/useAuth";
@@ -12,6 +7,7 @@ import {motion} from 'framer-motion'
 import SkeletonLoaders from "../Loaders/SkelelonLoader";
 import CustomBarChart from "../Dashboard/chats/CustomBarChart";
 import MyDataGrid from "../sales/MyDataGrid";
+import SummaryReport from "./SummaryReport";
 
 
 const AnnuanReport = () => {
@@ -117,50 +113,11 @@ const handleFetchYearReport = async () => {
               font-bold text-teal-700 dark:text-white">
                 {`${year} report`}
               </h2>
-              <div className="flex flex-row flex-wrap py-3 gap-2 px-2">
-                <ReportCard title={"Profit"} value={`D${formatNumber(profit)}`}
-                icon={<MoneyOffCsredOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "blueviolet",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"Money"} value={`D${formatNumber(money)}`}
-                icon={<MoneyOffCsredOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "blueviolet",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"#Products"} value={productQuantity}
-                icon={<ProductionQuantityLimitsOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "brown",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"#Sales"} value={salesInstances}
-                icon={<Inventory2Outlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "darkmagenta",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-
-
-            </div>
+              <SummaryReport 
+                money={money} profit={profit}
+                productQuantity={productQuantity}
+                count={salesInstances}
+             />
               <div className="w-full bg-white dark:bg-slate-700  
             flex flex-row flex-wrap py-3 md:gap-x-3
             gap-x-1 gap-y-2 items-start justify-start ">

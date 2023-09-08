@@ -1,28 +1,26 @@
-import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
-import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import format from "date-fns/format";
 import React, { useState, useEffect } from "react";
 import { queryInstance } from "../../api";
-import { formatNumber } from "../../other/format";
 import { customTime } from "../sales/data";
 import MyDataGrid from "../sales/MyDataGrid";
-import ReportCard from "../Dashboard/card/ReportCard";
-import { Clear, Inventory2Outlined } from "@mui/icons-material";
+import Clear from "@mui/icons-material/Clear";
 import useAuth from "../../hooks/useAuth";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import SkeletonLoaders from "../Loaders/SkelelonLoader";
-import { isToday } from "date-fns";
+import isToday  from "date-fns/isToday";
 import HourlyCharts from "../Dashboard/chats/HourlyCharts";
 import parseISO from "date-fns/parseISO";
 import isYesterday from "date-fns/isYesterday";
 import TopSellingTables from "./TopSellingTables";
+import SummaryReport from "./SummaryReport";
 
 
 const DateReportComponent = () => {
   const { token } = useAuth()
   const [date, setdate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [money, setmoney] = useState(0);
+  const [profit, setProfit] = useState(0);
   const [productQuantity, setproductQuantity] = useState(0);
   const [hourlyData, sethourlyData] = useState([]);
   const [sales, setsales] = useState([]);
@@ -40,6 +38,7 @@ const DateReportComponent = () => {
         .then((res) => {
           // console.log(res);
           if (res?.status === 200) {
+           setProfit(res?.data?.profit);
             setsales(res?.data?.sales);
             setmoney(res?.data?.money);
             sethourlyData(res?.data?.hourlySales);
@@ -121,39 +120,11 @@ const DateReportComponent = () => {
               mt-6 text-xl  w-fit">
               {GetDateName(date)}
             </h2>
-            <div className="flex flex-row flex-wrap py-3 gap-2">
-              <ReportCard title={"Money"} value={`D${formatNumber(money)}`}
-                icon={<MoneyOffCsredOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    // color: "white",
-                    bgcolor: "blueviolet",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"#Products"} value={productQuantity}
-                icon={<ProductionQuantityLimitsOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "#004080",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"#Sales"} value={count}
-                icon={<Inventory2Outlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    bgcolor: "#00e673",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-
-
-            </div>
+               <SummaryReport 
+                money={money} profit={profit}
+                productQuantity={productQuantity}
+                count={count}
+             />
             <div>
 
             </div>

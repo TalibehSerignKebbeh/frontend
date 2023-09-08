@@ -30,7 +30,30 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
       // console.log(err);
     })
   };
- const Row = ({ index, style }) => {
+ 
+   useEffect(() => {
+     window.addEventListener('mousedown', e => {
+      if (!open) { return };
+            const refRect = ref?.current?.getBoundingClientRect();
+            if (e.clientX < refRect?.left || e.clientX > refRect?.right
+                || e.clientY < refRect?.top || e.clientY > refRect?.bottom
+            ) {
+                if (open === true) {
+                    setTimeout(() => {
+                        
+                        setopen(false)
+                    }, 20);
+                    return;
+                }
+            }
+    })
+   }, [open, setopen]);
+  
+
+  if (!dataArray?.length)
+    return null
+
+  const Row = ({ index, style }) => {
     const val = dataArray[index];
     const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
     const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
@@ -56,38 +79,27 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
         <p className="text-gray-700 dark:text-slate-100
          block font-normal capitalize">{val?.message}
          </p>
+         <p className="text-gray-700 dark:text-gray-50 
+                       font-light text-lg capitalize"
+          >
+            Name: <small className=" text-xl font-normal
+                        text-gray-700 dark:text-gray-50 ">
+              {fullName}
+            </small>
+          </p>
         <small className="text-gray-700 dark:text-slate-100
-         font-light text-xs capitalize">User:
-          <small className="text-lg font-normal">{fullName} </small></small>
-        <small className="text-gray-700 dark:text-slate-100
-          block text-xs font-normal">{date}</small>
+          block text-xs font-semibold">
+          {date}
+        </small>
       </div>
     );
   };
-   useEffect(() => {
-       if (open) {
-      
-    window.addEventListener('mousedown', (e) => {
-      // console.log(ref?.current?.contains(e.target));
-      const isChild = ref?.current?.contains(e.target)
-      // console.log(`is child of modal `, isChild);
-      if (ref?.current && !isChild) {
-        // console.log(isChild);
-        setopen(false)
-      } else {
-        setopen(true)
-      }
-    })
-    }
-      
-   }, [open, setopen]);
-  
-  if (!dataArray?.length)
-    return null
+
     return (
       <div ref={ref}
-        className='notification-wrapper bg-slate-200 dark:bg-slate-700
-        text-center'
+        className='notification-wrapper
+        bg-slate-100 dark:bg-slate-800
+        overflow-y-auto flex flex-col '
         style={{
         visibility: open ? "visible" : "hidden",
         position: 'absolute',  right: 0, left: 'auto',
@@ -104,13 +116,17 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           </button>
               
           <FixedSizeList
-            height={250}
+            height={900}
             itemCount={dataArray?.length}
-            itemSize={110}
+            itemSize={100}
                 width={"100%"}
                 style={{
-                  marginTop:'60px', 
-                  marginBlock: '10px',
+                  marginTop: '40px',
+          marginBlock: '10px',
+          paddingBottom: '10px',
+          display: 'flex', flexDirection: 'column',
+          borderTop: '2px solid yellow',
+          height:'100%'
                   }}
           >
             {Row}

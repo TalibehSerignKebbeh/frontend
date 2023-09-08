@@ -4,9 +4,10 @@ import { queryInstance, serverUrl } from '../../api';
 import  CircularProgress from '@mui/material/CircularProgress';
 import { QueryClient } from '@tanstack/react-query';
 import useAuth from '../../hooks/useAuth';
-import SuccessMessage from '../StatusMessages/SuccessMessage';
+// import SuccessMessage from '../StatusMessages/SuccessMessage';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
+import SuccessStatusComponent from '../StatusMessages/SuccessStatusComponent';
 import axios from 'axios';
 
 const initialValues = {
@@ -91,148 +92,152 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
             </div>
             <div className='h-auto w-full'>
 
-            {successMessage ?
-                <SuccessMessage message={successMessage} 
-                    resetFunction={()=>setsuccessMessage('')}
-                /> : null}
-            {error ?
+            {error?.length ?
                 <ErrorMessage error={error} 
                     handleReset={()=>setError('')}
-                    /> : null}
+                    />
+                    : null
+            }
             </div>
-                
-            <div  className=" border-2 border-teal-300
-                 md:px-12 py-5  px-6 overflow-y-scroll
-                 relative ">
-                <div className='flex flex-col gap-1 '>
+             <div className="md:px-12 py-5  px-6 overflow-y-scroll
+                 relative border-b-2 border-t-2
+                 border-green-700 flex-grow"
+                >
+                {successMessage?.length ?
+                    <SuccessStatusComponent
+                        successMessage={successMessage}
+                        handleReset={() => {
+                            setsuccessMessage('')
+                        }}
+                    /> :
+               
+                    <div className='flex flex-col gap-1 '>
 
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="name">Name</label>
-                        <input ref={nameRef}
-                            className='w-full border border-slate-500 dark:border-slate-100 
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="name">Name</label>
+                            <input ref={nameRef}
+                                className='w-full border border-slate-500 dark:border-slate-100 
                             bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                             text-lg'
-                            type="text" name="name" id="name" placeholder='product name'
-                            value={product?.name} onChange={e => setproduct({ ...product, name: e.target.value })} />
-                    </div>
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="name">Sub Name</label>
-                        <input 
-                            className='w-full border border-slate-500 dark:border-slate-100 
+                                type="text" name="name" id="name" placeholder='product name'
+                                value={product?.name} onChange={e => setproduct({ ...product, name: e.target.value })} />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="name">Sub Name</label>
+                            <input
+                                className='w-full border border-slate-500 dark:border-slate-100 
                             bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                             text-lg'
-                            type="text" name="sub_name" id="sub_name" placeholder='product sub name'
-                            value={product?.sub_name} onChange={e => setproduct({ ...product, sub_name: e.target.value })} />
-                    </div>
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="price">price</label>
-                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                                type="text" name="sub_name" id="sub_name" placeholder='product sub name'
+                                value={product?.sub_name} onChange={e => setproduct({ ...product, sub_name: e.target.value })} />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="price">price</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
-                            type="text" name="price" id="price" placeholder='product price'
-                            value={product?.price || ''}
-                            onChange={e => setproduct({ ...product, price: Number(e.target.value) })}
-                        />
-                    </div>
-                     <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="price">Cost Per Unit</label>
-                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                                type="text" name="price" id="price" placeholder='product price'
+                                value={product?.price || ''}
+                                onChange={e => setproduct({ ...product, price: Number(e.target.value) })}
+                            />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="price">Cost Per Unit</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
-                            type="text" name="unit_cost" id="unit_cost" placeholder='product per unit cost'
-                            value={product?.unit_cost || ''}
-                            onChange={e => setproduct({ ...product, unit_cost: Number(e.target.value) })}
-                        />
-                    </div>
+                                type="text" name="unit_cost" id="unit_cost" placeholder='product per unit cost'
+                                value={product?.unit_cost || ''}
+                                onChange={e => setproduct({ ...product, unit_cost: Number(e.target.value) })}
+                            />
+                        </div>
 
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="quantity">quantity</label>
-                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="quantity">quantity</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg
                         ' type="text" name="quantity" id="quantity"
-                            placeholder='product quantity'
-                            value={product?.quantity || ''}
-                            onChange={e => setproduct({ ...product, quantity: Number(e.target.value) })}
-                        />
-                    </div>
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="category">Category</label>
-                        <select value={product?.stockId}
-                            id="category" name='stockId'
-                            onChange={e => setproduct({ ...product, stockId: e.target.value })}
-                            className='w-full border border-slate-500 dark:border-slate-100 
+                                placeholder='product quantity'
+                                value={product?.quantity || ''}
+                                onChange={e => setproduct({ ...product, quantity: Number(e.target.value) })}
+                            />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="category">Category</label>
+                            <select value={product?.stockId}
+                                id="category" name='stockId'
+                                onChange={e => setproduct({ ...product, stockId: e.target.value })}
+                                className='w-full border border-slate-500 dark:border-slate-100 
                             bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3h-12 p-2 rounded-lg 
                             text-lg'
-                        >
-                           {!product?.stockId? <option>Select Category</option>: null}
-                            {categories?.map((stock, id) => (
-                                <option value={stock?._id} key={id}
-                                className="p-1 font-normal text-slate-700 dark:text-white">
-                                    {stock?.name}
-                                </option>
-                        ))}
-                        </select>
-                    </div>
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="description">description</label>
-                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                            >
+                                {!product?.stockId ? <option>Select Category</option> : null}
+                                {categories?.map((category, id) => (
+                                    <option value={category?._id} key={id}
+                                        className="p-1 font-normal text-slate-700 dark:text-white">
+                                        {category?.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="description">description</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
-                            type="text" name="description" id="description"
-                            value={product?.description}
-                            placeholder="product description"
-                            onChange={e => setproduct({ ...product, description: e.target.value })}
-                        />
-                    </div>
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="Produced date">Produced date</label>
-                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                                type="text" name="description" id="description"
+                                value={product?.description}
+                                placeholder="product description"
+                                onChange={e => setproduct({ ...product, description: e.target.value })}
+                            />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="Produced date">Produced date</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3  text-lg' type="date" name="producedDate
                        "
-                            id="Produced date" value={product?.producedDate}
-                            onChange={e => setproduct({ ...product, producedDate: e.target.value })}
+                                id="Produced date" value={product?.producedDate}
+                                onChange={e => setproduct({ ...product, producedDate: e.target.value })}
 
-                        />
-                    </div>
-                    <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                        <label className='text-lg text-slate-700 dark:text-slate-100'
-                         htmlFor="expired date">expired date</label>
-                        <input className='w-full border border-slate-500 dark:border-slate-100 
+                            />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="expired date">expired date</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
-                            type="date" name="expiryDate" id="expired date"
-                            value={product?.expiryDate}
-                            onChange={e => setproduct({ ...product, expiryDate: e.target.value })}
-                        />
+                                type="date" name="expiryDate" id="expired date"
+                                value={product?.expiryDate}
+                                onChange={e => setproduct({ ...product, expiryDate: e.target.value })}
+                            />
+                        </div>
+
                     </div>
-
-                </div>
-
-                {/* <div className="mt-2 md:w-72 sm:w-60 w-56 buttons">
-                    <button className="reset bg-red-300" type="reset">Reset</button>
-                    <button className="submit bg-teal-500" type="submit">Submit</button>
-                </div> */}
+                }
             </div>
-            <div className="mt-1 md:w-72 sm:w-60 w-50 p-3  
-                  mx-auto md:ml-5 ml-1 flex flex-row gap-14 mb-2 ">
+            <div className="mt-1 w-full p-3 py-0 pb-1 
+                  mx-auto flex flex-row
+                  justify-between flex-shrink-0 flex-grow-0
+                  order-3">
                 {!uploading? <button className="reset py-2 px-5 rounded-md
-                 text-lg bg-red-300" type="reset"
+                 text-lg bg-slate-400" type="reset"
                     onClick={() => setproduct(initialValues)}
                 >Reset
                 </button> : null}
                 {uploading? <button className="reset py-2 px-5 rounded-md
-                 text-lg bg-red-300" type="reset"
+                 text-lg bg-red-400" type="reset"
                     disabled={!uploading}
-                    onClick={e=>postController.abort(`i made a mistake`)}
+                    onClick={e=>postController.abort(`user cancelled request`)}
                 >Cancell
                 </button> : null}
                 <button onClick={handleSubmit}

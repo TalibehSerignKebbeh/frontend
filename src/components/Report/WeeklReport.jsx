@@ -1,20 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { queryInstance } from '../../api';
-import ReportCard from "../Dashboard/card/ReportCard";
-import CircularProgress from "@mui/material/CircularProgress";
-import { formatNumber } from '../../other/format';
-import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
-import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
-import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import useAuth from '../../hooks/useAuth';
 import { GetError } from '../other/OtherFuctions'
 import ErrorMessage from '../StatusMessages/ErrorMessage'
 import WeeklyChart from '../Dashboard/chats/WeeklyChart';
 import TopSellingTables from './TopSellingTables';
-import { MoneyOffOutlined } from '@mui/icons-material';
 import PieChart from '../Charts/PieChart';
 import MyDataGrid from '../sales/MyDataGrid';
+import SummaryReport from './SummaryReport';
+import  CircularProgress  from '@mui/material/CircularProgress';
+
 function getCurrentWeekNumber() {
   const today = new Date();
   const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
@@ -144,52 +140,11 @@ const WeeklySalesReport = () => {
             </div>
             :
             <div>
-              <div className="flex flex-row flex-wrap 
-                  md:justify-start justify-center
-                  gap-x-2 gap-y-4  py-3 px-2">
-                 <ReportCard title={"Profit"} value={`D${formatNumber(profit)}`}
-                  icon={<MoneyOffOutlined
-                    sx={{
-                      transform: "scale(1.6)",
-                      color: "white",
-                      bgcolor: "blueviolet",
-                      borderRadius: "3px",
-                    }}
-                  />}
-                />
-                <ReportCard title={"Money"} value={`D${formatNumber(money)}`}
-                  icon={<MoneyOffCsredOutlined
-                    sx={{
-                      transform: "scale(1.6)",
-                      color: "white",
-                      bgcolor: "blueviolet",
-                      borderRadius: "3px",
-                    }}
-                  />}
-                />
-                <ReportCard title={"#Products"} value={productCount}
-                  icon={<ProductionQuantityLimitsOutlined
-                    sx={{
-                      transform: "scale(1.6)",
-                      color: "white",
-                      bgcolor: "brown",
-                      borderRadius: "3px",
-                    }}
-                  />}
-                />
-                <ReportCard title={"#Sales"} value={saleCount}
-                  icon={<Inventory2Outlined
-                    sx={{
-                      transform: "scale(1.6)",
-                      color: "white",
-                      bgcolor: "darkmagenta",
-                      borderRadius: "3px",
-                    }}
-                  />}
-                />
-
-
-              </div>
+              <SummaryReport 
+                money={money} profit={profit}
+                productQuantity={productCount}
+                count={saleCount}
+             />
               {daysSale?.length ?
                 <div className='w-full md:mx-3 mx-auto
                 overflow-x-scroll scroll-smooth

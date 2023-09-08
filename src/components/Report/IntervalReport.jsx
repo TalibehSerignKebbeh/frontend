@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { DatePicker, } from 'antd'
-// import { useQuery } from '@tanstack/react-query';
 import { queryInstance } from '../../api';
 import useAuth from '../../hooks/useAuth';
-// import { QueryClient } from '@tanstack/react-query';
 import { GetError } from '../other/OtherFuctions';
 import MyDataGrid from '../sales/MyDataGrid';
-import { formatNumber } from "../../other/format";
-import ReportCard from "../Dashboard/card/ReportCard";
-import MoneyOffCsredOutlined from "@mui/icons-material/MoneyOffCsredOutlined";
-import Inventory2Outlined from "@mui/icons-material/Inventory2Outlined";
-import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import SkeletonLoaders from '../Loaders/SkelelonLoader';
+import SummaryReport from './SummaryReport';
 
 
 const { RangePicker } = DatePicker
@@ -100,54 +94,14 @@ export default function IntervalReport() {
           <div>
 
           </div>
-        {stats?  <div className="flex flex-row flex-wrap py-3 gap-2 px-2">
-                <ReportCard title={"Profit"} 
-                value={`D${formatNumber(stats?.profit || 0)}`}
-                icon={<MoneyOffCsredOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "blueviolet",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"Money"} 
-              value={`D${formatNumber(stats?.money || 0)}`}
-                icon={<MoneyOffCsredOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "blueviolet",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"#Products"} 
-              value={stats?.quantity}
-                icon={<ProductionQuantityLimitsOutlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "brown",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-              <ReportCard title={"#Sales"} 
-              value={stats?.count}
-                icon={<Inventory2Outlined
-                  sx={{
-                    transform: "scale(1.6)",
-                    color: "white",
-                    bgcolor: "darkmagenta",
-                    borderRadius: "3px",
-                  }}
-                />}
-              />
-
-
-            </div> : null}
+          {stats ? 
+        <SummaryReport 
+              money={stats?.money}
+              profit={stats?.profit}
+              count={stats?.count}
+               productQuantity={stats?.quantity}
+        />    
+        : null}
         <MyDataGrid data={sales} loading={isLoading}/>
       </div>}
 

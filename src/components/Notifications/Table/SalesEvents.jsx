@@ -1,53 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { queryInstance } from '../../../api';
-
 import { GetError } from '../../other/OtherFuctions';
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
 import SaleTable from './SaleTable';
 import Paginate from '../../Pagination/Paginate';
 import SkeletonLoaders from '../../Loaders/SkelelonLoader';
+import { useQuery } from '@tanstack/react-query';
   
-const SalesEvents = ({ showSideMenu, user, date }) => {
-  const { token, isAdmin } = useAuth()
+  
+const SalesEvents = ({ showSideMenu, user, date, searchFilters }) => {
+  const model = 'sale'
+
+  const { token } = useAuth()
   const [page, setpage] = useState(0);
   const [count, setCount] = useState(0);
   // const [totalPages, settotalPages] = useState(1);
   const [pageSize, setpageSize] = useState(10);
-  const [loading, setloading] = useState(false);
   const [saleNotifications, setSaleNotifications] = useState([]);
   const [errorMessage, seterrorMessage] = useState('');
-  useEffect(() => {
 
-    const fetchProductsNotify = async () => {
-      let filters = { model: 'sale', page: page >= 0 ? page : 0, pagesize: +pageSize };
-      if (date?.length) {
-                filters = { ...filters, created_at: date }
-            }
-            if (user?.length) {
-                filters = { ...filters, userId: user }
-            }
-      setloading(true)
-      await queryInstance.get(`/notifications`, { params: filters, headers: { Authorization: `Bearer ${token}` } })
-        .then(res => {
-          // console.log(res?.data);
-          setSaleNotifications(res?.data?.notifications)
-          // settotalPages(res?.data?.totalPages)
-          setCount(res?.data?.count)
-          setpageSize(res?.data?.pageSize)
-          // setpage(page)
-          // setCount(res?.data?.count)
-        })
-        .catch(err => {
-          // console.log(err);
-          seterrorMessage(GetError(err))
-        }).finally(() => { setloading(false) })
+      const { isLoading, isError, error, failureReason, data,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['sales_notifications', model, page, pageSize, date=searchFilters?.date, user=searchFilters?.user,],
+    queryFn: () => queryInstance.get(`/notifications`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          model,
+          page: page, pagesize: pageSize,
+          created_at:searchFilters?.date?.length? searchFilters?.date?.length: null,
+          userId:searchFilters?.user? searchFilters?.user: null,
+        }
+      }).then(res => res?.data)
+      .catch((err) => Promise.reject(err)),
+    refetchInterval: 30000,
+  })
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSaleNotifications(data?.notifications)
+      setCount(data?.count)
+        // settotal(res?.data?.count)
     }
-    if (isAdmin) { fetchProductsNotify() }
-  }, [date, isAdmin,  page, pageSize, token, user])
+    return () => {
+      
+    };
+  }, [isSuccess]);
+
+   useEffect(() => {
+    if (isError || error || failureReason) {
+        seterrorMessage(GetError( error ? error : failureReason))
+    }
+    return () => {
+      
+    };
+  }, [isError,failureReason, error]);
+
+  
   return (
     <div>{
-      loading ?
+      isLoading ?
         <SkeletonLoaders />
       : <>
 
@@ -70,59 +84,6 @@ const SalesEvents = ({ showSideMenu, user, date }) => {
           total={count}
 
         />
-        {/* <DataGrid
-        className='text-slate-700 dark:text-slate-50
-           bg-slate-50 dark:bg-slate-700
-          shadow shadow-white dark:shadow-slate-500'
-        
-        sx={{
-          height: '500px',
-          // width:'850px',
-          maxWidth: '900px', minWidth: '400px',
-          width: { xl: '850px', lg: '850px', md: '850px', sm: '100vw', xs: '100vw' },
-        }}
-       
-        rows={saleNotifications}
-        loading={loading}
-        columns={[
-          {
-            field: 'created_at', headerName: 'Date', width: 210,
-            valueGetter: ({ value }) => isValid(parseISO(value)) ? format(parseISO(value), " EEE MMM dd yyyy, HH:mm b") : 'invalid date'
-          },
-          { field: 'message', headerName: '#msg', width: '160', cellClassName: 'text_cell', editable: false },
-          { field: 'action', headerName: 'action', editable: false },
-          {
-            field: 'quantity', type: 'Number', headerName: '#Qty',
-            valueGetter: ({ row }) => row?.data?.quantity
-          },
-          { field: 'data', headerName: '#Price', editable: false, valueGetter: ({ value }) => value?.quantity * value?.price },
-          {
-            field: 'userId', headerName: 'User',
-            cellClassName: 'text_cell', width: 170, editable: false,
-            valueGetter: ({ value }) => value?.firstName + ' ' + value?.lastName,
-          },
-
-        ]}
-        rowCount={count}
-        pagination='server'
-        paginationModel={{ page: page, pageSize: pageSize }}
-
-        onPaginationModelChange={({ page, pageSize }) => {
-          // alert(page, pageSize)
-          if (page >= 0) {
-            setpage(page)
-          }
-          if (pageSize >= 0) {
-            setpageSize(pageSize)
-          }
-        }}
-
-        pageSizeOptions={[10, 20, 30, 50, 75, 100]}
-        getRowId={(row) => row?._id}
-        hideFooterSelectedRowCount
-        disableRowSelectionOnClick
-
-      /> */}
 </div>
       </>
     }

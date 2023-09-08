@@ -7,7 +7,7 @@ import SaleNotificationPanel from "../Notifications/SaleNotificationPanel";
 import ProductNotification from "../Notifications/ProductNotification";
 import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
 import { queryInstance } from "../../api";
-import Tooltip from '@mui/material/Tooltip'
+// import Tooltip from '@mui/material/Tooltip'
 
 
 
@@ -64,15 +64,20 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
   if (!token) return null;
 
 
+  const handleNotificatioButtonClick = (functionToRun) => {
+    setTimeout(() => {
+       functionToRun()
+    }, 100);
+    
+  }
   return (
     <div className="
      self-start justify-self-start
      w-full h-fit max-h-44 p-2 md:py-10 sm:py-7 py-5 
-    bg-gray-50 dark:bg-slate-700 
-    shadow-md dark:shadow-slate-800 
+    bg-white dark:bg-slate-700 
+    shadow-md shadow-slate-200 dark:shadow-slate-800 
     flex flex-row items-center justify-end
     "
-      style={{ minHeight: '70px', }}
     >
 
       {(isAdmin) ?
@@ -83,11 +88,11 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
         >
         
           <button className="relative"
-            onClick={e => {
+            onClick={()=>handleNotificatioButtonClick(() => {
               setOpenAuthNotify(false)
               setopenSaleNotify(prev => !prev)
               setopenProductNotify(false)
-            }}
+            })}
           >
             <ShoppingBagSharp
               sx={{ transform: 'scale(1.7)' }}
@@ -102,11 +107,11 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
           <button
             className="relative"
-            onClick={e => {
+            onClick={()=>handleNotificatioButtonClick(() => {
               setOpenAuthNotify(prev => !prev)
               setopenSaleNotify(false)
               setopenProductNotify(false)
-            }}
+            })}
           >
             <LockClockOutlined
               sx={{ transform: 'scale(1.7)' }}
@@ -122,11 +127,11 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
           </button>
 
           <button className="relative"
-            onClick={e => {
+            onClick={()=>handleNotificatioButtonClick(() => {
               setOpenAuthNotify(false)
               setopenSaleNotify(false)
               setopenProductNotify(prev => !prev)
-            }}
+            })}
           >
             <ProductionQuantityLimitsOutlined
               sx={{ transform: 'scale(1.7)' }}
