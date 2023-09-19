@@ -33,6 +33,17 @@ const ProductsDataGrid = ({ products, pageSize,
         return `D ${priceFormat}`;
       },
     },
+     {
+      type: "number",
+      field: "unit_cost",
+      headerName: "unit cost",
+      width: 120,headerClassName:'header',
+      valueFormatter: (params) => {
+        if (params.value === null) return "";
+        const priceFormat = Number(params.value).toLocaleString();
+        return `D ${priceFormat}`;
+      },
+    },
     {
       type: "number",
       field: "quantityInStock",

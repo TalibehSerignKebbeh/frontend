@@ -59,6 +59,7 @@ const ProductPage = ({ socket }) => {
 
     return () => {
       if (isSuccess) {
+        // console.log(data?.products[0]);
         setTopSelling({
           ByProfit: data?.topSellingByProfit,
           ByQuantity: data?.topSellingByQuantity,

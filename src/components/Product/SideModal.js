@@ -235,7 +235,7 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                 >Reset
                 </button> : null}
                 {uploading? <button className="reset py-2 px-5 rounded-md
-                 text-lg bg-red-400" type="reset"
+                 text-lg bg-red-400" type="button"
                     disabled={!uploading}
                     onClick={e=>postController.abort(`user cancelled request`)}
                 >Cancell

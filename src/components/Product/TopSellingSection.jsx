@@ -13,7 +13,8 @@ export default function TopSellingSection({ data }) {
   const [show, setshow] = useState(false); 
   const [openByProfit, setopenByProfit] = useState(true);
 
-  
+  if (!ByProfit?.length && !ByQuantity?.length) return null;
+
   return (
       <div className=' w-full bg-slate-300
        dark:bg-gray-700 rounded-lg mb-3
