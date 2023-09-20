@@ -228,18 +228,19 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
             w-full block"
           htmlFor="price"
         >
-          Price
+          Price per unit
         </label>
         <input
           className="bg-white dark:bg-slate-500
            text-gray-600 dark:text-white text-xl font-medium py-3 px-2
             border-2 border-gray-500
            rounded-md w-full"
-          type={"text"}
+          type={"number"} step={'0.1'}
+          min={'0.0'}
           value={product?.price || ""}
           onChange={(e) => setproduct({ ...product, price: e.target.value })}
           id="price"
-          placeholder="product price"
+          placeholder="product price per unit"
         />
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
@@ -255,7 +256,8 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
            text-gray-600 dark:text-white text-xl font-medium py-3 px-2
             border-2 border-gray-500
            rounded-md w-full"
-          type={"text"}
+           type={"number"} step={'0.1'}
+          min={'0.0'}
           value={product?.unit_cost || ""}
           onChange={(e) => setproduct({ ...product, unit_cost: e.target.value })}
           id="unit_cost"

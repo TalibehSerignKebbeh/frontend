@@ -148,13 +148,13 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                         </div>
                         <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
                             <label className='text-lg text-slate-700 dark:text-slate-100'
-                                htmlFor="price">price</label>
+                                htmlFor="price">price per unit</label>
                             <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
                                 type="number"
                                 step={'0.1'} min={'0.0'}
-                                name="price" id="price" placeholder='product price'
+                                name="price" id="price" placeholder='product price per unit'
                                 value={product?.price || ''}
                                 onChange={e => setproduct({ ...product, price: Number(e.target.value) })}
                             />
