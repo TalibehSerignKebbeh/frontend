@@ -118,7 +118,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           <FixedSizeList
             height={900}
             itemCount={dataArray?.length}
-            itemSize={100}
+            itemSize={120}
                 width={"100%"}
                 style={{
                   marginTop: '40px',
