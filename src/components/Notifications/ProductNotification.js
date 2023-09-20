@@ -65,13 +65,12 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           top: style?.top,
           left: style?.left,
           display: "block",
-          minHeight:'200px',
-          height:'max-content'
+          marginBottom:'10px'
         }}
         className='bg-white dark:bg-gray-700 
              shadow shadow-white dark:shadow-slate-800
               block py-2 px-[3px]
-      '>
+      border border-slate-600 dark:border-slate-300'>
          <small className="absolute right-2
           bg-blue-600 text-white px-2 rounded-full text-xl  ">
             {index + 1}
@@ -121,7 +120,7 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
             itemSize={120}
                 width={"100%"}
                 style={{
-                  marginTop: '40px',
+                   marginTop: '40px',
           marginBlock: '10px',
           paddingBottom: '10px',
           display: 'flex', flexDirection: 'column',
