@@ -125,6 +125,19 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                         </div>
                         <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
                             <label className='text-lg text-slate-700 dark:text-slate-100'
+                                htmlFor="quantity">quantity</label>
+                            <input className='w-full border border-slate-500 dark:border-slate-100 
+                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
+                        text-lg
+                        ' type="number" min={'0.0'}
+                                name="quantity" id="quantity"
+                                placeholder='product quantity'
+                                value={product?.quantity || ''}
+                                onChange={e => setproduct({ ...product, quantity: Number(e.target.value) })}
+                            />
+                        </div>
+                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
+                            <label className='text-lg text-slate-700 dark:text-slate-100'
                                 htmlFor="name">Sub Name</label>
                             <input
                                 className='w-full border border-slate-500 dark:border-slate-100 
@@ -139,7 +152,9 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                             <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
-                                type="text" name="price" id="price" placeholder='product price'
+                                type="number"
+                                step={'0.1'} min={'0.0'}
+                                name="price" id="price" placeholder='product price'
                                 value={product?.price || ''}
                                 onChange={e => setproduct({ ...product, price: Number(e.target.value) })}
                             />
@@ -150,24 +165,15 @@ const SideModal = ({ showSideModal, setShowSideModal, socket }) => {
                             <input className='w-full border border-slate-500 dark:border-slate-100 
                         bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
                         text-lg'
-                                type="text" name="unit_cost" id="unit_cost" placeholder='product per unit cost'
+                                type="number"
+                                step={'0.1'} min={'0.0'} name="unit_cost"
+                                id="unit_cost" placeholder='product per unit cost'
                                 value={product?.unit_cost || ''}
                                 onChange={e => setproduct({ ...product, unit_cost: Number(e.target.value) })}
                             />
                         </div>
 
-                        <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
-                            <label className='text-lg text-slate-700 dark:text-slate-100'
-                                htmlFor="quantity">quantity</label>
-                            <input className='w-full border border-slate-500 dark:border-slate-100 
-                        bg-white dark:bg-slate-300 text-slate-700 dark:text-white py-3
-                        text-lg
-                        ' type="text" name="quantity" id="quantity"
-                                placeholder='product quantity'
-                                value={product?.quantity || ''}
-                                onChange={e => setproduct({ ...product, quantity: Number(e.target.value) })}
-                            />
-                        </div>
+                        
                         <div className=" md:w-72 sm:w-60 w-56 h-auto input-container">
                             <label className='text-lg text-slate-700 dark:text-slate-100'
                                 htmlFor="category">Category</label>
