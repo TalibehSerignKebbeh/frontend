@@ -6,6 +6,7 @@ import { EditOffSharp } from '@mui/icons-material'
 import useAuth from '../../hooks/useAuth';
 import { GetError } from '../other/OtherFuctions';
 import ErrorMessage from '../StatusMessages/ErrorMessage';
+import { useQuery } from '@tanstack/react-query';
 
 
 const ProductSales = ({socket, setactiveNavLink}) => {
@@ -13,8 +14,8 @@ const ProductSales = ({socket, setactiveNavLink}) => {
     const { id } = useParams()
     const [product, setproduct] = useState(null);
     const [error, seterror] = useState('');
+    const [total, settotal] = useState(0);
     const [sales, setsales] = useState([]);
-    const [loading, setloading] = useState([]);
      const [pageSize, setpageSize] = useState(20);
     const [page, setpage] = useState(0);
     const [rowCount, setrowCount] = useState(0);
@@ -60,58 +61,64 @@ const ProductSales = ({socket, setactiveNavLink}) => {
         // { field: 'Edit', headerName: 'Edit', width: 60, renderCells: (params) => <Edit {...{ params, rowId, setrowId }} /> },
         // { field: 'Delete', headerName: 'Delete', width: 60, renderCells: (params) => <Delete className='delete-icon' onClick={() => DeleteEmp(params.rowId)} /> },
     ], [])
-    // const { isLoading, isError, data, isSuccess } = useQuery({
-    //     queryKey: [`productsSales ${id}`],
-    //     queryFn:()=> queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,{headers:{Authorization: `Bearer ${token}`}}).then(res => { return res?.data }),
+
+    const { isLoading, isError, data, isSuccess, failureReason, error:fetchError, }
+        = useQuery({
+        queryKey: [`productsSales ${id}`, page, pageSize],
+            queryFn: () => queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,
+                { headers: { Authorization: `Bearer ${token}` } })
+                .then(res => { return res?.data }).catch((err)=>err),
         
-    // }, { networkMode: 'offlineFirst', keepPreviousData: false })
-    // if (isSuccess) {
-    //     console.log(data);
-    // }
+        }, {
+            networkMode: 'offlineFirst',
+            keepPreviousData: false,
+            refetchOnMount:true
+        })
+    
+    
+   
+
     useEffect(() => {
-        setactiveNavLink('sales')
-        const fetchSales = async () => {
-        setloading(true)
-        await queryInstance.get(`/sales/${id}/product?page=${page}&&pageSize=${pageSize}`,{headers:{Authorization: `Bearer ${token}`}})
-            .then(res => {
-                // console.log(res);
-                if (res.status === 200) {
-                setproduct(res?.data?.product)
-                setsales(res?.data?.sales)
-                    setrowCount(res?.data?.total)
-                    return
-                }
-               seterror(GetError(res))
-            }).catch(err => {
-               seterror(GetError(err))
-                console.log(err);
-            }).finally(() => { setloading(false) })
+         if (isError || fetchError || failureReason) {
+        seterror(GetError(fetchError || failureReason))
     }
-        fetchSales()
         return () => {
             
         };
-    }, [page, pageSize, id, token, setactiveNavLink]);
+    }, [isError, fetchError, failureReason]);
 
     useEffect(() => {
+        if (isSuccess) {
+        setsales(data?.sales)
+        setproduct(data?.product)
+        setrowCount(data?.total)
+    }
+        return () => {
+            
+        };
+    }, [isSuccess]);
+    useEffect(() => {
         setrowCount(prev => 
-            loading ? prev : rowCount
+            isLoading ? prev : rowCount
         )
         return () => {
             
         };
-    }, [loading, rowCount]);
+    }, [isLoading, rowCount]);
     return (
         <div className='w-full lg:px-14 md:mx-10 sm:px-5 px-2'>
             <div className='w-full'>
                 {error?.length ?
                     <div><ErrorMessage error={error}
-                handleReset={()=>seterror('')}    /></div> : null}
+                        handleReset={() => seterror('')} /></div>
+                    :
+                    null
+                }
             </div>
             <div>
-                {(!product && !loading) ?
+                {(!product && !isLoading) ?
                       <h3>Product Not found</h3>
-                    : ((product && loading) || product)?
+                    : ((product && isLoading) || product)?
                         <div className='py-2 px-3 md:my-5 my-2 w-fit
                          bg-white dark:bg-slate-600
                          text-gray-800 dark:text-white
@@ -133,7 +140,7 @@ const ProductSales = ({socket, setactiveNavLink}) => {
                 }
             </div>
                     <SalesTable sales={sales} 
-                loading={loading}
+                loading={isLoading}
                 deletable={false}
                         rowCount={rowCount}
                         setpage={setpage} page={page}

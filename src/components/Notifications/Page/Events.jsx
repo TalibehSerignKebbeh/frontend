@@ -44,7 +44,7 @@ const Events = ({ showSideMenu, socket, setactiveNavLink }) => {
 
             <div className='bg-slate-300 dark:bg-slate-600
             md:w-[400px] sm:w-[400px] w-full px-1 py-2 flex gap-0 rounded-lg
-            my-5 '>
+            my-5 shadow shadow-slate-400 dark:shadow-slate-700'>
                 <Button
                     text={`Product`}
                     clickEvent={() => handleTabChange('product')}

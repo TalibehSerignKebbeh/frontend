@@ -1,12 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import { FixedSizeList } from "react-window";
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
-import '../notification.css'
-import { queryInstance } from "../../../api";
-import useAuth from "../../../hooks/useAuth";
+import './notification.css'
+import { queryInstance } from "../../api";
+import useAuth from "../../hooks/useAuth";
+import { formatNotificationDate } from "../../utils/dateFormatters";
 
-const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
+const AuthNotifications = ({ socket, data, open, setopen }) => {
 
   const ref = useRef(null)
   const { token } = useAuth()
@@ -56,14 +55,13 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
 
   const Row = ({ index, style }) => {
     const val = data[index];
-  
-    const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
+    const date = val?.created_at?.length ? formatNotificationDate(val?.created_at) : ''
     const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
 
     return (
       <div
         style={{
-          ...style, 
+           ...style, 
           width: '100%', padding: '2px',paddingBlock:'10px',
           top: style?.top,
           left: style?.left,
@@ -75,34 +73,26 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
         
       >
        
-        <div className="bg-white dark:bg-gray-700 
+       <div className="bg-white dark:bg-gray-700 
              shadow shadow-white dark:shadow-slate-800
               block py-2 px-[3px] "
         >
-          <small className="absolute right-2
+           <small className="absolute right-2
           bg-blue-600 text-white px-2 rounded-full text-xl  ">
             {index + 1}
           </small>
           <p className="text-gray-700 dark:text-gray-50 
-                           block font-normal capitalize
-                           "
-          >{val?.message}
+        block font-normal capitalize ">
+            {val?.message +" | "+date}
           </p>
-          <p className="text-gray-700 dark:text-gray-50 
-                       font-light text-xs capitalize"
-          >
-            Name: <small className="text-lg font-normal
-                        text-gray-700 dark:text-gray-50 ">
-              {fullName}
-            </small>
-          </p>
-
-          <p className="text-gray-700 dark:text-gray-50 
-                          block text-xs font-semibold"
-          >
+          <span className='text-gray-700 dark:text-gray-50 
+        block font-normal capitalize'>
+           Name {fullName}
+          </span>
+          {/* <small className="text-gray-700 dark:text-gray-50 
+        block  capitaliz font-serif font-semibold">
             {date}
-          </p>
-
+          </small> */}
         </div>
       </div>
     );
@@ -134,7 +124,7 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
       <FixedSizeList
         height={900}
         itemCount={data?.length}
-        itemSize={126}
+        itemSize={110}
         width={"100%"}
         style={{
           marginTop: '40px',
@@ -155,4 +145,4 @@ const AuthNotificationsTable = ({ socket, data, open, setopen }) => {
   );
 };
 
-export default AuthNotificationsTable;
+export default AuthNotifications;

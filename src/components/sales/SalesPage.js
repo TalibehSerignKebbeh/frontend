@@ -40,7 +40,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
 
       }).then(res => res?.data)
       .catch(err => Promise.reject(err)),
-    refetchInterval: 2500,
+    refetchInterval: 45000,
     keepPreviousData: true,
   })
 
@@ -69,7 +69,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         }).then(res => res?.data)
         .catch(err => Promise.reject(err))
     },
-    refetchInterval: 15000,
+    refetchInterval: 45000,
     keepPreviousData: true,
   })
 

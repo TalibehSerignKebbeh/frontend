@@ -1,11 +1,9 @@
-// import  Table  from '@mui/material/Table';
-import  format  from "date-fns/format";
-import parseISO from "date-fns/parseISO";
 import React, { useEffect, useRef, } from 'react';
 import './notification.css'
 import { FixedSizeList } from "react-window";
 import { queryInstance } from '../../api';
 import useAuth from "../../hooks/useAuth";
+import { formatNotificationDate } from "../../utils/dateFormatters";
 
 
 const ProductNotification = ({ dataArray, socket, open, setopen }) => {
@@ -55,7 +53,8 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
 
   const Row = ({ index, style }) => {
     const val = dataArray[index];
-    const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
+    const date = val?.created_at?.length ? formatNotificationDate(val?.created_at) : ''
+
     const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
     return (
       <div
@@ -67,10 +66,12 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
           display: "block",
           marginBottom:'10px'
         }}
-        className='bg-white dark:bg-gray-700 
+        
+      >
+        <div className="bg-white dark:bg-gray-700 
              shadow shadow-white dark:shadow-slate-800
-              block py-2 px-[3px]
-      border border-slate-600 dark:border-slate-300'>
+              block py-2 px-[3px] "
+        >
          <small className="absolute right-2
           bg-blue-600 text-white px-2 rounded-full text-xl  ">
             {index + 1}
@@ -87,9 +88,10 @@ const ProductNotification = ({ dataArray, socket, open, setopen }) => {
             </small>
           </p>
         <small className="text-gray-700 dark:text-slate-100
-          block text-xs font-semibold">
+          block text-sm font-sans ">
           {date}
-        </small>
+          </small>
+          </div>
       </div>
     );
   };

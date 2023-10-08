@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-// import  IconButton  from "@mui/material/IconButton";
 import  {DataGrid,gridClasses}  from "@mui/x-data-grid";
 import Box from "@mui/system/Box";
-// import  Delete  from "@mui/icons-material/Delete";
 import { salesColumns, cancelledSalesColumns } from "./data";
 import { queryInstance } from "../../api";
 import useAuth from "../../hooks/useAuth";
 import { GetError } from "../other/OtherFuctions";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import SuccessMessage from "../StatusMessages/SuccessMessage";
-// import isToday from "date-fns/isToday";
-// import parseISO from "date-fns/parseISO";
 
 const SalesTable = ({
   sales,
@@ -21,7 +17,7 @@ const SalesTable = ({
   rowCount,
   loading,
   socket,
-  deletable,
+  deletable=false,
 
 }) => {
   const [cancelling, setCancelling] = useState(false);

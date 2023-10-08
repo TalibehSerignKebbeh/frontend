@@ -3,10 +3,11 @@ import useAuth from "../../hooks/useAuth";
 import LockClockOutlined from "@mui/icons-material/LockClockOutlined";
 import ProductionQuantityLimitsOutlined from "@mui/icons-material/ProductionQuantityLimitsOutlined";
 import ShoppingBagSharp from "@mui/icons-material/ShoppingBagSharp";
+import { queryInstance } from "../../api";
+
 import SaleNotificationPanel from "../Notifications/SaleNotificationPanel";
 import ProductNotification from "../Notifications/ProductNotification";
-import AuthNotificationsTable from "../Notifications/Table/AuthNotificationsTable";
-import { queryInstance } from "../../api";
+import AuthNotifications from "../Notifications/AuthNotifications";
 // import Tooltip from '@mui/material/Tooltip'
 
 
@@ -146,7 +147,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
 
           {/* auth notification dialog */}
           {(openAuthNotify) && (
-                <AuthNotificationsTable
+                <AuthNotifications
                   socket={socket}
                   data={authNotifications}
                   open={openAuthNotify}
@@ -224,7 +225,7 @@ const TopBar = ({ socket, showSideMenu, setshowSideMenu }) => {
               }}
             >
               {authNotifications?.length > 0 && (
-                <AuthNotificationsTable
+                <AuthNotifications
                   socket={socket}
                   data={authNotifications}
                   open={openAuthNotify}

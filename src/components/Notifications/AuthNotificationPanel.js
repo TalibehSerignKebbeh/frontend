@@ -31,37 +31,7 @@ const AuthNotificationPanel = ({ dataArray, socket, open, setopen }) => {
         })
       
   }, [ref, setopen]);
-  
-  // useEffect(() => {
-  //   const container = containerRef.current;
-  //    const handleMouseDown = (e) => {
-  //   setDragging(true);
-  //   setOffset({ x: e.clientX - position.x, y: e.clientY - position.y });
-  // };
-
-  // const handleMouseMove = (e) => {
-  //   if (dragging) {
-  //     setPosition({ x: e.clientX - offset.x, y: e.clientY - offset.y });
-  //   }
-  // };
-
-  // const handleMouseUp = () => {
-  //   setDragging(false);
-  // };
-  //   if (container) {
-  //     container.addEventListener('mousedown', handleMouseDown);
-  //     container.addEventListener('mousemove', handleMouseMove);
-  //     container.addEventListener('mouseup', handleMouseUp);
-  //   }
-  //   return () => {
-  //     if (container) {
-  //       container.removeEventListener('mousedown', handleMouseDown);
-  //       container.removeEventListener('mousemove', handleMouseMove);
-  //       container.removeEventListener('mouseup', handleMouseUp);
-  //     }
-  //   };
-  // }, [containerRef, dragging, offset.x, offset.y, position.x, position.y]);
-  
+ 
     return (
       <div ref={ref}
         className='notification-wrapper'

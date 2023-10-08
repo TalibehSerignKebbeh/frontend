@@ -8,12 +8,12 @@ import successIcon from '../../../assets/images/success_icon2.png'
 import ErrorMessage from '../../StatusMessages/ErrorMessage';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  // console.log(props);
-  return <Slide direction="up" ref={ref} {...props} />;
+
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 const AddQuantityDialog = ({ open, handleClose,
     loading, productId,
-    message
+    message, socket
 }) => {
 const {token} = useAuth()
     const [quantity, setQuantity] = useState(0);
@@ -32,6 +32,7 @@ const {token} = useAuth()
             { quantity },
             { headers: { Authorization: `Bearer ${token}` } })
             .then((res) => {
+                socket?.emit(`notify_update_product`)
                 console.log(res);
             setsuccessMessage(res?.data?.message)
             }).catch((err) => {

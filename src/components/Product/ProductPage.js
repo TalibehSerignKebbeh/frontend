@@ -41,7 +41,7 @@ const ProductPage = ({ socket }) => {
         }
       }).then(res => res?.data)
       .catch((err) => Promise.reject(err)),
-    refetchInterval: 15000,
+    refetchInterval: 45000,
     keepPreviousData: true,
   })
   const handleCloseDialog = () => {
@@ -110,6 +110,7 @@ const ProductPage = ({ socket }) => {
         socket={socket}
       />
       <AddQuantityDialog 
+        socket={socket}
         message={<p className='text-xl text-green-400 mt-2'>
           {`Add Stock to `} <strong className='underline'>{productToAddStock?.name} </strong></p>}
         open={openAddQuantityDialog}

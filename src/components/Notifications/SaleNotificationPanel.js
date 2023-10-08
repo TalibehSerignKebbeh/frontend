@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { FixedSizeList } from "react-window";
-import format from "date-fns/format";
-import parseISO from "date-fns/parseISO";
 import './notification.css'
 import { queryInstance } from '../../api';
 import useAuth from '../../hooks/useAuth';
+import {formatNotificationDate} from '../../utils/dateFormatters'
 
 // import { DataGrid } from '@mui/x-data-grid';
 
@@ -53,7 +52,7 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
 
   const Row = ({ index, style }) => {
     const val = dataArray[index];
-    const date = val?.created_at?.length ? format(parseISO(val?.created_at), " EEE MMM do yyyy, HH:mm b") : ''
+    const date = val?.created_at?.length ? formatNotificationDate(val?.created_at) : ''
     const fullName = val?.userId?.firstName + " " + val?.userId?.lastName;
     return (
       <div
@@ -82,9 +81,9 @@ const SaleNotificationPanel = ({ dataArray, socket, open, setopen }) => {
         block font-normal capitalize'>
             sold by {fullName}
           </span>
-          <small className="text-gray-700 dark:text-gray-50 
-        block  capitaliz font-serif font-semibold">
-            {date}
+          <small className="text-gray-700 dark:text-slate-100
+          block text-sm font-sans ">
+          {date}
           </small>
         </div>
 

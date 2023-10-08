@@ -1,5 +1,7 @@
-import format from 'date-fns/format';
-import parseISO from 'date-fns/parseISO';
+import { formatOtherDate } from "../../utils/dateFormatters"
+
+
+
 
 export const customTime = '00:00:00.000'
 
@@ -30,7 +32,7 @@ export const customTime = '00:00:00.000'
         },
         {
             field: 'saleDate', headerName: 'Date', width: 210,
-            valueGetter: ({ value }) => value? format(parseISO(value), ' do MMM yyyy HH:mm b' ): ''
+            valueGetter: ({ value }) => value? formatOtherDate(value): ''
         },
 ]
 
@@ -67,7 +69,7 @@ export const customTime = '00:00:00.000'
         {
             
             field: 'saleDate', headerName: 'Date', width: 210,
-            valueGetter: ({ value }) => value? format(parseISO(value), ' do MMM yyyy HH:mm b' ): ''
+            valueGetter: ({ value }) => value? formatOtherDate(value): ''
         },
 ]
 
