@@ -98,7 +98,10 @@ const ProductsDataGrid = ({ products, pageSize,
       width: 140,
       getActions: (params) => [
         <GridActionsCellItem
-          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+          sx={{
+            p: 1, py: '4px',
+            borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)'
+          }}
           icon={
             <Link
               className="font-normal text-zinc-700
