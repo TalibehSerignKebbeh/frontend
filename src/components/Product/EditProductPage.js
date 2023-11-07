@@ -68,7 +68,7 @@ const EditProductPage = ({ socket, setactiveNavLink }) => {
               handleReset={() => { seterrorMessage('') }} />) : null}
         <div className="h-auto w-full self-stretch justify-center py-2">
           <EditForm
-            product={product}
+            product={{...product, oldInstock: product?.quantityInStock}}
             setproduct={setproduct}
             socket={socket}
             categories={categories}

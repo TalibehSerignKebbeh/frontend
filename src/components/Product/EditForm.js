@@ -56,9 +56,18 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
     e.preventDefault();
     if (deleting || updateLoading) return;
     setupdateLoading(true);
-    console.log(product);
+    // console.log(product);
+    const stockDiff = +product?.quantityInStock - +product?.oldInstock
+    // const newQuanity = (product?.oldInstock > product?.quantityInStock)?
+    const quantity = product?.quantity + stockDiff;
+     
     await queryInstance
-      .put(`/products/${product?._id}`, {...product,stockId:product?.stockId?._id}, { headers: { Authorization: `Bearer ${token}` } })
+      .put(`/products/${product?._id}`,
+        {
+          ...product,quantity: quantity,
+          stockId: product?.stockId?._id
+        },
+        { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => {
         let status = res?.data?.status;
         console.log(res?.status);
@@ -262,6 +271,27 @@ const EditForm = ({ product, setproduct, socket, categories }) => {
           onChange={(e) => setproduct({ ...product, unit_cost: e.target.value })}
           id="unit_cost"
           placeholder="product per unit cost"
+        />
+      </div>
+      <div className="md:w-72 sm:w-68 w-52 text-start">
+        <label
+          className=" font-semibold text-lg
+            w-full block"
+          htmlFor="instock"
+        >
+          Quantity in stock
+        </label>
+        <input
+          className="bg-white dark:bg-slate-500
+           text-gray-600 dark:text-white text-xl font-medium py-3 px-2
+            border-2 border-gray-500
+           rounded-md w-full"
+           type={"number"} step={'1'}
+          min={'0'}
+          value={product?.quantityInStock || ""}
+          onChange={(e) => setproduct({ ...product, quantityInStock: e.target.value })}
+          id="instock"
+          placeholder="quanity in stock"
         />
       </div>
       <div className="md:w-72 sm:w-68 w-52 text-start">
