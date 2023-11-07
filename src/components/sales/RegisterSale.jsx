@@ -11,7 +11,8 @@ import {QueryClient} from '@tanstack/react-query'
 import ProductsSearch from './Select/ProductsSearch';
 
 
-const RegisterSale = ({ socket, products, setproducts,loadingProducts }) => {
+const RegisterSale = ({ socket, products,
+  setproducts, loadingProducts }) => {
   const  client = new QueryClient()
   const { token } = useAuth()
   const [selected, setselected] = useState([])
@@ -21,9 +22,14 @@ const RegisterSale = ({ socket, products, setproducts,loadingProducts }) => {
   const handleSubmit = async () => {
     if (!selected?.length || !token) return;
     setpostStatus({ ...postStatus, error: ``, success: `` })
-    selected?.map(sale => sale.saleDate = new Date().toUTCString())
+    // selected?.map(sale => sale.saleDate = new Date().toUTCString())
+   const listToSubmit =  selected?.map(
+            (prod) =>
+            (!prod?.saleDate?.length ?
+                { ...prod, saleDate: new Date().toUTCString() } : prod))
+
     setpostingSales(true)
-    await queryInstance.post(`/sales`, selected,
+    await queryInstance.post(`/sales`, listToSubmit,
       {
         headers: { Authorization: `Bearer ${token}` }, onUploadProgress: (values) => {
       

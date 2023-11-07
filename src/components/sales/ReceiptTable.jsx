@@ -7,10 +7,20 @@ import TableFooter from '@mui/material/TableFooter';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import useAuth from '../../hooks/useAuth';
+import ReceiptRow from './ReceiptRow';
 
 
 
-export default function ReceiptTable({ selected, handleDecrement, handleIncrement }) {
+export default function ReceiptTable({ selected,
+  setselected,
+  handleDecrement
+  , handleIncrement }) {
+  const { isAdmin } = useAuth()
+  
+  function handleDateChange(e){
+   
+  }
   return (
     <div>
        
@@ -42,7 +52,13 @@ export default function ReceiptTable({ selected, handleDecrement, handleIncremen
                   <span className='text-slate-700 dark:text-slate-100'>
                     Total
                   </span>
-                </TableCell>
+            </TableCell>
+            {isAdmin? <TableCell className='' align="right">
+                  <span className='text-slate-700 dark:text-slate-100'>
+                    Date
+                  </span>
+            </TableCell>
+              : null}
 
                 <TableCell className='' align="center"
                   colSpan={2}>
@@ -54,55 +70,13 @@ export default function ReceiptTable({ selected, handleDecrement, handleIncremen
             </TableHead>
             <TableBody>
               {selected?.map((value, index) => (
-                <TableRow className='bg-slate-50 dark:bg-slate-700'
-                  key={index}
-                // sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell className='text-red-500' align="left">
-
-                    <span className='text-slate-600 dark:text-white text-base'>
-                      {value?.name}
-                    </span>
-                  </TableCell>
-
-                 
-                  <TableCell className='text-red-500' align="left">
-                    <span className='text-slate-600 dark:text-white text-base'>
-                      {value?.quantity}
-                    </span>
-                  </TableCell>
-                   <TableCell className='text-red-500' align="left">
-                    <span className='text-slate-600 dark:text-white text-base'>
-                      {value?.price}
-                    </span>
-                  </TableCell>
-                  <TableCell className='text-red-500' align="right">
-
-                    <span className='text-slate-600 dark:text-white text-base'>
-                      {value?.quantity * value?.price}
-                    </span>
-
-                  </TableCell>
-                  <TableCell className='text-red-500' align="right">
-                     <button onClick={e=>handleIncrement(value)}
-                     className='text-slate-600 dark:text-slate-100
-                    '>
-                     <AddCircle />
-                </button>
+                <ReceiptRow key={index} value={value}
                   
-
-                  </TableCell>
-                  <TableCell>
-                    <button onClick={e=>handleDecrement(value)}
-                    className='text-slate-600 dark:text-slate-100
-                    inline-flex items-stretch justify-stretch'>
-                      <Minimize
-                        sx={{
-                          transform: 'scale(2)', margin: 'auto',
-                        mt:'-17px'}} />
-                </button>
-                  </TableCell>
-                </TableRow>
+                  handleDecrement={handleDecrement}
+                  handleIncrement={handleIncrement}
+                  setselected={setselected}
+                  selected={selected}
+                />
               ))}
             </TableBody>
              <TableFooter>

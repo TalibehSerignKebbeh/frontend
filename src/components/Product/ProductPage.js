@@ -41,7 +41,7 @@ const ProductPage = ({ socket }) => {
         }
       }).then(res => res?.data)
       .catch((err) => Promise.reject(err)),
-    refetchInterval: 45000,
+    refetchInterval: 360000,
     keepPreviousData: true,
   })
   const handleCloseDialog = () => {

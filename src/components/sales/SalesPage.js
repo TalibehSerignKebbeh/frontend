@@ -15,8 +15,6 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
 
   const { token, isSeller } = useAuth()
   const [rowCount, setrowCount] = useState(0);
-  // const [loading, setloading] = useState(false);
-  // const [sales, setsales] = useState([]);
   const [errorMessage, seterrorMessage] = useState("");
   const [date, setdate] = useState('');
   const [pageSize, setpageSize] = useState(20);
@@ -40,7 +38,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
 
       }).then(res => res?.data)
       .catch(err => Promise.reject(err)),
-    refetchInterval: 45000,
+    refetchInterval: 450000,
     keepPreviousData: true,
   })
 
@@ -69,7 +67,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
         }).then(res => res?.data)
         .catch(err => Promise.reject(err))
     },
-    refetchInterval: 45000,
+    refetchInterval: 9000,
     keepPreviousData: true,
   })
 
