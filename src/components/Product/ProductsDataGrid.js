@@ -15,7 +15,7 @@ const ProductsDataGrid = ({ products, pageSize,
   handleStartStockAdd=()=>{}, 
 }) => {
  
-  const { isSeller,isAdmin} = useAuth()
+  const { isAdmin} = useAuth()
  
   const columns = [
     {
@@ -110,7 +110,7 @@ const ProductsDataGrid = ({ products, pageSize,
           }
           showInMenu  
         />,
-        <GridActionsCellItem  hidden={isAdmin}
+        <GridActionsCellItem  hidden={!isAdmin}
           onClick={()=>handleStartStockAdd(params?.row)}
           sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           showInMenu
@@ -122,7 +122,7 @@ const ProductsDataGrid = ({ products, pageSize,
           label="Add Stock"
         />,
       
-          <GridActionsCellItem hidden={isAdmin}
+          <GridActionsCellItem hidden={!isAdmin}
           sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
           icon={
             <Link 
