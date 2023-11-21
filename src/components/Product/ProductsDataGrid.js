@@ -20,7 +20,7 @@ const ProductsDataGrid = ({ products, pageSize,
  
   const columns = [
     {
-      field: "name", headerName: "Name", width: 140,headerClassName:'header'
+      type: "string",field: "name", headerName: "Name", width: 140,headerClassName:'header'
     },
     { type: "number", field: "quantity", headerName: "Quantity", width: 90,headerClassName:'header', },
     {
@@ -52,20 +52,20 @@ const ProductsDataGrid = ({ products, pageSize,
       width: 100,
     },
     {
-      field: "stockId",
+      type: "string", field: "stockId",
       headerName: "Category",headerClassName:'header',
       width: 140,
       valueGetter: ({ value }) => value && value.name,
     },
     {
-      field: "producedDate",
+      type: "string",field: "producedDate",
       headerName: "MFD",
       width: 120,
       valueGetter: ({ value }) =>
         value ? format(parseISO(value), "do MMM yyyy") : "missing",
     },
     {
-      field: "expiryDate",
+      type: "string",field: "expiryDate",
       headerName: "Exp",headerClassName:'header',
       width: 120,
       valueGetter: ({ value }) =>
@@ -86,7 +86,7 @@ const ProductsDataGrid = ({ products, pageSize,
     //     value ? format(new Date(value), "EEE MM yyyy, HH:mm b") : "",
     // },
     {
-      field: "description",
+     type: "string", field: "description",
       headerName: "description",
       width: 170,
       valueGetter: ({ value }) => (value ? value : ""),
@@ -97,10 +97,11 @@ const ProductsDataGrid = ({ products, pageSize,
       type: "actions",
       width: 140,
       getActions: (params) => [
-        <GridActionsCellItem
+        <GridActionsCellItem label=""
+           className=""
           sx={{
             p: 1, py: '4px',
-            borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)'
+            borderRadius: 0, boxShadow: '0px 0px 1px 0px rgba(0,0,0,0.08)'
           }}
           icon={
             <Link
@@ -108,28 +109,30 @@ const ProductsDataGrid = ({ products, pageSize,
               dark:text-slate-50 p-1"
               to={`/products/${params.id}/sales`}
             >
-              {/* <Inventory2 color='success' /> */}
-              Sales
+              {params?.row?.name} Sales
             </Link>
           }
           showInMenu  
         />,
-        <GridActionsCellItem
+        <GridActionsCellItem 
           hidden={!isAdmin}
-          onClick={()=>handleStartStockAdd(params?.row)}
-          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+          onClick={() => handleStartStockAdd(params?.row)}
+          className="text-zinc-700
+              dark:text-slate-50"
+          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 1px 0px rgba(0,0,0,0.08)' }}
           showInMenu
           icon={
-            <AddIcon 
+            <AddIcon  className="text-zinc-700
+              dark:text-slate-50"
               sx={{fontSize:'3rem'}}
             />
           } 
-          label="Add Stock"
+          label="update Stock"
         />,
       
-        <GridActionsCellItem
+        <GridActionsCellItem label="" 
           hidden={!isAdmin}
-          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 2px 0px rgba(0,0,0,0.6)' }}
+          sx={{ p: 1, py: '4px', borderRadius: 0, boxShadow: '0px 0px 1px 0px rgba(0,0,0,0.08)' }}
           icon={
             <Link 
               className="font-normal 
@@ -138,13 +141,14 @@ const ProductsDataGrid = ({ products, pageSize,
               to={`/products/${params.id}`}
             >
               {/* <AiOutlineEdit className='p-3 ' color='secondary' /> */}
-              Edit
+              Edit {params?.row?.name}
             </Link>
           }
           showInMenu  
         />,
       ],
     },
+    
   ];
 
   return (
@@ -155,7 +159,7 @@ const ProductsDataGrid = ({ products, pageSize,
         group-[.columnHeader]:font-light
         only:[.datagrid-footer]:text-slate-400"
         rows={products?.length ? products : []}
-        columns={columns}
+        columns={[...columns]}
         paginationModel={{ page: page, pageSize: pageSize }}
         
         classes={{

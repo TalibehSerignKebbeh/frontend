@@ -35,7 +35,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
     <Box
       height={'100vh'}
       className={`bg-white dark:bg-slate-700
-      shadow shadow-white dark:shadow-slate-800 overflow-x-hidden
+      shadow-md shadow-slate-50 dark:shadow-slate-800 overflow-x-hidden
       overflow-y-auto
       ${showSideMenu
           ? "sidebar-main active"
