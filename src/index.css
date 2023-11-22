@@ -140,3 +140,22 @@ a{
   }
 }
 
+
+
+/* changing material ui datagrid menu list */
+:root .MuiDataGrid-menuList, .MuiList-root{
+    background-color: #fff !important;
+}
+
+:root.dark .MuiDataGrid-menuList, .MuiList-root{
+    background-color: #1F2937 !important;
+}
+
+:root .MuiSvgIcon-root{
+  fill: #1F2937 !important;
+    
+}
+
+:root.dark .MuiSvgIcon-root{
+  fill: white !important;
+}

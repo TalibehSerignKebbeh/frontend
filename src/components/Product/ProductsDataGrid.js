@@ -175,16 +175,13 @@ const ProductsDataGrid = ({ products, pageSize,
           setpage(page)
           setpageSize(pageSize)
         } }
-      
+        paginationMode="client"
         loading={loading}
         columnBuffer={4}
         columnThreshold={2}
         // rowsPerPageOptions={[10, 20, 30, 50, 70, 100]}
         // onPageSizeChange={(newSize) => setpageSize(newSize)}
-        components={{
-          Toolbar: GridToolbar,
-          // MoreActionsIcon: GridM
-        }}
+        
         localeText={{
           toolbarDensity: "Size",
           toolbarDensityLabel: "Size",

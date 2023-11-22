@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Select, Spin } from 'antd';
 import {queryInstance} from '../../../api'
 import useAuth from '../../../hooks/useAuth'
-import { Clear } from '@mui/icons-material';
+// import { Clear } from '@mui/icons-material';
 const { Option } = Select;
 
 
@@ -86,7 +86,7 @@ const ProductsSearch = ({ selected, setselected, products, setproducts }) => {
       {products?.map(product => (
         <Option key={product._id} value={product?._id}
         label={product?.name}>
-          {`${product?.name} D${product?.price}`}
+          {`${product?.name} D${product?.price} ${product?.quantityInStock}`}
         </Option>
       ))}
     </Select> 
