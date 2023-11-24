@@ -53,12 +53,17 @@ export default function ReceiptTable({ selected,
                     Total
                   </span>
             </TableCell>
-            {isAdmin? <TableCell className='' align="right">
+            {/* {isAdmin? <TableCell className='' align="right">
                   <span className='text-slate-700 dark:text-slate-100'>
                     Date
                   </span>
             </TableCell>
-              : null}
+              : null} */}
+            <TableCell className='' align="right">
+                  <span className='text-slate-700 dark:text-slate-100'>
+                    Date
+                  </span>
+            </TableCell>
 
                 <TableCell className='' align="center"
                   colSpan={2}>

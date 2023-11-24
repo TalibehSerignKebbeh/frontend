@@ -47,7 +47,7 @@ const RegisterSale = ({ socket, products,
           setpostStatus({ ...postStatus, error: GetError(res) })
         
       }).catch((err) => {
-        // console.log(err);
+        console.log(err);
           setpostStatus({ ...postStatus, error: GetError(err) })
       
     }).finally(()=>{setpostingSales(false)})
