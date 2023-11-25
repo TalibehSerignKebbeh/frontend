@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import FormControl from '@mui/material/FormControl'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
-import {useTheme} from '@mui/material'
+
 import { registerRoles } from "../../config/allowedRoles";
 // import { getStyles } from "../../other/format";
 import { GetError } from "../other/OtherFuctions";
@@ -27,7 +27,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
     success: "",
     error: "",
   });
-  const theme = useTheme();
+  
 
   const validate = (values) => {
     const errors = {
