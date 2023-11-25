@@ -42,8 +42,9 @@ const handleLogout = async () => {
           <Tooltip title="logout">
 
             <IconButton className="text-gray-900 dark:text-white
-          bg-zinc-300 dark:bg-gray-500 
-          dark:hover:bg-gray-500"
+          bg-zinc-400 dark:bg-gray-500 
+          dark:hover:bg-gray-500
+            shadow-sm"
               onClick={handleLogout}>
               {isLogingOut ? (
                 <CircularProgress sx={{ fontSize: "3rem" }} />

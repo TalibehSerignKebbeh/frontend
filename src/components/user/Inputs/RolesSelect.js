@@ -1,5 +1,7 @@
-import { FormControl, MenuItem, Select, OutlinedInput } from '@mui/material';
-import { useTheme } from '@mui/system';
+import  FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { useTheme } from '@mui/material/styles';
 import React from 'react';
 import { registerRoles } from '../../../config/allowedRoles';
 
@@ -26,18 +28,25 @@ const RolesSelect = ({ user, setuser }) => {
     return (
         <div className=" md:w-64 sm:w-60 w-56 h-auto input-container">
             <label className='font-semibold text-lg -mb-1' htmlFor="roles-select'">Roles</label>
-            <FormControl sx={{  width: '100%', border: '2px solid black' }}
-                className={`rounded-lg `}
+            <FormControl
+                sx={{ width: '100%', border: '2px solid black' }}
+                className={`rounded-lg bg-slate-50 dark:bg-slate-800 
+                text-slate-800 dark:text-slate-50`}
             >
                 <Select labelId='roles-select'
                     value={user?.roles ? user?.roles : []} multiple
                     onChange={handleChangeRoles}
                     name="roles" id='roles'
+                    className='bg-slate-50 dark:bg-slate-800 
+                text-slate-800 dark:text-slate-50
+                     border-2 border-teal-300'
                     // input={<OutlinedInput label="roles" />}
                 >
                     {registerRoles?.map((role, id) => (
                         <MenuItem value={role} key={role}
-                            style={getStyles(role, user?.roles, theme)}>
+                            className='text-slate-700 dark:text-white
+                                      bg-slate-50 dark:bg-slate-700'
+                           >
                             {role}
                         </MenuItem>
                     ))}

@@ -1,0 +1,27 @@
+
+/* MuiList-root MuiList-padding MuiMenu-list css-6hp17o-MuiList-root-MuiMenu-list */
+/* changing material ui datagrid menu list */
+
+:root.dark .MuiDataGrid-menuList, .MuiList-root,
+ .MuiList-padding, .MuiMenu-list,
+ .MuiList-root-MuiMenu-list{
+    background-color: #1F2937 !important;
+    color: white !important;
+}
+
+:root .MuiDataGrid-menuList, .MuiList-root,
+ .MuiList-padding, .MuiMenu-list,
+ .MuiList-root-MuiMenu-list{
+    background-color: #fff !important;
+    color: #1F2937 !important;
+}
+
+
+
+:root .MuiSvgIcon-root{
+  fill: #1F2937 !important; 
+}
+
+:root.dark .MuiSvgIcon-root{
+  fill: white !important;
+}

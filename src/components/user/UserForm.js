@@ -9,11 +9,12 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 import {useTheme} from '@mui/material'
 import { registerRoles } from "../../config/allowedRoles";
-import { getStyles } from "../../other/format";
+// import { getStyles } from "../../other/format";
 import { GetError } from "../other/OtherFuctions";
 import SuccessMessage from "../StatusMessages/SuccessMessage";
 import ErrorMessage from "../StatusMessages/ErrorMessage";
 import useAuth from "../../hooks/useAuth";
+import '../../mui_css_reset.css'
 
 const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
 
@@ -405,8 +406,8 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
               Roles
             </label>
             <FormControl
-              sx={{ width: "100%", border: "2px solid black" }}
-              className={`rounded-lg `}
+              sx={{ width: "100%"}}
+              className={`rounded-lg bg-slate-50 dark:bg-slate-900`}
             >
               <Select
                 labelId="roles-select"
@@ -416,7 +417,7 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
                 name="roles"
                 id="roles"
                 className="bg-white dark:bg-slate-400 
-                text-slate-700 dark:text-slate-100
+                text-slate-400 dark:text-slate-100
                 h-12"
               >
                 {registerRoles?.map((role, id) => (
@@ -424,7 +425,8 @@ const UserForm = ({ socket, UserData, setUserData, resetFunction }) => {
                     value={role}
                     key={role}
                     id={role}
-                    style={getStyles(role, formik.values.roles, theme)}
+                    className="text-slate-400 dark:text-white "
+                   
                   >
                     {role}
                   </MenuItem>

@@ -157,7 +157,7 @@ const SideBar = ({ socket, showSideMenu, setshowSideMenu, activeNavLink, }) => {
               showSideMenu={showSideMenu}
             /> : null}
         </div>
-        <div className="mr-2 my-5 mt-8 text-center 
+        <div className="mr-2 my-5 mt-8 mb-10 text-center 
          w-full h-auto flex justify-center items-center
         ">
           <DarkModeToggle />

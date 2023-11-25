@@ -140,22 +140,26 @@ a{
   }
 }
 
-
-
-/* changing material ui datagrid menu list */
-:root .MuiDataGrid-menuList, .MuiList-root{
+:root .MuiDataGrid-menuList, .MuiList-root,
+ .MuiList-padding, .MuiMenu-list,
+ .MuiList-root-MuiMenu-list{
     background-color: #fff !important;
+    color: #1F2937 !important;
 }
 
-:root.dark .MuiDataGrid-menuList, .MuiList-root{
+:root.dark .MuiDataGrid-menuList, .MuiList-root,
+ .MuiList-padding, .MuiMenu-list,
+ .MuiList-root-MuiMenu-list{
     background-color: #1F2937 !important;
+    color: white !important;
 }
 
 :root .MuiSvgIcon-root{
-  fill: #1F2937 !important;
-    
+  fill: #1F2937 !important; 
 }
 
 :root.dark .MuiSvgIcon-root{
   fill: white !important;
 }
+
+

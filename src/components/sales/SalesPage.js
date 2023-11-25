@@ -72,46 +72,8 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
   })
 
   // useEffect(() => {
-  //   const fetchSales = async () => {
-  //     setloading(true);
-  //     seterrorMessage("");
-  //     let filters = {}
-
-  //     Object.keys(searchFilters).forEach((key) => {
-  //       if (searchFilters[key]?.length) {
-  //         filters[key] = searchFilters[key]
-  //       }
-  //     })
-
-  //     filters.page = page;
-  //     filters.pageSize = pageSize;
-  //     await queryInstance
-  //       .get(
-  //         `/sales`, { headers: { Authorization: `Bearer ${token}`, }, params: { ...filters } }
-  //       )
-  //       .then((res) => {
-  //         if (res?.status === 200) {
-  //           // console.log(res?.data);
-  //           setrowCount(res?.data?.totalSales);
-  //           setsales(res?.data?.sales);
-  //           return;
-  //         }
-
-  //         seterrorMessage(GetError(res))
-  //       })
-  //       .catch((err) => {
-  //         // console.log(err);
-  //         seterrorMessage(GetError(err))
-  //       })
-  //       .finally(() => {
-  //         setloading(false);
-  //       });
-  //   };
-  //   fetchSales();
-  //   return () => { };
-  // }, [page, pageSize, searchFilters, token]);
-
- 
+  //     console.log(saleLoadData);
+  // },[])
   useEffect(() => {
     setrowCount((prevValue) => (salesLoading ? rowCount : saleLoadData?.totalSales));
   }, [ saleLoadData?.totalSales, salesLoading]);
