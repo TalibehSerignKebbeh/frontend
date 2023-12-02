@@ -76,7 +76,7 @@ const SalesPage = ({ socket, setactiveNavLink }) => {
   // },[])
   useEffect(() => {
     setrowCount((prevValue) => (salesLoading ? rowCount : saleLoadData?.totalSales));
-  }, [ saleLoadData?.totalSales, salesLoading]);
+  }, [rowCount, saleLoadData?.totalSales, salesLoading]);
 
   useEffect(() => {
     if (isSuccess || data?.products?.length) {

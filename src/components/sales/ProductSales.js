@@ -91,7 +91,7 @@ const ProductSales = ({ socket, setactiveNavLink }) => {
 
     useEffect(() => {
         if (isSuccess) {
-            console.log(data?.total);
+            console.log(data);
             setsales(data?.sales)
             setproduct(data?.product)
             
@@ -106,7 +106,7 @@ const ProductSales = ({ socket, setactiveNavLink }) => {
    
     useEffect(() => {
     setTotalRowCount((prevValue) => (isLoading ? totalRowCount : data?.total));
-  }, [ isLoading, data?.total]);
+  }, [isLoading, data?.total, totalRowCount]);
 
     return (
         <div className='w-full lg:px-14 md:mx-10 sm:px-5 px-2'>
@@ -147,7 +147,7 @@ const ProductSales = ({ socket, setactiveNavLink }) => {
                 deletable={false}
                 rowCount={totalRowCount}
                 setpage={setpage} page={page}
-                columns={columns} totalRowsSize={totalRowCount}
+                columns={columns} 
                 pageSize={pageSize} setpageSize={setpageSize}
             />
 
